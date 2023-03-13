@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>main</title>
+</head>
+<!--로그인을 하고 나서 로그인이 되었는지 확인하는 창-->
+<body>
+<!-- 컨트롤러 login 메서드 결과로 session 정보에 담아둔 정보를 확인 하는 thymeleaf 문-->
+session 정보 확인 <br>
+회원의 이메일은 <p th:text="${session.loginEmail}"></p>
+<a href="friendPlus">친구 추가</a>
+<a href="friendList">친구 목록</a>
+<a href="friendDelete">친구 삭제</a>
+</body>
+</html>
