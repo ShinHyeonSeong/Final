@@ -76,7 +76,7 @@ public class FriendController {
     public String friendList(HttpSession httpSession, Model model) {
         String accountEmail = (String) httpSession.getAttribute("loginEmail");
         log.info("세션 정상 작동");
-        AccountDto accountDto = accountService.findById1(accountEmail);
+        Acco = accountService.findById1(accountEmail);
         log.info("id 1 데이터 정상 작동");
         List<FriendDto> friendDtoList = friendService.findAll(accountDto.getAccountid());
         log.info("id1 에대한 리스트 작동");

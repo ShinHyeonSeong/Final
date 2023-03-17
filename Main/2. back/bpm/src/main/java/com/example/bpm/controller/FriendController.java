@@ -1,6 +1,8 @@
 package com.example.bpm.controller;
 
+import com.example.bpm.dto.FriendDto;
 import com.example.bpm.dto.UserDto;
+import com.example.bpm.repository.UserRepository;
 import com.example.bpm.service.FriendService;
 import com.example.bpm.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -12,10 +14,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
+
 @Controller
 @Slf4j
 @RequiredArgsConstructor
 public class FriendController {
+    private final UserRepository userRepository;
     private final UserService userService;
     private final FriendService friendService;
 
@@ -26,11 +31,11 @@ public class FriendController {
 
     @GetMapping("/friendList")
     public String friendList(HttpSession httpSession, Model model) {
-        String accountEmail = (String) httpSession.getAttribute("loginEmail");
+        String userEmail = (String) httpSession.getAttribute("loginEmail");
         log.info("세션 정상 작동");
-        UserDto UserDto = userService.findAll();
+        UserDto findDto = userService.findById(userEmail);
         log.info("id 1 데이터 정상 작동");
-        List<FriendDto> friendDtoList = friendService.findAll(UserDto.getAccountid());
+        List<FriendDto> friendDtoList = friendService.findAll(findDto.getUuid());
         log.info("id1 에대한 리스트 작동");
         model.addAttribute("friend", friendDtoList);
         return "list";
@@ -41,11 +46,13 @@ public class FriendController {
         return "friendPlus";
     }
 
-    @PostMapping("/friendPlus")
-    public String friendPlus(@ModelAttribute UserDto UserDto, Model model){
+    @PostMapping("/friendSearch")
+    public String friendSearch(@ModelAttribute UserDto UserDto, Model model){
         UserDto searchDto = friendService.search(UserDto);
         model.addAttribute("searchFr", searchDto);
         return "searchResult";
     }
+
+
 
 }
