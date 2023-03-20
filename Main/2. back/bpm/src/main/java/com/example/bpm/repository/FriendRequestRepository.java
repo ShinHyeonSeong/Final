@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface FriendRequestRepository extends JpaRepository<FriendRequestEntity, String> {
+public interface FriendRequestRepository extends JpaRepository<FriendRequestEntity, Long> {
 
     @Query(value = // 괄호한 value 값의 sql문을 실행시킴
             "insert into  " +
@@ -16,16 +16,16 @@ public interface FriendRequestRepository extends JpaRepository<FriendRequestEnti
                     "values (sendUUID, recvUUID)",
             nativeQuery = true)
         //sql문이 작동하게 도와줌
-    FriendRequestEntity plusFriend(String sendUUID, String recvUUID);
+    FriendRequestEntity plusFriend(Long sendUUID, Long recvUUID);
 
 
     @Query(value = "delete from " + "friendRequst" + "where sendUUID = sendId and recvUUID = recvId", nativeQuery = true)
-    void deleteRow(String sendId, String recvId);
+    void deleteRow(Long sendId, Long recvId);
 
     @Query(value = "select * " +
             "from friendReust " +
             "where sendUUID = sendId AND recvUUID = recvId", nativeQuery = true)
-    FriendRequestEntity findRequestRow(String sendId, String recvId);
+    FriendRequestEntity findRequestRow(Long sendId, Long recvId);
 
 
 }

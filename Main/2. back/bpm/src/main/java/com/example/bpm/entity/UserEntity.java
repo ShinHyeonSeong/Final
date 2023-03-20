@@ -17,7 +17,8 @@ import java.util.List;
 public class UserEntity {
     @Id
     @Column(name = "uuid")
-    private String uuid;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long uuid;
     @Column(name = "email")
     private String email;
     @Column(name = "password")

@@ -27,7 +27,7 @@ public class FriendService {
     private final FriendRequestRepository friendRequestRepository;
 
     //전체 친구 리스트 찾기
-    public List<FriendDto> findAll(String userid) {//쿼리문 작성 필요
+    public List<FriendDto> findAll(Long userid) {//쿼리문 작성 필요
         //friend table에 id 하나로 모두 찾는 쿼리문 메서드 작성
         List<FriendEntity> friendEntityList = friendRepository.findById1(userid);
         List<FriendDto> friendDtoList = new ArrayList<>();
@@ -57,8 +57,8 @@ public class FriendService {
     //수락 시 친구리스트로 아이디들을 넘겨야함
     //고려할점 요청된 목록과 요청 온 목록을 다 출력할 줄 알아야함
     public void requestFriend(UserDto userDto1, UserDto userDto2) {
-        String sendID = userDto1.getUuid();
-        String recvID = userDto2.getUuid();
+        Long sendID = userDto1.getUuid();
+        Long recvID = userDto2.getUuid();
         if (sendID != null & recvID != null) {
             //DB에 저장만함
             friendRequestRepository.plusFriend(sendID, recvID);
@@ -70,7 +70,7 @@ public class FriendService {
 
     //친구 요청함 리스트
     //세션 ID 기준으로 요청함 테이블을 불러온다
-    public List<FriendRequestDto> friendRequestDtoList(String userId) {
+    public List<FriendRequestDto> friendRequestDtoList(Long userId) {
         //friend table에 id 하나로 모두 찾는 쿼리문 메서드 작성
         List<FriendEntity> friendEntityList = friendRequestRepository.findById1(userid);
         List<FriendDto> friendDtoList = new ArrayList<>();

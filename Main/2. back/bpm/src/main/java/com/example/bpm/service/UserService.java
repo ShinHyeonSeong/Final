@@ -60,8 +60,8 @@ public class UserService {
         return userDtoList;
     }
 
-    public UserDto findById(String id) {
-        Optional<UserEntity> optionalUserEntity = userRepository.findById(id);
+    public UserDto findById(String userEmail) {
+        Optional<UserEntity> optionalUserEntity = userRepository.findByUserEmail(userEmail);
         if (optionalUserEntity.isPresent()) {
             //Optional로 묶여져 있는 객체 중 하나의 정보만 가지고 와야 하므로 get() 메소드 이용
             return UserDto.toUserDto(optionalUserEntity.get());
@@ -83,7 +83,7 @@ public class UserService {
         userRepository.save(UserEntity.toUpdateuserEntity(userDto));
     }
 
-    public void deleteById(String id) {
+    public void deleteById(Long id) {
         userRepository.deleteById(id);
     }
 
