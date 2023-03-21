@@ -115,6 +115,20 @@ i {
     left: -25px;
 }
 
+.login-btn {
+	width: auto;
+	margin-left: 1rem;
+}
+
+.login-btn button {
+	font-size: 14px;
+	padding: 5px 10px;
+	border: none;
+	outline: none;
+	background-color: #5161ce;
+	color: white;
+}
+
 
 @media(min-width: 992px){
 	.navbar-expand-custom {
