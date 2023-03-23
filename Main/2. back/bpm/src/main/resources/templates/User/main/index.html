@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<title>Side Navigation Bar</title>
+	<style>
+		/* 사이드바 스타일 설정 */
+		.sidenav {
+			height: 100%;
+			width: 200px;
+			position: fixed;
+			z-index: 1;
+			top: 0;
+			left: 0;
+			background-color: #f1f1f1;
+			overflow-x: hidden;
+			padding-top: 20px;
+		}
+		
+		/* 링크 스타일 설정 */
+		.sidenav a {
+			padding: 6px 8px 6px 16px;
+			text-decoration: none;
+			font-size: 25px;
+			color: #818181;
+			display: block;
+		}
+		
+		/* 활성 링크 스타일 설정 */
+		.sidenav a.active {
+			color: #f1f1f1;
+		}
+		
+		/* 호버링 링크 스타일 설정 */
+		.sidenav a:hover {
+			color: #f1f1f1;
+			background-color: #555;
+		}
+	</style>
+</head>
+<body>
+<!-- 사이드바 시작 -->
+<div class="sidenav">
+	<a href="#section1">Section 1</a>
+	<a href="#section2">Section 2</a>
+	<a href="#section3">Section 3</a>
+	<a href="#section4">Section 4</a>
+	<a href="#section5">Section 5</a>
+</div>
+
+<!-- 컨텐츠 시작 -->
+<div style="margin-left: 200px; /* 사이드바 너비만큼 마진 설정 */">
+	
+	<h2>Section 1</h2>
+	<p>내용을 입력하세요.</p>
+	
+	<h2>Section 2</h2>
+	<p>내용을 입력하세요.</p>
+	
+	<h2>Section 3</h2>
+	<p>내용을 입력하세요.</p>
+	
+	<h2>Section 4</h2>
+	<p>내용을 입력하세요.</p>
+	
+	<h2>Section 5</h2>
+	<p>내용을 입력하세요.</p>
+</div>
+</body>
+</html>
