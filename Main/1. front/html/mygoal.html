@@ -8,6 +8,8 @@
     <script src="../js/mygoal.js"></script>
 </head>
 <!-- 목표 > 내 목표 -->
+<!-- 03.28 색 최적화 및 div 분류 완료
+    종혁 : 전체 디테일은 너가 잡아줘야해 내가 지금 계속 틀만 잡아 넘길께 나중에 디테일 같이 잡긴 할께 -->
 
 <body>
     <!-- Side menu bar -->
@@ -31,7 +33,7 @@
             <p class="deadline">Deadline: March 31, 2023</p>
         </div>
 
-        <!-- 이거 왜 안되지...? -->
+        <!-- 이거 왜 안되지...? hr 태그로 상위 nav 바랑 하단 content랑 구분 할려고 시도 했는데 잘 안대....-->
         <hr style="color: white;">
 
 
@@ -46,8 +48,10 @@
 
             </div>
             <div class="right-section">
+                <!-- 이것도 div로 묶어야 데이터를 잘 넘길 수 있을 거 같.. ㄱ -->
                 <h2 class="goal-introduction-title">About Me</h2>
                 <p class="goal-owner">Goal Owner: John Doe</p>
+                <!-- 이걸 div로 해가지고 상위 목표와 연결 해야되는데 일단 내가 못함 미안 -->
                 <p class="parent-goal">Parent Goal: Fitness</p>
             </div>
         </div>
