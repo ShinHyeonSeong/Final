@@ -12,95 +12,61 @@ a {
 	color: white;
 }
 
-
-h1 {
-	text-align: center;
-	margin-top: 50px;
-	font-size: 36px;
-	text-transform: uppercase;
-	letter-spacing: 2px;
-}
-
-hr {
-	border: none;
-	border-top: 2px solid #ffffff;
-	margin: 30px 0;
-}
-
-
-/* Style container */
-.content-container {
-	display: flex;
-	justify-content: center;
-}
-
-.content {
+.centered-content {
 	margin-left: 200px;
 	padding: 20px;
-	width: 80%;
+}
+
+.project-name {
+	margin: 2%;
+	font-size: 36px;
+	text-align: center;
+}
+
+.centered-top {
+	display: flex;
+}
+
+.team-members,
+.project-intro,
+.my-work,
+.goals {
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+	margin-bottom: 20px;
 }
 
-.goals-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-
-.add-goal-btn {
-	background-color: #fff;
-	width: 150px;
-	color: #333;
-	padding: 10px;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-}
-
-.add-goal-btn:hover {
-	background-color: #ddd;
-	color: #333;
-}
-
-.post {
-	margin: 10px;
+.project-intro {
+	flex: 1;
+	background-color: #333;
+	color: #fff;
 	padding: 20px;
+	border-radius: 10px;
+	margin: 10px;
+
 }
 
-.post h2 {
-	margin-top: 0;
+.team-members {
+	flex: 1;
+	background-color: #333;
+	color: #fff;
+	padding: 20px;
+	border-radius: 10px;
+	margin: 10px;
 }
 
-.post .task-head {
-	margin-bottom: 10px;
+.my-work {
+	background-color: #333;
+	color: #fff;
+	padding: 20px;
+	border-radius: 10px;
+	margin: 10px;
 }
 
-.post .task-head h3 {
-	margin-top: 0;
-}
-
-.post .task-item {
-	margin-left: 10px;
-}
-
-.post .task-item p {
-	margin-top: 0;
-	margin-bottom: 5px;
-}
-
-.post .task-item a {
-	color: #ffffff;
-	text-decoration: none;
-}
-
-.post .task-item a:hover {
-	text-decoration: underline;
-}
-
-
-.post .task-item div:not(:last-child) {
-	border-bottom: 1px solid #ccc;
-	padding-bottom: 5px;
+.goals {
+	background-color: #333;
+	color: #fff;
+	padding: 20px;
+	border-radius: 10px;
+	margin: 10px;
 }
