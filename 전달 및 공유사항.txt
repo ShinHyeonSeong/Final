@@ -242,8 +242,5 @@ document log
 
 수정 및 추가 파일 - work.html / workDetail.html / goal.html / goalDetail.html /documentList / documentWrite / documentDetail
 
-추가 전달사항 (주석으로도 달아놈)
-1. 작업과 목표 웹 페이지에 제목 밑 hr 태그의 위치와 크기를 통일 시켜야함 (다른 창들도 확인요망)
-2. 도큐먼트 로그 페이지 - project 로그 페이지를 이걸로 수정
 
 
