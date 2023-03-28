@@ -13,5 +13,4 @@ const cardData = [
 		title: 'Goal',
 		content: goalElement.textContent.trim()
 	},
-	{
-	
+]

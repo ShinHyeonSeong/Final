@@ -3,55 +3,61 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>Project Template Website</title>
+	<title>작업</title>
 	<link rel="stylesheet" href="../css/work.css">
-	<link rel="stylesheet" href="/css/sidebar.css">
+	<link rel="stylesheet" href="../css/sidebar.css">
+	<script src="../js/work.js"></script>
 </head>
+<!-- 작업 창
+제목과 하단 세부사항들을 구분짓는 hr 태그들을 통일필요
+아사나 보면 알겠지만 이게 단순 게시물 형태로 가야하는데
+어떻게 해야할..지 고민 좀 해서 수정 해줘..>!!!! -->
 
 <body>
 	<div class="container">
 		<div class="sidebar">
 			<ul>
-				<li class="active"><a href="./index.html">프로젝트 만들기</a></li>
+				<li><a href="./index.html">프로젝트 만들기</a></li>
 				<li><a href="./main.html">HOME</a></li>
 				<li><a href="./goal.html">목표</a></li>
 				<li><a href="./calender.html">calender</a></li>
-				<li><a href="./work.html">작업</a></li>
+				<li class="active"><a href="./work.html">작업</a></li>
 				<li>My Information</li>
 			</ul>
 		</div>
-		<div class="centered-content">
-			<div class="project-name">Project 1</div>
-			<div class="centered-top">
-				<div class="project-intro">
-					<h2>Project Introduction</h2>
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor semper massa, in scelerisque
-						velit euismod in. Fusce vehicula enim id velit sagittis, a bibendum ipsum imperdiet.</p>
-				</div>
-				<div class="team-members">
-					<h2>Team Members</h2>
-					<div class="member">
-						<h3>John Doe</h3>
-						<p>Web Developer</p>
-					</div>
-					<div class="member">
-						<h3>Jane Doe</h3>
-						<p>Graphic Designer</p>
+
+		<div class="content">
+			<div class="goals-header">
+				<h1>작업</h1>
+				<button class="add-goal-btn">작업 추가</button>
+			</div>
+			<hr>
+			<div class="post">
+				<div class="task-head">
+					<h3>Assigned Tasks</h3>
+					<div class="task-item">
+						<p><a href="#">Task 3</a></p>
+						<p><a href="#">Task 3</a></p>
 					</div>
 				</div>
-			</div>
-			<div class="my-work">
-				<h2>My Work</h2>
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor semper massa, in scelerisque
-					velit euismod in. Fusce vehicula enim id velit sagittis, a bibendum ipsum imperdiet.</p>
-			</div>
-			<div class="goals">
-				<h2>Goals</h2>
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor semper massa, in scelerisque
-					velit euismod in. Fusce vehicula enim id velit sagittis, a bibendum ipsum imperdiet.</p>
+				<hr>
+				<div class="task">
+					<h3>Work in Progress</h3>
+					<div class="task-item">
+						<p><a href="#">Task 3</a></p>
+					</div>
+				</div>
+				<hr>
+				<div class="task">
+					<h3>Completed Tasks</h3>
+					<div class="task-item">
+						<p><a href="#">Task 3</a></p>
+					</div>
+				</div>
+				<hr>
 			</div>
 		</div>
-
+	</div>
 </body>
 
 </html>

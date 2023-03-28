@@ -1,0 +1,47 @@
+body {
+  background-color: #222;
+  color: #fff;
+  font-size: 18px;
+}
+
+.container {
+  width: 70%;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1em;
+}
+
+h1 {
+  margin-top: 2em;
+  margin-bottom: 1em;
+}
+
+
+.userinfo {
+  font-size: 14px;
+  color: #ccc;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  margin-bottom: 1em;
+}
+
+a {
+  color: #fff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}

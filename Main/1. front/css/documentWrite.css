@@ -1,30 +1,50 @@
 body {
     width: 100%;
     height: 100%;
+    background-color: #222;
+    color: #fff;
 }
 
 a {
     text-decoration: none;
 }
 
+.main-content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+
 .write {
-    width: auto;
+    flex : 3;
+    background-color: #222;
+    color: #fff;
+    width: 60%;
     height: 90%;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    justify-content: space-around;
-    align-items: center;
-    margin-top: 50px;
+    margin: 50px;
+}
+
+.right-section {
+    flex: 1;
+    width: 30%;
+    margin-left: auto;
 }
 
 .detail {
+    background-color: #222;
+    color: #fff;
     flex: 1;
     height: fit-content;
 
 }
 
 .title {
+    background-color: #222;
+    color: #fff;
     border: none;
     font-size: 32pt;
     font-weight: bold;
@@ -35,22 +55,13 @@ a {
 }
 
 hr {
-    width: 60px;
+    width: 100%;
     height: 6px;
     margin: 20px auto 20px 0;
-    background-color: #444;
+    background-color: #fff;
     border: none;
 }
 
-.tag {
-    border: none;
-    font-size: 1em;
-    margin-bottom: 12px;
-}
-
-.tag:focus {
-    outline: none;
-}
 
 .toolbar {
     width: auto;
@@ -62,15 +73,15 @@ hr {
 }
 
 .font-btn {
+    background-color: #222;
+    color: #fff;
     text-transform: uppercase;
     border-radius: 5px;
     min-width: 48px;
     min-height: 100%;
-    color: #999;
     font-size: 1em;
     border: none;
     outline: none;
-    background-color: white;
 }
 
 .font-btn:hover {
@@ -88,28 +99,37 @@ hr {
 .content {
     flex: 1;
     height: 300px;
+	background-color: #333;
+	color: #fff;
+	padding: 20px;
+	border-radius: 10px;
+	margin: 10px;
 }
 
 
+
+.information{
+    height: 80%;
+}
 .footer {
     flex: 1;
     display: flex;
     justify-content: row;
-    width:max-content;
-    height: 64px;
-    background-color: white;
+    width: max-content;
+    background-color: #222;
+    color: #fff;
 }
 
 .footer-btn {
     text-transform: uppercase;
     border-radius: 5px;
-    min-width: 48px;
+    min-width: 60px;
     min-height: 100%;
-    color: #999;
     font-size: 1em;
     border: none;
     outline: none;
-    background-color: white;
+    background-color: #222;
+    color: #fff;
 }
 
 .footer-btn:hover {
