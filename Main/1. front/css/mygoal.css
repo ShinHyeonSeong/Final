@@ -12,15 +12,60 @@ a {
 	color: white;
 }
 
-.container {
-	display: flex;
-	flex-direction: column;
-	height: 100vh;
-	background-color: #222;
-	color: #fff;
-
-	margin-left: 200px;
+/* Side menu bar */
+.sidebar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 200px;
+	height: 100%;
+	background-color: #111;
 	padding: 20px;
+	box-sizing: border-box;
+}
+
+.sidebar ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.sidebar ul li {
+	padding: 15px;
+	border-bottom: 1px solid #444;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.sidebar ul li:hover {
+	background-color: #444;
+}
+
+.sidebar ul li.active {
+	background-color: #333;
+}
+
+.sidebar ul li:last-child {
+	position: absolute;
+	bottom: 20px;
+	left: 20px;
+}
+
+/* topbar */
+
+.back-button {
+	display: inline-block;
+	padding: 10px 15px;
+	background-color: #ccc;
+
+	color: #fff;
+	text-decoration: none;
+	border-radius: 5px;
+	font-size: 16px;
+}
+
+.back-button:hover {
+	background-color: #aaa;
 }
 
 .top-bar {
@@ -28,7 +73,6 @@ a {
 	align-items: center;
 	padding: 20px;
 	height: 80px;
-	background-color: #444;
 }
 
 .back-button {
@@ -39,16 +83,67 @@ a {
 	cursor: pointer;
 }
 
-.completion-mark {
-	margin-right: 20px;
-}
-
 .deadline {
 	margin-left: auto;
 }
 
-.content {
-	flex-grow: 1;
-	padding: 20px;
+
+
+
+.container {
 	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	background-color: #222;
+	color: #fff;
+	margin-left: 200px;
+	padding: 20px;
+}
+
+
+
+.section-container {
+	margin-left: 50px;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+.left-section {
+	width: 70%;
+	padding-right: 20px;
+}
+
+.right-section {
+	width: 30%;
+	margin-left: auto;
+}
+
+.goal-title {
+	font-size: 24px;
+	font-weight: bold;
+}
+
+.goal-content {
+	font-size: 16px;
+	line-height: 1.5;
+}
+
+.goal-description {
+	font-size: 14px;
+	color: #666;
+}
+
+.goal-introduction-title {
+	font-size: 24px;
+	font-weight: bold;
+	margin-top: 0;
+}
+
+.goal-owner,
+.parent-goal {
+	font-size: 16px;
+	line-height: 1.5;
+	color: #666;
+	margin-bottom: 10px;
 }
