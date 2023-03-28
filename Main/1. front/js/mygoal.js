@@ -8,3 +8,9 @@ menuItems.forEach(function(menuItem) {
     this.classList.add('active');
   });
 });
+
+// 미완료 완료 표시를 나타내주는 버튼 리스너
+
+
+
+

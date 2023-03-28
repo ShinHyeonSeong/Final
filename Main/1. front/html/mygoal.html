@@ -7,10 +7,11 @@
     <link rel="stylesheet" href="../css/mygoal.css">
     <script src="../js/mygoal.js"></script>
 </head>
+<!-- 목표 > 내 목표 -->
 
 <body>
     <!-- Side menu bar -->
-	<div class="sidebar">
+    <div class="sidebar">
         <ul>
             <li class="active"><a href="./index.html">프로젝트 만들기</a></li>
             <li><a href="./main.html">HOME</a></li>
@@ -23,20 +24,31 @@
 
     <div class="container">
         <div class="top-bar">
-            <button class="back-button">Back</button>
+            <!-- BackButton 디자인 필요 -->
+            <a href="#" class="back-button">Back</a>
             <h1>Goal 1</h1>
-            <div class="completion-mark">
-                <input type="checkbox" id="goal1" name="goal1" value="goal1">
-                <label for="goal1">Completed</label>
-            </div>
+            <!-- DeadLine을 입력 받는 창이 필요 -->
             <p class="deadline">Deadline: March 31, 2023</p>
         </div>
-        <div class="content">
-            <div class="target-content">
-                <h2>Target 1</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eget sapien in leo pharetra
-                    faucibus
-                    eget vel ipsum. Nullam venenatis orci id tortor mattis, ac iaculis odio tristique.</p>
+
+        <!-- 이거 왜 안되지...? -->
+        <hr style="color: white;">
+
+
+        <div class="section-container">
+            <div class="left-section">
+                <div class="goal-content">
+                    <p>목표 내용</p>
+                </div>
+                <div class="goal-description">
+                    <p>추가 목표 설명</p>
+                </div>
+
+            </div>
+            <div class="right-section">
+                <h2 class="goal-introduction-title">About Me</h2>
+                <p class="goal-owner">Goal Owner: John Doe</p>
+                <p class="parent-goal">Parent Goal: Fitness</p>
             </div>
         </div>
     </div>
