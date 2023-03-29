@@ -1,6 +1,5 @@
 package com.example.bpm.service;
 
-import com.example.bpm.dto.FriendDto;
 import com.example.bpm.dto.ProjectRequestDto;
 import com.example.bpm.dto.UserDto;
 import com.example.bpm.entity.ProjectRequestEntity;

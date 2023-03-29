@@ -1,6 +1,5 @@
 package com.example.bpm.controller;
 
-import com.example.bpm.dto.FriendDto;
 import com.example.bpm.dto.UserDto;
 import com.example.bpm.repository.UserRepository;
 import com.example.bpm.service.FriendService;
