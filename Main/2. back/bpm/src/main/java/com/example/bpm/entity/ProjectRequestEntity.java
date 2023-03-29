@@ -1,14 +1,13 @@
 package com.example.bpm.entity;
 
-import com.example.bpm.entity.FriendRequestPKEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
 @Data
 @Table(name = "friendRequst")
-@IdClass(FriendRequestPKEntity.class)
-public class FriendRequestEntity {
+@IdClass(ProjectRequestPKEntity.class)
+public class ProjectRequestEntity {
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sendUUID_uuid")

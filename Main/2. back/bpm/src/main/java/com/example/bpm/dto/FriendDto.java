@@ -1,6 +1,5 @@
 package com.example.bpm.dto;
 
-import com.example.bpm.entity.FriendEntity;
 import com.example.bpm.entity.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;

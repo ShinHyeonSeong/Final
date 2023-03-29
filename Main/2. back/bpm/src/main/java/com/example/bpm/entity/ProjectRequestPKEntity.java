@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class FriendRequestPKEntity implements Serializable {
+public class ProjectRequestPKEntity implements Serializable {
     private UserEntity sendUUID;
     private UserEntity recvUUID;
 }
