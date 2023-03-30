@@ -2,7 +2,7 @@ package com.example.bpm.controller;
 
 import com.example.bpm.dto.UserDto;
 import com.example.bpm.repository.UserRepository;
-import com.example.bpm.service.FriendService;
+import com.example.bpm.service.ProjectService;
 import com.example.bpm.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class FriendController {
     @Autowired
     private final UserService userService;
     @Autowired
-    private final FriendService friendService;
+    private final ProjectService projectService;
 
     @GetMapping("/friends")
     public String goFriends() {
@@ -39,7 +39,7 @@ public class FriendController {
         log.info("세션 정상 작동");
         UserDto findDto = userService.findById(userEmail);
         log.info("id 1 데이터 정상 작동");
-        List<FriendDto> friendDtoList = friendService.findAll(findDto.getUuid());
+        List<FriendDto> friendDtoList = projectService.findAll(findDto.getUuid());
         log.info("id1 에대한 리스트 작동");
         model.addAttribute("friend", friendDtoList);
         return "list";
@@ -52,7 +52,7 @@ public class FriendController {
 
     @PostMapping("/friendSearch")
     public String friendSearch(@ModelAttribute UserDto UserDto, Model model){
-        UserDto searchDto = friendService.search(UserDto);
+        UserDto searchDto = projectService.search(UserDto);
         model.addAttribute("searchFr", searchDto);
         return "searchResult";
     }

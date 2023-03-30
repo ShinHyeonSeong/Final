@@ -13,62 +13,37 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class FriendService {
-    private final FriendRepository friendRepository;
+public class ProjectService {
     private final UserRepository userRepository;
     private final ProjectRequestRepository projectRequestRepository;
 
-    //전체 친구 리스트 찾기
-    public List<FriendDto> findAll(Long userid) {//쿼리문 작성 필요
-        //friend table에 id 하나로 모두 찾는 쿼리문 메서드 작성
-        List<FriendEntity> friendEntityList = friendRepository.findById1(userid);
-        List<FriendDto> friendDtoList = new ArrayList<>();
-        for (FriendEntity friendEntity : friendEntityList) {
-            friendDtoList.add(FriendDto.toFriendDto(friendEntity));
-        }
-        return friendDtoList;
-    }
-
-    //단일 친구 검색
-    public UserDto search(UserDto userDto) {
-        Optional<UserEntity> searchEntity = userRepository.findById(userDto.getUuid());
-        if (searchEntity.isPresent()) {
-            log.info("찾은 친구 :가 있습니다 ");
-
-            UserDto searchDto = new UserDto();
-            return (searchDto.toUserDto(searchEntity.get()));
-        } else {
-            log.info("찾으신 친구 검색 결과가 없습니다.");
-            return null;
-        }
-    }
-
     //친구요청 매개변수 = 요청한유저 ,요청 받은 유저
-    //친구 요청 테이블에 요청을 한 id 와 요청을 받은 id를 요청 테이블에 추가 ->
+    //프로젝트 요청 테이블에 요청을 한 id 와 요청을 받은 id를 요청 테이블에 추가 ->
     //요청함 확인 시 요청테이블에 recvid에 일치하는 요청 출력
-    //수락 시 친구리스트로 아이디들을 넘겨야함
     //고려할점 요청된 목록과 요청 온 목록을 다 출력할 줄 알아야함
     public void requestFriend(UserDto userDto1, UserDto userDto2) {
-        String sendID = userDto1.getUuid();
-        String recvID = userDto2.getUuid();
+        String sendID = String.valueOf(userDto1.getUuid());
+        String recvID = String.valueOf(userDto2.getUuid());
+
         if (sendID != null & recvID != null) {
             //DB에 저장만함
-            projectRequestRepository.plusFriend(sendID, recvID);
+            projectRequestRepository.plusProject(sendID, recvID);
             log.info("요청 테이블에 정상 입력 되었음" + sendID + recvID);
         } else {
             log.info("친구 요청 테이블에 요청 못함");
         }
     }
 
-    //친구 요청함 리스트
+    //프로젝트 요청함 리스트
     //세션 ID 기준으로 요청함 테이블을 불러온다
     public List<ProjectRequestDto> friendRequestDtoList(String userId) {
         //friend table에 id 하나로 모두 찾는 쿼리문 메서드 작성
-        List<FriendEntity> friendEntityList = projectRequestRepository.findById1(userid);
+        List<Pro> friendEntityList = projectRequestRepository.findById1(userid);
         List<FriendDto> friendDtoList = new ArrayList<>();
         for (FriendEntity friendEntity : friendEntityList) {
             friendDtoList.add(FriendDto.toFriendDto(friendEntity));

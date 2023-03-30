@@ -60,6 +60,7 @@ public class UserService {
         return userDtoList;
     }
 
+    //사용자 ID 찾기
     public UserDto findById(String userEmail) {
         Optional<UserEntity> optionalUserEntity = userRepository.findByUserEmail(userEmail);
         if (optionalUserEntity.isPresent()) {
@@ -70,6 +71,8 @@ public class UserService {
         }
     }
 
+
+    //업데이트를 위한 현재 정보 가져오기
     public UserDto updateForm(String myEmail) {
         Optional<UserEntity> optionalUserEntity = userRepository.findByUserEmail(myEmail);
         if (optionalUserEntity.isPresent()) {
@@ -79,10 +82,12 @@ public class UserService {
         }
     }
 
+    //유저 정보 업데이트
     public void update(UserDto userDto) {
         userRepository.save(UserEntity.toUpdateuserEntity(userDto));
     }
 
+    //유저 탈퇴
     public void deleteById(Long id) {
         userRepository.deleteById(id);
     }

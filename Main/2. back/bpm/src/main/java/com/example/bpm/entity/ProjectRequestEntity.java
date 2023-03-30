@@ -5,15 +5,15 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "friendRequst")
+@Table(name = "projectRequst")
 @IdClass(ProjectRequestPKEntity.class)
 public class ProjectRequestEntity {
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sendUUID_uuid")
+    @JoinColumn(name = "sendUUID")
     private UserEntity sendUUID;
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "recvUUID_uuid")
+    @JoinColumn(name = "recvUUID")
     private UserEntity recvUUID;
 }

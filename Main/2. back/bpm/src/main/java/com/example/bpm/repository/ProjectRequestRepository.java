@@ -8,11 +8,11 @@ public interface ProjectRequestRepository extends JpaRepository<ProjectRequestEn
 
     @Query(value = // 괄호한 value 값의 sql문을 실행시킴
             "insert into  " +
-                    "friendRequst " +
+                    "projectRequst " +
                     "values (sendUUID, recvUUID)",
             nativeQuery = true)
         //sql문이 작동하게 도와줌
-    ProjectRequestEntity plusFriend(String sendUUID, String recvUUID);
+    ProjectRequestEntity plusProject(String sendUUID, String recvUUID);
 
 
     @Query(value = "delete from " + "friendRequst" + "where sendUUID = sendId and recvUUID = recvId", nativeQuery = true)
