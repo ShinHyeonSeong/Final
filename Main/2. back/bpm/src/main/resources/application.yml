@@ -14,7 +14,7 @@ spring:
   #DB 정보
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://bpm-mariadb-database.cducqgd2o16m.ap-northeast-2.rds.amazonaws.com:3306/BPM_database
+    url: jdbc:mariadb://bpm-mariadb-database.cducqgd2o16m.ap-northeast-2.rds.amazonaws.com:3306/bpm
     username: admin
     password: 1q2w3e4r
   #타입리프 캐시 설정

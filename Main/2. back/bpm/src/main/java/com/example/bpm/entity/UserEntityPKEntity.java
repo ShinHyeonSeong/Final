@@ -8,5 +8,4 @@ import java.io.Serializable;
 public class UserEntityPKEntity implements Serializable {
     private String uuid;
     private String email;
-
 }
