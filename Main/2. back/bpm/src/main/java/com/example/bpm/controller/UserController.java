@@ -4,9 +4,8 @@ import com.example.bpm.dto.UserDto;
 import com.example.bpm.repository.UserRepository;
 import com.example.bpm.service.UserService;
 import jakarta.servlet.http.HttpSession;
-import lombok.RequiredArgsConstructor;
+import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 @Slf4j
-@RequiredArgsConstructor//생성자 주입 어노테이션 @Autorized와 비슷하게 생성자로 객체를 만들지 않아도 자동 주입 가능하게 함
+//이 어노테이션 오류시 RequiedArgConstructor 변환 필요
+@Builder
 public class UserController {
 
     //불변성을 얻게 되어 실행 중 객체가 변하는 것을 막을 수 있고 이로 인해 오류를 방지할 수 있다.
@@ -24,10 +24,11 @@ public class UserController {
     private final UserRepository userRepository;
 
 
-    @GetMapping ("/index")
-    public String index(){
+    @GetMapping("/index")
+    public String index() {
         return "index";
     }
+
     @GetMapping("/user/save")
     public String goSave() {
         return "user/save";
@@ -96,7 +97,7 @@ public class UserController {
         log.info("정상 업데이트 되었습니다 (컨트롤러 작동)");
         return "redirect:/user/" + userDto.getUuid();
     }
-    
+
 
     @GetMapping("/user/delete/{id}")
     public String deleteById(@PathVariable String id) {

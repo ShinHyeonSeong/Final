@@ -2,17 +2,15 @@ package com.example.bpm.entity;
 
 import com.example.bpm.dto.UserDto;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
+@Data
 @Table(name = "user")
-@IdClass(UserEntityPKEntity.class)
+@IdClass(UserPKEntity.class)
 public class UserEntity {
     @Id
     @Column(name = "uuid")
@@ -30,14 +28,18 @@ public class UserEntity {
 
 
     //주인으로 설정된 부분은 DB 의 연관관계와 매핑되서 외래키를 관리하고, 다른 한쪽은 읽기만 가능하게된다.
-    //외래키를 관리하는쪽 즉, 주인은 @JoinColumn 을 써주고, 그렇지 않은쪽은 mappedBy 를 쓰는것이다.
+    //외래키를 관리하는쪽(외래키가 존재하는 쪽) 즉, 주인은 @JoinColumn 을 써주고, 그렇지 않은쪽은 mappedBy 를 쓰는것이다.
     //(단방향일때는 mappedBy 안써도됨)
     //@JoinColumn 어노테이션을 이용해서, 외래키가 어디에 있는지 알려준다는점이 중요하다.
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "sendUUID")
-//    private List<ProjectRequestEntity> projectRequestEntityList1 = new ArrayList<>();
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recvUUID")
-//    private List<ProjectRequestEntity> projectRequestEntityList2 = new ArrayList<>();
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "sendUUID")
+    private List<ProjectRequestEntity> projectRequestEntityList1 = new ArrayList<>();
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recvUUID")
+    private List<ProjectRequestEntity> projectRequestEntityList2 = new ArrayList<>();
+
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "uuid")
+    private List<ProjectRoleEntity> projectRoleEntityList = new ArrayList<>();
     //Entity -> DTO 변환 메서드
     public static UserEntity toUserEntity(UserDto userDto) {
 

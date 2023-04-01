@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class UserEntityPKEntity implements Serializable {
+public class UserPKEntity implements Serializable {
     private String uuid;
     private String email;
 }
