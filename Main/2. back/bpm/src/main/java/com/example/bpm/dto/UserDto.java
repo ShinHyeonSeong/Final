@@ -26,7 +26,8 @@ public class UserDto {
         this.name = name;
     }
 
-//static 푸는 순간 다 죽는거여!!! 이거 바뀌면 객체 바뀐다
+
+    //static 푸는 순간 다 죽는거여!!! 이거 바뀌면 객체 바뀐다
     public static UserDto toUserDto(UserEntity userEntity) {
         UserDto userDto = new UserDto();
         userDto.setUuid(userEntity.getUuid());
@@ -35,5 +36,4 @@ public class UserDto {
         userDto.setName(userEntity.getName());
         return userDto;
     }
-
 }

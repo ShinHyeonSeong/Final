@@ -60,7 +60,7 @@ public class UserService {
     }
 
     public UserDto updateForm(String myId) {
-        Optional<UserEntity> optionalUserEntity = userRepository.findById(myId);
+        Optional<UserEntity> optionalUserEntity =  userRepository.findById(myId);
         if (optionalUserEntity.isPresent()) {
             log.info("회원정보 찾기 성공 회원 수정페이지를 엽니다 (서비스 작동)");
             return UserDto.toUserDto(optionalUserEntity.get());

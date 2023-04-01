@@ -10,7 +10,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     
     // 이메일로 회원정보 조회(로그인) (select * from user where userEmail = ?)
-    Optional<UserEntity> findByUserEmail(String Email);
+
 }
 
 

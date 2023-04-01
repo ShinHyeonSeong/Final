@@ -15,19 +15,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 @Slf4j
-//이 어노테이션 오류시 RequiedArgConstructor 변환 필요
+//이 어노테이션 오류시 RequiedArgConstructor 변환 필요 -> 이거 걍 자동 생성자를 만들어주고 우선순위 설정해주는 어노테이션인데 걍 써볼라고
 @Builder
 public class UserController {
 
     //불변성을 얻게 되어 실행 중 객체가 변하는 것을 막을 수 있고 이로 인해 오류를 방지할 수 있다.
     private final UserService userService;
     private final UserRepository userRepository;
-
-
-    @GetMapping("/index")
-    public String index() {
-        return "index";
-    }
 
     @GetMapping("/user/save")
     public String goSave() {
@@ -106,4 +100,9 @@ public class UserController {
         return "redirect:/index";
     }
 
+//    여기까지가 User 단순 CRUD
+
+// 프로젝트 초대 기능
+    @GetMapping("/user/invite")
+    public
 }
