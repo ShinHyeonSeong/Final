@@ -12,61 +12,110 @@ a {
 	color: white;
 }
 
-.centered-content {
-	margin-left: 200px;
-	padding: 20px;
-}
-
-.project-name {
-	margin: 2%;
-	font-size: 36px;
-	text-align: center;
-}
-
-.centered-top {
+.content-container {
 	display: flex;
+	justify-content: center;
 }
 
-.team-members,
-.project-intro,
-.my-work,
-.goals {
+.content {
+	margin-left: 200px;
+	margin-top: 100px;
+	padding: 20px;
+	width: 80%;
 	display: flex;
 	flex-direction: column;
-	margin-bottom: 20px;
+	justify-content: center;
 }
 
-.project-intro {
-	flex: 1;
-	background-color: #333;
-	color: #fff;
-	padding: 20px;
-	border-radius: 10px;
-	margin: 10px;
-
+.top-bar {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	width: 100%;
+	height: 70px;
+	border-bottom: solid 0.8px #333;
+	position: fixed;
+	top: 0;
+	left: 200px;
+	background-color: #222;	
 }
 
-.team-members {
-	flex: 1;
-	background-color: #333;
-	color: #fff;
-	padding: 20px;
-	border-radius: 10px;
-	margin: 10px;
+.top-bar h1 {
+	margin-left: 4rem;
 }
 
-.my-work {
+.add-work-btn {
 	background-color: #333;
+	width: 150px;
 	color: #fff;
-	padding: 20px;
-	border-radius: 10px;
-	margin: 10px;
+	padding: 10px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: 0.5s;
+	margin-left: auto;
+	margin-right: 15rem;
 }
 
-.goals {
-	background-color: #333;
+.add-work-btn:hover {
+	background-color: #444;
 	color: #fff;
-	padding: 20px;
-	border-radius: 10px;
-	margin: 10px;
+}
+
+.work {
+	margin-bottom: 60px;
+}
+
+table {
+	border-top: 1px #333 solid;
+	border-bottom: 1px #333 solid;;
+	font-size: .9em;
+	width: 100%;
+	border-collapse: collapse;
+	overflow: hidden;
+}
+  
+th {
+	text-align: left;
+}
+	
+thead {
+	font-weight: bold;
+	color: #fff;
+}
+	
+td, th {
+	padding: 1em 1.5em;
+	vertical-align: middle;
+}
+	
+td {
+	border-top: 1px #333 solid;
+	transition: 0.5s;
+}
+
+td:nth-child(3) {
+	color: rgb(160, 60, 60);
+}
+
+td:hover {
+	background-color: #555;
+}
+
+td a {
+	display:block; 
+	width:100%; 
+	height:100%
+}
+
+.job-name {
+	width: 40rem;
+}
+
+.job-pic {
+	width: 8rem;
+}
+
+.job-deadline {
+	width: 15rem;
 }

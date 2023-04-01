@@ -14,47 +14,92 @@
 어떻게 해야할..지 고민 좀 해서 수정 해줘..>!!!! -->
 
 <body>
-	<div class="container">
-		<div class="sidebar">
-			<ul>
-				<li><a href="./index.html">프로젝트 만들기</a></li>
-				<li><a href="./main.html">HOME</a></li>
-				<li><a href="./goal.html">목표</a></li>
-				<li><a href="./calender.html">calender</a></li>
-				<li class="active"><a href="./work.html">작업</a></li>
-				<li>My Information</li>
-			</ul>
-		</div>
+	<div class="sidebar">
+		<ul>
+			<li><a href="./index.html">프로젝트 만들기</a></li>
+			<li><a href="./main.html">HOME</a></li>
+			<li><a href="./goal.html">목표</a></li>
+			<li><a href="./calender.html">calender</a></li>
+			<li class="active"><a href="./work.html">작업</a></li>
+			<li>My Information</li>
+		</ul>
+	</div>
 
+	<div class="top-bar">
+		<h1>작업</h1>
+		<button class="add-work-btn">작업 추가</button>
+	</div>
+
+	<div class="content-container">
 		<div class="content">
-			<div class="goals-header">
-				<h1>작업</h1>
-				<button class="add-goal-btn">작업 추가</button>
+			<div class="work">
+				<h4>진행중인 작업</h4>
+				<table>
+					<thead>
+						<tr>
+							<th class="job-name">작업명</th>
+							<th class="job-pic">담당자</th>
+							<th class="job-deadline">기한</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><a href="workDetail.html">작업명</a></td>
+							<td>담당자명</td>
+							<td>2023 01 01</td>
+						</tr>
+						<tr>
+							<td><a href="workDetail.html">작업명</a></td>
+							<td>담당자명</td>
+							<td>2023 01 01</td>
+						</tr>
+						<tr>
+							<td><a href="workDetail.html">작업명</a></td>
+							<td>담당자명</td>
+							<td>2023 01 01</td>
+						</tr>
+						<tr>
+							<td><a href="workDetail.html">작업명</a></td>
+							<td>담당자명</td>
+							<td>2023 01 01</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
-			<hr>
-			<div class="post">
-				<div class="task-head">
-					<h3>Assigned Tasks</h3>
-					<div class="task-item">
-						<p><a href="#">Task 3</a></p>
-						<p><a href="#">Task 3</a></p>
-					</div>
-				</div>
-				<hr>
-				<div class="task">
-					<h3>Work in Progress</h3>
-					<div class="task-item">
-						<p><a href="#">Task 3</a></p>
-					</div>
-				</div>
-				<hr>
-				<div class="task">
-					<h3>Completed Tasks</h3>
-					<div class="task-item">
-						<p><a href="#">Task 3</a></p>
-					</div>
-				</div>
-				<hr>
+
+			<div class="work">
+				<h4>완료된 작업</h4>
+				<table>
+					<thead>
+						<tr>
+							<th class="job-name">작업명</th>
+							<th class="job-pic">담당자</th>
+							<th class="job-deadline">완료일자</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><a href="workDetail.html">작업명</a></td>
+							<td>담당자명</td>
+							<td>2023 01 01</td>
+						</tr>
+						<tr>
+							<td><a href="workDetail.html">작업명</a></td>
+							<td>담당자명</td>
+							<td>2023 01 01</td>
+						</tr>
+						<tr>
+							<td><a href="workDetail.html">작업명</a></td>
+							<td>담당자명</td>
+							<td>2023 01 01</td>
+						</tr>
+						<tr>
+							<td><a href="workDetail.html">작업명</a></td>
+							<td>담당자명</td>
+							<td>2023 01 01</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</div>

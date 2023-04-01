@@ -12,6 +12,23 @@ a {
 	color: white;
 }
 
+.top-bar {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	width: 100%;
+	height: 70px;
+	border-bottom: solid 0.8px #333;
+	position: fixed;
+	top: 0;
+	left: 200px;
+	background-color: #222;	
+}
+
+.top-bar h1 {
+	margin-left: 4rem;
+}
+
 .content-container {
 	display: flex;
 	justify-content: center;
@@ -26,21 +43,18 @@ a {
 	justify-content: center;
 }
 
-.goals-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-bottom: 2rem;
-}
 
 .add-goal-btn {
-	background-color: #fff;
+	background-color: #333;
 	width: 150px;
-	color: #333;
+	color: #fff;
 	padding: 10px;
 	border: none;
 	border-radius: 5px;
 	cursor: pointer;
+	transition: 0.5s;
+	margin-left: auto;
+	margin-right: 15rem;
 }
 
 .add-goal-btn:hover {
@@ -53,6 +67,7 @@ a {
 	gap: 20px 2%;
 	flex-wrap: wrap;
 	justify-content: space-between;
+	margin-top: 100px;
 }
 
 .goal-item {
@@ -65,7 +80,14 @@ a {
 	color: #fff;
 	padding: 20px;
 	border-radius: 10px;
+	top: 0;
 
+}
+
+.goal-item:hover {
+	top: -10px;
+    box-shadow: 0 4px 5px rgba(0,0,0,.2);
+    transition: 0.3s ease-in;
 }
 
 .goal-item button {
@@ -81,3 +103,4 @@ a {
 	background-color: #ddd;
 	color: #333;
 }
+
