@@ -13,7 +13,6 @@
     종혁 : 전체 디테일은 너가 잡아줘야해 내가 지금 계속 틀만 잡아 넘길께 나중에 디테일 같이 잡긴 할께 -->
 
 <body>
-    <!-- Side menu bar -->
     <div class="sidebar">
         <ul>
             <li class="active"><a href="./index.html">프로젝트 만들기</a></li>
@@ -24,35 +23,107 @@
             <li>My Information</li>
         </ul>
     </div>
+    <div class="top-bar">
+        <!-- BackButton 디자인 필요 -->
+        <a href="#" class="back-button">
+            < </a>
+                <h1>Goal 1</h1>
+                <!-- DeadLine을 입력 받는 창이 필요 -->
+                <p class="deadline">Deadline : 2023 01 01</p>
+    </div>
 
-    <div class="container">
-        <div class="top-bar">
-            <!-- BackButton 디자인 필요 -->
-            <a href="#" class="back-button">Back</a>
-            <h1>Goal 1</h1>
-            <!-- DeadLine을 입력 받는 창이 필요 -->
-            <p class="deadline">Deadline: March 31, 2023</p>
-        </div>
-
-        <hr style="width: 100%; margin-left: auto; margin-right: auto;">
-
-
-        <div class="section-container">
+    <div class="page-container">
+        <div class="content-container">
             <div class="left-section">
-                <div class="goal-content">
-                    <p>목표 내용</p>
+                <div class="content">
+                    <h4 class="content-title">설명</h4>
+                    <p class="content-detail">목표 설명 글</p>
                 </div>
-                <div class="goal-description">
-                    <p>추가 목표 설명</p>
+
+                <div class="content">
+                    <h4 class="content-title">연결된 목표</h4>
+                    <div class="linked-object">
+                        <div class="object-header">
+                            <div>상위 목표</div>
+                            <button class="object-edit-btn">목표 변경</button>
+                        </div>
+                        <div class="horizon-divider-semi"></div>
+                        <div class="object">
+                            <div class="object-list" OnClick="location.href='#'">목표명</div>
+                        </div>
+                    </div>
+
+                    <div class="linked-object">
+                        <div class="object-header">
+                            <div>하위 목표</div>
+                            <button class="object-edit-btn">목표 변경</button>
+                        </div>
+                        <div class="horizon-divider-semi"></div>
+                        <div class="object">
+                            <div class="object-list" OnClick="location.href='#'">목표명</div>
+                        </div>
+                        <div class="object">
+                            <div class="object-list" OnClick="location.href='#'">목표명</div>
+                        </div>
+                        <div class="object">
+                            <div class="object-list" OnClick="location.href='#'">목표명</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content">
+                    <h4 class="content-title">연결된 작업</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="job-name">작업명</th>
+                                <th>담당자</th>
+                                <th>기한</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="workDetail.html">작업명</a></td>
+                                <td>담당자명</td>
+                                <td>2023 01 01</td>
+                            </tr>
+                            <tr>
+                                <td><a href="workDetail.html">작업명</a></td>
+                                <td>담당자명</td>
+                                <td>2023 01 01</td>
+                            </tr>
+                            <tr>
+                                <td><a href="workDetail.html">작업명</a></td>
+                                <td>담당자명</td>
+                                <td>2023 01 01</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
 
             </div>
+
+            <div class="vertical-divider"></div>
+
             <div class="right-section">
                 <!-- 이것도 div로 묶어야 데이터를 잘 넘길 수 있을 거 같.. ㄱ -->
-                <h2 class="goal-introduction-title">About Me</h2>
-                <p class="goal-owner">Goal Owner: John Doe</p>
+                <div>
+                    <h4 class="content-title">목표 담당자</h4>
+                    <p class="content-detail">담당자명</p>
+                    <div class="horizon-divider"></div>
+                </div>
                 <!-- 이걸 div로 해가지고 상위 목표와 연결 해야되는데 일단 내가 못함 미안 -->
-                <p class="parent-goal">Parent Goal: Fitness</p>
+                <div>
+                    <h4 class="content-title">마감 기간</h4>
+                    <p class="content-detail">2023 01 01</p>
+                    <div class="horizon-divider"></div>
+                </div>
+
+                <div>
+                    <h4 class="content-title">상위 목표</h4>
+                    <p><a href="#" class="content-detail">목표 이름</a></p>
+                    <div class="horizon-divider"></div>
+                </div>
             </div>
         </div>
     </div>
