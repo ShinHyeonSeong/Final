@@ -1,18 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Goals</title>
     <link rel="stylesheet" href="../css/workDetail.css">
     <link rel="stylesheet" href="../css/sidebar.css">
-    <script src="../js/workDetail.js"></script>
-    <title>작업 세부창</title>
 </head>
+<!-- 목표 > 내 목표 창-->
+<!-- 03.28 색 최적화 및 div 분류 완료
+    종혁 : 전체 디테일은 너가 잡아줘야해 내가 지금 계속 틀만 잡아 넘길께 나중에 디테일 같이 잡긴 할께 -->
 
 <body>
-    <!-- Side menu bar -->
     <div class="sidebar">
         <ul>
             <li class="active"><a href="./index.html">프로젝트 만들기</a></li>
@@ -23,33 +22,97 @@
             <li>My Information</li>
         </ul>
     </div>
-    <div class="container">
-        <div class="top-bar">
-            <a href="#" class="back-button">Back</a>
-            <h1>작업 1</h1>
-            <!-- DeadLine을 입력 받는 창이 필요 -->
-            <p class="deadline">Deadline: March 31, 2023</p>
-        </div>
+    <div class="top-bar">
+        <!-- BackButton 디자인 필요 -->
+        <a href="#" class="back-button">
+            < </a>
+                <h1>작업 1</h1>
+                <!-- DeadLine을 입력 받는 창이 필요 -->
+                <p class="deadline">Deadline : 2023 01 01</p>
+    </div>
 
-        <hr style="width: 100%; margin-left: auto; margin-right: auto;">
-
-
-        <div class="section-container">
+    <div class="page-container">
+        <div class="content-container">
             <div class="left-section">
-                <div class="goal-content">
-                    <p>목표 내용</p>
-                </div>
-                <div class="goal-description">
-                    <p>추가 목표 설명</p>
+                <div class="content">
+                    <h4 class="content-title">설명</h4>
+                    <p class="content-detail">작업 설명 글</p>
                 </div>
 
+                <div class="content">
+                    <h4 class="content-title">관련 문서</h4>
+                    <div class="linked-object">
+                        <div class="document-header">
+                            <a href="documentWrite.html"><button class="object-edit-btn">새 문서 작성</button></a>
+                        </div>
+                        <div class="object">
+                            <div class="document-list" OnClick="location.href='documentDetail.html'">
+                                <div class="document-title">문서명</div>
+                                <div class="document-detail">
+                                    <div class="document-writer">작성자명</div>
+                                    <div class="vertical-divider-semi"></div>
+                                    <div class="document-date">2020 01 01</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="object">
+                            <div class="document-list" OnClick="location.href='#'">
+                                <div class="document-title">문서명</div>
+                                <div class="document-detail">
+                                    <div class="document-writer">작성자명</div>
+                                    <div class="vertical-divider-semi"></div>
+                                    <div class="document-date">2020 01 01</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content">
+                    <h4 class="content-title">연결된 목표</h4>
+                    <div class="linked-object">
+                        <div class="object-header">
+                            <div>상위 목표</div>
+                            <button class="object-edit-btn">목표 변경</button>
+                        </div>
+                        <div class="horizon-divider-semi"></div>
+                        <div class="object">
+                            <div class="object-list" OnClick="location.href='#'">
+                                <div>목표명</div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <div class="vertical-divider"></div>
+
             <div class="right-section">
                 <!-- 이것도 div로 묶어야 데이터를 잘 넘길 수 있을 거 같.. ㄱ -->
-                <h2 class="goal-introduction-title">작업 소개</h2>
-                <p class="goal-owner">담당자</p>
+                <div>
+                    <h4 class="content-title">작업 담당자</h4>
+                    <p class="content-detail">담당자명</p>
+                    <div class="horizon-divider"></div>
+                </div>
                 <!-- 이걸 div로 해가지고 상위 목표와 연결 해야되는데 일단 내가 못함 미안 -->
-                <p class="parent-goal">상위 목표 : 세부 목표 1</p>
+                <div>
+                    <h4 class="content-title">상태</h4>
+                    <p class="content-detail">완료</p>
+                    <div class="horizon-divider"></div>
+                </div>
+
+                <div>
+                    <h4 class="content-title">마감 기간</h4>
+                    <p class="content-detail">2023 01 01</p>
+                    <div class="horizon-divider"></div>
+                </div>
+
+                <div>
+                    <h4 class="content-title">상위 목표</h4>
+                    <p><a href="#" class="content-detail">목표 이름</a></p>
+                    <div class="horizon-divider"></div>
+                </div>
             </div>
         </div>
     </div>
