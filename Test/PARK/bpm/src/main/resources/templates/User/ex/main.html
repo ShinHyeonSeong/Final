@@ -14,5 +14,7 @@ session 정보 확인 <br>
 <a href="/user/update">내 정보 수정하기</a>
 <a href="/user/friends">친구 관리</a>
 <a href="/user/logout">로그아웃</a>
+<!--id 를 포함한 redirect 값을 넘겨줌-->
+<a th:href = "@{|/user/${loginResult.id}|}">프로필</a>
 </body>
 </html>

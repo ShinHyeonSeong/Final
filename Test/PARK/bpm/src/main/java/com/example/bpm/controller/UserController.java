@@ -55,8 +55,8 @@ public class UserController {
     public String login(@ModelAttribute UserDto userDto, HttpSession session) {
         UserDto loginResult = userService.login(userDto);
         if (loginResult != null) {
-            //세션에 로그인한 정보롤 담아줌
-//            session.setAttribute("loginEmail", loginResult.getUserEmail());
+//            세션에 로그인한 정보롤 담아줌
+            session.setAttribute("loginEmail", loginResult);
             return "User/main";
         } else {
             return "User/login";
@@ -75,7 +75,7 @@ public class UserController {
     public String findById(@PathVariable String id, Model model) {
         UserDto userDto = userService.findById(id);
         model.addAttribute("user", userDto);
-        return "User/detail";
+        return "user/detail";
     }
 
     @GetMapping("/user/update")
