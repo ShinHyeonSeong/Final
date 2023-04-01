@@ -26,7 +26,7 @@ class BoardServiceTest {
         List<Article> expected = new ArrayList<Article>(Arrays.asList(a, b, c));
 
         //실제 결과
-        WList<Article> articles = boardService.index();
+        List<Article> articles = boardService.index();
 
         //검증
         assertEquals(expected.toString(), articles.toString());

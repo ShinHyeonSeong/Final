@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            background-color: #333;
+            color: white;
+        }
+
+        input[type="text"],
+        textarea {
+            background-color: #555;
+            color: white;
+            border: none;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>목표 게시판</h1>
+    <form id="post-form">
+        <input type="text" id="title" name="title" placeholder="제목"><br>
+        <textarea id="content" name="content" placeholder="내용"></textarea><br><br>
+        <input type="submit" value="게시">
+    </form>
+    <div id="posts"></div>
+
+    <script>
+        document.getElementById("post-form").addEventListener("submit", function (event) {
+            event.preventDefault();
+            var title = document.getElementById("title").value;
+            var content = document.getElementById("content").value;
+            var post = document.createElement("div");
+            post.className = "post";
+            post.innerHTML = "<h2>" + title + "</h2><p>" + content + "</p>";
+            document.getElementById("posts").appendChild(post);
+            document.getElementById("title").value = "";
+            document.getElementById("content").value = "";
+        });
+    </script>
+</body>
+
+</html>
