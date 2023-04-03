@@ -17,4 +17,6 @@ public class ProjectEntity {
     private String subtitle;
     @Column
     private Long projectPublic;
+
+
 }

@@ -14,9 +14,9 @@ public class ProjectRequestDto {
     private UserEntity recvUUID;
 
     public static ProjectRequestDto toProjectRequestDto(ProjectRequestEntity projectRequestEntity) {
-        ProjectRequestDto friendRequestDto = new ProjectRequestDto();
-        friendRequestDto.setSendUUID(projectRequestEntity.getSendUUID());
-        friendRequestDto.setRecvUUID(projectRequestEntity.getRecvUUID());
-        return friendRequestDto;
+        ProjectRequestDto projectRequestDto = new ProjectRequestDto();
+        projectRequestDto.setSendUUID(projectRequestEntity.getSendUUID());
+        projectRequestDto.setRecvUUID(projectRequestEntity.getRecvUUID());
+        return projectRequestDto;
     }
 }
