@@ -1,6 +1,7 @@
 package com.example.bpm.controller;
 
 import com.example.bpm.dto.UserDto;
+import com.example.bpm.repository.ProjectRequestRepository;
 import com.example.bpm.repository.UserRepository;
 import com.example.bpm.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -22,23 +23,29 @@ public class UserController {
     //불변성을 얻게 되어 실행 중 객체가 변하는 것을 막을 수 있고 이로 인해 오류를 방지할 수 있다.
     private final UserService userService;
     private final UserRepository userRepository;
+    private final ProjectRequestRepository projectRequestRepository;
 
     @GetMapping("/user/save")
     public String goSave() {
         return "user/save";
     }
 
+
+
     @PostMapping("/user/save")
     public String doSave(@ModelAttribute UserDto userDto) {
-        userService.save(userDto);
-        log.info("회원가입 정상 작동 (컨트롤러 작동)");
+        UserDto saveUser = userService.save(userDto);
+        log.info("회원가입 정상 작동 (컨트롤러 작동) : " + saveUser.toString());
         return "user/login";
     }
+
 
     @GetMapping("/user/login")
     public String login() {
         return "user/login";
     }
+
+
 
     //이 세션 처리 예제 내가 template에 만들어 둠
     @PostMapping("/user/login")
@@ -104,5 +111,8 @@ public class UserController {
 
 // 프로젝트 초대 기능
     @GetMapping("/user/invite")
-    public
+    public String sendInvite(){
+        userService.sendInvite();
+
+    }
 }

@@ -1,9 +1,11 @@
 package com.example.bpm.service;
 
+import com.example.bpm.dto.ProjectRequestDto;
 import com.example.bpm.dto.UserDto;
 import com.example.bpm.entity.UserEntity;
+import com.example.bpm.repository.ProjectRequestRepository;
 import com.example.bpm.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
+import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -11,16 +13,22 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor//생성자 주입 어노테이션 @Autorized와 비슷하게 생성자로 객체를 만들지 않아도 자동 주입 가능하게 함
+@Builder
 public class UserService {
+    private final ProjectRequestRepository projectRequestRepository;
+
+    public UserService(ProjectRequestRepository projectRequestRepository) {
+        this.projectRequestRepository = projectRequestRepository;
+    }
+
     final private UserRepository userRepository;
 
     //회원가입
-    public UserEntity save(UserDto userDto) {
+    public UserDto save(UserDto userDto) {
         UserEntity userEntity = UserEntity.toUserEntity(userDto);
         userRepository.save(userEntity);
         log.info("회원 가입 성공 (서비스 동작)");
-        return userEntity;
+        return UserDto.toUserDto(userEntity);
     }
 
     public UserDto login(UserDto userDto) {
@@ -60,7 +68,7 @@ public class UserService {
     }
 
     public UserDto updateForm(String myId) {
-        Optional<UserEntity> optionalUserEntity =  userRepository.findById(myId);
+        Optional<UserEntity> optionalUserEntity = userRepository.findById(myId);
         if (optionalUserEntity.isPresent()) {
             log.info("회원정보 찾기 성공 회원 수정페이지를 엽니다 (서비스 작동)");
             return UserDto.toUserDto(optionalUserEntity.get());
@@ -79,5 +87,18 @@ public class UserService {
     public void deleteById(String id) {
         userRepository.deleteById(id);
         log.info("회원 정보를 정상 삭제하였습니다 (서비스 작동)");
+    }
+
+    //프로젝트 초대
+    public ProjectRequestDto sendInvite(UserDto sendUser, UserDto recvUser) {
+        if (sendUser != null && recvUser != null) {
+            projectRequestRepository.plusProject(sendUser.getUuid(), recvUser.getUuid());
+            log.info("친구 요청 정상 작동 (서비스 작동)");
+            projectRequestRepository.selectById(());
+            return
+        } else {
+            log.info("Dto NULL 값 (서비스 작동)");
+            return null;
+        }
     }
 }

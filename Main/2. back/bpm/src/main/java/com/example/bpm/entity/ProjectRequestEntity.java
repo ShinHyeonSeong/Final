@@ -20,28 +20,11 @@ public class ProjectRequestEntity {
     @JoinColumn(name = "recvUUID")
     private UserEntity recvUUID;
 
-//Dto는 String 형식으로 받아야 하고 (get)
-//Entity는 Entity 객체 형식으로 받아야 함(set)
-    public UserEntity getSendUUID() {
-        return this.getuuid;
-    }
 
-    public void setSendUUID(UserEntity sendUUID) {
-        this.sendUUID = sendUUID;
-    }
-
-    public UserEntity getRecvUUID() {
-        return recvUUID;
-    }
-
-    public void setRecvUUID(UserEntity recvUUID) {
-        this.recvUUID = recvUUID;
-    }
-
-    public static ProjectRequestEntity toProjectRequestEntity(ProjectRequestDto sendUUID, ProjectRequestDto recvUUID) {
+    public static ProjectRequestEntity toProjectRequestEntity(ProjectRequestDto projectRequestDto) {
         ProjectRequestEntity projectRequestEntity = new ProjectRequestEntity();
-        projectRequestEntity.setSendUUID(sendUUID);
-        projectRequestEntity.setRecvUUID(recvUUID);
-
+        projectRequestEntity.setSendUUID(projectRequestDto.getSendUUID());
+        projectRequestEntity.setRecvUUID(projectRequestDto.getRecvUUID());
+        return projectRequestEntity;
     }
 }
