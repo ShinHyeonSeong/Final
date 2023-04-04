@@ -8,4 +8,5 @@ import java.io.Serializable;
 public class ProjectRequestPKEntity implements Serializable {
     private UserEntity sendUUID;
     private UserEntity recvUUID;
+    private ProjectEntity prjoectIdToRequest;
 }

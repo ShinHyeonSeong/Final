@@ -12,7 +12,7 @@ public class ProjectRoleEntity {
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "projectId")
-    private ProjectEntity projectId;
+    private ProjectEntity projectIdToRole;
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY)

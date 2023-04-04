@@ -3,6 +3,7 @@ package com.example.bpm.service;
 import com.example.bpm.dto.ProjectRequestDto;
 import com.example.bpm.dto.ProjectRoleDto;
 import com.example.bpm.dto.UserDto;
+import com.example.bpm.entity.ProjectRequestEntity;
 import com.example.bpm.entity.UserEntity;
 import com.example.bpm.repository.ProjectRequestRepository;
 import com.example.bpm.repository.UserRepository;
@@ -91,26 +92,24 @@ public class UserService {
         log.info("회원 정보를 정상 삭제하였습니다 (서비스 작동)");
     }
 
-    //프로젝트 초대 return 은 해당 send와 recv가 되어있는 projectRequest 데이터 값
-    public ProjectRequestDto sendInvite(UserDto sendUser, UserDto recvUser) {
+    //프로젝트 초대를 보내는 메서드      리턴 데이터는 send 한 기록을 보여준다
+    public ProjectRequestDto sendInvite(UserDto sendUser, UserDto recvUser, String projectId) {
         if (sendUser != null && recvUser != null) {
-            projectRequestRepository.plusProjectRequest(sendUser.getUuid(), recvUser.getUuid());
+            projectRequestRepository.plusProjectRequest(sendUser.getUuid(), recvUser.getUuid(), projectId);
             log.info("친구 요청 정상 작동 (서비스 작동)");
+            Optional<ProjectRequestEntity> projectRequestEntity = projectRequestRepository.selectToRequsetRow(sendUser.getUuid(), recvUser.getUuid(), projectId);
             //만약 정상 친구요청이 되면 그 row을 확인할 수 있게 return 한다
-            return ProjectRequestDto.toProjectRequestDto(projectRequestRepository.selectToRequestRow(sendUser.getUuid(), recvUser.getUuid()));
+            return ProjectRequestDto.toProjectRequestDto(projectRequestEntity.get());
         } else {
             log.info("Dto NULL 값 (서비스 작동)");
             return null;
         }
     }
 
-    //프로젝트 요청 수락
-    //현재 session ID가 recvID로 되어있으면 그 관련 projectID를 가져온다 어떻게? (이게 테이블 연결이 안되어있음 - ProjectRequst테이블에 projectiD 컬럼값이 하나 더 있어야한다)
-    // 그러면 ProjectRequst에는 projectId, sendId, recvID 가 존재하므로 send가 보낸 사람이 어떤 프로젝트 인지 정보도 저장되어 있으므로 바로 Role 부여 가능
-    //projectID와 recvID 가 존재하고 일치하면
-    //로직처리로 수락을 만든다
-    //수락이 확인되면 projectID가 일치하는 프로젝트에 role 값을 부여한다.
-    public ProjectRoleDto submitInvite(String recvUUID, ){
+    //초대 확인하는 메서드
+
+    //초대 수락하는 메서드
+    public ProjectRoleDto submitInvite(String recvUUID, Project){
 
     }
 }

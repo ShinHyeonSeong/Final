@@ -20,6 +20,11 @@ public class ProjectRequestEntity {
     @JoinColumn(name = "recvUUID")
     private UserEntity recvUUID;
 
+    @Id
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "projectID")
+    private ProjectEntity prjoectIdToRequest;
+
 
     public static ProjectRequestEntity toProjectRequestEntity(ProjectRequestDto projectRequestDto) {
         ProjectRequestEntity projectRequestEntity = new ProjectRequestEntity();

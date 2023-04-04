@@ -23,8 +23,10 @@ public class ProjectEntity {
     @Column(name = "projectPublic")
     private Long projectPublic;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "projectId")
-    private List<ProjectRoleEntity> projectRoleEntityList1 = new ArrayList<>();
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "projectIdToRole")
+    private List<ProjectRoleEntity> projectRoleEntityList= new ArrayList<>();
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "prjoectIdToRequest")
+    private List<ProjectRequestEntity> projectRequestEntityList = new ArrayList<>();
 
 }
