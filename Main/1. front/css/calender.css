@@ -8,9 +8,10 @@ body {
 }
 
 a {
-  text-decoration-line: none;
-  color: white;
+	text-decoration-line: none !important;
+	color: white !important;
 }
+
 .content{
   margin: 3vh;
 	padding: 20px;

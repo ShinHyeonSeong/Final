@@ -9,21 +9,127 @@
     <script src="../js/documentList.js"></script>
     <title>DocumentList</title>
 </head>
-<!-- document를 클릭 했을 때 보여지는 documentList -->
-<!-- 레알 아이디어가 안떠올라...... 진짜임 구라가 아님!!!!! 쯔아ㅏ아ㅏㅏㅏ -->
 
 <body>
     <div class="container">
         <div class="header">
-            <h1>List of Posts</h1>
-            <div class="userinfo">Currently logged in as John Doe</div>
+            <a href="#" class="back-button"> < </a>
+            <h1>문서 목록</h1>
         </div>
-        <ul>
-            <li><a href="#">Post 1</a></li>
-            <li><a href="#">Post 2</a></li>
-            <li><a href="#">Post 3</a></li>
-            <li><a href="#">Post 4</a></li>
-        </ul>
+        <div class="document-list">
+            <section class="my-document-section">
+                <div class="document">
+                    <div class="document-classification">
+                        내 문서
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="job-name">문서</th>
+                                <th>연계 목표</th>
+                                <th>작성자</th>
+                                <th>작성일자</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="documentDetail.html">문서명</a></td>
+                                <td>목표명</td>
+                                <td>작성자명</td>
+                                <td>2023 01 01</td>
+                            </tr>
+                            <tr>
+                                <td><a href="documentDetail.html">문서명</a></td>
+                                <td>목표명</td>
+                                <td>작성자명</td>
+                                <td>2023 01 01</td>
+                            </tr>
+                            <tr>
+                                <td><a href="documentDetail.html">문서명</a></td>
+                                <td>목표명</td>
+                                <td>작성자명</td>
+                                <td>2023 01 01</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="all-document-section">
+                <div class="document">
+                    <div class="document-classification">
+                        전체 문서
+                    </div>
+                    <div class="object-linked-document">
+                        <div class="linked-object">연결된 목표명</div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="job-name">문서</th>
+                                    <th>연계 목표</th>
+                                    <th>작성자</th>
+                                    <th>작성일자</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a href="documentDetail.html">문서명</a></td>
+                                    <td>목표명</td>
+                                    <td>작성자명</td>
+                                    <td>2023 01 01</td>
+                                </tr>
+                                <tr>
+                                    <td><a href="documentDetail.html">문서명</a></td>
+                                    <td>목표명</td>
+                                    <td>작성자명</td>
+                                    <td>2023 01 01</td>
+                                </tr>
+                                <tr>
+                                    <td><a href="documentDetail.html">문서명</a></td>
+                                    <td>목표명</td>
+                                    <td>작성자명</td>
+                                    <td>2023 01 01</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="object-linked-document">
+                        <div class="linked-object">연결된 목표명</div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="job-name">문서</th>
+                                    <th>연계 목표</th>
+                                    <th>작성자</th>
+                                    <th>작성일자</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a href="documentDetail.html">문서명</a></td>
+                                    <td>목표명</td>
+                                    <td>작성자명</td>
+                                    <td>2023 01 01</td>
+                                </tr>
+                                <tr>
+                                    <td><a href="documentDetail.html">문서명</a></td>
+                                    <td>목표명</td>
+                                    <td>작성자명</td>
+                                    <td>2023 01 01</td>
+                                </tr>
+                                <tr>
+                                    <td><a href="documentDetail.html">문서명</a></td>
+                                    <td>목표명</td>
+                                    <td>작성자명</td>
+                                    <td>2023 01 01</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
     </div>
 
 </body>
