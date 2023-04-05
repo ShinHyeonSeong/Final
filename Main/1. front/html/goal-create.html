@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/goal-create.css">
+    <script src="../js/documentList.js"></script>
+    <title>create-document</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="goal.html" class="back-button"> < </a>
+            <h1>목표 생성</h1>
+        </div>
+        <div class="create-goal">
+            <div class="label-detail">
+                <label class="label" for="create-goal-input">목표 이름</label>
+                <div class="essential">*</div>
+            </div>
+            <div class="input-detail">
+                <input name="name" class="input-box" id="create-goal-input" type="text" placeholder="목표 이름 입력">
+            </div>
+        </div>
+
+        <div class="create-goal">
+            <div class="label-detail">
+                <label class="label" for="create-goal-input">목표 설명</label>
+            </div>
+            <div class="input-detail">
+                <textarea name="discription" class="detail-input-box"
+                    id="" cols="20" rows="10" placeholder="설명"></textarea>
+            </div>
+        </div>
+
+        <div class="create-goal">
+            <div class="label-detail">
+                <label class="label" for="create-goal-input">멤버</label>
+            </div>
+            <div class="search-input-detail">
+                <input name="userId" class="search-input-box" id="create-goal-input" type="text" placeholder="초대 멤버 이름">
+                <button class="button-form">검색</button>
+            </div>
+        </div>
+
+        <div class="create-goal">
+            <div class="label-detail">
+                <label class="label" for="create-goal-input">연결 목표</label>
+            </div>
+            <div class="search-input-detail">
+                <input name="userId" class="search-input-box" id="create-goal-input" type="text" placeholder="연결 목표명">
+                <button class="button-form">검색</button>
+            </div>
+        </div>
+
+        <div class="horizon-divider"></div>
+        <div class="footer">
+            <button class="footer-btn">생성</button>
+            <button class="footer-btn">리셋</button>
+        </div>
+    </div>
+
+</body>
+
+</html>
