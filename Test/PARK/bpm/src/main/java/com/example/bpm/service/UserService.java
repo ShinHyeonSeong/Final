@@ -53,8 +53,8 @@ public class UserService {
         List<UserEntity> userEntityList = userRepository.findAll();
         List<UserDto> userDtoList = new ArrayList<>();
         for (UserEntity userEntity : userEntityList) {
-            UserDto userDto = UserDto.toUserDto(userEntity);
-//            userDtoList.add(userDto);               밑에 함수와 같은 결과
+//            UserDto userDto = UserDto.toUserDto(userEntity);
+//       userDtoList.add(userDto);               밑에 함수와 같은 결과
             userDtoList.add(UserDto.toUserDto(userEntity));
         }
         return userDtoList;

@@ -5,7 +5,6 @@ import com.example.bpm.entity.ProjectRequestPKEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
 import java.util.Optional;
 
 //여기서 오류가 뜰 수도 있는데 제네릭 선언 할때 <연관된 Entity, 데이터타입> 여기에 DB의 데이터 타입인지 Entity 데이터 타입인지 모르겠어 하고 알려줘
@@ -24,21 +23,7 @@ public interface ProjectRequestRepository extends JpaRepository<ProjectRequestEn
             "projectRequst.sendUUID =:sendUUID " +
             "AND projectRequst.recvUUID = :recvUUID" +
             "AND projectRequst.projectID =: proejctId"
-            ,nativeQuery = true)
+            , nativeQuery = true)
     Optional<ProjectRequestEntity> selectToRequsetRow(String sendUUID, String recvUUID, String projectId);
-
-
-    //권한자 프로젝트를 확인할 수 있는 메서드
-    @Query(value = "select * from projectRequst " +
-            "where" +
-            "projectRequst.sendUUID = :sendUUID",
-            nativeQuery = true)
-    List<ProjectRequestEntity> selectToListHostRow(String sendUUID);
-
-
-    //비권한자 프로젝트를 확인할 수 있는 메서드
-    @Query(value = "selct * from projectRequst where" + "proejctRequst.rectUUID =:recvUUID",
-            nativeQuery = true)
-    ProjectRequestEntity selectTopParticipantsRow(String recvUUID);
 
 }

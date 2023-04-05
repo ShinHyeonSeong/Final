@@ -1,11 +1,7 @@
 package com.example.bpm.service;
 
-import com.example.bpm.dto.ProjectRequestDto;
-import com.example.bpm.dto.ProjectRoleDto;
 import com.example.bpm.dto.UserDto;
-import com.example.bpm.entity.ProjectRequestEntity;
 import com.example.bpm.entity.UserEntity;
-import com.example.bpm.repository.ProjectRequestRepository;
 import com.example.bpm.repository.UserRepository;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
@@ -16,9 +12,10 @@ import java.util.Optional;
 @Service
 @Slf4j
 @Builder
+//메서드 리턴타입은 무조건 Dto로 나오게 하자.
+//파라미터는 String 형식으로 받기로 하자 (절대 객체단위로 받으면 안됨 헷갈리기도 하고 NULL 오류가 잘 생김)
 public class UserService {
 
-    final private ProjectRequestRepository projectRequestRepository;
     final private UserRepository userRepository;
 
     //회원가입
@@ -29,7 +26,7 @@ public class UserService {
         return UserDto.toUserDto(userEntity);
     }
 
-    
+
     //로그인
     public UserDto login(UserDto userDto) {
         Optional<UserEntity> byUserId = userRepository.findById(userDto.getUuid());
@@ -80,7 +77,7 @@ public class UserService {
 
     }
 
-    //회원 정보 변경 저ㅏㅇ
+    //회원 정보 변경 저장
     public void update(UserDto userDto) {
         userRepository.save(UserEntity.toUpdateuserEntity(userDto));
         log.info("회원 정보 업데이트에 성공하였습니다 (서비스 작동)");
@@ -90,26 +87,5 @@ public class UserService {
     public void deleteById(String id) {
         userRepository.deleteById(id);
         log.info("회원 정보를 정상 삭제하였습니다 (서비스 작동)");
-    }
-
-    //프로젝트 초대를 보내는 메서드      리턴 데이터는 send 한 기록을 보여준다
-    public ProjectRequestDto sendInvite(UserDto sendUser, UserDto recvUser, String projectId) {
-        if (sendUser != null && recvUser != null) {
-            projectRequestRepository.plusProjectRequest(sendUser.getUuid(), recvUser.getUuid(), projectId);
-            log.info("친구 요청 정상 작동 (서비스 작동)");
-            Optional<ProjectRequestEntity> projectRequestEntity = projectRequestRepository.selectToRequsetRow(sendUser.getUuid(), recvUser.getUuid(), projectId);
-            //만약 정상 친구요청이 되면 그 row을 확인할 수 있게 return 한다
-            return ProjectRequestDto.toProjectRequestDto(projectRequestEntity.get());
-        } else {
-            log.info("Dto NULL 값 (서비스 작동)");
-            return null;
-        }
-    }
-
-    //초대 확인하는 메서드
-
-    //초대 수락하는 메서드
-    public ProjectRoleDto submitInvite(String recvUUID, Project){
-
     }
 }
