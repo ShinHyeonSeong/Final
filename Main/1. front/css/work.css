@@ -8,11 +8,12 @@ body {
 }
 
 a {
-	text-decoration-line: none;
-	color: white;
+	text-decoration-line: none !important;
+	color: white !important;
 }
 
 .content {
+	margin-top: 100px;
 	margin-left: 200px;
 	padding: 20px;
 }
@@ -34,13 +35,23 @@ a {
 
 .top-bar {
 	display: flex;
-	justify-content: space-between;
+	flex-direction: row;
 	align-items: center;
-	margin-bottom: 2rem;
+	width: 100%;
+	height: 70px;
+	border-bottom: solid 0.8px #333;
+	position: fixed;
+	top: 0;
+	left: 200px;
+	background-color: #222;	
 }
 
 .top-bar h1 {
 	margin-left: 4rem;
+}
+
+.top-bar a {
+	margin-left: auto;
 }
 
 .add-work-btn {
@@ -61,8 +72,14 @@ a {
 	color: #fff;
 }
 
+
 .work {
 	margin-bottom: 60px;
+}
+
+.work-classification {
+	font-size: 16px;
+	padding: 0.5rem 1.5rem;
 }
 
 table {
@@ -109,12 +126,4 @@ td a {
 
 .job-name {
 	width: 40rem;
-}
-
-.job-pic {
-	width: 8rem;
-}
-
-.job-deadline {
-	width: 15rem;
 }
