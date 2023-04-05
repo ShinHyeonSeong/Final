@@ -116,7 +116,7 @@ public class ProjectSerivce {
     //생성 메서드
     public ProjectDto createProject(ProjectDto projectDto) {
         ProjectEntity projectEntity = projectRepository.save(ProjectEntity.toProjectEntity(projectDto));
-        
+
         return ProjectDto.toProjectDto(projectEntity);
     }
 
