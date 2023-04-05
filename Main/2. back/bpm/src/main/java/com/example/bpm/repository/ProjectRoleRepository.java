@@ -14,9 +14,14 @@ public interface ProjectRoleRepository extends JpaRepository<ProjectRoleEntity, 
             "where" +
             "projectRole.role = :role",
             nativeQuery = true)
-    //role의 값에 따라 프로젝트 리스트를 보여주는 메서드
+        //role의 값에 따라 프로젝트 리스트를 보여주는 메서드
     List<ProjectRoleEntity> selectToRoleList(Long role);
 
-    @Query(value = "insert into ")
+    //데이터 삽입
+    @Query(value = "insert into " +
+            "projectRole " +
+            "values (:proejctId, :uuid, :role)"
+            , nativeQuery = true)
+    ProjectRoleEntity insertToRoleEntity(String projectId, String uuid, Long role);
 
 }

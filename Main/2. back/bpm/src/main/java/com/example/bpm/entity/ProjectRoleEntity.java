@@ -1,10 +1,12 @@
 package com.example.bpm.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 
 @Entity
 @Data
+@Builder
 @Table(name = "projectRole")
 @IdClass(ProjectRolePKEntity.class)
 public class ProjectRoleEntity {
