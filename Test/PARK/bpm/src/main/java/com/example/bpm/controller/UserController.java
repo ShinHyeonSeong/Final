@@ -9,10 +9,7 @@ import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,11 +18,12 @@ import java.util.List;
 @Slf4j
 @ToString
 @RequiredArgsConstructor //생성자 주입 어노테이션 @Autorized와 비슷하게 생성자로 객체를 만들지 않아도 자동 주입 가능하게 함
+@SessionAttributes("userInfo")
 public class UserController {
     private final UserService userService;
     private final UserRepository userRepository;
 
-    @GetMapping("/user/save")
+    @GetMapping("/user/gosave")
 //a 태그로 불러온 주소값
     public String saveForm() {
         return "user/save";
@@ -36,29 +34,29 @@ public class UserController {
 //                       @RequestParam("memberPassword") String memberPassword,
 //                       @RequestParam("memberName") String memberName) {
 //        return "index";
-//    }
+//    }s
 
-    @PostMapping("/user/save")
+    @PostMapping("/user/dosave")
     //매개변수 @ModelAttribute 속성은 html 파일의 form 태그 안 name 속성들의 값들을 dto에 맞게 받아올 수 있다.
     //form 결과로 보여지는 창
     public String save(@ModelAttribute UserDto userDto) {
         System.out.println("UserController.save");
         System.out.println("userDTO = " + userDto);
         userService.save(userDto);
-        return "User/login";
+        return "user/login";
     }
 
-    @GetMapping("/user/login")
+    @GetMapping("/user/gologin")
     public String login() {
-        return "User/login";
+        return "user/login";
     }
 
-    @PostMapping("/user/login")
-    public String login(@ModelAttribute UserDto userDto, HttpSession session) {
+    @PostMapping("/user/dologin")
+    public String dologin(@ModelAttribute("userInfo") UserDto userDto, Model model) {
         UserDto loginResult = userService.login(userDto);
         if (loginResult != null) {
 //            세션에 로그인한 정보롤 담아줌
-            session.setAttribute("loginEmail", loginResult);
+            model.addAttribute("loginEmail", loginResult);
             return "User/main";
         } else {
             return "User/login";
@@ -82,7 +80,7 @@ public class UserController {
 
     @GetMapping("/user/update")
     public String updateForm(HttpSession session, Model model) {
-        String myEmail = (String) session.getAttribute("loginEmail");
+        String myEmail = session.getAttribute("loginEmail");
         log.info("친구 리스트 업데이트");
         UserDto userDto = userService.updateForm(myEmail);
         model.addAttribute("updateUser", userDto);
@@ -97,7 +95,7 @@ public class UserController {
 
     @GetMapping("/user/delete/{id}")
     public String deleteById(@PathVariable Long id) {
-        userService.deleteById(id);
+//        userService.deleteById(id);
         return "redirect:/user/";
     }
 
