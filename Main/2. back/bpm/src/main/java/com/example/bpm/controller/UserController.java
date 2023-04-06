@@ -31,7 +31,6 @@ public class UserController {
     }
 
 
-
     @PostMapping("/user/save")
     public String doSave(@ModelAttribute UserDto userDto) {
         UserDto saveUser = userService.save(userDto);
@@ -44,7 +43,6 @@ public class UserController {
     public String login() {
         return "user/login";
     }
-
 
 
     //이 세션 처리 예제 내가 template에 만들어 둠
@@ -106,13 +104,14 @@ public class UserController {
         log.info("탈퇴되었습니다 (컨트롤러 작동)");
         return "redirect:/index";
     }
+}
 
 //    여기까지가 User 단순 CRUD
 
 // 프로젝트 초대 기능
-    @GetMapping("/user/invite")
-    public String sendInvite(){
-        userService.sendInvite();
-
-    }
-}
+//    @GetMapping("/user/invite")
+//    public String sendInvite(){
+//        userService.sendInvite();
+//
+//    }
+//}
