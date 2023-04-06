@@ -10,12 +10,13 @@ import java.util.UUID;
 @NoArgsConstructor
 @ToString
 public class UserDto {
-    private String uuid = UUID.randomUUID().toString();
+    private String uuid;
     private String email;
     private String password;
     private String name;
 
     public UserDto(String email, String password, String name) {
+        this.uuid = UUID.randomUUID().toString();
         this.email = email;
         this.password = password;
         this.name = name;

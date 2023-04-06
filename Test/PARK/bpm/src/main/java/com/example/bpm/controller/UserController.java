@@ -1,7 +1,6 @@
 package com.example.bpm.controller;
 
 import com.example.bpm.dto.UserDto;
-import com.example.bpm.repository.UserRepository;
 import com.example.bpm.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,11 @@ import java.util.List;
 @SessionAttributes("userInfo")
 public class UserController {
     private final UserService userService;
-    private final UserRepository userRepository;
+
+    @GetMapping("/index")
+    public String index() {
+        return "main/index";
+    }
 
     @GetMapping("/user/gosave")
 //a 태그로 불러온 주소값
@@ -37,8 +40,6 @@ public class UserController {
 //    }s
 
     @PostMapping("/user/dosave")
-    //매개변수 @ModelAttribute 속성은 html 파일의 form 태그 안 name 속성들의 값들을 dto에 맞게 받아올 수 있다.
-    //form 결과로 보여지는 창
     public String save(@ModelAttribute UserDto userDto) {
         System.out.println("UserController.save");
         System.out.println("userDTO = " + userDto);
@@ -52,14 +53,13 @@ public class UserController {
     }
 
     @PostMapping("/user/dologin")
-    public String dologin(@ModelAttribute("userInfo") UserDto userDto, Model model) {
+    public String dologin(@ModelAttribute UserDto userDto, Model model) {
         UserDto loginResult = userService.login(userDto);
         if (loginResult != null) {
-//            세션에 로그인한 정보롤 담아줌
-            model.addAttribute("loginEmail", loginResult);
-            return "User/main";
+            model.addAttribute("userInfo", loginResult);
+            return "user/main";
         } else {
-            return "User/login";
+            return "user/login";
         }
     }
 
@@ -68,34 +68,34 @@ public class UserController {
     public String findAll(Model model) {
         List<UserDto> userDtoList = userService.findAll();
         model.addAttribute("userList", userDtoList);
-        return "User/list";
+        return "user/list";
     }
 
+    //프로필 창으로 이동
     @GetMapping("/user/{id}")
-    public String findById(@PathVariable String id, Model model) {
-        UserDto userDto = userService.findById(id);
-        model.addAttribute("user", userDto);
+    public String findById(@SessionAttribute("userInfo")UserDto userDto, Model model) {
+        UserDto findUser = userService.findById(userDto);
+        model.addAttribute("userInfo", findUser);
         return "user/detail";
     }
 
+    //업데이트를 위한 현재 정보를 가져오기
     @GetMapping("/user/update")
-    public String updateForm(HttpSession session, Model model) {
-        String myEmail = session.getAttribute("loginEmail");
-        log.info("친구 리스트 업데이트");
-        UserDto userDto = userService.updateForm(myEmail);
-        model.addAttribute("updateUser", userDto);
-        return "User/update";
+    public String updateForm(@SessionAttribute("userInfo")UserDto userDto, Model model) {
+        UserDto findUser = userService.updateForm(userDto);
+        model.addAttribute("findUser", userDto);
+        return "user/update";
     }
 
     @PostMapping("/user/update")
     public String update(@ModelAttribute UserDto userDto) {
-        userService.update(userDto);
+        userService.save(userDto);
         return "redirect:/user/" + userDto.getUuid();
     }
 
     @GetMapping("/user/delete/{id}")
-    public String deleteById(@PathVariable Long id) {
-//        userService.deleteById(id);
+    public String deleteById(@ModelAttribute UserDto userDto) {
+        userService.deleteById(userDto);
         return "redirect:/user/";
     }
 
@@ -103,7 +103,7 @@ public class UserController {
     public String logout(HttpSession session) {
         //세션으로 로그아웃 처리
         session.invalidate();
-        return "User/index";
+        return "user/index";
     }
 
 }

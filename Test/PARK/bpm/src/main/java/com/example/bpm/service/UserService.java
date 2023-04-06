@@ -32,8 +32,10 @@ public class UserService {
         UserPKEntity userPKEntity = new UserPKEntity(userDto.getUuid(), userDto.getEmail());
         Optional<UserEntity> loginUserInfo = userRepository.findById(userPKEntity);
         if (loginUserInfo.isPresent()) {
+            log.info("아이디가 없습니다");
             UserEntity userEntity = loginUserInfo.get();
             if (userEntity.getPassword().equals(userDto.getPassword())) {
+                log.info("비밀번호가 일치하지 않습니다.");
                 UserDto result = userDto.toUserDto(userEntity);
                 return result;
             } else {
@@ -82,7 +84,7 @@ public class UserService {
     //유저 탈퇴
     public void deleteById(UserDto userDto) {
         UserPKEntity userPKEntity = new UserPKEntity(userDto.getUuid(), userDto.getEmail());
-        userRepository.deleteById(id);
+        userRepository.deleteById(userPKEntity);
     }
 
 
