@@ -21,14 +21,17 @@ public class UserService {
 
     //유저 정보 저장 (회원가입)
     public void save(UserDto userDto) {
+        log.info("서비스 정상 접근 (서비스)");
         UserEntity userEntity = UserEntity.toUserEntity(userDto);
+        log.info("레파지토리 접근 전(서비스)");
         userRepository.save(userEntity);
+        log.info("레파지토리 정상 저장(서비스)");
     }
 
     //유저 로그인
     public UserDto login(LoginForm loginForm) {
         //여기서 클라이언트에게서 받은 정보랑 DB의 값과 비교해야하는데 클라이언트에서 받은 키는 email 밖에 없어서 DB에 중복키 확인이 불가능함
-     Optional<UserEntity> loginUserInfo = userRepository.findById(loginForm.getLoginEmail(),loginForm.getLoginEmail());
+     Optional<UserEntity> loginUserInfo = userRepository.findById(loginForm.getEmail());
         if (loginUserInfo.isPresent()) {
             log.info("일치하는 이메일 찾음(서비스 작동)");
             UserEntity userEntity = loginUserInfo.get();
@@ -55,37 +58,37 @@ public class UserService {
         }
         return userDtoList;
     }
-
-    //사용자 ID 찾기
-    public UserDto findById(UserDto userDto) {
-        UserPKEntity userPKEntity = new UserPKEntity(userDto.getUuid(), userDto.getEmail());
-        Optional<UserEntity> loginUserInfo = userRepository.findById(userDto.getUuid());
-        if (loginUserInfo.isPresent()) {
-            return UserDto.toUserDto(loginUserInfo.get());
-        } else {
-            return null;
-        }
-    }
-
-
-    //업데이트를 위한 현재 정보 가져오기
-    public UserDto updateForm(UserDto userDto) {
-        UserPKEntity userPKEntity = new UserPKEntity(userDto.getUuid(), userDto.getEmail());
-        Optional<UserEntity> loginUserInfo = userRepository.findById(userDto.getUuid());
-        if (loginUserInfo.isPresent()) {
-            return UserDto.toUserDto(loginUserInfo.get());
-        } else {
-            return null;
-        }
-    }
-
-
-
-    //유저 탈퇴
-    public void deleteById(UserDto userDto) {
-        UserPKEntity userPKEntity = new UserPKEntity(userDto.getUuid(), userDto.getEmail());
-        userRepository.deleteById(userDto.getUuid());
-    }
-
-
+//
+//    //사용자 ID 찾기
+//    public UserDto findById(UserDto userDto) {
+//        UserPKEntity userPKEntity = new UserPKEntity(userDto.getUuid(), userDto.getEmail());
+//        Optional<UserEntity> loginUserInfo = userRepository.findById(userDto.getUuid());
+//        if (loginUserInfo.isPresent()) {
+//            return UserDto.toUserDto(loginUserInfo.get());
+//        } else {
+//            return null;
+//        }
+//    }
+//
+//
+//    //업데이트를 위한 현재 정보 가져오기
+//    public UserDto updateForm(UserDto userDto) {
+//        UserPKEntity userPKEntity = new UserPKEntity(userDto.getUuid(), userDto.getEmail());
+//        Optional<UserEntity> loginUserInfo = userRepository.findById(userDto.getUuid());
+//        if (loginUserInfo.isPresent()) {
+//            return UserDto.toUserDto(loginUserInfo.get());
+//        } else {
+//            return null;
+//        }
+//    }
+//
+//
+//
+//    //유저 탈퇴
+//    public void deleteById(UserDto userDto) {
+//        UserPKEntity userPKEntity = new UserPKEntity(userDto.getUuid(), userDto.getEmail());
+//        userRepository.deleteById(userDto.getUuid());
+//    }
+//
+//
 }

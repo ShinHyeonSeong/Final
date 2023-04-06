@@ -31,13 +31,6 @@ public class UserController {
     public String saveForm() {
         return "user/save";
     }
-//
-//    @PostMapping("/member/save")
-//    public String save(@RequestParam("memberEmail") String memberEmail,
-//                       @RequestParam("memberPassword") String memberPassword,
-//                       @RequestParam("memberName") String memberName) {
-//        return "index";
-//    }s
 
     @PostMapping("/user/dosave")
     public String save(@RequestParam("email")String email,
@@ -45,7 +38,9 @@ public class UserController {
                        @RequestParam("name")String name) {
         //UUID 부여를 위해 생성자로 접근을 한번 더한다
         UserDto NewUser = new UserDto(email, password, name);
+        log.info("DTO 정상 값 입력 (컨트롤러)");
         userService.save(NewUser);
+        log.info("save 정상 작동 (컨트롤러)");
         return "user/login";
     }
 
@@ -64,48 +59,48 @@ public class UserController {
             return "user/login";
         }
     }
-
-    @GetMapping("/user/")
-    //사용자 목록 보여주기
-    public String findAll(Model model) {
-        List<UserDto> userDtoList = userService.findAll();
-        model.addAttribute("userList", userDtoList);
-        return "user/list";
-    }
-
-    //프로필 창으로 이동
-    @GetMapping("/user/{id}")
-    public String findById(@SessionAttribute("userInfo")UserDto userDto, Model model) {
-        UserDto findUser = userService.findById(userDto);
-        model.addAttribute("userInfo", findUser);
-        return "user/detail";
-    }
-
-    //업데이트를 위한 현재 정보를 가져오기
-    @GetMapping("/user/update")
-    public String updateForm(@SessionAttribute("userInfo")UserDto userDto, Model model) {
-        UserDto findUser = userService.updateForm(userDto);
-        model.addAttribute("findUser", userDto);
-        return "user/update";
-    }
-
-    @PostMapping("/user/update")
-    public String update(@ModelAttribute UserDto userDto) {
-        userService.save(userDto);
-        return "redirect:/user/" + userDto.getUuid();
-    }
-
-    @GetMapping("/user/delete/{id}")
-    public String deleteById(@ModelAttribute UserDto userDto) {
-        userService.deleteById(userDto);
-        return "redirect:/user/";
-    }
-
-    @GetMapping("/user/logout")
-    public String logout(HttpSession session) {
-        //세션으로 로그아웃 처리
-        session.invalidate();
-        return "user/index";
-    }
+//
+//    @GetMapping("/user/")
+//    //사용자 목록 보여주기
+//    public String findAll(Model model) {
+//        List<UserDto> userDtoList = userService.findAll();
+//        model.addAttribute("userList", userDtoList);
+//        return "user/list";
+//    }
+//
+//    //프로필 창으로 이동
+//    @GetMapping("/user/{id}")
+//    public String findById(@SessionAttribute("userInfo")UserDto userDto, Model model) {
+//        UserDto findUser = userService.findById(userDto);
+//        model.addAttribute("userInfo", findUser);
+//        return "user/detail";
+//    }
+//
+//    //업데이트를 위한 현재 정보를 가져오기
+//    @GetMapping("/user/update")
+//    public String updateForm(@SessionAttribute("userInfo")UserDto userDto, Model model) {
+//        UserDto findUser = userService.updateForm(userDto);
+//        model.addAttribute("findUser", userDto);
+//        return "user/update";
+//    }
+//
+//    @PostMapping("/user/update")
+//    public String update(@ModelAttribute UserDto userDto) {
+//        userService.save(userDto);
+////        return "redirect:/user/" + userDto.getUuid();
+//    }
+//
+//    @GetMapping("/user/delete/{id}")
+//    public String deleteById(@ModelAttribute UserDto userDto) {
+//        userService.deleteById(userDto);
+//        return "redirect:/user/";
+//    }
+//
+//    @GetMapping("/user/logout")
+//    public String logout(HttpSession session) {
+//        //세션으로 로그아웃 처리
+//        session.invalidate();
+//        return "user/index";
+//    }
 
 }
