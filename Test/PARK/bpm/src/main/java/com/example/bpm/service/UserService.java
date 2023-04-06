@@ -1,16 +1,14 @@
 package com.example.bpm.service;
 
+import com.example.bpm.dto.LoginForm;
 import com.example.bpm.dto.UserDto;
 import com.example.bpm.entity.UserEntity;
 import com.example.bpm.entity.UserPKEntity;
 import com.example.bpm.repository.UserRepository;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,20 +26,22 @@ public class UserService {
     }
 
     //유저 로그인
-    public UserDto login(UserDto userDto) {
-        UserPKEntity userPKEntity = new UserPKEntity(userDto.getUuid(), userDto.getEmail());
-        Optional<UserEntity> loginUserInfo = userRepository.findById(userPKEntity);
+    public UserDto login(LoginForm loginForm) {
+        //여기서 클라이언트에게서 받은 정보랑 DB의 값과 비교해야하는데 클라이언트에서 받은 키는 email 밖에 없어서 DB에 중복키 확인이 불가능함
+     Optional<UserEntity> loginUserInfo = userRepository.findById(loginForm.getLoginEmail(),loginForm.getLoginEmail());
         if (loginUserInfo.isPresent()) {
-            log.info("아이디가 없습니다");
+            log.info("일치하는 이메일 찾음(서비스 작동)");
             UserEntity userEntity = loginUserInfo.get();
-            if (userEntity.getPassword().equals(userDto.getPassword())) {
-                log.info("비밀번호가 일치하지 않습니다.");
-                UserDto result = userDto.toUserDto(userEntity);
+            if (userEntity.getPassword().equals(loginForm.getPassword())) {
+                log.info("로그인성공 (서비스 작동)");
+                UserDto result = UserDto.toUserDto(userEntity);
                 return result;
             } else {
+                log.info("비밀번호 불일치(서비스 작동)");
                 return null;
             }
         } else {
+            log.info("일치하는 이메일의 정보가 없음 (서비스 작동)");
             return null;
         }
     }
@@ -59,7 +59,7 @@ public class UserService {
     //사용자 ID 찾기
     public UserDto findById(UserDto userDto) {
         UserPKEntity userPKEntity = new UserPKEntity(userDto.getUuid(), userDto.getEmail());
-        Optional<UserEntity> loginUserInfo = userRepository.findById(userPKEntity);
+        Optional<UserEntity> loginUserInfo = userRepository.findById(userDto.getUuid());
         if (loginUserInfo.isPresent()) {
             return UserDto.toUserDto(loginUserInfo.get());
         } else {
@@ -71,7 +71,7 @@ public class UserService {
     //업데이트를 위한 현재 정보 가져오기
     public UserDto updateForm(UserDto userDto) {
         UserPKEntity userPKEntity = new UserPKEntity(userDto.getUuid(), userDto.getEmail());
-        Optional<UserEntity> loginUserInfo = userRepository.findById(userPKEntity);
+        Optional<UserEntity> loginUserInfo = userRepository.findById(userDto.getUuid());
         if (loginUserInfo.isPresent()) {
             return UserDto.toUserDto(loginUserInfo.get());
         } else {
@@ -84,7 +84,7 @@ public class UserService {
     //유저 탈퇴
     public void deleteById(UserDto userDto) {
         UserPKEntity userPKEntity = new UserPKEntity(userDto.getUuid(), userDto.getEmail());
-        userRepository.deleteById(userPKEntity);
+        userRepository.deleteById(userDto.getUuid());
     }
 
 

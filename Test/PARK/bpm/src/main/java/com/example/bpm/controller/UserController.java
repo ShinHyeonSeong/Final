@@ -1,5 +1,6 @@
 package com.example.bpm.controller;
 
+import com.example.bpm.dto.LoginForm;
 import com.example.bpm.dto.UserDto;
 import com.example.bpm.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -27,7 +28,6 @@ public class UserController {
     }
 
     @GetMapping("/user/gosave")
-//a 태그로 불러온 주소값
     public String saveForm() {
         return "user/save";
     }
@@ -40,10 +40,12 @@ public class UserController {
 //    }s
 
     @PostMapping("/user/dosave")
-    public String save(@ModelAttribute UserDto userDto) {
-        System.out.println("UserController.save");
-        System.out.println("userDTO = " + userDto);
-        userService.save(userDto);
+    public String save(@RequestParam("email")String email,
+                       @RequestParam("password")String password,
+                       @RequestParam("name")String name) {
+        //UUID 부여를 위해 생성자로 접근을 한번 더한다
+        UserDto NewUser = new UserDto(email, password, name);
+        userService.save(NewUser);
         return "user/login";
     }
 
@@ -53,8 +55,8 @@ public class UserController {
     }
 
     @PostMapping("/user/dologin")
-    public String dologin(@ModelAttribute UserDto userDto, Model model) {
-        UserDto loginResult = userService.login(userDto);
+    public String dologin(@ModelAttribute LoginForm loginForm, Model model) {
+        UserDto loginResult = userService.login(loginForm);
         if (loginResult != null) {
             model.addAttribute("userInfo", loginResult);
             return "user/main";
