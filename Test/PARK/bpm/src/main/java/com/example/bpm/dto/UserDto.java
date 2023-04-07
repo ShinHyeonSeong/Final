@@ -8,6 +8,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
 public class UserDto {
 //    private String uuid;
@@ -15,12 +16,6 @@ public class UserDto {
     private String password;
     private String name;
 
-    public UserDto(String email, String password, String name) {
-//        this.uuid = UUID.randomUUID().toString();
-        this.email = email;
-        this.password = password;
-        this.name = name;
-    }
 
     public static UserDto toUserDto(UserEntity userEntity) {
         UserDto userDto = new UserDto();

@@ -3,12 +3,15 @@ package com.example.bpm.entity;
 import com.example.bpm.dto.UserDto;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Data
+@DynamicInsert
 @Table(name = "user")
 //@IdClass(UserPKEntity.class)
 public class UserEntity {

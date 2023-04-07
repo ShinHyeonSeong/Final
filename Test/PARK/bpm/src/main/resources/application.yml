@@ -14,7 +14,7 @@ spring:
 #DB 정보
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/testschemas
+    url: jdbc:mariadb://127.0.0.1:3306/testschemas
     username: root
     password: 1234
 #타입리프 캐시 설정

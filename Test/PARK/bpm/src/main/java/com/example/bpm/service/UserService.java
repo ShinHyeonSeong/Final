@@ -3,10 +3,10 @@ package com.example.bpm.service;
 import com.example.bpm.dto.LoginForm;
 import com.example.bpm.dto.UserDto;
 import com.example.bpm.entity.UserEntity;
-import com.example.bpm.entity.UserPKEntity;
 import com.example.bpm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,6 +17,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserService {
+    @Autowired
     private final UserRepository userRepository;
 
     //유저 정보 저장 (회원가입)
@@ -59,8 +60,8 @@ public class UserService {
         return userDtoList;
     }
 //
-//    //사용자 ID 찾기
-//    public UserDto findById(UserDto userDto) {
+//    //로그인 시 사용자 email로 로그인
+//    public UserDto findByEmail(UserDto userDto) {
 //        UserPKEntity userPKEntity = new UserPKEntity(userDto.getUuid(), userDto.getEmail());
 //        Optional<UserEntity> loginUserInfo = userRepository.findById(userDto.getUuid());
 //        if (loginUserInfo.isPresent()) {
@@ -69,7 +70,7 @@ public class UserService {
 //            return null;
 //        }
 //    }
-//
+
 //
 //    //업데이트를 위한 현재 정보 가져오기
 //    public UserDto updateForm(UserDto userDto) {
