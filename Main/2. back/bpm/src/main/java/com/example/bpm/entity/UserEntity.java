@@ -10,13 +10,11 @@ import java.util.List;
 @Entity
 @Data
 @Table(name = "user")
-@IdClass(UserPKEntity.class)
 public class UserEntity {
     @Id
     @Column(name = "uuid")
     private String uuid;
 
-    @Id
     @Column(name = "email")
     private String email;
 
@@ -36,7 +34,6 @@ public class UserEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "recvUUID")
     private List<ProjectRequestEntity> projectRequestEntityList2 = new ArrayList<>();
-
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "uuid")
     private List<ProjectRoleEntity> projectRoleEntityList = new ArrayList<>();

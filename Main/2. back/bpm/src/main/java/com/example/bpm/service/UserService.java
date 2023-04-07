@@ -21,34 +21,29 @@ public class UserService {
     //회원가입
     public UserDto save(UserDto userDto) {
         UserEntity userEntity = UserEntity.toUserEntity(userDto);
-        userRepository.save(userEntity);
-        log.info("회원 가입 성공 (서비스 동작)");
-        return UserDto.toUserDto(userEntity);
+        Optional<UserEntity> userResult = userRepository.findByEmail(userDto.getEmail());
+        if (userResult.isPresent()) {
+            log.info("이미 있는 이메일이다 회원가입 실패! (서비스 작동)");
+            return null;
+        } else {
+            userRepository.save(userEntity);
+            log.info("회원 가입 성공 (서비스 동작)");
+            return UserDto.toUserDto(userEntity);
+        }
     }
 
 
     //로그인
-    public UserDto login(UserDto userDto) {
-        Optional<UserEntity> byUserId = userRepository.findById(userDto.getUuid());
-        if (byUserId.isPresent()) {
-            //Optional로 묶여진 byUserEmail 값을 Entity로 변환
-            UserEntity userEntity = byUserId.get();
-            if (userEntity.getPassword().equals(userDto.getPassword())) {
-                //Entity -> DTO 변환
-                log.info("로그인 성공 (서비스 동작)");
-                UserDto result = userDto.toUserDto(userEntity);
-                return result;
-            } else {
-
-                log.info("로그인 실패 -> 이메일 비번이 안맞다 이말이야(서비스 동작)");
-                return null;
-            }
+    public UserDto login(String email, String password) {
+        Optional<UserEntity> findUser = userRepository.findByEmail(email);
+        UserEntity loginUser = findUser.get();
+        if (loginUser.getEmail() == email && loginUser.getPassword() == password) {
+            log.info("이메일 && 패스워드 일치 로그인 성공 ");
+            return UserDto.toUserDto(loginUser);
         } else {
-
-            log.info("로그인 실패 -> 존재하지 않는 이뭬일 (서비스 동작)");
+            log.info("로그인 실패 -> 존재하지 않는 이뭬일 패스워드 (서비스 동작)");
             return null;
         }
-
     }
 
     //ID로 회원 정보를 찾기 프로필 조회 or 회원 초대 시 필요함

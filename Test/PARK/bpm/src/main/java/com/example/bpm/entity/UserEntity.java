@@ -34,7 +34,7 @@ public class UserEntity {
 //        userEntity.setUuid(userDto.getUuid());
         userEntity.setEmail(userDto.getEmail());
         userEntity.setPassword(userDto.getPassword());
-        userEntity.setEmail((userDto.getEmail()));
+        userEntity.setName((userDto.getName()));
         return userEntity;
 
     }
