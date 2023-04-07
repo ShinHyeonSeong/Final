@@ -8,22 +8,18 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
 public class UserDto {
-    private String uuid = UUID.randomUUID().toString();
+//    private String uuid;
     private String email;
     private String password;
     private String name;
 
-    public UserDto(String email, String password, String name) {
-        this.email = email;
-        this.password = password;
-        this.name = name;
-    }
 
     public static UserDto toUserDto(UserEntity userEntity) {
         UserDto userDto = new UserDto();
-        userDto.setUuid(userEntity.getUuid());
+//        userDto.setUuid(userEntity.getUuid());
         userDto.setEmail(userEntity.getEmail());
         userDto.setPassword(userEntity.getPassword());
         userDto.setName(userEntity.getName());

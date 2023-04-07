@@ -9,10 +9,10 @@
 </head>
 <body>
 <form action="/user/update" method="post">
-    <input type="hidden" th:value="${updateUser.id}" name = "id">
-    Email : <input type="text" th:value="${updateUser.userEmail}" name = "userEmail" readonly>
-    Password : <input type="text" th:value="${updateUser.userPassword}" name = "userPassword">
-    Name : <input type="text" th:value="${updateUser.userName}" name = "userName">
+    <input type="hidden" th:value="${findUser.uuid}" name = "id">
+    Email : <input type="text" th:value="${findUser.email}" name = "userEmail" readonly>
+    Password : <input type="text" th:value="${findUser.password}" name = "userPassword">
+    Name : <input type="text" th:value="${findUser.name}" name = "userName">
     <input type="submit" value="수정">
 </form>
 </body>

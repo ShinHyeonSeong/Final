@@ -1,18 +1,16 @@
 package com.example.bpm.controller;
 
+import com.example.bpm.dto.LoginForm;
 import com.example.bpm.dto.UserDto;
-import com.example.bpm.repository.UserRepository;
 import com.example.bpm.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,91 +19,90 @@ import java.util.List;
 @Slf4j
 @ToString
 @RequiredArgsConstructor //생성자 주입 어노테이션 @Autorized와 비슷하게 생성자로 객체를 만들지 않아도 자동 주입 가능하게 함
+@SessionAttributes("userInfo")
 public class UserController {
+    @Autowired
     private final UserService userService;
-    private final UserRepository userRepository;
 
-    @GetMapping("/user/save")
-//a 태그로 불러온 주소값
+    @GetMapping("/index")
+    public String index() {
+        return "main/index";
+    }
+
+    @GetMapping("/user/gosave")
     public String saveForm() {
         return "user/save";
     }
-//
-//    @PostMapping("/member/save")
-//    public String save(@RequestParam("memberEmail") String memberEmail,
-//                       @RequestParam("memberPassword") String memberPassword,
-//                       @RequestParam("memberName") String memberName) {
-//        return "index";
-//    }
 
-    @PostMapping("/user/save")
-    //매개변수 @ModelAttribute 속성은 html 파일의 form 태그 안 name 속성들의 값들을 dto에 맞게 받아올 수 있다.
-    //form 결과로 보여지는 창
-    public String save(@ModelAttribute UserDto userDto) {
-        System.out.println("UserController.save");
-        System.out.println("userDTO = " + userDto);
-        userService.save(userDto);
-        return "User/login";
+    @PostMapping("/user/dosave")
+    public String save(@RequestParam("email")String email,
+                       @RequestParam("password")String password,
+                       @RequestParam("username")String name) {
+        //UUID 부여를 위해 생성자로 접근을 한번 더한다
+        UserDto NewUser = new UserDto(email, password, name);
+        log.info("DTO 정상 값 입력 (컨트롤러)"+ "/" + email+ "/" + password + "/" + name);
+        userService.save(NewUser);
+        log.info("save 정상 작동 (컨트롤러)");
+        return "user/login";
     }
 
-    @GetMapping("/user/login")
+    @GetMapping("/user/gologin")
     public String login() {
-        return "User/login";
+        return "user/login";
     }
 
-    @PostMapping("/user/login")
-    public String login(@ModelAttribute UserDto userDto, HttpSession session) {
-        UserDto loginResult = userService.login(userDto);
+    @PostMapping("/user/dologin")
+    public String dologin(@ModelAttribute LoginForm loginForm, Model model) {
+        UserDto loginResult = userService.login(loginForm);
         if (loginResult != null) {
-//            세션에 로그인한 정보롤 담아줌
-            session.setAttribute("loginEmail", loginResult);
-            return "User/main";
+            model.addAttribute("userInfo", loginResult);
+            return "user/main";
         } else {
-            return "User/login";
+            return "user/login";
         }
     }
-
-    @GetMapping("/user/")
-    //사용자 목록 보여주기
-    public String findAll(Model model) {
-        List<UserDto> userDtoList = userService.findAll();
-        model.addAttribute("userList", userDtoList);
-        return "User/list";
-    }
-
-    @GetMapping("/user/{id}")
-    public String findById(@PathVariable String id, Model model) {
-        UserDto userDto = userService.findById(id);
-        model.addAttribute("user", userDto);
-        return "user/detail";
-    }
-
-    @GetMapping("/user/update")
-    public String updateForm(HttpSession session, Model model) {
-        String myEmail = (String) session.getAttribute("loginEmail");
-        log.info("친구 리스트 업데이트");
-        UserDto userDto = userService.updateForm(myEmail);
-        model.addAttribute("updateUser", userDto);
-        return "User/update";
-    }
-
-    @PostMapping("/user/update")
-    public String update(@ModelAttribute UserDto userDto) {
-        userService.update(userDto);
-        return "redirect:/user/" + userDto.getUuid();
-    }
-
-    @GetMapping("/user/delete/{id}")
-    public String deleteById(@PathVariable Long id) {
-        userService.deleteById(id);
-        return "redirect:/user/";
-    }
-
-    @GetMapping("/user/logout")
-    public String logout(HttpSession session) {
-        //세션으로 로그아웃 처리
-        session.invalidate();
-        return "User/index";
-    }
+//
+//    @GetMapping("/user/")
+//    //사용자 목록 보여주기
+//    public String findAll(Model model) {
+//        List<UserDto> userDtoList = userService.findAll();
+//        model.addAttribute("userList", userDtoList);
+//        return "user/list";
+//    }
+//
+//    //프로필 창으로 이동
+//    @GetMapping("/user/{id}")
+//    public String findById(@SessionAttribute("userInfo")UserDto userDto, Model model) {
+//        UserDto findUser = userService.findById(userDto);
+//        model.addAttribute("userInfo", findUser);
+//        return "user/detail";
+//    }
+//
+//    //업데이트를 위한 현재 정보를 가져오기
+//    @GetMapping("/user/update")
+//    public String updateForm(@SessionAttribute("userInfo")UserDto userDto, Model model) {
+//        UserDto findUser = userService.updateForm(userDto);
+//        model.addAttribute("findUser", userDto);
+//        return "user/update";
+//    }
+//
+//    @PostMapping("/user/update")
+//    public String update(@ModelAttribute UserDto userDto) {
+//        userService.save(userDto);
+////        return "redirect:/user/" + userDto.getUuid();
+//    }
+//
+//    @GetMapping("/user/delete/{id}")
+//    public String deleteById(@ModelAttribute UserDto userDto) {
+//        userService.deleteById(userDto);
+//        return "redirect:/user/";
+//    }
+//
+//    @GetMapping("/user/logout")
+//    public String logout(HttpSession session) {
+//        //세션으로 로그아웃 처리
+//        session.invalidate();
+//        return "user/index";
+//    }
 
 }
