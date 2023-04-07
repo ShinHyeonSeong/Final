@@ -112,9 +112,22 @@ public class UserController {
         log.info("탈퇴되었습니다 (컨트롤러 작동)");
         return "redirect:/index";
     }
+<<<<<<< HEAD
+}
+=======
     /*  여기까지가 User 단순 CRUD */
+>>>>>>> upstream/master
 
 
+<<<<<<< HEAD
+// 프로젝트 초대 기능
+//    @GetMapping("/user/invite")
+//    public String sendInvite(){
+//        userService.sendInvite();
+//
+//    }
+//}
+=======
     /*로그인 후 프로젝트 리스트 창*/
     //로그인을 성공 했을 떄 redirect로 session 값을 같이 가져와야함 (현재 session에는 로그인된 유저의 정보를 담고있다)
     @PostMapping("/proejct/projectList")
@@ -131,3 +144,4 @@ public class UserController {
 
 
 }
+>>>>>>> upstream/master
