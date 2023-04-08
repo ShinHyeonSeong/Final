@@ -16,6 +16,7 @@ import java.util.List;
 @Table(name = "project")
 public class ProjectEntity {
     @Id
+    @GeneratedValue()
     @Column(name = "projectId")
     private Long projectId;
 

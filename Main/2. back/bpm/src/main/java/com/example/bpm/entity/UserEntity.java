@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "user")
+@Table(name = "user_info")
 public class UserEntity {
     @Id
     @Column(name = "uuid")
@@ -38,6 +38,7 @@ public class UserEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "uuid")
     private List<ProjectRoleEntity> projectRoleEntityList = new ArrayList<>();
     //Entity -> DTO 변환 메서드
+
     public static UserEntity toUserEntity(UserDto userDto) {
 
         UserEntity userEntity = new UserEntity();

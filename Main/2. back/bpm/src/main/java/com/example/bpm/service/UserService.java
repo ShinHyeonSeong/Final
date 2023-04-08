@@ -73,18 +73,20 @@ public class UserService {
     }
 
     //회원 정보 변경 저장
-    public void update(String uuid, String email, String password, String name) {
+    public UserDto update(String uuid, String email, String password, String name) {
         //DB에 uuid값과 일치하는 정보를 가져와 email, password, name 만 수정해준다
         Optional<UserEntity> beforeUser = userRepository.findById(uuid);
         if (beforeUser.isPresent()) {
+            UserEntity beforUserEntity = beforeUser.get();
             log.info("정보를 찾음 (update() 서비스 작동)");
-
-            userRepository.save(UserEntity.toUpdateuserEntity(userDto));
+            UserEntity afterUser = userRepository.save(beforUserEntity.toUpdateuserEntity(email, password, name));
             log.info("회원 정보 업데이트에 성공하였습니다 (서비스 작동)");
-
+            return UserDto.toUserDto(afterUser);
         } else {
             log.info("정보를 찾지 못함 (update() 서비스 작동);");
-        }}
+            return null;
+        }
+    }
 
     //회원 탈퇴
     public void deleteById(String id) {
