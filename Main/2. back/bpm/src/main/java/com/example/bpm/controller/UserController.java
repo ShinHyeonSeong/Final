@@ -3,7 +3,6 @@ package com.example.bpm.controller;
 import com.example.bpm.dto.UserDto;
 import com.example.bpm.service.UserService;
 import jakarta.servlet.http.HttpSession;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
@@ -59,7 +58,7 @@ public class UserController {
             session.setAttribute("userInfo", loginResult);
             //로그인 성공 알림창 만들어줘야함
             log.info("로그인 성공 세션 정상 입력 (컨트롤러 작동)");
-            return "projectList page로 가야함";
+            return "redirect:/project/projectList";
         } else {
             //로그인 실패 알림창을 만들어줘야함
             log.info("로그인 실패 세션 적용 실패 (컨트롤러 작동)");
@@ -75,36 +74,43 @@ public class UserController {
         return "user/index";
     }
 
-    /*여기까지가 04.07 User 기능 최신화 */
 
-    //프로필로 가는 메서드
+    //프로필로 가는 메서드 세션값을 활용해서 user의 정보를 찾아낸다
     @GetMapping("/user/{id}")
-    public String findById(@PathVariable String id, Model model) {
-        UserDto userDto = userService.findById(id);
-        model.addAttribute("user", userDto);
-        log.info("회원정보 찾기 성공 (컨트롤러) detail 페이지로 이동");
-        return "user/detail";
+    public String goProfile(HttpSession session, Model model) {
+        UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
+        UserDto result = userService.findByUser(sessionUser.getUuid());
+        if (result != null) {
+            model.addAttribute("user", sessionUser);
+            log.info("회원정보 찾기 성공 (컨트롤러 작동) detail 페이지로 이동");
+            return "user/detail";
+        } else {
+            log.info("서비스에서 유저를 찾지 못함 (컨트롤러 작동)");
+            return null;
+        }
     }
 
-
-    //회원 정보 변경을 위한 회원 정보가 담긴 페이지 열기
+    //프로필에서 정보 변경 시 유저의 정보를 찾아오는 메서드
     @GetMapping("/user/update")
     public String updateForm(HttpSession session, Model model) {
-        //현재 적용되어 있는 session 이름이 - loginInfo 이다 userDto 객체로 저장해서 id 값을 불러와야함
-        String myId = (String) session.getAttribute("loginInfo.id");
-        UserDto userDto = userService.updateForm(myId);
-        model.addAttribute("updateUser", userDto);
+        UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
+        UserDto userDto = userService.updateForm(sessionUser.getUuid());
+        model.addAttribute("updateUserInfo", userDto);
         return "user/update";
     }
 
     //회원 정보 변경 시 메서드
     @PostMapping("/user/update")
-    public String update(@ModelAttribute UserDto userDto) {
-        userService.update(userDto);
-        log.info("정상 업데이트 되었습니다 (컨트롤러 작동)");
-        return "redirect:/user/" + userDto.getUuid();
-    }
+    public String update(@RequestParam("email") String email,
+                         @RequestParam("password") String password,
+                         @RequestParam("username") String name, HttpSession session) {
+        UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
+        log.info("변경 전 정보 " + sessionUser.toString());
 
+        userService.update(sessionUser.getUuid(), email ,password, name);
+        log.info("정상 업데이트 되었습니다 (컨트롤러 작동)");
+        return "redirect:/user/" + updateUser.getUuid();
+    }
 
     @GetMapping("/user/delete/{id}")
     public String deleteById(@PathVariable String id) {
@@ -112,27 +118,11 @@ public class UserController {
         log.info("탈퇴되었습니다 (컨트롤러 작동)");
         return "redirect:/index";
     }
-<<<<<<< HEAD
-}
-=======
-    /*  여기까지가 User 단순 CRUD */
->>>>>>> upstream/master
 
-
-<<<<<<< HEAD
-// 프로젝트 초대 기능
-//    @GetMapping("/user/invite")
-//    public String sendInvite(){
-//        userService.sendInvite();
-//
-//    }
-//}
-=======
-    /*로그인 후 프로젝트 리스트 창*/
-    //로그인을 성공 했을 떄 redirect로 session 값을 같이 가져와야함 (현재 session에는 로그인된 유저의 정보를 담고있다)
-    @PostMapping("/proejct/projectList")
-    public String goProjectList(HttpSession session) {
-        session.getAttribute("uuid");
+    //로그인을 성공 했을 떄 redirect로 session 값을 같이 가져와야함 (현재 session에는 로그인된 유저의 정보를 담고있어야한다)
+    @GetMapping("/project/projectList")
+    public String goProjectList(HttpSession session, Model model) {
+        UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
 
     }
 
@@ -144,4 +134,3 @@ public class UserController {
 
 
 }
->>>>>>> upstream/master

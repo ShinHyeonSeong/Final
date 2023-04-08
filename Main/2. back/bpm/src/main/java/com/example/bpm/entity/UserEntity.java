@@ -50,12 +50,11 @@ public class UserEntity {
     }
 
     //새로운 정보의 DTO를 받아 Entity를 최신화 (update) 시키는 메서드
-    public static UserEntity toUpdateuserEntity(UserDto userDto) {
+    public static UserEntity toUpdateuserEntity(String email, String password, String name) {
         UserEntity userEntity = new UserEntity();
-        userEntity.setUuid(String.valueOf(userDto.getUuid()));
-        userEntity.setEmail(userDto.getEmail());
-        userEntity.setPassword(userDto.getPassword());
-        userEntity.setName(userDto.getName());
+        userEntity.setEmail(email);
+        userEntity.setPassword(password);
+        userEntity.setName(name);
         return userEntity;
     }
 }

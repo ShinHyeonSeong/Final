@@ -47,7 +47,7 @@ public class UserService {
     }
 
     //ID로 회원 정보를 찾기 프로필 조회 or 회원 초대 시 필요함
-    public UserDto findById(String id) {
+    public UserDto findByUser(String id) {
         Optional<UserEntity> findId = userRepository.findById(id);
         if (findId.isPresent()) {
             UserEntity userEntity = findId.get();
@@ -63,20 +63,28 @@ public class UserService {
     public UserDto updateForm(String myId) {
         Optional<UserEntity> optionalUserEntity = userRepository.findById(myId);
         if (optionalUserEntity.isPresent()) {
-            log.info("회원정보 찾기 성공 회원 수정페이지를 엽니다 (서비스 작동)");
+            log.info("회원정보 찾기 성공 회원 수정페이지를 엽니다 (updateForm() 서비스 작동)");
             return UserDto.toUserDto(optionalUserEntity.get());
         } else {
-            log.info("회원정보를 못찾아 수정페이지를 못연다 (서비스 작동)");
+            log.info("회원정보를 못찾아 수정페이지를 못연다 (updateForm () 서비스 작동)");
             return null;
         }
 
     }
 
     //회원 정보 변경 저장
-    public void update(UserDto userDto) {
-        userRepository.save(UserEntity.toUpdateuserEntity(userDto));
-        log.info("회원 정보 업데이트에 성공하였습니다 (서비스 작동)");
-    }
+    public void update(String uuid, String email, String password, String name) {
+        //DB에 uuid값과 일치하는 정보를 가져와 email, password, name 만 수정해준다
+        Optional<UserEntity> beforeUser = userRepository.findById(uuid);
+        if (beforeUser.isPresent()) {
+            log.info("정보를 찾음 (update() 서비스 작동)");
+
+            userRepository.save(UserEntity.toUpdateuserEntity(userDto));
+            log.info("회원 정보 업데이트에 성공하였습니다 (서비스 작동)");
+
+        } else {
+            log.info("정보를 찾지 못함 (update() 서비스 작동);");
+        }}
 
     //회원 탈퇴
     public void deleteById(String id) {
