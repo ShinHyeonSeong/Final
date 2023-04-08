@@ -25,4 +25,6 @@ public class ProjectRoleEntity {
     @JoinColumn(name = "role")
     private RoleEntity role;
 
+
+
 }

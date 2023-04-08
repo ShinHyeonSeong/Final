@@ -3,25 +3,10 @@ package com.example.bpm.repository;
 import com.example.bpm.entity.ProjectRoleEntity;
 import com.example.bpm.entity.ProjectRolePKEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface ProjectRoleRepository extends JpaRepository<ProjectRoleEntity, ProjectRolePKEntity> {
+public interface ProjectRoleRepository extends JpaRepository<ProjectRoleEntity, String> {
 
-
-    @Query(value = "select * from projectRole " +
-            "where" +
-            "projectRole.role = :role",
-            nativeQuery = true)
-        //role의 값에 따라 프로젝트 리스트를 보여주는 메서드
-    List<ProjectRoleEntity> selectToRoleList(Long role);
-
-    //데이터 삽입
-    @Query(value = "insert into " +
-            "projectRole " +
-            "values (:proejctId, :uuid, :role)"
-            , nativeQuery = true)
-    ProjectRoleEntity insertToRoleEntity(String projectId, String uuid, Long role);
-
+List<ProjectRoleEntity> findAllById(String uuid);
 }

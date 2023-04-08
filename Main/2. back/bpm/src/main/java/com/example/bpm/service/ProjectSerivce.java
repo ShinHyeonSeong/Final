@@ -90,31 +90,46 @@ public class ProjectSerivce {
 
     /*ProjectRole + Project Table 관련 기능*/
 
-    //본인이 참여하고있는 프로젝트 리스트를 리턴해주는 메서드
-    public List<ProjectRoleDto> findAllToProjectList(Long roleId, String projectId) {
-        if (roleId == 1) {
-            List<ProjectRoleEntity> entityList = projectRoleRepository.selectToRoleList(Long.valueOf(1));
-            List<ProjectRoleDto> dtoList = new ArrayList<>();
-            for (ProjectRoleEntity projectRoleEntity :
-                    entityList) {
-                dtoList.add(ProjectRoleDto.toProjectRoleDto(projectRoleEntity));
+    //본인이 참여하고있는 권한자 프로젝트 리스트를 리턴해주는 메서드 (프로젝트 리스트 페이지에서 필요함)
+    public List<ProjectRoleDto> findManagerToProjectList(String userId) {
+        List<ProjectRoleEntity> entityList = projectRoleRepository.findAllById(userId);
+        List<ProjectRoleDto> dtoListToM = new ArrayList<>();
+        for (ProjectRoleEntity projectRoleEntity :
+                entityList) {
+            //1 == 권한자 (프로젝트 생성자)
+            if (projectRoleEntity.getRole().equals(1)) {
+                log.info("관리자 권한으로 된 프로젝트가 있음 (서비스 작동)");
+                dtoListToM.add(ProjectRoleDto.toProjectRoleDto(projectRoleEntity));
             }
-            log.info("권한자로 있는 프로젝트 리스트 출력(서비스 작동)");
-            return dtoList;
-        } else if (roleId == 2) {
-            List<ProjectRoleEntity> entityList = projectRoleRepository.selectToRoleList(Long.valueOf(2));
-            List<ProjectRoleDto> dtoList = new ArrayList<>();
-            for (ProjectRoleEntity projectRoleEntity :
-                    entityList) {
-                dtoList.add(ProjectRoleDto.toProjectRoleDto(projectRoleEntity));
-            }
-            log.info("비권한자로 있는 프로젝트 리스트 출력(서비스 작동)");
-            return dtoList;
-        } else {
-            log.info("roleId의 값이 잘못되었습니다 (서비스 작동)");
+        }
+        if (dtoListToM.isEmpty()) {
+            log.info("관리자 권한으로 된 프로젝트가 없음 (서비스 작동)");
             return null;
+        } else {
+            return dtoListToM;
         }
     }
+
+    //본인이 참여하고있는 비권한자 프로젝트 리스트를 리턴해주는 메서드 (프로젝트 리스트 페이지에서 필요함)
+    public List<ProjectRoleDto> findParticipantsToProjectList(String userId) {
+        List<ProjectRoleEntity> entityList = projectRoleRepository.findAllById(userId);
+        List<ProjectRoleDto> dtoListToP = new ArrayList<>();
+        for (ProjectRoleEntity projectRoleEntity :
+                entityList) {
+            //1 == 권한자 (프로젝트 생성자)
+            if (projectRoleEntity.getRole().equals(2)) {
+                log.info("비관리자 권한으로 된 프로젝트가 있음 (서비스 작동)");
+                dtoListToP.add(ProjectRoleDto.toProjectRoleDto(projectRoleEntity));
+            }
+        }
+        if (dtoListToP.isEmpty()) {
+            log.info("비관리자 권한으로 된 프로젝트가 없음 (서비스 작동)");
+            return null;
+        } else {
+            return dtoListToP;
+        }
+    }
+
 
     //생성 메서드
     public ProjectDto createProject(ProjectDto projectDto) {

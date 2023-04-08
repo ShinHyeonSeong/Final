@@ -1,6 +1,6 @@
 package com.example.bpm.controller;
 
-import com.example.bpm.dto.ProjectDto;
+import com.example.bpm.dto.ProjectRoleDto;
 import com.example.bpm.dto.UserDto;
 import com.example.bpm.service.ProjectSerivce;
 import jakarta.servlet.http.HttpSession;
@@ -10,8 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
 
 @Controller
 @Slf4j
@@ -24,15 +25,33 @@ public class ProjectController {
     @GetMapping("/project/projectList")
     public String goProjectList(HttpSession session, Model model) {
         UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
-        projectSerivce.findAllToProjectList()
-        return
+        List<ProjectRoleDto> ManagerToProjectList = projectSerivce.findManagerToProjectList(sessionUser.getUuid());
+        List<ProjectRoleDto> ParticipantsToProjectList = projectSerivce.findParticipantsToProjectList(sessionUser.getUuid());
+        if (ManagerToProjectList.isEmpty()) {
+            if (ParticipantsToProjectList.isEmpty()) {
+                log.info("참여중인 리스트가 없음");
+            } else {
+                log.info("비권한자 리스트만 있음");
+            }
+        } else {
+            if (ParticipantsToProjectList.isEmpty()) {
+                log.info("권한자 리스트만 있음");
+            } else {
+                log.info("둘다 리스트 있음");
+            }
+        }
+        model.addAttribute("ListToM", ManagerToProjectList);
+        model.addAttribute("ListToP", ParticipantsToProjectList);
+        return "projectList 페이지로 ";
     }
-    //Proejct Create 창으로 넘어가기 다음 내용은 ProjectController에서 계속 이어나감
 
     @GetMapping("/project/createPage")
     public String goToCreateProject() {
         return "project/home";
     }
 
-
+    @PostMapping("/project/createPage")
+    public String CreateProject() {
+        return "";
+    }
 }
