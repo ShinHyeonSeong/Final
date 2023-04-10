@@ -24,7 +24,9 @@ public class ProjectController {
     //로그인을 성공 했을 떄 redirect로 session 값을 같이 가져와야함 (현재 session에는 로그인된 유저의 정보를 담고있어야한다)
     @GetMapping("/project/projectList")
     public String goProjectList(HttpSession session, Model model) {
+        //세션에서 현재 로그인 되어있는 유저의 정보를 가져온다
         UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
+        //UUID를 활용하여 권한자 / 비권한자 프로젝트 리스트를 불러온다
         List<ProjectRoleDto> ManagerToProjectList = projectSerivce.findManagerToProjectList(sessionUser.getUuid());
         List<ProjectRoleDto> ParticipantsToProjectList = projectSerivce.findParticipantsToProjectList(sessionUser.getUuid());
         if (ManagerToProjectList.isEmpty()) {
@@ -40,6 +42,7 @@ public class ProjectController {
                 log.info("둘다 리스트 있음");
             }
         }
+        //null 이던 데이터가 있던 창을 보여줘야한다.
         model.addAttribute("ListToM", ManagerToProjectList);
         model.addAttribute("ListToP", ParticipantsToProjectList);
         return "projectList 페이지로 ";

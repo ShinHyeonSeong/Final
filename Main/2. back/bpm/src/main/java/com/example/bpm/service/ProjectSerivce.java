@@ -116,7 +116,7 @@ public class ProjectSerivce {
         List<ProjectRoleDto> dtoListToP = new ArrayList<>();
         for (ProjectRoleEntity projectRoleEntity :
                 entityList) {
-            //1 == 권한자 (프로젝트 생성자)
+            //2 == 비권한자 (프로젝트 참여자)
             if (projectRoleEntity.getRole().equals(2)) {
                 log.info("비관리자 권한으로 된 프로젝트가 있음 (서비스 작동)");
                 dtoListToP.add(ProjectRoleDto.toProjectRoleDto(projectRoleEntity));
