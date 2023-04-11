@@ -31,7 +31,7 @@ public class ProjectSerivce {
     /*Request Table 관련 기능*/
 
     //프로젝트 초대를 보내는 메서드      리턴 데이터는 send 한 기록을 보여준다
-    public ProjectRequestDto sendInvite(String sendUser, String recvUser, String projectId) {
+    public ProjectRequestDto sendInvite(String sendUser, String recvUser, Long projectId) {
         if (sendUser != null && recvUser != null) {
             projectRequestRepository.plusProjectRequest(sendUser, recvUser, projectId);
             log.info("친구 요청 정상 작동 (서비스 작동)");
@@ -61,7 +61,7 @@ public class ProjectSerivce {
 
     //초대 수락하는 메서드(무조건 비권한자로써 수락받는다)
     //서비스의 파라미터로 true false 값을 받아와도 되지만 파라미터가 ㅈㄴ 많으므로 컨트롤러에서 if 문을 거칠 필요가 있음 (코드 개더럽네)
-    public ProjectRoleDto submitInvite(String sendUUID, String recvUUID, String projectId, Long input) {
+    public ProjectRoleDto submitInvite(String sendUUID, String recvUUID, Long projectId, Long input) {
         //수락
         if (input == 1) {
             //ProjectRquest에 있는 데이터 삭제
@@ -134,7 +134,7 @@ public class ProjectSerivce {
     //생성 메서드
     public ProjectDto createProject(ProjectDto projectDto) {
         ProjectEntity projectEntity = projectRepository.save(ProjectEntity.toProjectEntity(projectDto));
-
+        log.info("프로젝트 정상 생성 (서비스 작동)");
         return ProjectDto.toProjectDto(projectEntity);
     }
 
