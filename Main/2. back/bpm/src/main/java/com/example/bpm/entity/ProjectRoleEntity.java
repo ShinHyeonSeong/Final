@@ -1,32 +1,41 @@
 package com.example.bpm.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 @AllArgsConstructor
-@NoArgsConstructor
-@Table(name = "projectRole")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "project_role")
 @IdClass(ProjectRolePKEntity.class)
 public class ProjectRoleEntity {
+//
+//    @EmbeddedId
+//    private ProjectRolePKEntity id;
 
+    //    @MapsId("projectId")
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "projectId")
-    private ProjectEntity projectIdToRole;
+    @JoinColumn(name = "project_id")
+    private ProjectEntity projectIdInRole;
 
+    //    @MapsId("uuid")
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "uuid")
-    private UserEntity uuid;
+    private UserEntity uuidInRole;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role")
     private RoleEntity role;
-
+//
+//    @Override
+//    public boolean isNew(){
+//        return role == null;
+//    }
 
 
 }

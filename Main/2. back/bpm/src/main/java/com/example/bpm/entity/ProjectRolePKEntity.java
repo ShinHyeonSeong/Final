@@ -1,14 +1,16 @@
 package com.example.bpm.entity;
 
-import lombok.Data;
+import jakarta.persistence.Column;
+import lombok.*;
 
 import java.io.Serializable;
 
-@Data
+@NoArgsConstructor
+@EqualsAndHashCode
 public class ProjectRolePKEntity implements Serializable {
-
-    private ProjectEntity projectId;
-
-    private UserEntity uuid;
+    @Column(name = "project_id")
+    private Long projectIdInRole;
+    @Column(name = "uuid")
+    private String uuidInRole;
 
 }

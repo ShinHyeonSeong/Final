@@ -35,7 +35,7 @@ public class UserEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "recvUUID")
     private List<ProjectRequestEntity> projectRequestEntityList2 = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "uuid")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "uuidInRole")
     private List<ProjectRoleEntity> projectRoleEntityList = new ArrayList<>();
     //Entity -> DTO 변환 메서드
 

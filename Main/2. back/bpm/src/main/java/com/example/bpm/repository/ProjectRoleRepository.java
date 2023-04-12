@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface ProjectRoleRepository extends JpaRepository<ProjectRoleEntity, String> {
+public interface ProjectRoleRepository extends JpaRepository<ProjectRoleEntity, Long> {
 
     List<ProjectRoleEntity> findAllById(String uuid);
 

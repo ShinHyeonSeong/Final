@@ -18,8 +18,8 @@ public class ProjectRoleDto {
 
     public static ProjectRoleDto toProjectRoleDto(ProjectRoleEntity projectRoleEntity){
         ProjectRoleDto projectRoleDto = new ProjectRoleDto();
-        projectRoleDto.setProjectIdToRole(projectRoleEntity.getProjectIdToRole());
-        projectRoleDto.setUuid(projectRoleEntity.getUuid());
+        projectRoleDto.setProjectIdToRole(projectRoleEntity.getProjectIdInRole());
+        projectRoleDto.setUuid(projectRoleEntity.getUuidInRole());
         projectRoleDto.setRole(projectRoleEntity.getRole());
         return projectRoleDto;
     }
