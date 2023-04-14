@@ -24,7 +24,7 @@ public class ProjectRequestEntity {
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
-    private ProjectEntity prjoectIdToRequest;
+    private ProjectEntity projectIdToRequest;
 
 
     public static ProjectRequestEntity toProjectRequestEntity(ProjectRequestDto projectRequestDto) {

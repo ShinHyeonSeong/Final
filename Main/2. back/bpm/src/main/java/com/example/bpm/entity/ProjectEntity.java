@@ -32,8 +32,11 @@ public class ProjectEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "projectIdInRole")
     private List<ProjectRoleEntity> projectRoleEntityList = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "prjoectIdToRequest")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "projectIdToRequest")
     private List<ProjectRequestEntity> projectRequestEntityList = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "projectIdToHead")
+    private List<HeadEntity> HeadEntityList = new ArrayList<>();
 
     public static ProjectEntity toProjectEntity(ProjectDto projectDto) {
         ProjectEntity projectEntity = new ProjectEntity();

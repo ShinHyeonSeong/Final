@@ -11,6 +11,7 @@ import com.example.bpm.repository.ProjectRequestRepository;
 import com.example.bpm.repository.ProjectRoleRepository;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,8 +25,11 @@ import java.util.Optional;
 //파라미터는 String 형식으로 받기로 하자 (절대 객체단위로 받으면 안됨 헷갈리기도 하고 NULL 오류가 잘 생김)
 /*해당 클래스는 프로젝트에 접근하는 방식에 관련된 권한, 초대 등을 다루고 있는 클래스이다*/
 public class ProjectSerivce {
+    @Autowired
     final private ProjectRequestRepository projectRequestRepository;
+    @Autowired
     final private ProjectRepository projectRepository;
+    @Autowired
     final private ProjectRoleRepository projectRoleRepository;
 
     /*Request Table 관련 기능*/

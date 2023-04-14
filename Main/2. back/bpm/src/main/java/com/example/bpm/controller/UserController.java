@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +17,9 @@ import org.springframework.web.bind.annotation.*;
 @ToString
 @RequiredArgsConstructor
 public class UserController {
-
+    @Autowired
     final private UserService userService;
+    @Autowired
     final private ProjectSerivce projectSerivce;
 
     @GetMapping("/user/gosave")
@@ -109,7 +111,7 @@ public class UserController {
                          @RequestParam("username") String name, HttpSession session) {
         UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
         log.info("변경 전 정보 " + sessionUser.toString());
-        UserDto newUserInfo = userService.update(sessionUser.getUuid(), email ,password, name);
+        UserDto newUserInfo = userService.update(sessionUser.getUuid(), email, password, name);
         if (newUserInfo != null) {
             log.info("정상 업데이트 되었습니다 (컨트롤러 작동)");
             session.removeAttribute("userInfo");
