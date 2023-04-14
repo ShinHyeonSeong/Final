@@ -12,17 +12,17 @@ import lombok.*;
 @IdClass(ProjectRequestPKEntity.class)
 public class ProjectRequestEntity {
     @Id
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "send_uuid")
     private UserEntity sendUUID;
 
     @Id
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "recv_uuid")
     private UserEntity recvUUID;
 
     @Id
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id")
     private ProjectEntity projectIdToRequest;
 

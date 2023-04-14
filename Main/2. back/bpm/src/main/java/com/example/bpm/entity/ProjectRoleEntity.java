@@ -18,17 +18,17 @@ public class ProjectRoleEntity {
 
     //    @MapsId("projectId")
     @Id
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id")
     private ProjectEntity projectIdInRole;
 
     //    @MapsId("uuid")
     @Id
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "uuid")
     private UserEntity uuidInRole;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role")
     private RoleEntity role;
 //

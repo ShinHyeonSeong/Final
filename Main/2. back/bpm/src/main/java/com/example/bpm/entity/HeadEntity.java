@@ -30,7 +30,7 @@ public class HeadEntity {
     private int completion;
 
     @JoinColumn
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private ProjectEntity projectIdToHead;
 
     public static HeadEntity toHeadEntity(HeadDto headDto) {
