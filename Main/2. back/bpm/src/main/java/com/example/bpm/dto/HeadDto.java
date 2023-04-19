@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
-//목표
+//목표 DTO
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

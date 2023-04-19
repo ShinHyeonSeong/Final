@@ -56,7 +56,7 @@ public class ProjectController {
         return "project/home";
     }
 
-    //프로젝트 생성 버튼을 누르는 순간!!!!!!! ㅎㅔㅎ 술마셔떠 나
+    //프로젝트 생성 버튼을 누르는 순간 프로젝트 생성되는 메서드
     @PostMapping("/project/createPage")
     public String createProject(@ModelAttribute ProjectDto projectDto, HttpSession session, Model model) {
         if (projectDto.equals(null)) {
@@ -77,13 +77,16 @@ public class ProjectController {
     }
 
 
-    //여기서 부터는 프로젝트를 선택했을때 목표부터 세부내용 문서까지 연결해야되므로 조금 걸림
-/*    //프로젝트 선택 시 그 프로젝트 정보를 가져오며 넘어가는 메서드
-    @GetMapping("/project/projectList/select/{id}")
-    public String selectProject(@PathVariable Long id, Model model) {
 
-        return "";
-    }*/
+  //프로젝트 선택 시 그 프로젝트 정보를 가져오며 프로젝트 창으로 넘어가는 메서드
+    @GetMapping("/project/projectList/{id}")
+    public String selectProject(@PathVariable Long id, Model model) {
+        ProjectDto presentDto = projectSerivce.selectProject(id);
+        model.addAttribute(presentDto);
+        //프로젝트 id 값을 넘겨야되는데
+        return "project/{id}";
+    }
+
 }
 
 
