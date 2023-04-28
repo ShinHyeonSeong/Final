@@ -1,0 +1,37 @@
+
+server:
+  port: 8002
+
+spring:
+  #JPA
+  jpa:
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      hbm2ddl: update
+      format_sql: true
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MariaDB103Dialect
+    properties :
+      hibernate:
+        jdbc:
+          lob: non_contextual_creation=true
+        temp:
+          use_jdbc_metadata_defaults: false
+
+
+  #DataBase
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://127.0.0.1:3306/bpm
+    username: admin
+    password: 1q2w3e4r
+  thymeleaf:
+    cache: false
+
+  logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type.descriptor.sql.BasicBinder: TRACE
