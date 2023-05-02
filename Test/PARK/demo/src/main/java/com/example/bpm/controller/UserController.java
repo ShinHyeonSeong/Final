@@ -1,9 +1,11 @@
 package com.example.bpm.controller;
 
 import com.example.bpm.dto.UserDto;
-
+import com.example.bpm.service.ProjectSerivce;
 import com.example.bpm.service.UserService;
-import jakarta.servlet.http.HttpSession;
+import javax.persistence.*;
+import javax.servlet.http.HttpSession;
+
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
@@ -23,11 +25,11 @@ public class UserController {
     @Autowired
     final private UserService userService;
     @Autowired
-//    final private ProjectSerivce projectSerivce;
+    final private ProjectSerivce projectSerivce;
 
     @GetMapping("/user/gosave")
     public String goSave() {
-        return "join";
+        return "user/save";
     }
 
 
@@ -44,14 +46,14 @@ public class UserController {
             return null;
         } else {
             log.info("save 정상 작동 (컨트롤러)");
-            return "login";
+            return "user/login";
         }
     }
 
 
     @GetMapping("/user/gologin")
     public String login() {
-        return "login";
+        return "user/login";
     }
 
 
@@ -66,11 +68,11 @@ public class UserController {
             session.setAttribute("userInfo", loginResult);
             //로그인 성공 알림창 만들어줘야함
             log.info("로그인 성공 세션 정상 입력 (컨트롤러 작동)");
-            return "redirect:/projectList";
+            return "redirect:/project/projectList";
         } else {
             //로그인 실패 알림창을 만들어줘야함
             log.info("로그인 실패 세션 적용 실패 (컨트롤러 작동)");
-            return "login";
+            return "user/login";
         }
     }
 
@@ -114,7 +116,7 @@ public class UserController {
                          @RequestParam("username") String name, HttpSession session) {
         UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
         log.info("변경 전 정보 " + sessionUser.toString());
-        UserDto newUserInfo = userService.update(sessionUser.getUuid(), email ,password, name);
+        UserDto newUserInfo = userService.update(sessionUser.getUuid(), email, password, name);
         if (newUserInfo != null) {
             log.info("정상 업데이트 되었습니다 (컨트롤러 작동)");
             session.removeAttribute("userInfo");

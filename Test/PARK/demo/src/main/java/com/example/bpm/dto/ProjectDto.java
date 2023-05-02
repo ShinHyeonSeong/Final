@@ -1,6 +1,7 @@
 package com.example.bpm.dto;
 
 import com.example.bpm.entity.ProjectEntity;
+import com.example.bpm.repository.ProjectRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,17 +10,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProjectDto {
-    private int projectId;
+    private Long projectId;
     private String title;
     private String subtitle;
-    private String projectPublic;
+    private Long projectPublic;
 
     public static ProjectDto toProjectDto(ProjectEntity projectEntity) {
-        ProjectDto projectDto = new ProjectDto();
-        projectDto.setProjectId(projectEntity.getProjectId());
-        projectDto.setTitle(projectEntity.getTitle());
-        projectDto.setSubtitle(projectEntity.getSubtitle());
-        projectDto.setProjectPublic(projectEntity.getProjectPublic());
+        ProjectDto projectDto = new ProjectDto(projectEntity.getProjectId(), projectEntity.getTitle(), projectEntity.getSubtitle(), projectEntity.getProjectPublic());
         return projectDto;
     }
 }

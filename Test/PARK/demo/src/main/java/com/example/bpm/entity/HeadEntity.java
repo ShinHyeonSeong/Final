@@ -1,11 +1,11 @@
 package com.example.bpm.entity;
 
 import com.example.bpm.dto.HeadDto;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity

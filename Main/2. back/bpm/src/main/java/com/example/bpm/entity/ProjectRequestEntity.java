@@ -21,7 +21,6 @@ public class ProjectRequestEntity {
     @JoinColumn(name = "recv_uuid")
     private UserEntity recvUUID;
 
-    @Id
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id")
     private ProjectEntity projectIdToRequest;

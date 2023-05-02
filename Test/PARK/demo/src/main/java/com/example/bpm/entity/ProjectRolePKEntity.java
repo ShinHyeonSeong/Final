@@ -1,7 +1,8 @@
 package com.example.bpm.entity;
 
-import jakarta.persistence.Column;
-import lombok.*;
+import javax.persistence.*;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 

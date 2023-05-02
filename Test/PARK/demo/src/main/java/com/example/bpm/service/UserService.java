@@ -5,6 +5,7 @@ import com.example.bpm.entity.UserEntity;
 import com.example.bpm.repository.UserRepository;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,13 +16,12 @@ import java.util.Optional;
 //메서드 리턴타입은 무조건 Dto로 나오게 하자.
 //파라미터는 String 형식으로 받기로 하자 (절대 객체단위로 받으면 안됨 헷갈리기도 하고 NULL 오류가 잘 생김)
 public class UserService {
-
+    @Autowired
     final private UserRepository userRepository;
 
     //회원가입
     public UserDto save(UserDto userDto) {
         UserEntity userEntity = UserEntity.toUserEntity(userDto);
-        log.info(userEntity.getEmail() + userEntity.getName() + userEntity.getPassword());
         Optional<UserEntity> userResult = userRepository.findByEmail(userDto.getEmail());
         if (userResult.isPresent()) {
             log.info("이미 있는 이메일이다 회원가입 실패! (서비스 작동)");
@@ -36,11 +36,9 @@ public class UserService {
 
     //로그인
     public UserDto login(String email, String password) {
-        log.info("서비스 변수 이메일 : " + email + " 서비스 변수 패스워드 : " + password);
         Optional<UserEntity> findUser = userRepository.findByEmail(email);
         UserEntity loginUser = findUser.get();
-        log.info("검증용 엔티티의 이메일 : " + loginUser.getEmail() + " 검증용 엔티티의 패스워드 : " + loginUser.getPassword());
-        if (loginUser.getEmail().equals(email) && loginUser.getPassword().equals(password)) {
+        if (loginUser.getEmail() == email && loginUser.getPassword() == password) {
             log.info("이메일 && 패스워드 일치 로그인 성공 ");
             return UserDto.toUserDto(loginUser);
         } else {

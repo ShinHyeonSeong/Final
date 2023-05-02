@@ -1,7 +1,7 @@
 package com.example.bpm.entity;
 
 import com.example.bpm.dto.RoleDto;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.Data;
 
 import java.util.ArrayList;

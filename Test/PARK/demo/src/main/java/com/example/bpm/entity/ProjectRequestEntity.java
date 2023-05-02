@@ -1,16 +1,16 @@
 package com.example.bpm.entity;
 
 import com.example.bpm.dto.ProjectRequestDto;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.*;
 
 @Entity
 @Data
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "project_requst")
 @IdClass(ProjectRequestPKEntity.class)
 public class ProjectRequestEntity {
+
     @Id
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "send_uuid")
@@ -21,10 +21,9 @@ public class ProjectRequestEntity {
     @JoinColumn(name = "recv_uuid")
     private UserEntity recvUUID;
 
-    @Id
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id")
-    private ProjectEntity projectId;
+    private ProjectEntity projectIdToRequest;
 
 
     public static ProjectRequestEntity toProjectRequestEntity(ProjectRequestDto projectRequestDto) {

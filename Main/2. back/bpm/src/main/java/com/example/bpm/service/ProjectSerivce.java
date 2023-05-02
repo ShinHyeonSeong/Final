@@ -21,9 +21,6 @@ import java.util.Optional;
 @Service
 @Slf4j
 @Builder
-//메서드 리턴타입은 무조건 Dto로 나오게 하자.
-//파라미터는 String 형식으로 받기로 하자 (절대 객체단위로 받으면 안됨 헷갈리기도 하고 NULL 오류가 잘 생김)
-/*해당 클래스는 프로젝트에 접근하는 방식에 관련된 권한, 초대 등을 다루고 있는 클래스이다*/
 public class ProjectSerivce {
     @Autowired
     final private ProjectRequestRepository projectRequestRepository;
@@ -51,7 +48,7 @@ public class ProjectSerivce {
 
     //초대를 확인하는 메서드 recvUUID로만 보여짐
     public List<ProjectRequestDto> findAllToRequestProject(String recvUUID) {
-        List<ProjectRequestEntity> entityList = projectRequestRepository.ToParticipantsList(recvUUID);
+        List<ProjectRequestEntity> entityList = projectRequestRepository.selectParticipantsList(recvUUID);
         List<ProjectRequestDto> dtoList = new ArrayList<>();
 
         for (ProjectRequestEntity projectRequestEntity :
@@ -69,7 +66,7 @@ public class ProjectSerivce {
         //수락
         if (input == 1) {
             //ProjectRquest에 있는 데이터 삭제
-            projectRequestRepository.deleteToRequestRow(sendUUID, recvUUID, projectId);
+            projectRequestRepository.deleteById(sendUUID, recvUUID);
             log.info("수락 요청으로 인한 요청테이블 데이터 삭제 작동 (서비스 작동)");
             //ProejctRole Table에 데이터 추가
             ProjectRoleEntity projectRoleEntity = projectRoleRepository.insertToRoleEntity(projectId, recvUUID, Long.valueOf(1));
@@ -79,7 +76,7 @@ public class ProjectSerivce {
         //거절
         else if (input == 2) {
             //ProjectRquest에 있는 데이터 삭제
-            projectRequestRepository.deleteToRequestRow(sendUUID, recvUUID, projectId);
+            projectRequestRepository.deleteById(sendUUID, recvUUID);
             log.info("거절 요청으로 인한 요청테이블 데이터 삭제 작동 (서비스 작동)");
             return null;
         } else {

@@ -14,8 +14,4 @@ public class MainController {
         return "index";
     }
 
-    @GetMapping("/projectList")
-    public String projectList() {
-        return "projectList";
-    }
 }

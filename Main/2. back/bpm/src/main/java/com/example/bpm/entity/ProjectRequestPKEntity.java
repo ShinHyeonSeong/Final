@@ -15,6 +15,4 @@ public class ProjectRequestPKEntity implements Serializable {
     private UserEntity sendUUID;
     @Column(name = "recv_uuid")
     private UserEntity recvUUID;
-    @Column(name = "project_id")
-    private ProjectEntity projectIdToRequest;
 }

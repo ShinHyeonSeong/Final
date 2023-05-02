@@ -10,13 +10,21 @@ import java.util.Optional;
 //send와 recv로 id를 식별하고 get() 함수로 projectid를 찾는 방식을 써야한다.
 //아마 오류 뜰 확률 ㅈㄴ 높음 String이 PK 키인데 Long 타입이 껴있음....
 public interface ProjectRequestRepository extends JpaRepository<ProjectRequestEntity, String> {
+    @Query(value = // 괄호한 value 값의 sql문을 실행시킴
+            "delete FROM" +
+                    " project_requst " +
+                    "WHERE send_uuid = :sendUUID AND recv_uuid = :recvUUID",
+            nativeQuery = true )
+    void deleteById(String sendUUID, String recvUUID);
 
-    void plusProjectRequest(String send_uuid, String recv_uuid, Long project_id);
+    @Query(value = "insert into project_requst(send_uuid, recv_uuid, project_id) values (:sendUser, :recvUser, :projectId)", nativeQuery = true)
+    void plusProjectRequest(String sendUser, String recvUser, Long projectId);
 
-    Optional<ProjectRequestEntity> selectToRequsetRow(String send_uuid, String recv_uuid, Long project_id);
 
-    List<ProjectRequestEntity> ToParticipantsList(String recv_uuid);
+    @Query(value = "select * " +
+            "from project_requst where send_uuid = :sendUser AND recv_uuid = :recvUser AND project_id = :projectId ", nativeQuery = true)
+    Optional<ProjectRequestEntity> selectToRequsetRow(String sendUser, String recvUser, Long projectId);
 
-//    @Query("delete from proej")
-    void deleteToRequestRow(String send_uuid, String recv_uuid, Long project_id);
+    @Query(value = "select * from project_requst where recv_uuid = :recvUUID", nativeQuery = true)
+    List<ProjectRequestEntity> selectParticipantsList(String recvUUID);
 }
