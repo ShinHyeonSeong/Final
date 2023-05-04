@@ -1,14 +1,16 @@
 package com.example.bpm.entity;
 
 import com.example.bpm.dto.RoleDto;
-import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "role")
 public class RoleEntity {
     @Id

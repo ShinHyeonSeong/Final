@@ -1,14 +1,17 @@
 package com.example.bpm.entity;
 
 import com.example.bpm.dto.UserDto;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "user_info")
 public class UserEntity {
     @Id

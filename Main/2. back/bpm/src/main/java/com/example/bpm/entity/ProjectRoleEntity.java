@@ -1,7 +1,8 @@
 package com.example.bpm.entity;
 
-import jakarta.persistence.*;
 import lombok.*;
+
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -12,17 +13,11 @@ import lombok.*;
 @Table(name = "project_role")
 @IdClass(ProjectRolePKEntity.class)
 public class ProjectRoleEntity {
-//
-//    @EmbeddedId
-//    private ProjectRolePKEntity id;
-
-    //    @MapsId("projectId")
     @Id
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id")
-    private ProjectEntity projectIdInRole;
+    private ProjectEntity projectIdToRole;
 
-    //    @MapsId("uuid")
     @Id
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "uuid")
@@ -31,11 +26,6 @@ public class ProjectRoleEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role")
     private RoleEntity role;
-//
-//    @Override
-//    public boolean isNew(){
-//        return role == null;
-//    }
 
 
 }
