@@ -1,11 +1,13 @@
 package com.example.bpm.entity;
 
 import com.example.bpm.dto.ProjectRequestDto;
-import jakarta.persistence.*;
 import lombok.*;
 
+import javax.persistence.*;
+
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table(name = "project_requst")

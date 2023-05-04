@@ -1,16 +1,15 @@
 package com.example.bpm.entity;
 
 import com.example.bpm.dto.ProjectDto;
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "project")
@@ -29,14 +28,20 @@ public class ProjectEntity {
     @Column(name = "projectPublic")
     private Long projectPublic;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "projectIdInRole")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "projectIdToRole")
     private List<ProjectRoleEntity> projectRoleEntityList = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "projectIdToRequest")
     private List<ProjectRequestEntity> projectRequestEntityList = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "projectIdToHead")
-    private List<HeadEntity> HeadEntityList = new ArrayList<>();
+    private List<HeadEntity> headEntityList = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "projectIdToDetail")
+    private List<DetailEntity> detailEntityList = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "projectIdToWork")
+    private List<WorkEntity> workEntityList = new ArrayList<>();
 
     public static ProjectEntity toProjectEntity(ProjectDto projectDto) {
         ProjectEntity projectEntity = new ProjectEntity();

@@ -1,13 +1,11 @@
 package com.example.bpm.entity;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import java.io.Serializable;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProjectRequestPKEntity implements Serializable {
