@@ -26,6 +26,7 @@ public class ProjectController {
     @Autowired
     final private ProjectSerivce projectSerivce;
 
+    /* - - - - 프로젝트를 생성하고 선택하는 매핑 - - - -  */
     //로그인을 성공 했을 떄 redirect로 session 값을 같이 가져와야함 (현재 session에는 로그인된 유저의 정보를 담고있어야한다)
     @GetMapping("/project/projectList")
     public String getProjectList(HttpSession session, Model model) {
@@ -53,10 +54,12 @@ public class ProjectController {
         return "projectList 페이지로 ";
     }
 
+
     @GetMapping("/project/createPage")
     public String goToCreateProject() {
         return "project/home";
     }
+
 
     //프로젝트 생성 버튼을 누르는 순간 프로젝트 생성되는 메서드
     @PostMapping("/project/createPage")
@@ -71,6 +74,7 @@ public class ProjectController {
         }
     }
 
+    //프로젝트 삭제
     @GetMapping("/project/delete/{id}")
     public String deleteProject(@PathVariable Long id) {
         projectSerivce.deleteProject(id);
@@ -89,6 +93,19 @@ public class ProjectController {
         return "project/{id}";
     }
 
+
+    /* - - - - 프로젝트를 생성하고 선택하는 매핑 끝 - - - -  */
+    
+    /* - - - - 프로젝트 안에 사이드바 메뉴 (다 getmapping 처리 해주면 댐) - - - - */
+    
+    //목표
+    //작업
+    //문서
+    //프로젝트생성
+
+
+
+    
 }
 
 
