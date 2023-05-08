@@ -60,6 +60,16 @@ a {
 	margin: 10px;
 }
 
+.member {
+	margin: none;
+}
+
+.member-email {
+	color: #888;
+	font-size: 0.75rem;
+	margin-top: -1rem;
+}
+
 .my-work {
 	background-color: #333;
 	color: #fff;
