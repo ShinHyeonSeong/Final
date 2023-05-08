@@ -13,10 +13,9 @@ public class ProjectDto {
     private Long projectId;
     private String title;
     private String subtitle;
-    private Long projectPublic;
 
     public static ProjectDto toProjectDto(ProjectEntity projectEntity) {
-        ProjectDto projectDto = new ProjectDto(projectEntity.getProjectId(), projectEntity.getTitle(), projectEntity.getSubtitle(), projectEntity.getProjectPublic());
+        ProjectDto projectDto = new ProjectDto(projectEntity.getProjectId(), projectEntity.getTitle(), projectEntity.getSubtitle());
         return projectDto;
     }
 }

@@ -17,7 +17,7 @@ import java.util.List;
 public class ProjectEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "projectId")
+    @Column(name = "project_id")
     private Long projectId;
 
     @Column(name = "title")
@@ -26,10 +26,7 @@ public class ProjectEntity {
     @Column(name = "subtitle")
     private String subtitle;
 
-    @Column(name = "projectPublic")
-    private Long projectPublic;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "projectIdInRole")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "projectIdInRole", cascade = CascadeType.REMOVE)
     private List<ProjectRoleEntity> projectRoleEntityList = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "projectIdToRequest")
@@ -43,7 +40,6 @@ public class ProjectEntity {
         projectEntity.setProjectId(projectDto.getProjectId());
         projectEntity.setTitle(projectDto.getTitle());
         projectEntity.setSubtitle(projectDto.getSubtitle());
-        projectEntity.setProjectPublic(projectDto.getProjectPublic());
         return projectEntity;
     }
 

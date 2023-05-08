@@ -11,6 +11,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProjectRequestPKEntity implements Serializable {
-    private String sendUUID;
-    private String recvUUID;
+    private UserEntity sendUUID;
+    private UserEntity recvUUID;
 }

@@ -1,13 +1,17 @@
 package com.example.bpm.service;
 
 import com.example.bpm.dto.UserDto;
+import com.example.bpm.entity.ProjectRoleEntity;
 import com.example.bpm.entity.UserEntity;
+import com.example.bpm.repository.ProjectRoleRepository;
 import com.example.bpm.repository.UserRepository;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,6 +22,8 @@ import java.util.Optional;
 public class UserService {
     @Autowired
     final private UserRepository userRepository;
+    @Autowired
+    private ProjectRoleRepository projectRoleRepository;
 
     //회원가입
     public UserDto save(UserDto userDto) {
@@ -38,7 +44,7 @@ public class UserService {
     public UserDto login(String email, String password) {
         Optional<UserEntity> findUser = userRepository.findByEmail(email);
         UserEntity loginUser = findUser.get();
-        if (loginUser.getEmail() == email && loginUser.getPassword() == password) {
+        if (loginUser.getEmail().equals(email) && loginUser.getPassword().equals(password)) {
             log.info("이메일 && 패스워드 일치 로그인 성공 ");
             return UserDto.toUserDto(loginUser);
         } else {
@@ -74,19 +80,42 @@ public class UserService {
     }
 
     //회원 정보 변경 저장
-    public UserDto update(String uuid, String email, String password, String name) {
+    public UserDto update(UserDto dto, String email, String name) {
+        dto.setEmail(email);
+        dto.setName(name);
+        UserEntity afterEntity = UserEntity.toUserEntity(dto);
+        UserEntity saveEntity = userRepository.save(afterEntity);
+        return UserDto.toUserDto(saveEntity);
         //DB에 uuid값과 일치하는 정보를 가져와 email, password, name 만 수정해준다
-        Optional<UserEntity> beforeUser = userRepository.findById(uuid);
-        if (beforeUser.isPresent()) {
-            UserEntity beforUserEntity = beforeUser.get();
-            log.info("정보를 찾음 (update() 서비스 작동)");
-            UserEntity afterUser = userRepository.save(beforUserEntity.toUpdateuserEntity(email, password, name));
-            log.info("회원 정보 업데이트에 성공하였습니다 (서비스 작동)");
-            return UserDto.toUserDto(afterUser);
-        } else {
-            log.info("정보를 찾지 못함 (update() 서비스 작동);");
-            return null;
-        }
+//        Optional<UserEntity> beforeUser = userRepository.findById(uuid);
+//        if (beforeUser.isPresent()) {
+//            UserEntity beforUserEntity = beforeUser.get();
+//            log.info("정보를 찾음 (update() 서비스 작동)");
+//            UserEntity afterUser = userRepository.save(beforUserEntity.toUpdateuserEntity(email, name));
+//            log.info("회원 정보 업데이트에 성공하였습니다 (서비스 작동)");
+//            return UserDto.toUserDto(afterUser);
+//        } else {
+//            log.info("정보를 찾지 못함 (update() 서비스 작동);");
+//            return null;
+//        }
+    }
+
+    // 비밀번호 변경 메서드. 각 결과 번호에 대응하는 alert 메시지 전송 필요.
+    public int changePassword(UserDto userDto, String email, String password,
+                                 String newPassword, String confirmPassword) {
+        UserEntity userEntity = userRepository.findById(userDto.getUuid()).get();
+        if (userEntity.getEmail().equals(email)) {
+            log.info("이메일 일치");
+            if (userEntity.getPassword().equals(password)) {
+                log.info("패스워드 일치");
+                if (newPassword.equals(confirmPassword)) {
+                    log.info("새로운 패스워드 일치");
+                    userEntity.setPassword(newPassword);
+                    userRepository.save(userEntity);
+                    return 0;
+                } else { return 3; }
+            }else { return 2; }
+        } else { return 1; }
     }
 
     //회원 탈퇴
@@ -94,4 +123,27 @@ public class UserService {
         userRepository.deleteById(id);
         log.info("회원 정보를 정상 삭제하였습니다 (서비스 작동)");
     }
+
+    public List<UserDto> searchUser(String searchKeyword) {
+        List<UserEntity> entities = userRepository.findAllByEmailContaining(searchKeyword);
+        log.info("조회 완료, " + entities.isEmpty());
+        List<UserDto> dtoList = new ArrayList<UserDto>();
+        for (UserEntity entity : entities) {
+            log.info(entity.getEmail());
+            dtoList.add(UserDto.toUserDto(entity));
+        }
+        return dtoList;
+    }
+
+    public List<UserDto> searchUserToProject(Long id) {
+        List<ProjectRoleEntity> projectRoleEntities = projectRoleRepository.userForProject(id);
+        List<UserDto> userDtos = new ArrayList<UserDto>() {
+        };
+        for(ProjectRoleEntity projectRoleEntity : projectRoleEntities) {
+            Optional<UserEntity> userEntity = userRepository.findById(projectRoleEntity.getUuidInRole().getUuid());
+            userDtos.add(UserDto.toUserDto(userEntity.get()));
+        }
+        return userDtos;
+    }
 }
+

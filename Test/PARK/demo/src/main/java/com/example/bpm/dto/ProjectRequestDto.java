@@ -19,6 +19,7 @@ public class ProjectRequestDto {
         ProjectRequestDto projectRequestDto = new ProjectRequestDto();
         projectRequestDto.setSendUUID(projectRequestEntity.getSendUUID());
         projectRequestDto.setRecvUUID(projectRequestEntity.getRecvUUID());
+        projectRequestDto.setPrjoectIdToRequest(projectRequestEntity.getProjectIdToRequest());
         return projectRequestDto;
     }
 }

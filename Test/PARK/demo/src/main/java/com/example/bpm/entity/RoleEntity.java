@@ -12,9 +12,10 @@ import java.util.List;
 @Table(name = "role")
 public class RoleEntity {
     @Id
+    @Column(name = "role_id")
     private Long Id;
 
-    @Column
+    @Column(name = "role_name")
     private String roleName;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "role")

@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 @Slf4j
 @ToString
@@ -27,9 +29,9 @@ public class UserController {
     @Autowired
     final private ProjectSerivce projectSerivce;
 
-    @GetMapping("/user/gosave")
+    @GetMapping("/user/join")
     public String goSave() {
-        return "user/save";
+        return "join";
     }
 
 
@@ -46,14 +48,14 @@ public class UserController {
             return null;
         } else {
             log.info("save 정상 작동 (컨트롤러)");
-            return "user/login";
+            return "login";
         }
     }
 
 
-    @GetMapping("/user/gologin")
+    @GetMapping("/user/login")
     public String login() {
-        return "user/login";
+        return "login";
     }
 
 
@@ -68,11 +70,11 @@ public class UserController {
             session.setAttribute("userInfo", loginResult);
             //로그인 성공 알림창 만들어줘야함
             log.info("로그인 성공 세션 정상 입력 (컨트롤러 작동)");
-            return "redirect:/project/projectList";
+            return "redirect:/project/projectManagerList";
         } else {
             //로그인 실패 알림창을 만들어줘야함
             log.info("로그인 실패 세션 적용 실패 (컨트롤러 작동)");
-            return "user/login";
+            return "login";
         }
     }
 
@@ -81,23 +83,33 @@ public class UserController {
         //세션으로 로그아웃 처리
         session.invalidate();
         log.info("로그아웃 성공 세션 정상 작동(컨트롤러)");
-        return "user/index";
+        return "redirect:/index";
     }
 
 
     //프로필로 가는 메서드 세션값을 활용해서 user의 정보를 찾아낸다
-    @GetMapping("/user/{id}")
-    public String goProfile(HttpSession session, Model model) {
+    @GetMapping("/user/account")
+    public String goAccount(HttpSession session, Model model) {
         UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
         UserDto result = userService.findByUser(sessionUser.getUuid());
-        if (result != null) {
-            model.addAttribute("user", sessionUser);
-            log.info("회원정보 찾기 성공 (컨트롤러 작동) detail 페이지로 이동");
-            return "user/detail";
-        } else {
-            log.info("서비스에서 유저를 찾지 못함 (컨트롤러 작동)");
-            return null;
-        }
+        model.addAttribute("user", sessionUser);
+        return "account";
+//        if (result != null) {
+//            model.addAttribute("user", sessionUser);
+//            log.info("회원정보 찾기 성공 (컨트롤러 작동) detail 페이지로 이동");
+//            return "user/detail";
+//        } else {
+//            log.info("서비스에서 유저를 찾지 못함 (컨트롤러 작동)");
+//            return null;
+//        }
+    }
+
+    @GetMapping("/user/accountUpdate")
+    public String goAccountChange(HttpSession session, Model model) {
+        UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
+        UserDto result = userService.findByUser(sessionUser.getUuid());
+        model.addAttribute("user", sessionUser);
+        return "accountUpdate";
     }
 
     //프로필에서 정보 변경 시 유저의 정보를 찾아오는 메서드
@@ -112,28 +124,68 @@ public class UserController {
     //회원 정보 변경 시 메서드
     @PostMapping("/user/update")
     public String update(@RequestParam("email") String email,
-                         @RequestParam("password") String password,
-                         @RequestParam("username") String name, HttpSession session) {
+                         @RequestParam("userName") String name, HttpSession session) {
         UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
-        log.info("변경 전 정보 " + sessionUser.toString());
-        UserDto newUserInfo = userService.update(sessionUser.getUuid(), email, password, name);
-        if (newUserInfo != null) {
+        log.info("변경 전 정보 " + sessionUser.getEmail() + sessionUser.getName());
+        UserDto updateDto = userService.update(sessionUser, email, name);
+        log.info("변경 후 정보 " + updateDto.getEmail() + updateDto.getName());
+        if (updateDto != null) {
             log.info("정상 업데이트 되었습니다 (컨트롤러 작동)");
-            session.removeAttribute("userInfo");
-            session.setAttribute("userInfo", newUserInfo);
-            return "redirect:/user/" + sessionUser.getUuid();
+//            session.removeAttribute("userInfo");
+//            session.setAttribute("userInfo", updateDto);
+            return "redirect:/user/login";
         } else {
             log.info("업데이트 불가 (컨트롤러 작동)");
-            return null;
+            return "redirect:/user/accountUpdate";
         }
+    }
+    @GetMapping("/user/passwordChange")
+    public String goPasswordChange() {
+        return "passwordChange";
+    }
+
+    // 비밀번호 변경 메서드
+    @PostMapping("/passwordUpdate")
+    public String passwordChange(@RequestParam("email") String email,
+                                 @RequestParam("password") String password,
+                                 @RequestParam("newPassword") String newPassword,
+                                 @RequestParam("confirmPassword") String confirmPassword,
+                                 HttpSession session) {
+        UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
+        log.info("컨트롤러 호출 완료");
+        log.info(sessionUser.getPassword(), password, email, newPassword, confirmPassword);
+        int result = userService.changePassword(sessionUser, email, password, newPassword, confirmPassword);
+        if (result == 0) {
+            session.removeAttribute("userInfo");
+            return "login";
+        } else return "login";
     }
 
     //회원 탈퇴 메서드
-    @GetMapping("/user/delete/{id}")
-    public String deleteById(@PathVariable String id, HttpSession session) {
-        userService.deleteById(id);
+    @GetMapping("/user/delete")
+    public String deleteById(HttpSession session) {
+        UserDto userDto = (UserDto)session.getAttribute("userInfo");
+        userService.deleteById(userDto.getUuid());
         session.invalidate();
         log.info("탈퇴되었습니다 (컨트롤러 작동)");
         return "redirect:/index";
+    }
+
+    @GetMapping("/user/search")
+    public String searchMember() {
+        return"searchMember";
+    }
+
+    @PostMapping("/user/returnSearch")
+    public String search(@RequestParam("searchKeyword") String searchKeyword, Model model) {
+        log.info("검색 키워드 : " + searchKeyword);
+        List<UserDto> dtoList = userService.searchUser(searchKeyword);
+
+        if(dtoList.isEmpty()) {
+            log.info("검색 결과 없음");
+            return "redirect:/user/search";
+        }
+        model.addAttribute("searchUsers", dtoList);
+        return "searchMember";
     }
 }

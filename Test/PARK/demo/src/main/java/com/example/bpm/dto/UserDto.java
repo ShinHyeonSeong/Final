@@ -1,17 +1,13 @@
 package com.example.bpm.dto;
 
 import com.example.bpm.entity.UserEntity;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.UUID;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-@ToString
+@AllArgsConstructor
 public class UserDto {
     private String uuid;
     private String email;
