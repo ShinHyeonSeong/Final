@@ -7,6 +7,7 @@ import com.example.bpm.dto.UserDto;
 import com.example.bpm.entity.*;
 import com.example.bpm.repository.*;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,10 +19,7 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-@Builder
-//메서드 리턴타입은 무조건 Dto로 나오게 하자.
-//파라미터는 String 형식으로 받기로 하자 (절대 객체단위로 받으면 안됨 헷갈리기도 하고 NULL 오류가 잘 생김)
-/*해당 클래스는 프로젝트에 접근하는 방식에 관련된 권한, 초대 등을 다루고 있는 클래스이다*/
+@NoArgsConstructor(force = true)
 public class ProjectSerivce {
     @Autowired
     final private ProjectRequestRepository projectRequestRepository;

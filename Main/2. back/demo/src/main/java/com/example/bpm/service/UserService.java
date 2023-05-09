@@ -5,7 +5,7 @@ import com.example.bpm.entity.ProjectRoleEntity;
 import com.example.bpm.entity.UserEntity;
 import com.example.bpm.repository.ProjectRoleRepository;
 import com.example.bpm.repository.UserRepository;
-import lombok.Builder;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,14 +16,14 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-@Builder
+@AllArgsConstructor
 //메서드 리턴타입은 무조건 Dto로 나오게 하자.
 //파라미터는 String 형식으로 받기로 하자 (절대 객체단위로 받으면 안됨 헷갈리기도 하고 NULL 오류가 잘 생김)
 public class UserService {
     @Autowired
     final private UserRepository userRepository;
     @Autowired
-    private ProjectRoleRepository projectRoleRepository;
+    final private ProjectRoleRepository projectRoleRepository;
 
     //회원가입
     public UserDto save(UserDto userDto) {
