@@ -3,12 +3,15 @@ package com.example.bpm.entity;
 import com.example.bpm.dto.UserDto;
 import javax.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "user_info")
 public class UserEntity {
     @Id
@@ -25,10 +28,6 @@ public class UserEntity {
     private String name;
 
 
-    //주인으로 설정된 부분은 DB 의 연관관계와 매핑되서 외래키를 관리하고, 다른 한쪽은 읽기만 가능하게된다.
-    //외래키를 관리하는쪽(외래키가 존재하는 쪽) 즉, 주인은 @JoinColumn 을 써주고, 그렇지 않은쪽은 mappedBy 를 쓰는것이다.
-    //(단방향일때는 mappedBy 안써도됨)
-    //@JoinColumn 어노테이션을 이용해서, 외래키가 어디에 있는지 알려준다는점이 중요하다.
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "sendUUID")
     private List<ProjectRequestEntity> projectRequestEntityList1 = new ArrayList<>();
 

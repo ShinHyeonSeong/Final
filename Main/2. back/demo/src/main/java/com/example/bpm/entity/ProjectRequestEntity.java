@@ -5,7 +5,8 @@ import javax.persistence.*;
 import lombok.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "project_requst")
 @IdClass(ProjectRequestPKEntity.class)
@@ -24,7 +25,6 @@ public class ProjectRequestEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id")
     private ProjectEntity projectIdToRequest;
-
 
     public static ProjectRequestEntity toProjectRequestEntity(ProjectRequestDto projectRequestDto) {
         ProjectRequestEntity projectRequestEntity = new ProjectRequestEntity();

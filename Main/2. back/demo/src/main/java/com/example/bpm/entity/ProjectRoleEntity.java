@@ -10,17 +10,12 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
 @Slf4j
 @Table(name = "project_role")
 @IdClass(ProjectRolePKEntity.class)
 public class ProjectRoleEntity implements Serializable {
-//
-//    @EmbeddedId
-//    private ProjectRolePKEntity id;
 
-    //    @MapsId("projectId")
     @Id
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id", referencedColumnName = "project_id")
@@ -43,11 +38,5 @@ public class ProjectRoleEntity implements Serializable {
         projectRoleEntity.setRole(roleEntity);
         return projectRoleEntity;
     }
-//
-//    @Override
-//    public boolean isNew(){
-//        return role == null;
-//    }
-
 
 }

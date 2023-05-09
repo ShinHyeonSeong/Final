@@ -3,15 +3,17 @@ package com.example.bpm.dto;
 import com.example.bpm.entity.HeadEntity;
 import com.example.bpm.entity.ProjectEntity;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
 
 //목표 DTO
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class HeadDto {
 
     private Long headId;

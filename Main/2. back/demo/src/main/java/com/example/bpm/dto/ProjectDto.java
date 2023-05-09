@@ -2,11 +2,10 @@ package com.example.bpm.dto;
 
 import com.example.bpm.entity.ProjectEntity;
 import com.example.bpm.repository.ProjectRepository;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProjectDto {
