@@ -17,7 +17,7 @@ public interface ProjectRoleRepository extends JpaRepository<ProjectRoleEntity, 
 
     //public List<ProjectRoleEntity> findAllByUuidInRole(String uuid);
 
-    @Query(value = "insert into project_requst(project_id, uuid, role)" +
+    @Query(value = "insert into project_role(project_id, uuid, role)" +
             "values (?,?,?)", nativeQuery = true)
     ProjectRoleEntity insertToRoleEntity(Long projectId, String recvUUID, Long aLong);
 }

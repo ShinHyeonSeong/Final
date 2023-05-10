@@ -142,7 +142,7 @@ public class ProjectController {
         UserDto recvUser = UserDto.toUserDto(userRepository.findById(uuid).orElse(null));
         ProjectDto projectDto = (ProjectDto)session.getAttribute("currentProject");
         projectSerivce.sendInvite(sendUser.getUuid(), recvUser.getUuid(), projectDto.getProjectId());
-        return "redirect:/searchMemberResult";
+        return "redirect:/user/search";
     }
 
     // 프로젝트 초대 수락, 거절 컨트롤러
