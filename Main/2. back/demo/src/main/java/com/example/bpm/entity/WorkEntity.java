@@ -1,10 +1,14 @@
 package com.example.bpm.entity;
 
+import com.example.bpm.dto.DetailDto;
+import com.example.bpm.dto.WorkDto;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -36,7 +40,18 @@ public class WorkEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     private ProjectEntity projectIdToWork;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "workIdToUserWork")
+    private List<UserWorkEntity> userWorkEntityList  = new ArrayList<>();
 
-
+    public static WorkEntity toWorkEntity(WorkDto workDto) {
+        WorkEntity workEntity = new WorkEntity();
+        workEntity.setTitle(workDto.getTitle());
+        workEntity.setStartDay(workDto.getStartDay());
+        workEntity.setEndDay(workDto.getEndDay());
+        workEntity.setCompletion(workDto.getCompletion());
+        workEntity.setDetailIdToWork(workDto.getDetailIdToWork());
+        workEntity.setProjectIdToWork(workDto.getProjectIdToWork());
+        return workEntity;
+    }
 
 }

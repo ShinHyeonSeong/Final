@@ -1,9 +1,6 @@
 package com.example.bpm.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -21,5 +18,13 @@ public class WorkRequestEntity {
     private Date endDay;
     @Column(name = "completion")
     private int completion;
+
+    @JoinColumn(name = "requst_user")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private UserEntity userIdToWorkRequest;
+
+    @JoinColumn(name = "detail_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private DetailEntity detailIdToWorkRequest;
 
 }

@@ -2,6 +2,7 @@ package com.example.bpm.dto;
 
 import com.example.bpm.entity.DetailEntity;
 import com.example.bpm.entity.ProjectEntity;
+import com.example.bpm.entity.WorkEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,5 +23,17 @@ public class WorkDto {
     private DetailEntity detailIdToWork;
 
     private ProjectEntity projectIdToWork;
+
+    public static WorkDto toWorkDto(WorkEntity workEntity) {
+        WorkDto workDto = new WorkDto();
+        workDto.setTitle(workEntity.getTitle());
+        workDto.setStartDay(workEntity.getStartDay());
+        workDto.setEndDay(workEntity.getEndDay());
+        workDto.setCompletion(workEntity.getCompletion());
+        workDto.setDetailIdToWork(workEntity.getDetailIdToWork());
+        workDto.setProjectIdToWork(workEntity.getProjectIdToWork());
+        return workDto;
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package com.example.bpm.entity;
 
+import com.example.bpm.dto.DetailDto;
 import com.example.bpm.dto.HeadDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +16,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "head")
 public class HeadEntity {
     @Id
@@ -52,4 +52,5 @@ public class HeadEntity {
         headEntity.setProjectIdToHead(headDto.getProjectIdToHead());
         return headEntity;
     }
+
 }

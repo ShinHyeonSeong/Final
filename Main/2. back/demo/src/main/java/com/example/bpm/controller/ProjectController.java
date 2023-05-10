@@ -87,7 +87,9 @@ public class ProjectController {
     }
 
     @GetMapping("/project/create")
-    public String projectCreate() { return "projectCreate"; }
+    public String projectCreate() {
+        return "projectCreate";
+    }
 
     //프로젝트 생성 버튼을 누르는 순간 프로젝트 생성되는 메서드
     @PostMapping("/project/createPage")
@@ -115,6 +117,7 @@ public class ProjectController {
         model.addAttribute("projectDto", presentDto);
         model.addAttribute("joinUsers", userDtoList);
         //프로젝트 id 값을 넘겨야되는데
+
         return "projectMain";
     }
 
@@ -137,10 +140,10 @@ public class ProjectController {
 
     // 프로젝트 초대 발송 컨트롤러
     @RequestMapping("/project/invite/{id}")
-    public String sendInvite(@PathVariable("id")String uuid, HttpSession session, Model model) {
-        UserDto sendUser = (UserDto)session.getAttribute("userInfo");
+    public String sendInvite(@PathVariable("id") String uuid, HttpSession session, Model model) {
+        UserDto sendUser = (UserDto) session.getAttribute("userInfo");
         UserDto recvUser = UserDto.toUserDto(userRepository.findById(uuid).orElse(null));
-        ProjectDto projectDto = (ProjectDto)session.getAttribute("currentProject");
+        ProjectDto projectDto = (ProjectDto) session.getAttribute("currentProject");
         projectSerivce.sendInvite(sendUser.getUuid(), recvUser.getUuid(), projectDto.getProjectId());
         return "redirect:/searchMemberResult";
     }
@@ -148,10 +151,10 @@ public class ProjectController {
     // 프로젝트 초대 수락, 거절 컨트롤러
     // @PathVariable 통해 전달하여 url 노출됨. 추후 재고
     @RequestMapping("/requestResponse/{sendUser}/{recvUser}/{project}/{acceptable}")
-    public String requestResponse(@PathVariable("sendUser")String sendUuid,
-                                  @PathVariable("recvUser")String recvUuid,
-                                  @PathVariable("project")Long projectId,
-                                  @PathVariable("acceptable")boolean acceptable) {
+    public String requestResponse(@PathVariable("sendUser") String sendUuid,
+                                  @PathVariable("recvUser") String recvUuid,
+                                  @PathVariable("project") Long projectId,
+                                  @PathVariable("acceptable") boolean acceptable) {
         log.info("전달 완료, " + sendUuid + recvUuid + projectId + acceptable);
         projectSerivce.submitInvite(sendUuid, recvUuid, projectId, acceptable);
         return "redirect:/project/inviteList";
@@ -163,6 +166,6 @@ public class ProjectController {
         log.info("프로젝트 정상 삭제 (컨트롤러 작동)");
         return "redirect:/project/projectList";
     }
-}
 
+}
 

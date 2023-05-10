@@ -1,5 +1,6 @@
 package com.example.bpm.dto;
 
+import com.example.bpm.entity.DetailEntity;
 import com.example.bpm.entity.HeadEntity;
 import com.example.bpm.entity.ProjectEntity;
 import lombok.Getter;
@@ -26,5 +27,16 @@ public class DetailDto {
     private ProjectEntity projectIdToDetail;
 
 
+    public static DetailDto toDetailDto(DetailEntity detailEntity) {
+        DetailDto detailDto = new DetailDto();
+        detailDto.setDetailId(detailEntity.getDetailId());
+        detailDto.setTitle(detailEntity.getTitle());
+        detailDto.setStartDay(detailEntity.getStartDay());
+        detailDto.setEndDay(detailEntity.getEndDay());
+        detailDto.setCompletion(detailEntity.getCompletion());
+        detailDto.setHeadIdToDetail(detailEntity.getHeadIdToDetail());
+        detailDto.setProjectIdToDetail(detailEntity.getProjectIdToDetail());
+        return detailDto;
 
+    }
 }

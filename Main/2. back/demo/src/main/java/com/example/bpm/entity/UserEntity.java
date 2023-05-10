@@ -5,6 +5,7 @@ import javax.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.jdbc.Work;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,12 @@ public class UserEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "uuidInRole")
     private List<ProjectRoleEntity> projectRoleEntityList = new ArrayList<>();
-    //Entity -> DTO 변환 메서드
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userIdToWorkRequest")
+    private List<WorkRequestEntity> workRequestEntityList  = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userIdToUserWork")
+    private List<UserWorkEntity> userWorkEntityList  = new ArrayList<>();
 
     public static UserEntity toUserEntity(UserDto userDto) {
         UserEntity userEntity = new UserEntity();

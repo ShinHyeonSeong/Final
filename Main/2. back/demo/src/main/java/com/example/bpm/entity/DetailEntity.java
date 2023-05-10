@@ -1,5 +1,7 @@
 package com.example.bpm.entity;
 
+import com.example.bpm.dto.DetailDto;
+import com.example.bpm.dto.ProjectDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -44,5 +46,17 @@ public class DetailEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "detailIdToWork")
     private List<WorkEntity> workEntityList = new ArrayList<>();
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "detailIdToWorkRequest")
+    private List<WorkRequestEntity> workRequestEntityList = new ArrayList<>();
 
+    public static DetailEntity toDetailEntity(DetailDto detailDto) {
+        DetailEntity detailEntity = new DetailEntity();
+        detailEntity.setTitle(detailDto.getTitle());
+        detailEntity.setStartDay(detailDto.getStartDay());
+        detailEntity.setEndDay(detailDto.getEndDay());
+        detailEntity.setCompletion(detailDto.getCompletion());
+        detailEntity.setHeadIdToDetail(detailDto.getHeadIdToDetail());
+        detailEntity.setProjectIdToDetail(detailDto.getProjectIdToDetail());
+        return detailEntity;
+    }
 }
