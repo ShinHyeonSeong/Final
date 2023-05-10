@@ -36,13 +36,13 @@ public class ProjectDetailSerivce {
     private final DetailRepository detailRepository;
 
     /* - - - - 연결 및 각각의 Id 값 추출을 위한 메서드- - - - */
-    //내 작업에서 작업 연결을 위한 검색 메서드에서 title을 이용해서 id 값 추출
+    //내 작업(Work)에서 작업(Detail) 연결을 위한 검색 메서드에서 title을 이용해서 id 값 추출
     public Long selectTitleInWork(String detailTitle){
         Optional<DetailEntity> detailEntity = detailRepository.findByTitle(detailTitle);
         return detailEntity.get().getDetailId();
     }
 
-    //작업에서 목표 연결을 위해 검색하는 메서드 title을 이용해서 id 값 추출
+    //작업(Detail)에서 목표(Head) 연결을 위해 검색하는 메서드 title을 이용해서 id 값 추출
     public Long selectTitleInDetail(String Headtitle) {
         Optional<HeadEntity> headEntity = headRepository.findByTitle(Headtitle);
         return headEntity.get().getHeadId();
@@ -93,7 +93,18 @@ public class ProjectDetailSerivce {
     /* - - - - 생성 메서드 끝 - - - - */
 
     /* - - - - 수정 메서드 시작 - - - - - */
-    public HeadDto update
+    public HeadDto updateHead(HeadDto headDto){
+        Optional<HeadEntity> findHead = headRepository.findById(headDto.getHeadId());
+
+    }
+
+    public DetailDto updateDetail(DetailDto detailDto) {
+
+    }
+    public WorkDto updateWork(WorkDto workDto) {
+
+    }
+
 
     /* - - - - 수정 메서드 끝 - - - - - */
 
