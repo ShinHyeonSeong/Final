@@ -93,7 +93,7 @@ public class ProjectDetailSerivce {
     /* - - - - 생성 메서드 끝 - - - - */
 
     /* - - - - 수정 메서드 시작 - - - - - */
-    public HeadDto update
+    //public HeadDto update
 
     /* - - - - 수정 메서드 끝 - - - - - */
 
