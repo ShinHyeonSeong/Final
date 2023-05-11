@@ -100,6 +100,7 @@ public class ProjectController {
         } else {
             ProjectDto dto = projectSerivce.createProject(projectDto);
             UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
+            session.setAttribute("currentProject", projectDto);
             projectSerivce.autorization(dto, sessionUser);
             log.info("프로젝트 생성 정상 작동(컨트롤러 작동)");
             return "redirect:/project/projectManagerList";
@@ -111,13 +112,10 @@ public class ProjectController {
     public String selectProject(@PathVariable("id") Long id, HttpSession session, Model model) {
         ProjectDto presentDto = projectSerivce.selectProject(id);
         List<UserDto> userDtoList = userService.searchUserToProject(id);
-        // 프로젝트에 참여중인 유저 검색
         session.removeAttribute("currentProject");
         session.setAttribute("currentProject", presentDto);
         model.addAttribute("projectDto", presentDto);
         model.addAttribute("joinUsers", userDtoList);
-        //프로젝트 id 값을 넘겨야되는데
-
         return "projectMain";
     }
 

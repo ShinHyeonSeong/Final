@@ -28,6 +28,10 @@ public class UserController {
     final private UserService userService;
     @Autowired
     final private ProjectSerivce projectSerivce;
+    @GetMapping("/index")
+    public String index() {
+        return "index";
+    }
 
     @GetMapping("/user/join")
     public String goSave() {
