@@ -16,7 +16,6 @@ public class UserWorkEntity {
     @JoinColumn(name = "work_id")
     private WorkEntity workIdToUserWork;
 
-
     @Id
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "uuid")

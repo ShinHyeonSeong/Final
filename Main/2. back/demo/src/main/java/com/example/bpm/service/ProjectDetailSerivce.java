@@ -35,20 +35,6 @@ public class ProjectDetailSerivce {
     @Autowired
     private final DetailRepository detailRepository;
 
-    /* - - - - 연결 및 각각의 Id 값 추출을 위한 메서드- - - - */
-    //내 작업에서 작업 연결을 위한 검색 메서드에서 title을 이용해서 id 값 추출
-    public Long selectTitleInWork(String detailTitle){
-        Optional<DetailEntity> detailEntity = detailRepository.findByTitle(detailTitle);
-        return detailEntity.get().getDetailId();
-    }
-
-    //작업에서 목표 연결을 위해 검색하는 메서드 title을 이용해서 id 값 추출
-    public Long selectTitleInDetail(String Headtitle) {
-        Optional<HeadEntity> headEntity = headRepository.findByTitle(Headtitle);
-        return headEntity.get().getHeadId();
-    }
-    /* - - - - 연결 및 각각의 Id 값 추출을 위한 메서드 끝 - - - - */
-
     /* - - - - 생성 메서드 시작 - - - - */
 
     //목표 만들기 -> projectId는 Session으로 적용시켜 값을 받아와야함
@@ -92,19 +78,72 @@ public class ProjectDetailSerivce {
 
     /* - - - - 생성 메서드 끝 - - - - */
 
+    /* - - - - 선택 메서드 시작 - - - - - */
+    public HeadDto selectHead(Long id){
+        Optional<HeadEntity> find = headRepository.findById(id);
+        return HeadDto.toHeadDto(find.get());
+    }
+    public DetailDto selectDetail(Long id){
+        Optional<DetailEntity> find = detailRepository.findById(id);
+        return DetailDto.toDetailDto(find.get());
+    }
+    public WorkDto selectWork(Long id){
+        Optional<WorkEntity> find = workRepository.findById(id);
+        return WorkDto.toWorkDto(find.get());
+    }
+    /* - - - - 선택 메서드 끝 - - - - - */
+
     /* - - - - 수정 메서드 시작 - - - - - */
-    //public HeadDto update
+    public HeadDto updateHead(HeadDto headDto) {
+        HeadEntity afterEntity = HeadEntity.toHeadEntity(headDto);
+        headRepository.save(afterEntity);
+        return HeadDto.toHeadDto(afterEntity);
+    }
+
+    public DetailDto updateDetail(DetailDto detailDto) {
+        DetailEntity afterEntity = DetailEntity.toDetailEntity(detailDto);
+        detailRepository.save(afterEntity);
+        return DetailDto.toDetailDto(afterEntity);
+    }
+
+    public WorkDto updateWork(WorkDto workDto) {
+        WorkEntity afterEntity = WorkEntity.toWorkEntity(workDto);
+        workRepository.save(afterEntity);
+        return WorkDto.toWorkDto(afterEntity);
+    }
 
     /* - - - - 수정 메서드 끝 - - - - - */
 
-    /* - - - - 선택 메서드 시작 - - - - - */
-
-
-    /* - - - - 선택 메서드 끝 - - - - - */
-
     /* - - - - 삭제 메서드 시작 - - - - - */
+    public boolean deleteHead(Long id){
+        headRepository.deleteById(id);
+        if (headRepository.findById(id).isPresent()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
+    public boolean deleteDetail(Long id) {
+        detailRepository.deleteById(id);
+        if (detailRepository.findById(id).isPresent()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean deleteWork(Long id) {
+        workRepository.deleteById(id);
+        if (workRepository.findById(id).isPresent()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     /* - - - - 삭제 메서드 끝 - - - - - */
+
+
 }
 
