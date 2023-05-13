@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>List of Posts</title>
+    <link rel="stylesheet" type="text/css" href="/css/documentDetail.css">
+</head>
+<!-- document가 게시되어 있는 화면 -->
+<body>
+    <div class="page-container">
+        <div class="floating-bar">
+            <button class="side-btn">뒤로</button>
+            <div class="up-down">
+                <button class="side-btn">up</button>
+                <button class="side-btn">down</button>
+            </div>
+        </div>
+
+        <div class="content-container">
+
+            <div class="document-section">
+                <h1 class="document-title">Title</h1>
+                <div class="document-detail">
+                    <div class="detail">작성자명</div>
+                    <div class="detail">2023 01 01</div>
+                </div>
+                <div class="horizon-divider"></div>
+                <div class="document-content">
+                    content
+                </div>
+                <div class="horizon-divider"></div>
+            </div>
+
+            <div class="comment-section">
+                <div class="comment-write-section">
+                    <div class="comment-count">N 개의 의견</div>
+                    <form action="">
+                        <textarea class="comment-write" placeholder="의견을 남겨주세요."></textarea>
+                        <button type="submit" class="submit-btn">작성</button>
+                    </form>
+                </div>
+
+                <div class="comment-read-section">
+                    <div class="comment">
+                        <div class="comment-user-name">유저명</div>
+                        <div class="comment-content">댓글 내용</div>
+                        <div class="horizon-divider-semi"></div>
+                    </div>
+                    <div class="comment">
+                        <div class="comment-user-name">유저명</div>
+                        <div class="comment-content">댓글 내용</div>
+                        <div class="horizon-divider-semi"></div>
+                    </div>
+                    <div class="comment">
+                        <div class="comment-user-name">유저명</div>
+                        <div class="comment-content">댓글 내용</div>
+                        <div class="horizon-divider-semi"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
