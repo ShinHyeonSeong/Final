@@ -17,8 +17,6 @@ import java.util.Optional;
 @Service
 @Slf4j
 @AllArgsConstructor
-//메서드 리턴타입은 무조건 Dto로 나오게 하자.
-//파라미터는 String 형식으로 받기로 하자 (절대 객체단위로 받으면 안됨 헷갈리기도 하고 NULL 오류가 잘 생김)
 public class UserService {
     @Autowired
     final private UserRepository userRepository;
@@ -86,23 +84,11 @@ public class UserService {
         UserEntity afterEntity = UserEntity.toUserEntity(dto);
         UserEntity saveEntity = userRepository.save(afterEntity);
         return UserDto.toUserDto(saveEntity);
-        //DB에 uuid값과 일치하는 정보를 가져와 email, password, name 만 수정해준다
-//        Optional<UserEntity> beforeUser = userRepository.findById(uuid);
-//        if (beforeUser.isPresent()) {
-//            UserEntity beforUserEntity = beforeUser.get();
-//            log.info("정보를 찾음 (update() 서비스 작동)");
-//            UserEntity afterUser = userRepository.save(beforUserEntity.toUpdateuserEntity(email, name));
-//            log.info("회원 정보 업데이트에 성공하였습니다 (서비스 작동)");
-//            return UserDto.toUserDto(afterUser);
-//        } else {
-//            log.info("정보를 찾지 못함 (update() 서비스 작동);");
-//            return null;
-//        }
     }
 
     // 비밀번호 변경 메서드. 각 결과 번호에 대응하는 alert 메시지 전송 필요.
     public int changePassword(UserDto userDto, String email, String password,
-                                 String newPassword, String confirmPassword) {
+                              String newPassword, String confirmPassword) {
         UserEntity userEntity = userRepository.findById(userDto.getUuid()).get();
         if (userEntity.getEmail().equals(email)) {
             log.info("이메일 일치");
@@ -113,9 +99,15 @@ public class UserService {
                     userEntity.setPassword(newPassword);
                     userRepository.save(userEntity);
                     return 0;
-                } else { return 3; }
-            }else { return 2; }
-        } else { return 1; }
+                } else {
+                    return 3;
+                }
+            } else {
+                return 2;
+            }
+        } else {
+            return 1;
+        }
     }
 
     //회원 탈퇴
@@ -137,9 +129,8 @@ public class UserService {
 
     public List<UserDto> searchUserToProject(Long id) {
         List<ProjectRoleEntity> projectRoleEntities = projectRoleRepository.userForProject(id);
-        List<UserDto> userDtos = new ArrayList<UserDto>() {
-        };
-        for(ProjectRoleEntity projectRoleEntity : projectRoleEntities) {
+        List<UserDto> userDtos = new ArrayList<UserDto>();
+        for (ProjectRoleEntity projectRoleEntity : projectRoleEntities) {
             Optional<UserEntity> userEntity = userRepository.findById(projectRoleEntity.getUuidInRole().getUuid());
             userDtos.add(UserDto.toUserDto(userEntity.get()));
         }

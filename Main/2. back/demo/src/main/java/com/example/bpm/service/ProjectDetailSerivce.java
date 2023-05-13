@@ -2,11 +2,9 @@ package com.example.bpm.service;
 
 import com.example.bpm.dto.DetailDto;
 import com.example.bpm.dto.HeadDto;
+import com.example.bpm.dto.UserDto;
 import com.example.bpm.dto.WorkDto;
-import com.example.bpm.entity.DetailEntity;
-import com.example.bpm.entity.HeadEntity;
-import com.example.bpm.entity.ProjectEntity;
-import com.example.bpm.entity.WorkEntity;
+import com.example.bpm.entity.*;
 import com.example.bpm.repository.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -79,25 +77,49 @@ public class ProjectDetailSerivce {
     /* - - - - 생성 메서드 끝 - - - - */
 
     /* - - - - 선택 메서드 시작 - - - - - */
-    public HeadDto selectHead(Long id){
+    public HeadDto selectHead(Long id) {
         Optional<HeadEntity> find = headRepository.findById(id);
         return HeadDto.toHeadDto(find.get());
     }
-    public DetailDto selectDetail(Long id){
+
+    public DetailDto selectDetail(Long id) {
         Optional<DetailEntity> find = detailRepository.findById(id);
         return DetailDto.toDetailDto(find.get());
     }
-    public WorkDto selectWork(Long id){
+
+    public WorkDto selectWork(Long id) {
         Optional<WorkEntity> find = workRepository.findById(id);
         return WorkDto.toWorkDto(find.get());
     }
     /* - - - - 선택 메서드 끝 - - - - - */
 
     /* - - - - 수정 메서드 시작 - - - - - */
+    public HeadDto updateSelectHead(Long headId) {
+        Optional<HeadEntity> find = headRepository.findById(headId);
+        if (find.isEmpty()) {
+            log.info("찾은 결과가 없음 (서비스)");
+            return null;
+        } else {
+            log.info(find.get().getTitle() + "의 내용을 찾음 (서비스)");
+            return HeadDto.toHeadDto(find.get());
+        }
+    }
+
     public HeadDto updateHead(HeadDto headDto) {
         HeadEntity afterEntity = HeadEntity.toHeadEntity(headDto);
         headRepository.save(afterEntity);
         return HeadDto.toHeadDto(afterEntity);
+    }
+
+    public DetailDto updateSelectDetail(Long detailId) {
+        Optional<DetailEntity> findDetail = detailRepository.findById(detailId);
+        if (findDetail.isPresent()) {
+            log.info(findDetail.get().getTitle() + "의 내용을 찾음 (서비스)");
+            return DetailDto.toDetailDto(findDetail.get());
+        } else {
+            log.info("찾은 결과가 없음 (서비스)");
+            return null;
+        }
     }
 
     public DetailDto updateDetail(DetailDto detailDto) {
@@ -106,6 +128,14 @@ public class ProjectDetailSerivce {
         return DetailDto.toDetailDto(afterEntity);
     }
 
+    public WorkDto updateSelectWork(Long workId) {
+        Optional<WorkEntity> find = workRepository.findById(workId);
+        if (find.isEmpty()) {
+            return null;
+        } else {
+            return WorkDto.toWorkDto(find.get());
+        }
+    }
     public WorkDto updateWork(WorkDto workDto) {
         WorkEntity afterEntity = WorkEntity.toWorkEntity(workDto);
         workRepository.save(afterEntity);
@@ -115,7 +145,7 @@ public class ProjectDetailSerivce {
     /* - - - - 수정 메서드 끝 - - - - - */
 
     /* - - - - 삭제 메서드 시작 - - - - - */
-    public boolean deleteHead(Long id){
+    public boolean deleteHead(Long id) {
         headRepository.deleteById(id);
         if (headRepository.findById(id).isPresent()) {
             return false;
