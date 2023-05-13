@@ -28,10 +28,10 @@ public class ProjectDetailController {
     public String goCreateHead(){
         return "goal-create";
     }
-    @PostMapping("/project/createHead")
-    public String createHead(@ModelAttribute HeadEntity headEntity){
-
-    }
+//    @PostMapping("/project/createHead")
+//    public String createHead(@ModelAttribute HeadEntity headEntity){
+//
+//    }
 
     /* - - - - 목표 관련 메서드 끝 - - - -*/
 
