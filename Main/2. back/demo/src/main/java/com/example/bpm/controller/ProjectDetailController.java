@@ -48,6 +48,7 @@ public class ProjectDetailController {
         model.addAttribute("headDtoList", headDtoList);
         return "goal";
     }
+
     @GetMapping("/project/goal/create")
     public String goCreateGoal(Model model) {
         ProjectDto currentProject = getSessionProject();
