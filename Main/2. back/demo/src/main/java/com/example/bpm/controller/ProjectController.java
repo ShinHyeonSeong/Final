@@ -121,6 +121,8 @@ public class ProjectController {
         return "projectMain";
     }
 
+
+
     // 프로젝트 초대 확인창
     @GetMapping("/project/inviteList")
     public String inviteList(HttpSession session, Model model) {

@@ -40,9 +40,14 @@ public class ProjectDetailController {
         return currentUser;
     }
 
-    // 프로젝트 내부 매핑
+    // 프로젝트 사이드바 및 내부 get 매핑
+    @GetMapping("/project/main")
+    public String projectMain(){
+        return "projectMain";
+    }
+
     @GetMapping("/project/goals")
-    public String golas(Model model) {
+    public String goals(Model model) {
         ProjectDto currentProject = getSessionProject();
         List<HeadDto> headDtoList = projectDetailSerivce.selectAllHead(currentProject);
         model.addAttribute("headDtoList", headDtoList);
@@ -74,6 +79,12 @@ public class ProjectDetailController {
         model.addAttribute("detailDtoList", detailDtoList);
         return "workCreate";
     }
+
+    @GetMapping("/project/document")
+    public String goDocument() {
+        return "documentList";
+    }
+
 
     /* - - - - 목표 관련 메서드- - - -*/
     // 목표 생성

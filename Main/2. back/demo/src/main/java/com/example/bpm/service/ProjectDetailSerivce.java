@@ -190,10 +190,10 @@ public class ProjectDetailSerivce {
         }
         return workDtoList;
     }
-
-    public List<WorkDto> selectAllWorkForProject(ProjectDto projectDto) {
-        workRepository
-    }
+//
+//    public List<WorkDto> selectAllWorkForProject(ProjectDto projectDto) {
+//        workRepository
+//    }
     /* - - - - 선택 메서드 끝 - - - - - */
 
     /* - - - - 수정 메서드 시작 - - - - - */
