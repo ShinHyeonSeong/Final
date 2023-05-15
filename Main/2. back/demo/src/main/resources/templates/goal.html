@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
 	<title>Example Sidebar Menu</title>
@@ -13,53 +14,27 @@
 <div class="sidebar">
 	<ul>
 		<li><a href="./projectCreate.html">프로젝트 만들기</a></li>
-		<li><a href="./main.html">홈</a></li>
-		<li class="active"><a href="./goal.html">목표</a></li>
-		<li><a href="./work.html">작업</a></li>
+		<li class="active"><a href="./main.html">홈</a></li>
+		<li><a href="/project/goals">목표</a></li>
+		<li><a href="/project/works">작업</a></li>
 		<li><a href="./documentList.html">문서</a></li>
 		<li><a href="./calender.html">달력</a></li>
-		<li><a href="./account.html">My Information</a></li>
+		<li><a href="/user/search">멤버 초대</a></li>
 	</ul>
 </div>
 
 <div class="top-bar">
 	<h1>목표</h1>
-	<a href="goal-create.html"><button class="add-goal-btn">목표 추가</button></a>
+	<a href="/project/goal/create"><button class="add-goal-btn">목표 추가</button></a>
 </div>
 
 <div class="content-container">
 	<div class="content">
-		<div class="goal-container">
-			<a href="goalDetail.html" class="goal-item">
+		<div class="goal-container" th:if="${headDtoList != null}">
+			<a th:each="headDto : ${headDtoList}" th:href="@{/project/goal/headView/{id}(id=${headDto.headId})}" class="goal-item">
 				<!-- 동적 값을 할당 받아야함 -->
-				<h2>Goal 1</h2>
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae nunc eget massa blandit
-					facilisis
-					sed nec metus.</p>
-				<button>Mark as Complete</button>
-			</a>
-			<a href="goalDetail.html" class="goal-item">
-				<!-- 동적 값을 할당 받아야함 -->
-				<h2>Goal 1</h2>
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae nunc eget massa blandit
-					facilisis
-					sed nec metus.</p>
-				<button>Mark as Complete</button>
-			</a>
-			<a href="goalDetail.html" class="goal-item">
-				<!-- 동적 값을 할당 받아야함 -->
-				<h2>Goal 1</h2>
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae nunc eget massa blandit
-					facilisis
-					sed nec metus.</p>
-				<button>Mark as Complete</button>
-			</a>
-			<a href="goalDetail.html" class="goal-item">
-				<!-- 동적 값을 할당 받아야함 -->
-				<h2>Goal 1</h2>
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae nunc eget massa blandit
-					facilisis
-					sed nec metus.</p>
+				<h2 th:text="${headDto.title}"></h2>
+				<p th:text="${headDto.discription}">목표 설명</p>
 				<button>Mark as Complete</button>
 			</a>
 		</div>

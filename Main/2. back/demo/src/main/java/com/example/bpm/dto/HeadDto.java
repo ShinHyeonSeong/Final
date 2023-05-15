@@ -20,6 +20,8 @@ public class HeadDto {
 
     private String title;
 
+    private String discription;
+
     private Date startDay;
 
     private Date endDay;
@@ -32,6 +34,7 @@ public class HeadDto {
         HeadDto headDto = new HeadDto();
         headDto.setHeadId(headEntity.getHeadId());
         headDto.setTitle(headEntity.getTitle());
+        headDto.setDiscription(headEntity.getDiscription());
         headDto.setStartDay(headEntity.getStartDay());
         headDto.setEndDay(headEntity.getEndDay());
         headDto.setCompletion(headEntity.getCompletion());

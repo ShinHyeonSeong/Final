@@ -120,7 +120,7 @@ public class ProjectSerivce {
         for (ProjectRoleEntity projectRoleEntity :
                 entityList) {
             //2 == 비권한자 (프로젝트 참여자)
-            if (projectRoleEntity.getRole().getId() == 2) {
+            if (projectRoleEntity.getRole().getId() == 0) {
                 log.info("비관리자 권한으로 된 프로젝트가 있음 (서비스 작동)");
                 ProjectDto dto = ProjectDto.toProjectDto(projectRepository.findById(
                         projectRoleEntity.getProjectIdInRole().getProjectId()).orElse(null));

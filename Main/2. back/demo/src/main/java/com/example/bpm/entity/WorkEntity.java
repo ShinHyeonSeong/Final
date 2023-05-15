@@ -23,6 +23,9 @@ public class WorkEntity {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "discription")
+    private String discription;
+
     @Column(name = "start_day")
     private Date startDay;
 
@@ -45,7 +48,9 @@ public class WorkEntity {
 
     public static WorkEntity toWorkEntity(WorkDto workDto) {
         WorkEntity workEntity = new WorkEntity();
+        workEntity.setWorkId(workDto.getWorkId());
         workEntity.setTitle(workDto.getTitle());
+        workEntity.setDiscription(workDto.getDiscription());
         workEntity.setStartDay(workDto.getStartDay());
         workEntity.setEndDay(workDto.getEndDay());
         workEntity.setCompletion(workDto.getCompletion());

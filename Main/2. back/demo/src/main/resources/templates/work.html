@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>작업</title>
+  <link rel="stylesheet" href="/css/work.css">
+  <link rel="stylesheet" href="/css/sidebar.css">
+  <script src="../js/work.js"></script>
+</head>
+<!-- 작업 창
+제목과 하단 세부사항들을 구분짓는 hr 태그들을 통일필요
+아사나 보면 알겠지만 이게 단순 게시물 형태로 가야하는데
+어떻게 해야할..지 고민 좀 해서 수정 해줘..>!!!! -->
+
+<body>
+<div class="sidebar">
+  <ul>
+    <li><a href="./projectCreate.html">프로젝트 만들기</a></li>
+    <li class="active"><a href="./main.html">홈</a></li>
+    <li><a href="/project/goals">목표</a></li>
+    <li><a href="/project/works">작업</a></li>
+    <li><a href="./documentList.html">문서</a></li>
+    <li><a href="./calender.html">달력</a></li>
+    <li><a href="/user/search">멤버 초대</a></li>
+  </ul>
+</div>
+
+<div class="top-bar">
+  <h1>작업</h1>
+  <a href="/project/work/create">
+    <button class="add-work-btn">작업 추가</button>
+  </a>
+</div>
+
+<div class="content-container">
+  <div class="content">
+    <div class="work">
+      <h4 class="work-classification">내 작업</h4>
+      <table>
+        <thead>
+        <tr>
+          <th class="job-name">작업명</th>
+          <th class="job-pic">담당자</th>
+          <th class="job-deadline">기한</th>
+          <th>상태</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td><a href="workDetail.html">작업명</a></td>
+          <td>담당자명</td>
+          <td>2023 01 01</td>
+          <td>완료</td>
+        </tr>
+        <tr>
+          <td><a href="workDetail.html">작업명</a></td>
+          <td>담당자명</td>
+          <td>2023 01 01</td>
+          <td>완료</td>
+        </tr>
+        <tr>
+          <td><a href="workDetail.html">작업명</a></td>
+          <td>담당자명</td>
+          <td>2023 01 01</td>
+          <td>진행중</td>
+        </tr>
+        <tr>
+          <td><a href="workDetail.html">작업명</a></td>
+          <td>담당자명</td>
+          <td>2023 01 01</td>
+          <td>진행중</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="work">
+      <h4 class="work-classification">전체 작업</h4>
+      <table>
+        <thead>
+        <tr>
+          <th class="job-name">작업명</th>
+          <th class="job-pic">담당자</th>
+          <th class="job-deadline">완료일자</th>
+          <th>상태</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td><a href="workDetail.html">작업명</a></td>
+          <td>담당자명</td>
+          <td>2023 01 01</td>
+          <td>완료</td>
+        </tr>
+        <tr>
+          <td><a href="workDetail.html">작업명</a></td>
+          <td>담당자명</td>
+          <td>2023 01 01</td>
+          <td>완료</td>
+        </tr>
+        <tr>
+          <td><a href="workDetail.html">작업명</a></td>
+          <td>담당자명</td>
+          <td>2023 01 01</td>
+          <td>진행중</td>
+        </tr>
+        <tr>
+          <td><a href="workDetail.html">작업명</a></td>
+          <td>담당자명</td>
+          <td>2023 01 01</td>
+          <td>진행중</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+
+</html>

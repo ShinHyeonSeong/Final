@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>My Goals</title>
+  <link rel="stylesheet" href="/css/goalDetail.css">
+  <link rel="stylesheet" href="/css/sidebar.css">
+  <script src="../js/goalDetail.js"></script>
+</head>
+<!-- 목표 > 내 목표 창-->
+<!-- 03.28 색 최적화 및 div 분류 완료
+    종혁 : 전체 디테일은 너가 잡아줘야해 내가 지금 계속 틀만 잡아 넘길께 나중에 디테일 같이 잡긴 할께 -->
+
+<body>
+<div class="sidebar">
+  <ul>
+    <li><a href="./projectCreate.html">프로젝트 만들기</a></li>
+    <li class="active"><a href="./main.html">홈</a></li>
+    <li><a href="/project/goals">목표</a></li>
+    <li><a href="/project/works">작업</a></li>
+    <li><a href="./documentList.html">문서</a></li>
+    <li><a href="./calender.html">달력</a></li>
+    <li><a href="/user/search">멤버 초대</a></li>
+  </ul>
+</div>
+<div class="top-bar">
+  <!-- BackButton 디자인 필요 -->
+  <a href="#" class="back-button">
+    < </a>
+  <h1 th:text="${headDto.title}"></h1>
+</div>
+
+<div class="page-container">
+  <div class="content-container">
+    <div class="left-section">
+      <div class="content">
+        <h4 class="content-title">설명</h4>
+        <p class="content-detail" th:text="${headDto.discription}"></p>
+      </div>
+
+      <div class="content">
+        <h4 class="content-title">연결된 목표</h4>
+        <div class="linked-object">
+          <div class="object-header">
+            <div>하위 목표</div>
+            <button class="object-edit-btn">목표 변경</button>
+          </div>
+          <div class="horizon-divider-semi"></div>
+          <div class="object" th:if="${connectDetailList != null}" th:each="detail : ${connectDetailList}">
+            <a th:href="@{/project/goal/detailView/{id}(id=${detail.headIdToDetail.headId})}">
+              <div class="object-list" th:text="${detail.title}"></div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="vertical-divider"></div>
+
+    <div class="right-section">
+      <!-- 이것도 div로 묶어야 데이터를 잘 넘길 수 있을 거 같.. ㄱ -->
+      <div>
+        <h4 class="content-title">목표 담당자</h4>
+        <p class="content-detail">담당자명 1</p>
+        <p class="content-detail">담당자명 2</p>
+        <div class="horizon-divider"></div>
+      </div>
+      <!-- 이걸 div로 해가지고 상위 목표와 연결 해야되는데 일단 내가 못함 미안 -->
+      <div>
+        <h4 class="content-title">마감 기간</h4>
+        <p class="content-detail" th:text="${headDto.getEndDay().toString()}"></p>
+        <div class="horizon-divider"></div>
+      </div>
+      <div>
+        <a href="goal-create.html">
+          <button class="edit-btn">목표 수정</button>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+
+</html>

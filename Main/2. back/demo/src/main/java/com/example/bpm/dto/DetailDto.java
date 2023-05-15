@@ -16,6 +16,8 @@ public class DetailDto {
 
     private String title;
 
+    private String discription;
+
     private Date startDay;
 
     private Date endDay;
@@ -31,12 +33,12 @@ public class DetailDto {
         DetailDto detailDto = new DetailDto();
         detailDto.setDetailId(detailEntity.getDetailId());
         detailDto.setTitle(detailEntity.getTitle());
+        detailDto.setDiscription(detailEntity.getDiscription());
         detailDto.setStartDay(detailEntity.getStartDay());
         detailDto.setEndDay(detailEntity.getEndDay());
         detailDto.setCompletion(detailEntity.getCompletion());
         detailDto.setHeadIdToDetail(detailEntity.getHeadIdToDetail());
         detailDto.setProjectIdToDetail(detailEntity.getProjectIdToDetail());
         return detailDto;
-
     }
 }

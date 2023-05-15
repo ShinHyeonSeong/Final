@@ -14,6 +14,8 @@ public class WorkDto {
 
     private String title;
 
+    private String discription;
+
     private Date startDay;
 
     private Date endDay;
@@ -26,7 +28,9 @@ public class WorkDto {
 
     public static WorkDto toWorkDto(WorkEntity workEntity) {
         WorkDto workDto = new WorkDto();
+        workDto.setWorkId(workEntity.getWorkId());
         workDto.setTitle(workEntity.getTitle());
+        workDto.setDiscription(workEntity.getDiscription());
         workDto.setStartDay(workEntity.getStartDay());
         workDto.setEndDay(workEntity.getEndDay());
         workDto.setCompletion(workEntity.getCompletion());
@@ -34,6 +38,4 @@ public class WorkDto {
         workDto.setProjectIdToWork(workEntity.getProjectIdToWork());
         return workDto;
     }
-
-
 }

@@ -29,7 +29,7 @@ public class ProjectController {
     @Autowired
     private UserRepository userRepository;
 
-    //로그인을 성공 했을 떄 redirect로 session 값을 같이 가져와야함 (현재 session에는 로그인된 유저의 정보를 담고있어야한다)
+    // 관리자 권한 프로젝트 리스트 출력
     @GetMapping("/project/projectManagerList")
     public String getProjectList(HttpSession session, Model model) {
         //세션에서 현재 로그인 되어있는 유저의 정보를 가져온다
@@ -65,14 +65,15 @@ public class ProjectController {
         return "projectManagerList";
     }
 
+    // 프로젝트 멤버 권한 리스트 출력
     @GetMapping("/project/projectMemberList")
     public String projectMemberList(HttpSession session, Model model) {
         //세션에서 현재 로그인 되어있는 유저의 정보를 가져온다
         UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
         //UUID를 활용하여 권한자 / 비권한자 프로젝트 리스트를 불러온다
-        List<ProjectDto> ManagerToProjectList = projectSerivce.findParticipantsToProjectList(sessionUser.getUuid());
+        List<ProjectDto> memberToProjectList = projectSerivce.findParticipantsToProjectList(sessionUser.getUuid());
         model.addAttribute("user", sessionUser);
-        model.addAttribute("managerList", ManagerToProjectList);
+        model.addAttribute("memberList", memberToProjectList);
 
         List<ProjectRequestDto> requestDtos = projectSerivce.findAllToRequestProject(sessionUser.getUuid());
         if (requestDtos.isEmpty()) {
@@ -99,6 +100,7 @@ public class ProjectController {
             return "projectCreate";
         } else {
             ProjectDto dto = projectSerivce.createProject(projectDto);
+            log.info(dto.getProjectId().toString());
             UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
             session.setAttribute("currentProject", projectDto);
             projectSerivce.autorization(dto, sessionUser);

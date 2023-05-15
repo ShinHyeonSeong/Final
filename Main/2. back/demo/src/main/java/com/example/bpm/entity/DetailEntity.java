@@ -25,6 +25,9 @@ public class DetailEntity {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "discription")
+    private String discription;
+
     @Column(name = "start_day")
     private Date startDay;
 
@@ -51,7 +54,9 @@ public class DetailEntity {
 
     public static DetailEntity toDetailEntity(DetailDto detailDto) {
         DetailEntity detailEntity = new DetailEntity();
+        detailEntity.setDetailId(detailDto.getDetailId());
         detailEntity.setTitle(detailDto.getTitle());
+        detailEntity.setDiscription(detailDto.getDiscription());
         detailEntity.setStartDay(detailDto.getStartDay());
         detailEntity.setEndDay(detailDto.getEndDay());
         detailEntity.setCompletion(detailDto.getCompletion());
