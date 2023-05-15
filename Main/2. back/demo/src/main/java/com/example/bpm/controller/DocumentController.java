@@ -16,7 +16,6 @@ import java.util.List;
 @Controller
 public class DocumentController {
 
-    // 서비스 AutoWired
     @Autowired
     private DocumentService documentService;
 
@@ -26,7 +25,7 @@ public class DocumentController {
 
     // 문서 리스트 Document List
     /// 문서 리스트 관련 페이지 연결
-    @GetMapping("document/list")
+    @GetMapping("/project/document")
     public String getDocumentList(Model model, HttpSession session){
 
         // needChange
