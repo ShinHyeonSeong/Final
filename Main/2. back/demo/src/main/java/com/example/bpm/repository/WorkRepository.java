@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface WorkRepository extends JpaRepository<WorkEntity, Long> {
     @Query(value = "select * from work where title = :title", nativeQuery = true)
     Optional<WorkEntity> findByTitle(String title);
+
+
 }

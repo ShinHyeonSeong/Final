@@ -62,7 +62,7 @@
 
   <!--게시글 컨테이너-->
   <div class="board">
-    <div class="board-item" th:if="${managerList != null}" th:each ="project : ${managerList}">
+    <div class="board-item" th:if="${memberList != null}" th:each ="project : ${memberList}">
       <a th:href="@{/project/{id}(id=${project.projectId})}" class="post">
         <!--썸네일-->
         <div class="thumbnail"

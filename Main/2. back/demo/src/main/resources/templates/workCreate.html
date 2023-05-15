@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/workCreate.css">
+  <script src="../js/documentList.js"></script>
+  <title>create-document</title>
+</head>
+
+<body>
+<div class="container">
+  <div class="header">
+    <a href="goal.html" class="back-button"> < </a>
+    <h1>작업 생성</h1>
+  </div>
+  <form action="/project/work/createWork" method="post">
+    <div class="create-goal">
+      <div class="label-detail">
+        <label class="label" for="create-goal-input1">작업 이름</label>
+      </div>
+      <div class="input-detail">
+        <input name="title" class="input-box" id="create-goal-input1" type="text" placeholder="작업 이름 입력">
+      </div>
+    </div>
+
+    <div class="create-goal">
+      <div class="label-detail">
+        <label class="label" for="create-goal-input2">작업 설명</label>
+      </div>
+      <div class="input-detail">
+                    <textarea name="discription" class="detail-input-box"
+                              id="create-goal-input2" cols="20" rows="10" placeholder="설명"></textarea>
+      </div>
+    </div>
+
+    <div class="create-goal">
+      <div class="label-detail">
+        <label class="label" for="create-goal-input3">작업 마감일</label>
+      </div>
+      <div class="input-detail">
+        <input name="deadline" class="input-box" id="create-goal-input3" type="text" placeholder="마감일 입력 (0000-00-00)">
+      </div>
+    </div>
+
+    <div class="create-goal">
+      <div class="label-detail">
+        <label class="label" for="create-goal-input4">작업 담당자</label>
+      </div>
+      <div class="input-detail">
+        <div class="select">
+          <select class="select-connection-goal" id="create-goal-input4" name="chargeUser" th:if="${userDtoList != null}">
+            <option th:each="user : ${userDtoList}"
+            th:text="${user.name}"
+            th:value="${user.uuid}"></option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="create-goal">
+      <div class="label-detail">
+        <label class="label" for="create-goal-input5">연결 목표</label>
+      </div>
+      <div class="input-detail">
+        <div class="select">
+          <select class="select-connection-goal" id="create-goal-input5" name="connectDetail" th:if="${detailDtoList != null}">
+            <option th:each="detail : ${detailDtoList}"
+                    th:text="${detail.title}"
+                    th:value="${detail.detailId}"></option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="horizon-divider"></div>
+    <div class="footer">
+      <button class="footer-btn" type="submit">생성</button>
+      <button class="footer-btn" type="reset">초기화</button>
+    </div>
+  </form>
+</div>
+
+</body>
+
+</html>

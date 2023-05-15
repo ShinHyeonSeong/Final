@@ -26,6 +26,9 @@ public class HeadEntity {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "discription")
+    private String discription;
+
     @Column(name = "start_day")
     private Date startDay;
 
@@ -46,6 +49,7 @@ public class HeadEntity {
         HeadEntity headEntity = new HeadEntity();
         headEntity.setHeadId(headDto.getHeadId());
         headEntity.setTitle(headDto.getTitle());
+        headEntity.setDiscription(headDto.getDiscription());
         headEntity.setStartDay(headDto.getStartDay());
         headEntity.setEndDay(headDto.getEndDay());
         headEntity.setCompletion(headDto.getCompletion());

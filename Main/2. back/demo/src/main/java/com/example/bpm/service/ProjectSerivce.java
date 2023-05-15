@@ -64,26 +64,26 @@ public class ProjectSerivce {
 
     //초대 수락하는 메서드(무조건 비권한자로써 수락받는다)
     //서비스의 파라미터로 true false 값을 받아와도 되지만 파라미터가 ㅈㄴ 많으므로 컨트롤러에서 if 문을 거칠 필요가 있음 (코드 개더럽네)
-    public ProjectRoleDto submitInvite(String sendUUID, String recvUUID, Long projectId, boolean input) {
+    public int submitInvite(String sendUUID, String recvUUID, Long projectId, boolean input) {
         //수락
         if (input) {
             //ProjectRquest에 있는 데이터 삭제
             projectRequestRepository.deleteByAllId(sendUUID, recvUUID, projectId);
             log.info("수락 요청으로 인한 요청테이블 데이터 삭제 작동 (서비스 작동)");
             //ProejctRole Table에 데이터 추가
-            ProjectRoleEntity projectRoleEntity = projectRoleRepository.insertToRoleEntity(projectId, recvUUID, Long.valueOf(1));
+            ProjectRoleEntity projectRoleEntity = projectRoleRepository.insertToRoleEntity(projectId, recvUUID, Long.valueOf(0));
             log.info("수락 요청으로 인한 Role Table에 데이터 삽입 (서비스 작동)");
-            return ProjectRoleDto.toProjectRoleDto(projectRoleEntity);
+            return 1;
         }
         //거절
         else if (!input) {
             //ProjectRquest에 있는 데이터 삭제
             projectRequestRepository.deleteByAllId(sendUUID, recvUUID, projectId);
             log.info("거절 요청으로 인한 요청테이블 데이터 삭제 작동 (서비스 작동)");
-            return null;
+            return 1;
         } else {
             log.info("수락 요청의 변수값이 잘못되었습니다. (서비스 작동)");
-            return null;
+            return 0;
         }
     }
     /*Request Table 관련 메서드 끝*/
@@ -120,7 +120,7 @@ public class ProjectSerivce {
         for (ProjectRoleEntity projectRoleEntity :
                 entityList) {
             //2 == 비권한자 (프로젝트 참여자)
-            if (projectRoleEntity.getRole().getId() == 2) {
+            if (projectRoleEntity.getRole().getId() == 0) {
                 log.info("비관리자 권한으로 된 프로젝트가 있음 (서비스 작동)");
                 ProjectDto dto = ProjectDto.toProjectDto(projectRepository.findById(
                         projectRoleEntity.getProjectIdInRole().getProjectId()).orElse(null));

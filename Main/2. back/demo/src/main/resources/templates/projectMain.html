@@ -15,8 +15,8 @@
     <ul>
       <li><a href="./projectCreate.html">프로젝트 만들기</a></li>
       <li class="active"><a href="./main.html">홈</a></li>
-      <li><a href="project/goal.html">목표</a></li>
-      <li><a href="./work.html">작업</a></li>
+      <li><a href="/project/goals">목표</a></li>
+      <li><a href="/project/works">작업</a></li>
       <li><a href="./documentList.html">문서</a></li>
       <li><a href="./calender.html">달력</a></li>
       <li><a href="/user/search">멤버 초대</a></li>
@@ -29,9 +29,9 @@
         <h2>프로젝트 소개</h2>
         <p th:text="${projectDto.subtitle}"></p>
       </div>
-      <div class="team-members" th:each="member : ${joinUsers}">
+      <div class="team-members">
         <h2>참여중인 멤버</h2>
-        <div class="member">
+        <div class="member" th:each="member : ${joinUsers}">
           <h3 th:text="${member.name}"></h3>
           <p class="member-email" th:text="${member.email}"></p>
         </div>
