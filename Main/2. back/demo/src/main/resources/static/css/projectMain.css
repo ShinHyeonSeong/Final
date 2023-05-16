@@ -24,7 +24,7 @@ a {
 
 .project-name {
     margin: 2%;
-    font-size: 36px;
+    font-size: 60px;
     text-align: center;
 }
 
@@ -39,6 +39,15 @@ a {
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
+}
+
+.div-h {
+    font-size: 30px;
+    font-weight: bolder;
+}
+
+.div-content {
+    font-size: 18px;
 }
 
 .project-intro {
@@ -58,6 +67,10 @@ a {
     padding: 20px;
     border-radius: 10px;
     margin: 10px;
+}
+
+.member {
+
 }
 
 .member-email {
