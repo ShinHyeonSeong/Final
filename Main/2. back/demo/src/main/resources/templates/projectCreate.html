@@ -2,46 +2,43 @@
 <html>
 
 <head>
-  <title>프로젝트 생성</title>
-  <link rel="stylesheet" href="../css/projectCreate.css">
+	<title>프로젝트 생성</title>
+	<link rel="stylesheet" href="../css/projectCreate.css">
 </head>
 
 <body>
 <div class="container">
-  <h1>프로젝트 생성</h1>
-  <div class="section">
-      <form id="project-form" action="/project/createPage" method="post">
-          <label for="project-title">프로젝트 제목:</label><br>
-          <input type="text" id="project-title" name="title"><br>
-          <label for="project-description">프로젝트 소개:</label><br>
-          <textarea id="project-description" name="subtitle"></textarea><br>
-          <button style=' width : 100%; padding:20px; margin-top:50px; font-size: 2rem; font-family:Arial, Helvetica, sans-serif;'
-                  type="submit">
-              Start New BPM Template
-          </button>
-      </form>
-  </div>
-  <br>
-
-  <!-- <button onclick="submitForm()"
-    style=' width : 50%;padding:20px; font-size: 2rem; font-family:Arial, Helvetica, sans-serif;'>Start New BPM
-    Template</button>
-  정적 화면을 위한 일시적 비활성화. 재사용 예정-->
-
-  <script>
-    function submitForm() {
-      // Get form data
-      var projectTitle = document.getElementById("project-title").value;
-      var projectDescription = document.getElementById("project-description").value;
-      var projectScope = document.getElementById("project-scope").value;
-
-      // Submit form data to another page
-      window.location.href = "submit.html?title=" + encodeURIComponent(projectTitle) + "&description=" + encodeURIComponent(projectDescription) + "&scope=" + encodeURIComponent(projectScope);
-    }
-  </script>
-
+	<h1>프로젝트 생성</h1>
+	<div class="section">
+		<form id="project-form" action="/project/createPage" method="post">
+			<label for="project-title">프로젝트 제목:</label><br>
+			<input type="text" id="project-title" name="title"><br>
+			<label for="project-description">프로젝트 소개:</label><br>
+			<textarea id="project-description" name="subtitle"></textarea><br>
+			<button style=' width : 100%; padding:20px; margin-top:50px; font-size: 2rem; font-family:Arial, Helvetica, sans-serif;'
+					type="submit">
+				Start New BPM Template
+			</button>
+		</form>
+	</div>
+	<br>
+	
+	<!-- <button onclick="submitForm()"
+	  style=' width : 50%;padding:20px; font-size: 2rem; font-family:Arial, Helvetica, sans-serif;'>Start New BPM
+	  Template</button>
+	정적 화면을 위한 일시적 비활성화. 재사용 예정-->
+	
+	<script>
+		function submitForm() {
+			// Get form data
+			var projectTitle = document.getElementById("project-title").value;
+			var projectDescription = document.getElementById("project-description").value;
+			var projectScope = document.getElementById("project-scope").value;
+			
+			// Submit form data to another page
+			window.location.href = "submit.html?title=" + encodeURIComponent(projectTitle) + "&description=" + encodeURIComponent(projectDescription) + "&scope=" + encodeURIComponent(projectScope);
+		}
+	</script>
 </div>
-
 </body>
-
 </html>

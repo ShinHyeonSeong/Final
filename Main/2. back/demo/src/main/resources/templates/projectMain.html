@@ -1,52 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
-<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
 	<meta charset="UTF-8">
 	<title>Project Template Website</title>
-	<link rel="stylesheet" href="../css/projectMain.css">
-	<link rel="stylesheet" href="../css/sidebar.css">
+	<link rel="stylesheet" href="/css/main.css">
+	<link rel="stylesheet" href="/css/sidebar.css">
 </head>
 <!-- 프로젝트 생성후 메인창 -->
+
 <body>
 <div class="container">
-	
-	
-	<!-- Side menu bar -->
 	<div class="sidebar">
 		<ul>
 			<li><a href="./projectCreate.html">프로젝트 만들기</a></li>
-			<li class="active"><a href="/project/main">홈</a></li>
-			<li><a href="/project/goals">목표</a></li>
-			<li><a href="/project/works">작업</a></li>
-			<li><a href="/project/document">문서</a></li>
+			<li class="active"><a href="./main.html">홈</a></li>
+			<li><a href="./goal.html">목표</a></li>
+			<li><a href="./work.html">작업</a></li>
+			<li><a href="./documentList.html">문서</a></li>
 			<li><a href="./calender.html">달력</a></li>
-			<li><a href="/user/search">멤버 초대</a></li>
+			<li><a href="account.html">멤버 초대</a></li>
 		</ul>
 	</div>
 	<div class="centered-content">
-		<div class="project-name" th:text="${projectDto.title}"></div>
+		<div class="project-name" th:text="${projectDto.title}"> Project 1</div>
 		<div class="centered-top">
 			<div class="project-intro">
-				<h2>프로젝트 소개</h2>
-				<p th:text="${projectDto.subtitle}"></p>
+				<p class="div-h">Project Introduction</p>
+				<p class="div-content" th:text="${projectDto.subtitle}">Lorem ipsum dolor sit amet, consectetur
+					adipiscing elit. Sed auctor semper
+					massa, in scelerisque
+					velit euismod in. Fusce vehicula enim id velit sagittis, a bibendum ipsum imperdiet.</p>
 			</div>
 			<div class="team-members">
-				<h2>참여중인 멤버</h2>
+				<div class="div-h">Team Members</div>
 				<div class="member" th:each="member : ${joinUsers}">
-					<h3 th:text="${member.name}"></h3>
-					<p class="member-email" th:text="${member.email}"></p>
+					<h3 th:text="${member.name}">John Doe</h3>
+					<div class="member-role" th:text="${member.email}">Web Developer</div>
+				</div>
+				<div class="member">
+					<h3>Jane Doe</h3>
+					<div class="member-role">Graphic Designer</div>
 				</div>
 			</div>
 		</div>
 		<div class="my-work">
-			<h2>내 작업</h2>
-			<p>작업 설명</p>
+			<div class="div-h">내 작업</div>
+			<p class="div-content">작업 설명</p>
 		</div>
 		<div class="goals">
-			<h2>목표</h2>
-			<p>목표 설명</p>
+			<div class="div-h">목표</div>
+			<p class="div-content">목표 설명</p>
 		</div>
 	</div>
 </div>

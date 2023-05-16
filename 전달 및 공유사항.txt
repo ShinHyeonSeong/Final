@@ -422,9 +422,6 @@ work ID를 기점으로 userID가 work ID를 동일히 가지고 있으면 work 
 
 
 
------영훈-----
-document  -> 프론트 작업이 필요하다 (detail이 필요하다)
------
 
 
 
