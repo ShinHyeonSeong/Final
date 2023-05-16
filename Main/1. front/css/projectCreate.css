@@ -12,7 +12,7 @@
 
 body {
   min-height: 100vh;
-  background: #212534;
+  background: #333;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -23,7 +23,7 @@ body {
 
 
 .card {
-  background: #191c29;
+  background: #333;
   width: var(--card-width);
   height: var(--card-height);
   padding: 3px;
@@ -55,13 +55,13 @@ body {
   height: 102%;
   border-radius: 8px;
   background-image: linear-gradient(
-    var(--rotate)
-    , #000000, #5c5c5c 43%, #c9c9c9);
-    position: absolute;
-    z-index: -1;
-    top: -1%;
-    left: -2%;
-    animation: spin 2.5s linear infinite;
+          var(--rotate)
+          , #000000, #5c5c5c 43%, #c9c9c9);
+  position: absolute;
+  z-index: -1;
+  top: -1%;
+  left: -2%;
+  animation: spin 2.5s linear infinite;
 }
 
 .card::after {
@@ -77,24 +77,24 @@ body {
   transform: scale(0.8);
   filter: blur(calc(var(--card-height) / 6));
   background-image: linear-gradient(
-    var(--rotate)
-    , #2e3131, #777778 43%, #f4f4f4);
-    opacity: 1;
+          var(--rotate)
+          , #444, #777778 43%, #f4f4f4);
+  opacity: 1;
   transition: opacity .5s;
   animation: spin 2.5s linear infinite;
 }
 
 @keyframes spin {
   0% {
-    --rotate: 0deg;
+      --rotate: 0deg;
   }
   100% {
-    --rotate: 360deg;
+      --rotate: 360deg;
   }
 }
 
 a {
-  color: #212534;
+  color: #333;
   text-decoration: none;
   font-family: sans-serif;
   font-weight: bold;
@@ -105,7 +105,7 @@ a {
 .next-btn {
   padding: 1.5rem 3rem;
   font-size: 2rem;
-  background-color: #212534;
+  background-color: #333;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -115,7 +115,7 @@ a {
 
 
 .next-btn:hover {
-  background-color: #212534;
+  background-color: #444;
 }
 
 /* title styles */
@@ -138,7 +138,7 @@ a {
   right: 0;
   width: 100%;
   height: 100%;
-  background: #212534;
+  background: #333;
   animation: a-ltr-after 2s cubic-bezier(.77,0,.18,1) forwards;
   transform: translateX(-101%);
 }
@@ -150,7 +150,7 @@ a {
   right: 0;
   width: 100%;
   height: 100%;
-  background: #212534;
+  background: #333;
   animation: a-ltr-before 2s cubic-bezier(.77,0,.18,1) forwards;
   transform: translateX(0);
 }

@@ -18,35 +18,21 @@ a {
 	padding: 20px;
 }
 
-.add-work-btn {
-	background-color: #fff;
-	width: 150px;
-	color: #333;
-	padding: 10px;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-}
-
-.add-goal-btn:hover {
-	background-color: #ddd;
-	color: #333;
-}
-
 .top-bar {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	width: 100%;
-	height: 70px;
+	height: 90px;
 	border-bottom: solid 0.8px #333;
 	position: fixed;
 	top: 0;
 	left: 200px;
-	background-color: #222;	
+	background-color: #222;
 }
 
 .top-bar h1 {
+	font-size: 40px;
 	margin-left: 4rem;
 }
 
@@ -55,8 +41,10 @@ a {
 }
 
 .add-work-btn {
+	font-size: 18px;
 	background-color: #333;
 	width: 150px;
+	height: 60px;
 	color: #fff;
 	padding: 10px;
 	border: none;
@@ -78,34 +66,36 @@ a {
 }
 
 .work-classification {
-	font-size: 16px;
+	font-size: 25px;
+	font-weight: bolder;
 	padding: 0.5rem 1.5rem;
 }
 
 table {
 	border-top: 1px #333 solid;
-	border-bottom: 1px #333 solid;;
+	border-bottom: 1px #333 solid;
 	font-size: .9em;
 	width: 100%;
 	border-collapse: collapse;
 	overflow: hidden;
 }
-  
+
 th {
+	padding: 1em 1.5em;
+	vertical-align: middle;
+	font-size: 20px;
 	text-align: left;
 }
-	
+
 thead {
 	font-weight: bold;
 	color: #fff;
 }
-	
-td, th {
+
+td {
+	font-size: 17px;
 	padding: 1em 1.5em;
 	vertical-align: middle;
-}
-	
-td {
 	border-top: 1px #333 solid;
 	transition: 0.5s;
 }
@@ -119,9 +109,9 @@ td:hover {
 }
 
 td a {
-	display:block; 
-	width:100%; 
-	height:100%
+	display: block;
+	width: 100%;
+	height: 100%
 }
 
 .job-name {
