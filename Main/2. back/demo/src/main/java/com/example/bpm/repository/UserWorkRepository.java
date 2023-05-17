@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface UserWorkRepository extends JpaRepository<UserWorkEntity, UserWorkPKEntity> {
     public List<UserWorkEntity> findAllByUserIdToUserWork_Uuid(String uuid);
+    public UserWorkEntity findByWorkIdToUserWork_WorkId(Long id);
 }

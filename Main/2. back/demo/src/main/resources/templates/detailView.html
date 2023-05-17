@@ -3,11 +3,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8">
-	<title>My Goals</title>
-	<link rel="stylesheet" href="/css/goalDetail.css">
-	<link rel="stylesheet" href="/css/sidebar.css">
-	<script src="../js/goalDetail.js"></script>
+  <meta charset="UTF-8">
+  <title>My Goals</title>
+  <link rel="stylesheet" href="/css/workDetail.css">
+  <link rel="stylesheet" href="/css/sidebar.css">
+  <script src="../js/goalDetail.js"></script>
 </head>
 <!-- 목표 > 내 목표 창-->
 <!-- 03.28 색 최적화 및 div 분류 완료
@@ -26,117 +26,103 @@
 	</ul>
 </div>
 <div class="top-bar">
-	<!-- BackButton 디자인 필요 -->
-	<a href="/project/works" class="back-button">
-		< </a>
-	<h1 th:text="${headDto.title}"></h1>
+  <!-- BackButton 디자인 필요 -->
+  <a href="#" class="back-button">
+    < </a>
+  <h1 th:text="${detailDto.title}"></h1>
 </div>
 
 <div class="page-container">
-	<div class="content-container">
-		<div class="left-section">
-			<div class="content">
-				<h4 class="content-title">설명</h4>
-				<p class="content-detail" th:text="${headDto.discription}"></p>
-			</div>
-			
-			<div class="content">
-				<div>
-					<h4 class="content-title">연결된 목표</h4>
-					<div class="linked-object">
-						<div class="object-header">
-							<div>상위 목표</div>
-							<button class="object-edit-btn">목표 변경</button>
-						</div>
-						<div class="horizon-divider-semi"></div>
-						<div class="object">
-							<a href="">
-								<div class="object-list" OnClick="location.href='#'">목표명</div>
-							</a>
-						</div>
-					</div>
-				</div>
-				
-				<div class="linked-object">
-					<div class="object-header">
-						<div>하위 목표</div>
-						<button class="object-edit-btn">목표 변경</button>
-					</div>
-					<div class="horizon-divider-semi"></div>
-					<div class="object">
-						<div class="object-list" OnClick="location.href='#'">목표명</div>
-					</div>
-					<div class="object">
-						<div class="object-list" OnClick="location.href='#'">목표명</div>
-					</div>
-					<div class="object">
-						<div class="object-list" OnClick="location.href='#'">목표명</div>
-					</div>
-				</div>
-			</div>
-			
-			<div class="content">
-				<h4 class="content-title">연결된 작업</h4>
-				<table>
-					<thead>
-					<tr>
-						<th class="job-name">작업명</th>
-						<th>담당자</th>
-						<th>기한</th>
-					</tr>
-					</thead>
-					<tbody>
-					<tr>
-						<td><a href="workDetail.html">작업명</a></td>
-						<td>담당자명</td>
-						<td>2023 01 01</td>
-					</tr>
-					<tr>
-						<td><a href="workDetail.html">작업명</a></td>
-						<td>담당자명</td>
-						<td>2023 01 01</td>
-					</tr>
-					<tr>
-						<td><a href="workDetail.html">작업명</a></td>
-						<td>담당자명</td>
-						<td>2023 01 01</td>
-					</tr>
-					</tbody>
-				</table>
-			</div>
-		
-		</div>
-		
-		<div class="vertical-divider"></div>
-		
-		<div class="right-section">
-			<!-- 이것도 div로 묶어야 데이터를 잘 넘길 수 있을 거 같.. ㄱ -->
-			<div>
-				<h4 class="content-title">목표 담당자</h4>
-				<p class="content-detail">담당자명 1</p>
-				<p class="content-detail">담당자명 2</p>
-				<div class="horizon-divider"></div>
-			</div>
-			<!-- 이걸 div로 해가지고 상위 목표와 연결 해야되는데 일단 내가 못함 미안 -->
-			<div>
-				<h4 class="content-title">마감 기간</h4>
-				<p class="content-detail">2023 01 01</p>
-				<div class="horizon-divider"></div>
-			</div>
-			
-			<div>
-				<h4 class="content-title">상위 목표</h4>
-				<p><a href="#" class="content-detail">목표 이름</a></p>
-				<div class="horizon-divider"></div>
-			</div>
-			
-			<div>
-				<a href="goal-create.html">
-					<button class="edit-btn">목표 수정</button>
-				</a>
-			</div>
-		</div>
-	</div>
+  <div class="content-container">
+    <div class="left-section">
+      <div class="content">
+        <h4 class="content-title">설명</h4>
+        <p class="content-detail" th:text="${detailDto.discription}"></p>
+      </div>
+
+      <div class="content">
+        <div class="linked-object">
+          <div class="object-header">
+            <div>하위 목표</div>
+            <button class="object-edit-btn">목표 변경</button>
+          </div>
+          <div class="horizon-divider-semi"></div>
+          <div class="object">
+            <a href="">
+              <div class="object-list" OnClick="location.href='#'">목표명</div>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="content-title">연결된 목표</h4>
+          <div class="linked-object">
+            <div class="object-header">
+              <div>상위 목표</div>
+              <button class="object-edit-btn">목표 변경</button>
+            </div>
+            <div class="horizon-divider-semi"></div>
+            <div class="object">
+              <a href=""><div class="object-list" OnClick="location.href='#'">목표명</div></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <h4 class="content-title">연결된 작업</h4>
+        <table>
+          <thead>
+          <tr>
+            <th class="job-name">작업명</th>
+            <th>담당자</th>
+            <th>기한</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td><a href="workDetail.html">작업명</a></td>
+            <td>담당자명</td>
+            <td>2023 01 01</td>
+          </tr>
+          <tr>
+            <td><a href="workDetail.html">작업명</a></td>
+            <td>담당자명</td>
+            <td>2023 01 01</td>
+          </tr>
+          <tr>
+            <td><a href="workDetail.html">작업명</a></td>
+            <td>담당자명</td>
+            <td>2023 01 01</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="vertical-divider"></div>
+
+    <div class="right-section">
+      <!-- 이걸 div로 해가지고 상위 목표와 연결 해야되는데 일단 내가 못함 미안 -->
+      <div>
+        <h4 class="content-title">마감 기간</h4>
+        <p class="content-detail" th:text="${#dates.format(detailDto.endDay, 'yyyy-MM-dd')}"></p>
+        <div class="horizon-divider"></div>
+      </div>
+
+      <div>
+        <h4 class="content-title">상위 목표</h4>
+        <p><a href="#" class="content-detail" th:text="${headDto.title}"></a></p>
+        <div class="horizon-divider"></div>
+      </div>
+
+      <div>
+        <a href="goal-create.html">
+          <button class="edit-btn">목표 수정</button>
+        </a>
+      </div>
+    </div>
+  </div>
 </div>
 </body>
 
