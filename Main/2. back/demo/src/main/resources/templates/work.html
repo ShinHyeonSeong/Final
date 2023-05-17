@@ -42,35 +42,18 @@
         <thead>
         <tr>
           <th class="job-name">작업명</th>
-          <th class="job-pic">담당자</th>
-          <th class="job-deadline">기한</th>
+<!--          <th class="job-pic">담당자</th>-->
+          <th class="job-deadline">마감기한</th>
           <th>상태</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-          <td><a href="workDetail.html">작업명</a></td>
-          <td>담당자명</td>
-          <td>2023 01 01</td>
-          <td>완료</td>
-        </tr>
-        <tr>
-          <td><a href="workDetail.html">작업명</a></td>
-          <td>담당자명</td>
-          <td>2023 01 01</td>
-          <td>완료</td>
-        </tr>
-        <tr>
-          <td><a href="workDetail.html">작업명</a></td>
-          <td>담당자명</td>
-          <td>2023 01 01</td>
-          <td>진행중</td>
-        </tr>
-        <tr>
-          <td><a href="workDetail.html">작업명</a></td>
-          <td>담당자명</td>
-          <td>2023 01 01</td>
-          <td>진행중</td>
+        <tr th:each="userWork : ${userWorkDtoList}">
+          <td><a th:href="@{/project/work/detail/{id}(id=${userWork.getWorkId()})}" th:text="${userWork.title}"></a></td>
+<!--          <td th:text="">담당자명</td>-->
+          <td th:text="${#dates.format(userWork.endDay, 'yyyy-MM-dd')}"></td>
+          <td th:if="${userWork.completion == 1}">완료</td>
+          <td th:if="${userWork.completion == 0}">진행중</td>
         </tr>
         </tbody>
       </table>
@@ -82,35 +65,16 @@
         <thead>
         <tr>
           <th class="job-name">작업명</th>
-          <th class="job-pic">담당자</th>
-          <th class="job-deadline">완료일자</th>
+          <th class="job-deadline" >마감기한</th>
           <th>상태</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-          <td><a href="workDetail.html">작업명</a></td>
-          <td>담당자명</td>
-          <td>2023 01 01</td>
-          <td>완료</td>
-        </tr>
-        <tr>
-          <td><a href="workDetail.html">작업명</a></td>
-          <td>담당자명</td>
-          <td>2023 01 01</td>
-          <td>완료</td>
-        </tr>
-        <tr>
-          <td><a href="workDetail.html">작업명</a></td>
-          <td>담당자명</td>
-          <td>2023 01 01</td>
-          <td>진행중</td>
-        </tr>
-        <tr>
-          <td><a href="workDetail.html">작업명</a></td>
-          <td>담당자명</td>
-          <td>2023 01 01</td>
-          <td>진행중</td>
+        <tr th:each="projectWork : ${projectWorkDtoList}">
+          <td><a th:href="@{/project/work/detail/{id}(id=${projectWork.workId})}" th:text="${projectWork.title}"></a></td>
+          <td th:text="${#dates.format(projectWork.endDay, 'yyyy-MM-dd')}"></td>
+          <td th:if="${projectWork.completion == 1}">완료</td>
+          <td th:if="${projectWork.completion == 0}">진행중</td>
         </tr>
         </tbody>
       </table>

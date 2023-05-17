@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @Slf4j
@@ -59,8 +60,13 @@ public class ProjectDetailController {
     @GetMapping("/project/works")
     public String works(Model model) {
         UserDto currentUser = getSessionUser();
-        List<WorkDto> workDtoList = projectDetailSerivce.selectAllWorkForUser(currentUser);
-
+        ProjectDto currentProject = getSessionProject();
+        List<WorkDto> userWorkDtoList = projectDetailSerivce.selectAllWorkForUser(currentUser);
+        List<WorkDto> projectWorkDtoList = projectDetailSerivce.selectAllWorkForProject(currentProject);
+        if (projectWorkDtoList != null) {
+            model.addAttribute("projectWorkDtoList", projectWorkDtoList);
+        }
+        model.addAttribute("userWorkDtoList", userWorkDtoList);
         return"work";
     }
 
@@ -72,6 +78,15 @@ public class ProjectDetailController {
         model.addAttribute("userDtoList", userDtoList);
         model.addAttribute("detailDtoList", detailDtoList);
         return "workCreate";
+    }
+
+    @RequestMapping("/project/work/detail/{id}")
+    public String goWorkDetail(@PathVariable("id")Long id, Model model) {
+        WorkDto workDto = projectDetailSerivce.selectWork(id);
+        UserDto userDto = projectDetailSerivce.selectUserWork(workDto);
+        model.addAttribute("workDto", workDto);
+        model.addAttribute("userDto", userDto);
+        return "workDetail";
     }
 
     /* - - - - 목표 관련 메서드- - - -*/
@@ -98,13 +113,24 @@ public class ProjectDetailController {
     }
     // 목표 디테일 창 이동 메서드
     @RequestMapping("/project/goal/headView/{id}")
-    public String goGoalDetail(@PathVariable("id")Long id, Model model) {
+    public String goHeadView(@PathVariable("id")Long id, Model model) {
         HeadDto headDto = projectDetailSerivce.selectHead(id);
         List<DetailDto> detailDtoList = projectDetailSerivce.selectAllDetailForHead(headDto);
         model.addAttribute("headDto", headDto);
         model.addAttribute("connectDetailList", detailDtoList);
         return "headView";
     }
+
+    @RequestMapping("/project/goal/detailView/{id}")
+    public String goDetailView(@PathVariable("id")Long id, Model model) {
+        DetailDto detailDto = projectDetailSerivce.selectDetail(id);
+        HeadDto headDto = projectDetailSerivce.selectHead(detailDto.getHeadIdToDetail().getHeadId());
+        model.addAttribute("detailDto", detailDto);
+        model.addAttribute("headDto", headDto);
+        return "detailView";
+    }
+
+
 
     /* - - - - 목표 관련 메서드 끝 - - - -*/
 

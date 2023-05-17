@@ -10,10 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -192,8 +189,20 @@ public class ProjectDetailSerivce {
     }
 
     public List<WorkDto> selectAllWorkForProject(ProjectDto projectDto) {
-        workRepository
+        List<WorkDto> workDtoList = new ArrayList<>();
+        List<WorkEntity> workEntityList = workRepository.findAllByProjectIdToWork_ProjectId(projectDto.getProjectId());
+        for (WorkEntity workEntity : workEntityList) {
+            workDtoList.add(WorkDto.toWorkDto(workEntity));
+        }
+        return workDtoList;
     }
+
+    public UserDto selectUserWork(WorkDto workDto) {
+        UserWorkEntity userWorkEntity = userWorkRepository.findByWorkIdToUserWork_WorkId(workDto.getWorkId());
+        Optional<UserEntity> userEntity = userRepository.findById(userWorkEntity.getUserIdToUserWork().getUuid());
+        return UserDto.toUserDto(userEntity.get());
+    }
+
     /* - - - - 선택 메서드 끝 - - - - - */
 
     /* - - - - 수정 메서드 시작 - - - - - */
