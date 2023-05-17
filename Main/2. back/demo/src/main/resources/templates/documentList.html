@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/documentList.css">
+    <script src="/js/documentList.js"></script>
+    <title>DocumentList</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/project/main" class="back-button"> < </a>
+            <h1>문서 목록</h1>
+            <form th:action="@{addDocument}" method="post">
+                <button type="submit">제작</button>
+            </form>
+        </div>
+        <div class="document-list">
+            <section class="my-document-section">
+                <div class="document">
+                    <div class="document-classification">
+                        내 문서
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="job-name">문서</th>
+                                <th>연계 목표</th>
+                                <th>작성자</th>
+                                <th>작성일자</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="document : ${UserDocumentList}" >
+                            <td ><a th:href="@{/document/write(id=${document.documentId})}" th:text="${document.title}">문서명</a></td>
+                            <td>목표명</td>
+                            <td th:text="${document.userName}">작성자명</td>
+                            <td th:text="${document.dateDocument}">일자</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="all-document-section">
+                <div class="document">
+                    <div class="document-classification">
+                        전체 문서
+                    </div>
+                    <div class="object-linked-document">
+                        <div class="linked-object">연결된 목표명</div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="job-name">문서</th>
+                                    <th>연계 목표</th>
+                                    <th>작성자</th>
+                                    <th>작성일자</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a href="documentDetail.html">문서명</a></td>
+                                    <td>목표명</td>
+                                    <td>작성자명</td>
+                                    <td>2023 01 01</td>
+                                </tr>
+                                <tr>
+                                    <td><a href="documentDetail.html">문서명</a></td>
+                                    <td>목표명</td>
+                                    <td>작성자명</td>
+                                    <td>2023 01 01</td>
+                                </tr>
+                                <tr>
+                                    <td><a href="documentDetail.html">문서명</a></td>
+                                    <td>목표명</td>
+                                    <td>작성자명</td>
+                                    <td>2023 01 01</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="object-linked-document">
+                        <div class="linked-object">연결된 목표명</div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="job-name">문서</th>
+                                    <th>연계 목표</th>
+                                    <th>작성자</th>
+                                    <th>작성일자</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><a href="documentDetail.html">문서명</a></td>
+                                    <td>목표명</td>
+                                    <td>작성자명</td>
+                                    <td>2023 01 01</td>
+                                </tr>
+                                <tr>
+                                    <td><a href="documentDetail.html">문서명</a></td>
+                                    <td>목표명</td>
+                                    <td>작성자명</td>
+                                    <td>2023 01 01</td>
+                                </tr>
+                                <tr>
+                                    <td><a href="documentDetail.html">문서명</a></td>
+                                    <td>목표명</td>
+                                    <td>작성자명</td>
+                                    <td>2023 01 01</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+</body>
+
+</html>
