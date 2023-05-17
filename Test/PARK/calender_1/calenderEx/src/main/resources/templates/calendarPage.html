@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="utf-8"/>
+	<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.js'></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			var calendarEl = document.getElementById('calendar');
+			var calendar = new FullCalendar.Calendar(calendarEl, {
+				initialView: 'dayGridMonth',
+				events: data,
+				// events: [
+				// 	{
+				// 		title: '물주기',
+				// 		start: '2023-05-14'
+				// 	},
+				// 	{
+				// 		title: '뚜껑 닫기',
+				// 		start: '2023-05-16',
+				// 		end: '2023-05-20'
+				// 	}
+				// ]
+			});
+			calendar.render();
+		});
+	
+	</script>
+
+</head>
+<body>
+<div id='calendar'></div>
+<!--</body>-->
+<!--<script>-->
+<!--	var calendarEl = document.getElementById('calendar');-->
+<!--	var request = $.ajax({-->
+<!--		url: "/calendar/event",-->
+<!--		method: "GET",-->
+<!--	});-->
+<!--	request.done(function (data) {-->
+<!--		var calendar = new FullCalendar.Calendar(calendarEl, {-->
+<!--			initialView: 'dayGridMonth',-->
+<!--			events: data,-->
+<!--			-->
+<!--		});-->
+<!--		calendar.render();-->
+<!--	});-->
+<!--</script>-->
+</body>
+</html>

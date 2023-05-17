@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<!-- 프로젝트 생성 시 첫화면 -->
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,10 +8,11 @@
     <link rel="stylesheet" href="../css/projectCreate.css">
     <script src="../js/projectCreate.js"></script>
 </head>
+
 <body>
     <div class="card">
         <div class="container">
-            <a href="home.html"><button class="next-btn">NEW</button></a>
+            <a href="/project/create"><button class="next-btn">NEW</button></a>
         </div>
     </div>
 
@@ -22,5 +21,18 @@
         <span>Block Project Manager</span>
     </div>
 </body>
+
+<script>
+    function submitForm() {
+        // Get form data
+        var projectTitle = document.getElementById("project-title").value;
+        var projectDescription = document.getElementById("project-description").value;
+        var projectScope = document.getElementById("project-scope").value;
+
+        // Submit form data to another page
+        window.location.href = "submit.html?title=" + encodeURIComponent(projectTitle) + "&description=" + encodeURIComponent(projectDescription) + "&scope=" + encodeURIComponent(projectScope);
+    }
+</script>
+
 
 </html>
