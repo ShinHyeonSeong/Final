@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="../css/sidebar.css">
 </head>
 <!-- 프로젝트 생성후 메인창 -->
+
 <body>
 	<div class="container">
 		<div class="sidebar">
@@ -22,35 +23,34 @@
 			</ul>
 		</div>
 		<div class="centered-content">
-			<div class="project-name">Project 1</div>
+			<div class="project-name" th:text="${projectDto.title}"> Project 1</div>
 			<div class="centered-top">
 				<div class="project-intro">
-					<h2>Project Introduction</h2>
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor semper massa, in scelerisque
-						velit euismod in. Fusce vehicula enim id velit sagittis, a bibendum ipsum imperdiet.</p>
+					<p class="div-h">Project Introduction</p>
+					<p class="div-content" th:text="${projectDto.subtitle}">
 				</div>
 				<div class="team-members">
-					<h2>Team Members</h2>
-					<div class="member">
-						<h3>John Doe</h3>
-						<div class="member-email">Web Developer</div>
+					<div class="div-h">Team Members</div>
+					<div class="member" th:each="member : ${joinUsers}">
+						<h3 th:text="${member.name}">John Doe</h3>
+						<div class="member-role" th:text="${member.email}">Web Developer</div>
 					</div>
 					<div class="member">
 						<h3>Jane Doe</h3>
-						<div>Graphic Designer</div>
+						<div class="member-role">Graphic Designer</div>
 					</div>
 				</div>
 			</div>
 			<div class="my-work">
-				<h2>내 작업</h2>
-				<p>작업 설명</p>
+				<div class="div-h">내 작업</div>
+				<p class="div-content">작업 설명</p>
 			</div>
 			<div class="goals">
-				<h2>목표</h2>
-				<p>목표 설명</p>
+				<div class="div-h">목표</div>
+				<p class="div-content">목표 설명</p>
 			</div>
 		</div>
-
+</div>
 </body>
 
 </html>
