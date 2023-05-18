@@ -29,8 +29,8 @@ a {
 }
 
 .centered-top {
-	display: flex;
 }
+	display: flex;
 
 .team-members,
 .project-intro,

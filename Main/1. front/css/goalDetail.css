@@ -100,7 +100,7 @@ a {
 	border-radius: 10px;
 }
 
-.object-header{
+.object-header {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
@@ -173,24 +173,25 @@ table {
 	border-radius: 5px;
 	overflow: hidden;
 }
-  
+
 th {
 	text-align: left;
 }
-	
+
 thead {
 	font-weight: bold;
 	color: #fff;
 	background: #333;
 }
-	
-td, th {
+
+td,
+th {
 	padding: 1em 1.5em;
 	vertical-align: middle;
 }
-	
+
 td {
-	border-bottom: 1px solid rgba(0,0,0,.1);
+	border-bottom: 1px solid rgba(0, 0, 0, .1);
 	background: #444;
 	transition: 0.5s;
 }
@@ -200,9 +201,9 @@ td:hover {
 }
 
 td a {
-	display:block; 
-	width:100%; 
-	height:100%
+	display: block;
+	width: 100%;
+	height: 100%
 }
 
 .job-name {
@@ -228,4 +229,60 @@ td a {
 	background-color: #555;
 }
 
-  
+
+
+
+
+.comment-section {
+	display: flex;
+	flex-direction: column;
+}
+
+.comment-write-section {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 3rem;
+}
+
+.comment-write {
+	resize: none;
+	outline: none;
+	border: 1px solid #444;
+	margin: 2rem 0;
+	padding: 20px 0 0 15px;
+	width: 100%;
+	border-radius: 5px;
+	min-height: 6.125rem;
+	font-size: 18px;
+	color: #fff;
+	background-color: #333;
+	vertical-align: top;
+}
+
+.comment-write:focus {
+	outline: none;
+	border: 1px solid #666;
+}
+
+.comment-user-name {
+	font-size: 12px;
+	margin-bottom: 10px;
+}
+
+.submit-btn {
+	background-color: #444;
+	color: #fff;
+	border: none;
+	cursor: pointer;
+	padding: 10px 38px;
+	text-decoration: none;
+	border-radius: 5px;
+	font-size: 16px;
+	transition: 0.5s;
+	margin-left: 20%;
+	float: right;
+}
+
+.submit-btn:hover {
+	background-color: #555;
+}

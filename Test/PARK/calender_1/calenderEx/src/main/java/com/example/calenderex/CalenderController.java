@@ -1,6 +1,6 @@
 package com.example.calenderex;
 
-import com.example.calenderex.service.CalenderService;
+import com.example.calenderex.CalenderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,21 +11,14 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/calendar")
 public class CalenderController {
 
     @Autowired
     CalenderService calendarService;
 
-    @RequestMapping //기본 페이지 표시
-    public String viewCalendar() {
-        return "calendarPage";
+    @GetMapping("/index")
+    public String index() {
+        return "index";
     }
-
-    @GetMapping("/event") //ajax 데이터 전송 URL
-    public @ResponseBody List<Map<String, Object>> getEvent() {
-        return calendarService.getEventList();
-    }
-
 }
 
