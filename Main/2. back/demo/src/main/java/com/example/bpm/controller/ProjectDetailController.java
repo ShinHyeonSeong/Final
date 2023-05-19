@@ -96,11 +96,7 @@ public class ProjectDetailController {
         model.addAttribute("userDto", userDto);
         return "workDetail";
     }
-
-
-
-
-
+    
     /* - - - - 목표 관련 메서드- - - -*/
     // 목표 생성
     /* 클라이언트에서 전달 받을 때, Dto 내부 속성 중 전달받을 수 없는 속성들이 있다. 때문에 @ModelAttribute를 쓰지 않고 하나씩 전달 받은 후
