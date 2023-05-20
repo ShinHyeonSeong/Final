@@ -17,7 +17,8 @@ public class UserEntity {
     @Column(name = "uuid")
     private String uuid;
 
-
+    @Column(name = "name")
+    private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "uuidToReply")
     private List<CommentEntity> userInfoToReply = new ArrayList<>();

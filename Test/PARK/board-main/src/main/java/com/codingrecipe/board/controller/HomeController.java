@@ -14,8 +14,6 @@ import javax.websocket.server.PathParam;
 @Controller
 public class HomeController {
 
-    @Autowired
-    private final CommentService commentService;
 
     @GetMapping("/")
     public String index() {
@@ -23,10 +21,5 @@ public class HomeController {
     }
 
 
-    /* CREATE */
-    @PostMapping("/posts/{id}/comments")
-    public ResponseEntity commentSave(@PathVariable Long id, @RequestBody CommentRequestDto dto,
-                                      @PathParam()) {
-        return ResponseEntity.ok(commentService.commentSave(userSessionDto.getNickname(), id, dto));
-    }
+
 }

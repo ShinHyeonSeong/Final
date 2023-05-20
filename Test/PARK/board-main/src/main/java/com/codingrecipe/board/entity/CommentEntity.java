@@ -28,8 +28,8 @@ public class CommentEntity {
     private UserEntity uuidToReply;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "document_id")
-    private DocumentEntity documentIdToReply;
+    @JoinColumn(name = "post_id")
+    private PostEntity postIdToReply;
 
     public static CommentEntity toCommentEntity(CommentDto commentDto) {
         CommentEntity commentEntity = new CommentEntity();
@@ -37,7 +37,7 @@ public class CommentEntity {
         commentEntity.setContent(commentDto.getContent());
         commentEntity.setDate(commentDto.getDate());
         commentEntity.setUuidToReply(commentDto.getUuidToReply());
-        commentEntity.setDocumentIdToReply(commentEntity.getDocumentIdToReply());
+        commentEntity.setPostIdToReply(commentEntity.getPostIdToReply());
         return commentEntity;
     }
 }

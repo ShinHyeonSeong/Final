@@ -10,8 +10,6 @@
   <script src="../js/goalDetail.js"></script>
 </head>
 <!-- 목표 > 내 목표 창-->
-<!-- 03.28 색 최적화 및 div 분류 완료
-    종혁 : 전체 디테일은 너가 잡아줘야해 내가 지금 계속 틀만 잡아 넘길께 나중에 디테일 같이 잡긴 할께 -->
 
 <body>
 <div class="sidebar">
@@ -103,7 +101,6 @@
     <div class="vertical-divider"></div>
 
     <div class="right-section">
-      <!-- 이걸 div로 해가지고 상위 목표와 연결 해야되는데 일단 내가 못함 미안 -->
       <div>
         <h4 class="content-title">마감 기간</h4>
         <p class="content-detail" th:text="${#dates.format(detailDto.endDay, 'yyyy-MM-dd')}"></p>

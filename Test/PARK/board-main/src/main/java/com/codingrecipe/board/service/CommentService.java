@@ -23,7 +23,6 @@ import java.util.List;
 @AllArgsConstructor
 public class CommentService {
 
-    private final DocumentRepository documentRepository;
     @Autowired
     private final CommentRepository commentRepository;
     @Autowired
