@@ -18,10 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -129,7 +126,7 @@ public class DocumentService {
     }
 
     // 파일 저장
-    public String saveFile(MultipartFile file) {
+    public String saveFile(MultipartFile file) throws IOException{
 
         String uuid = UUID.randomUUID().toString();
         String ext = file.getContentType();
