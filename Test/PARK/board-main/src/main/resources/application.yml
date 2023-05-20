@@ -7,7 +7,7 @@ spring:
     show-sql: true
     hibernate:
       #빌드 될때마다 DB 초기화
-      hbm2ddl: update
+      hbm2ddl: CREATE
       #query문 정렬해서 보여주기
       format_sql: true
     database-platform: org.hibernate.dialect.MariaDB103Dialect

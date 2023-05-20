@@ -4,6 +4,8 @@ import javax.persistence.*;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -24,4 +26,8 @@ public class Document implements Serializable {
 
     @Column(name = "dateDocument")
     private String dateDocument;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "DocumentIdToComment")
+    private List<DocumentCommentEntity> documentCommentEntities  = new ArrayList<>();
+
 }

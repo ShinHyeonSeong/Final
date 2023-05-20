@@ -1,28 +1,26 @@
 package com.example.bpm.service;
 
-import com.example.bpm.dto.BlockDto;
-import com.example.bpm.dto.DocumentDto;
-import com.example.bpm.dto.JsonDocumentDto;
-import com.example.bpm.dto.LogDto;
+import com.example.bpm.dto.*;
 import com.example.bpm.entity.Block;
 import com.example.bpm.entity.Document;
+import com.example.bpm.entity.DocumentCommentEntity;
 import com.example.bpm.entity.Log;
 import com.example.bpm.repository.BlockRepository;
+import com.example.bpm.repository.DocumentCommentRepository;
 import com.example.bpm.repository.DocumentRepository;
 import com.example.bpm.repository.LogRepository;
 import com.example.bpm.service.dateLogic.DateManager;
 import com.example.bpm.service.logLogic.LogManager;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
+@Slf4j
 public class DocumentService {
 
     // 레파지토리 AutoWired
@@ -36,6 +34,9 @@ public class DocumentService {
     @Autowired
     private LogRepository logRepository;
 
+    @Autowired
+    private DocumentCommentRepository documentCommentRepository;
+
     // 기타 비지니스 클래스
 
     private LogManager logManager = new LogManager();
@@ -48,7 +49,7 @@ public class DocumentService {
 
     // 새로운 문서 만들기
     /// 해당 함수를 호출하면 새로운 문서를 만들고 해당 문서의 id 를 반환함
-    public String documentAdding(String userUuid){
+    public String documentAdding(String userUuid) {
         DocumentDto documentDto = new DocumentDto();
 
         UUID uuid = UUID.randomUUID();
@@ -71,7 +72,7 @@ public class DocumentService {
     }
 
     // 문서 저장
-    public void saveDocument(JsonDocumentDto jsonDocumentDto, String userUuid){
+    public void saveDocument(JsonDocumentDto jsonDocumentDto, String userUuid) {
 
         Document document = jsonDocumentDto.documentEntityOut();
         document.setDateDocument(dateManager.DocumentTime());
@@ -91,11 +92,11 @@ public class DocumentService {
 
         blockChange(deleteBlockList, addBlockList);
 
-        logReturn(document, addBlockList,  userName + "- Save Document");
+        logReturn(document, addBlockList, userName + "- Save Document");
     }
 
     // 로그 데이터로 현재 데이터 교체
-    public String changeLogData(String id, String userUuid){
+    public String changeLogData(String id, String userUuid) {
         Log log = getLogById(id);
 
         String[] logDocument = log.getLog().split("\\]");
@@ -124,7 +125,7 @@ public class DocumentService {
     }
 
     // 파일 저장
-    public String saveFile(MultipartFile file){
+    public String saveFile(MultipartFile file) {
 
         if (file != null) {
             // 파일 저장 경로
@@ -142,8 +143,7 @@ public class DocumentService {
                 // 전달할 파일 저장
                 try {
                     file.transferTo(saveFile);
-                }
-                catch (Exception e){
+                } catch (Exception e) {
                     return "error";
                 }
             }
@@ -158,7 +158,7 @@ public class DocumentService {
     // 내부 함수
     //////////////////////////////////////////////////////////////////
 
-    public void blockChange(List<Block> deleteBlockList, List<Block> addBlockList){
+    public void blockChange(List<Block> deleteBlockList, List<Block> addBlockList) {
         for (Block block : deleteBlockList) {
             blockRepository.delete(block);
         }
@@ -168,12 +168,12 @@ public class DocumentService {
         }
     }
 
-    public void logReturn(Document document, List<Block> blockList, String logType){
+    public void logReturn(Document document, List<Block> blockList, String logType) {
         String logString = "";
 
         logString += logManager.changeDocumentToString(document) + "]";
 
-        for (Block block: blockList) {
+        for (Block block : blockList) {
             logString += logManager.changeBlockToString(block) + "/";
         }
 
@@ -197,13 +197,12 @@ public class DocumentService {
     /* Document DocumentDto */
 
     // 문서 전체 받아오기
-    public List<DocumentDto> getDocumentList(){
+    public List<DocumentDto> getDocumentList() {
         List<Document> documentList = documentRepository.findAll();
         List<DocumentDto> documentDtoList = new ArrayList<>();
 
-        for (Document document:
-        documentList)
-        {
+        for (Document document :
+                documentList) {
             DocumentDto documentDto = new DocumentDto();
             documentDto.insertEntity(document);
             documentDtoList.add(documentDto);
@@ -213,13 +212,12 @@ public class DocumentService {
     }
 
     // 유저 기준으로 문서 리스트 받아오기
-    public List<DocumentDto> getDocumentListByUser(String userUuid){
+    public List<DocumentDto> getDocumentListByUser(String userUuid) {
         List<Document> documentList = documentRepository.findByUuid(userUuid);
         List<DocumentDto> documentDtoList = new ArrayList<>();
 
-        for (Document document:
-                documentList)
-        {
+        for (Document document :
+                documentList) {
             DocumentDto documentDto = new DocumentDto();
             documentDto.insertEntity(document);
             documentDtoList.add(documentDto);
@@ -229,8 +227,8 @@ public class DocumentService {
     }
 
     // 문서 아이디 기준으로 문서 받아오기
-    public DocumentDto getDocumentById(String id){
-        Document document =  documentRepository.findByDocumentId(id);
+    public DocumentDto getDocumentById(String id) {
+        Document document = documentRepository.findByDocumentId(id);
         DocumentDto documentDto = new DocumentDto();
         documentDto.insertEntity(document);
 
@@ -240,12 +238,12 @@ public class DocumentService {
     /* Block BlockDto */
 
     // 문서 아이디 기준으로 블럭 리스트 받아오기
-    public  List<BlockDto> getBlockListByDocumentId(String id){
+    public List<BlockDto> getBlockListByDocumentId(String id) {
         List<Block> blockList = blockRepository.findByDocumentId(id);
         List<BlockDto> blockDtoList = new ArrayList<>();
 
-        for (Block block:
-        blockList) {
+        for (Block block :
+                blockList) {
             BlockDto blockDto = new BlockDto();
             blockDto.insertEntity(block);
             blockDtoList.add(blockDto);
@@ -253,13 +251,13 @@ public class DocumentService {
 
         Collections.sort(blockDtoList);
 
-        return  blockDtoList;
+        return blockDtoList;
     }
 
     /* Log LogDto */
 
     // 문서 아이디 기준으로 문서 리스트 불러오기
-    public  List<LogDto> getLogListById(String id){
+    public List<LogDto> getLogListById(String id) {
         List<Log> logList = logRepository.findByDocumentId(id);
         List<LogDto> logDtoList = new ArrayList<>();
 
@@ -275,7 +273,55 @@ public class DocumentService {
     }
 
     // 로그 아이디로 로그 불러오기 [서비스 내부에서 사용]
-    public  Log getLogById(String id){
-        return  logRepository.findBylogId(id);
+    public Log getLogById(String id) {
+        return logRepository.findBylogId(id);
+    }
+
+
+    //댓글 기능 (댓글리스트 불러오기)
+    public List<DocumentCommentDto> findByComment(String documentId) {
+        List<DocumentCommentEntity> entityList = documentCommentRepository.findAllByDocumentIdToComment_DocumentId(documentId);
+        if (entityList.isEmpty()) {
+            log.info("해당 문서에 댓글 없음 (서비스)");
+            return null;
+        } else {
+            List<DocumentCommentDto> commentDtoList = new ArrayList<>();
+            for (DocumentCommentEntity commentEntity : entityList) {
+                commentDtoList.add(DocumentCommentDto.toDocumentCommentDto(commentEntity));
+            }
+            log.info("댓글 리스트 불러오기 성공(서비스)");
+            return commentDtoList;
+        }
+    }
+    //댓글기능 (댓글 추가)
+    public List<DocumentCommentDto> plusComment(DocumentCommentDto documentCommentDto, String documentId) {
+        if (documentCommentDto.equals(null)) {
+            log.info("코멘트가 비어있음 (서비스)");
+            return null;
+        } else {
+            documentCommentRepository.save(DocumentCommentEntity.toDocumentCommentEntity(documentCommentDto));
+            return findByComment(documentId);
+        }
+    }
+
+    //update를 위한 Comment Find
+    public DocumentCommentDto findComment(Long documentId){
+        Optional<DocumentCommentEntity> documentCommentEntity=  documentCommentRepository.findById(documentId);
+        return DocumentCommentDto.toDocumentCommentDto(documentCommentEntity.get());
+    }
+
+    //댓글기능 (댓글 수정)
+    public List<DocumentCommentDto> updateComment(DocumentCommentDto documentCommentDto, String comment){
+        documentCommentDto.setComment(comment);
+        documentCommentRepository.save(DocumentCommentEntity.toDocumentCommentEntity(documentCommentDto));
+        return findByComment(String.valueOf(documentCommentDto.getDocumentIdToComment()));
+    }
+
+    //댓글 삭제
+    public List<DocumentCommentDto> deleteComment(Long documentId){
+        Optional<DocumentCommentEntity> now = documentCommentRepository.findById(documentId);
+        DocumentCommentDto documentCommentDto = DocumentCommentDto.toDocumentCommentDto(now.get());
+        documentCommentRepository.deleteById(documentId);
+        return findByComment(String.valueOf(documentCommentDto.getDocumentIdToComment()));
     }
 }

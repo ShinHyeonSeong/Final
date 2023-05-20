@@ -1,7 +1,7 @@
 package com.codingrecipe.board.dto;
 
 import com.codingrecipe.board.entity.CommentEntity;
-import com.codingrecipe.board.entity.DocumentEntity;
+import com.codingrecipe.board.entity.PostEntity;
 import com.codingrecipe.board.entity.UserEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +15,7 @@ public class CommentDto {
     private String content;
     private Date date;
     private UserEntity uuidToReply;
-    private DocumentEntity documentIdToReply;
+    private PostEntity postIdToReply;
 
     public static CommentDto toCommentDto(CommentEntity commentEntity) {
         CommentDto commentDto = new CommentDto();
@@ -23,7 +23,7 @@ public class CommentDto {
         commentDto.setContent(commentEntity.getContent());
         commentDto.setDate(commentEntity.getDate());
         commentDto.setUuidToReply(commentEntity.getUuidToReply());
-        commentDto.setDocumentIdToReply(commentEntity.getDocumentIdToReply());
+        commentDto.setPostIdToReply(commentEntity.getPostIdToReply());
 
         return commentDto;
     }
