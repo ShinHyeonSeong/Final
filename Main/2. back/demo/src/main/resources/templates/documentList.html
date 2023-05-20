@@ -15,9 +15,6 @@
         <div class="header">
             <a href="/project/main" class="back-button"> < </a>
             <h1>문서 목록</h1>
-            <form th:action="@{addDocument}" method="post">
-                <button type="submit">제작</button>
-            </form>
         </div>
         <div class="document-list">
             <section class="my-document-section">
@@ -29,7 +26,6 @@
                         <thead>
                             <tr>
                                 <th class="job-name">문서</th>
-                                <th>연계 목표</th>
                                 <th>작성자</th>
                                 <th>작성일자</th>
                             </tr>
@@ -37,7 +33,6 @@
                         <tbody>
                         <tr th:each="document : ${UserDocumentList}" >
                             <td ><a th:href="@{/document/write(id=${document.documentId})}" th:text="${document.title}">문서명</a></td>
-                            <td>목표명</td>
                             <td th:text="${document.userName}">작성자명</td>
                             <td th:text="${document.dateDocument}">일자</td>
                         </tr>
@@ -49,71 +44,23 @@
             <section class="all-document-section">
                 <div class="document">
                     <div class="document-classification">
-                        전체 문서
+                        현재 프로젝트 전체 문서
                     </div>
-                    <div class="object-linked-document">
-                        <div class="linked-object">연결된 목표명</div>
+                    <div class="object-linked-document" th:each="documentList : ${projectDocumentList}">
+                        <div class="linked-object" th:text="${documentList.workName}">연결된 목표명</div>
                         <table>
                             <thead>
                                 <tr>
                                     <th class="job-name">문서</th>
-                                    <th>연계 목표</th>
                                     <th>작성자</th>
                                     <th>작성일자</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody th:each="document : ${documentList.documentDtoList}">
                                 <tr>
-                                    <td><a href="documentDetail.html">문서명</a></td>
-                                    <td>목표명</td>
-                                    <td>작성자명</td>
-                                    <td>2023 01 01</td>
-                                </tr>
-                                <tr>
-                                    <td><a href="documentDetail.html">문서명</a></td>
-                                    <td>목표명</td>
-                                    <td>작성자명</td>
-                                    <td>2023 01 01</td>
-                                </tr>
-                                <tr>
-                                    <td><a href="documentDetail.html">문서명</a></td>
-                                    <td>목표명</td>
-                                    <td>작성자명</td>
-                                    <td>2023 01 01</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="object-linked-document">
-                        <div class="linked-object">연결된 목표명</div>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th class="job-name">문서</th>
-                                    <th>연계 목표</th>
-                                    <th>작성자</th>
-                                    <th>작성일자</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><a href="documentDetail.html">문서명</a></td>
-                                    <td>목표명</td>
-                                    <td>작성자명</td>
-                                    <td>2023 01 01</td>
-                                </tr>
-                                <tr>
-                                    <td><a href="documentDetail.html">문서명</a></td>
-                                    <td>목표명</td>
-                                    <td>작성자명</td>
-                                    <td>2023 01 01</td>
-                                </tr>
-                                <tr>
-                                    <td><a href="documentDetail.html">문서명</a></td>
-                                    <td>목표명</td>
-                                    <td>작성자명</td>
-                                    <td>2023 01 01</td>
+                                    <td><a th:href="@{/document/write(id=${document.documentId})}" th:text="${document.title}">문서명</a></td>
+                                    <td th:text="${document.userName}">작성자명</td>
+                                    <td th:text="${document.dateDocument}">일자</td>
                                 </tr>
                             </tbody>
                         </table>

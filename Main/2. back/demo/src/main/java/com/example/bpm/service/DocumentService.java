@@ -1,22 +1,22 @@
 package com.example.bpm.service;
 
-import com.example.bpm.dto.BlockDto;
-import com.example.bpm.dto.DocumentDto;
-import com.example.bpm.dto.JsonDocumentDto;
-import com.example.bpm.dto.LogDto;
-import com.example.bpm.entity.Block;
-import com.example.bpm.entity.Document;
-import com.example.bpm.entity.Log;
-import com.example.bpm.repository.BlockRepository;
-import com.example.bpm.repository.DocumentRepository;
-import com.example.bpm.repository.LogRepository;
+import com.example.bpm.dto.*;
+import com.example.bpm.entity.*;
+import com.example.bpm.repository.*;
 import com.example.bpm.service.dateLogic.DateManager;
 import com.example.bpm.service.logLogic.LogManager;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.BlobInfo;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,6 +24,9 @@ import java.util.UUID;
 
 @Service
 public class DocumentService {
+
+    // 필드
+    private String bucketName = "bpm-file-storage";
 
     // 레파지토리 AutoWired
 
@@ -35,6 +38,15 @@ public class DocumentService {
 
     @Autowired
     private LogRepository logRepository;
+
+    @Autowired
+    private UserWorkRepository userWorkRepository;
+
+    @Autowired
+    private WorkDocumentRepository workDocumentRepository;
+
+    @Autowired
+    private WorkRepository workRepository;
 
     // 기타 비지니스 클래스
 
@@ -48,7 +60,7 @@ public class DocumentService {
 
     // 새로운 문서 만들기
     /// 해당 함수를 호출하면 새로운 문서를 만들고 해당 문서의 id 를 반환함
-    public String documentAdding(String userUuid){
+    public String documentAdding(String userUuid, String userName){
         DocumentDto documentDto = new DocumentDto();
 
         UUID uuid = UUID.randomUUID();
@@ -60,9 +72,6 @@ public class DocumentService {
         /// 유저 uuid 저장
         documentDto.setUuid(userUuid);
 
-        // needChange
-        /// 유저 이름 찾아서 저장
-        String userName = "임시 유저"; // 변경할 부분
         documentDto.setUserName(userName);
 
         documentRepository.save(documentDto.toEntity());
@@ -71,17 +80,13 @@ public class DocumentService {
     }
 
     // 문서 저장
-    public void saveDocument(JsonDocumentDto jsonDocumentDto, String userUuid){
+    public void saveDocument(JsonDocumentDto jsonDocumentDto, String userUuid, String userName){
 
         Document document = jsonDocumentDto.documentEntityOut();
         document.setDateDocument(dateManager.DocumentTime());
 
-        /// 유저 uuid 저장
         document.setUuid(userUuid);
 
-        // needChange
-        /// 유저 이름 찾아서 저장
-        String userName = "임시 유저"; // 변경할 부분
         document.setUserName(userName);
 
         documentRepository.save(document);
@@ -95,13 +100,13 @@ public class DocumentService {
     }
 
     // 로그 데이터로 현재 데이터 교체
-    public String changeLogData(String id, String userUuid){
+    public String changeLogData(String id, String userName){
         Log log = getLogById(id);
 
         String[] logDocument = log.getLog().split("\\]");
         Document document = logManager.deserializeDocument(logDocument[0]);
 
-        String[] logBlock = logDocument[1].split("\\/");
+        String[] logBlock = logDocument[1].split("\\[");
         List<Block> deleteBlockList = blockRepository.findByDocumentId(log.getDocumentId());
         List<Block> addBlockList = new ArrayList<>();
 
@@ -114,44 +119,55 @@ public class DocumentService {
 
         blockChange(deleteBlockList, addBlockList);
 
-        // needChange
-        /// 유저 이름 찾아서 저장 ()
-        String userName = "임시 유저"; // 변경할 부분
-
         logReturn(document, addBlockList, userName + "- Chage Log Data<br>" + log.getDateLog());
 
         return document.getDocumentId();
     }
 
     // 파일 저장
-    public String saveFile(MultipartFile file){
+    public String saveFile(MultipartFile file) throws IOException {
 
-        if (file != null) {
-            // 파일 저장 경로
-            String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\file\\image";
+        String uuid = UUID.randomUUID().toString();
+        String ext = file.getContentType();
 
-            // 랜덤 UUID를 생성 하여 UUID_본래 파일 이름 으로 파일 이름 생성
-            UUID uuid = UUID.randomUUID();
+        InputStream keyFile = ResourceUtils.getURL("classpath:" + "oceanic-will-385316-249d7b5e0f68.json").openStream();
 
-            String fileName = uuid + "_" + file.getOriginalFilename();
+        Storage storage = StorageOptions.newBuilder().setProjectId("oceanic-will-385316")
+                .setCredentials(GoogleCredentials.fromStream(keyFile))
+                .build().getService();
 
-            // 파일이 비어있지 않을때, 파일에 파일 명, 파일 경로 저장
-            if (file.getOriginalFilename() != "") {
-                File saveFile = new File(projectPath, fileName);
+        Blob blobInfo = storage.create(
+                BlobInfo.newBuilder(bucketName, uuid)
+                        .setContentType(ext)
+                        .build(),
+                file.getInputStream()
+        );
 
-                // 전달할 파일 저장
-                try {
-                    file.transferTo(saveFile);
-                }
-                catch (Exception e){
-                    return "error";
-                }
-            }
+        return "https://storage.cloud.google.com/bpm-file-storage/"+uuid;
+    }
 
-            return "/file/image/" + fileName;
+    //work_document 연결
+    public void workDocumentAdd(Long workId, String documentId){
+        WorkDocumentEntity workDocumentEntity = new WorkDocumentEntity();
+        workDocumentEntity.setWorkIdToWorkDocument(workRepository.findByWorkId(workId));
+        workDocumentEntity.setDocumentIdToWorkDocument(documentRepository.findByDocumentId(documentId));
+
+        workDocumentRepository.save(workDocumentEntity);
+    }
+
+    public boolean accreditUserToWork(String uuid, String DocumentId){
+
+        List<UserWorkEntity> userWorkEntityList = userWorkRepository.findAllByUserIdToUserWork_Uuid(uuid);
+
+        WorkDocumentEntity workDocumentEntity = workDocumentRepository.findByDocumentIdToWorkDocument_DocumentId(DocumentId);
+
+        for (UserWorkEntity userWorkEntity: userWorkEntityList) {
+            if (userWorkEntity.getWorkIdToUserWork().getWorkId().equals(workDocumentEntity.getWorkIdToWorkDocument().getWorkId()))
+                return false;
         }
 
-        return "error";
+        return true;
+
     }
 
     //////////////////////////////////////////////////////////////////
@@ -174,7 +190,7 @@ public class DocumentService {
         logString += logManager.changeDocumentToString(document) + "]";
 
         for (Block block: blockList) {
-            logString += logManager.changeBlockToString(block) + "/";
+            logString += logManager.changeBlockToString(block) + "[";
         }
 
         Log log = new Log();
@@ -202,7 +218,7 @@ public class DocumentService {
         List<DocumentDto> documentDtoList = new ArrayList<>();
 
         for (Document document:
-        documentList)
+                documentList)
         {
             DocumentDto documentDto = new DocumentDto();
             documentDto.insertEntity(document);
@@ -214,11 +230,19 @@ public class DocumentService {
 
     // 유저 기준으로 문서 리스트 받아오기
     public List<DocumentDto> getDocumentListByUser(String userUuid){
-        List<Document> documentList = documentRepository.findByUuid(userUuid);
+        List<Document> documentList = new ArrayList<>();
         List<DocumentDto> documentDtoList = new ArrayList<>();
 
-        for (Document document:
-                documentList)
+        List<UserWorkEntity> userWorkEntityList = userWorkRepository.findAllByUserIdToUserWork_Uuid(userUuid);
+
+        for (UserWorkEntity userWorkEntity : userWorkEntityList) {
+            List<WorkDocumentEntity> workDocumentEntityList = workDocumentRepository.findAllByWorkIdToWorkDocument_WorkId(userWorkEntity.getWorkIdToUserWork().getWorkId());
+            for (WorkDocumentEntity workDocumentEntity : workDocumentEntityList) {
+                documentList.add(documentRepository.findByDocumentId(workDocumentEntity.getDocumentIdToWorkDocument().getDocumentId()));
+            }
+        }
+
+        for (Document document : documentList)
         {
             DocumentDto documentDto = new DocumentDto();
             documentDto.insertEntity(document);
@@ -237,6 +261,61 @@ public class DocumentService {
         return documentDto;
     }
 
+    // work 기준으로 문서 받아오기
+    public List<DocumentDto> getDocumentByWorkId(Long id){
+        List<WorkDocumentEntity> workDocumentEntityList = workDocumentRepository.findAllByWorkIdToWorkDocument_WorkId(id);
+
+        List<Document> documentList = new ArrayList<>();
+        List<DocumentDto> documentDtoList = new ArrayList<>();
+
+        for (WorkDocumentEntity workDocumentEntity: workDocumentEntityList) {
+            documentList.add(workDocumentEntity.getDocumentIdToWorkDocument());
+        }
+
+
+        for (Document document : documentList)
+        {
+            DocumentDto documentDto = new DocumentDto();
+            documentDto.insertEntity(document);
+            documentDtoList.add(documentDto);
+        }
+
+        return documentDtoList;
+    }
+
+    //프로젝트 전체 문서 받아오기
+    public List<ProjectDocumentListDto> getDocumentListByProjectId(Long id){
+        List<ProjectDocumentListDto> projectDocumentList = new ArrayList<>();
+        List<WorkEntity> workEntityList = workRepository.findAllByProjectIdToWork_ProjectId(id);
+
+        for (WorkEntity workEntity: workEntityList) {
+            ProjectDocumentListDto projectDocumentListDto = new ProjectDocumentListDto();
+
+            projectDocumentListDto.setWorkName(workEntity.getTitle());
+
+            List<Document> documentList = new ArrayList<>();
+            List<DocumentDto> documentDtoList = new ArrayList<>();
+            List<WorkDocumentEntity> workDocumentEntityList = workDocumentRepository.findAllByWorkIdToWorkDocument_WorkId(workEntity.getWorkId());
+
+            for (WorkDocumentEntity workDocumentEntity: workDocumentEntityList) {
+                documentList.add(documentRepository.findByDocumentId(workDocumentEntity.getDocumentIdToWorkDocument().getDocumentId()));
+            }
+
+            for (Document document : documentList)
+            {
+                DocumentDto documentDto = new DocumentDto();
+                documentDto.insertEntity(document);
+                documentDtoList.add(documentDto);
+            }
+
+            projectDocumentListDto.setDocumentDtoList(documentDtoList);
+
+            projectDocumentList.add(projectDocumentListDto);
+        }
+
+        return projectDocumentList;
+    }
+
     /* Block BlockDto */
 
     // 문서 아이디 기준으로 블럭 리스트 받아오기
@@ -245,7 +324,7 @@ public class DocumentService {
         List<BlockDto> blockDtoList = new ArrayList<>();
 
         for (Block block:
-        blockList) {
+                blockList) {
             BlockDto blockDto = new BlockDto();
             blockDto.insertEntity(block);
             blockDtoList.add(blockDto);
@@ -278,4 +357,5 @@ public class DocumentService {
     public  Log getLogById(String id){
         return  logRepository.findBylogId(id);
     }
+
 }

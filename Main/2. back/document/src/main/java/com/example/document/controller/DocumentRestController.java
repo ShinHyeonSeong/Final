@@ -17,7 +17,6 @@ import java.util.Map;
 @RestController
 public class DocumentRestController {
     //필드
-    String fileName = "" ;
 
     // 서비스 AutoWired
     @Autowired
@@ -44,22 +43,24 @@ public class DocumentRestController {
 
     }
 
-    //파일 저장
+    //이미지 저장
     @PostMapping("/fileUpload")
-    public void fileUpload(MultipartFile[] uploadFile){
+    public void fileUpload(MultipartFile[] uploadFile, HttpSession session) throws IOException {
 
-        fileName = documentService.saveFile(uploadFile[0]);
+        String fileContent = documentService.saveFile(uploadFile[0]);
+
+        session.setAttribute("fileName", fileContent);
     }
 
-    //파일 저장 정보 프론트로 반환
+    //이미지 저장 정보 프론트로 반환
     @RequestMapping(value = "/fileName/return", method = { RequestMethod.GET })
-    public void m1(HttpServletResponse resp) {
+    public void m1(HttpServletResponse resp, HttpSession session) {
 
         try {
             resp.setContentType("text/plain");
             resp.setCharacterEncoding("UTF-8");
 
-            String file = fileName;
+            String file = session.getAttribute("fileName").toString();
 
             PrintWriter writer = resp.getWriter();
             writer.print(file);
@@ -69,7 +70,7 @@ public class DocumentRestController {
             e.printStackTrace();
         }
         finally {
-            fileName = "";
+            session.removeAttribute("fileName");
         }
     }
 }

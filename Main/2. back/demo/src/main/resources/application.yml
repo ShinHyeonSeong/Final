@@ -20,6 +20,19 @@ spring:
   #타입리프 캐시 설정
   thymeleaf:
     cache: false
+  #클라우드 정보 추가
+  cloud:
+    gcp:
+      storage:
+        credentials:
+          location: classpath:oceanic-will-385316-249d7b5e0f68.json
+    project-id: oceanic-will-385316
+    bucket: bpm-file-storage
+  #파일 크기 설정
+  servlet:
+    multipart:
+      maxFileSize : 10GB
+      maxRequestSize : 10GB
 
 logging:
   level:

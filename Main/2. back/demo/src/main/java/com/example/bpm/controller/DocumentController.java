@@ -1,9 +1,9 @@
 package com.example.bpm.controller;
 
-import com.example.bpm.dto.BlockDto;
-import com.example.bpm.dto.DocumentDto;
-import com.example.bpm.dto.LogDto;
+import com.example.bpm.dto.*;
+import com.example.bpm.entity.Document;
 import com.example.bpm.service.DocumentService;
+
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +16,7 @@ import java.util.List;
 @Controller
 public class DocumentController {
 
+    // 서비스 AutoWired
     @Autowired
     private DocumentService documentService;
 
@@ -25,21 +26,26 @@ public class DocumentController {
 
     // 문서 리스트 Document List
     /// 문서 리스트 관련 페이지 연결
-    @GetMapping("/project/documentList")
+    @GetMapping("document/list")
     public String getDocumentList(Model model, HttpSession session){
 
-        // needChange
+        UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
 
-        /*
-         유저의 work 목록 확인(user_work 테이블)후 work애 연결된 문서(work_document 테이블)를 받아 처리해줄 필요가 있음
-         */
-        String userUuid = "1111-1111-test";
+        ProjectDto projectDto = (ProjectDto) session.getAttribute("currentProject");
+
+        String userUuid = sessionUser.getUuid();
+        Long projectId = projectDto.getProjectId();
 
         List<DocumentDto> documentDtoList = documentService.getDocumentListByUser(userUuid);
 
+        List<ProjectDocumentListDto> projectDocumentList = documentService.getDocumentListByProjectId(projectId);
+
+        // 유저가 권한을 가지는 문서들
         model.addAttribute("UserDocumentList", documentDtoList);
 
-        // 여기가지 싹 바꿔야함
+        // 현재 프로젝트 문서들
+        model.addAttribute("projectDocumentList", projectDocumentList);
+
 
         return "documentList";
     }
@@ -47,19 +53,15 @@ public class DocumentController {
     // 문서 새로 만들기 Document Add [Post]
     /// 새로운 문서를 만드는 작업
     @PostMapping("document/addDocument")
-    public String postAddingDocument( /*long workId ,*/ HttpSession session){
+    public String postAddingDocument( long workId , HttpSession session){
 
-        // needChange
-        /// work_document 테이블과 연동 필요 (매개 변수로 workID를 받음)
+        UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
 
-        /// 유저 uuid를 받아서 넣어줘야함
-        String userUuid = "1111-1111-test"; // 변경점
-        String documentId = documentService.documentAdding(userUuid);
+        String userUuid = sessionUser.getUuid();
+        String userName = sessionUser.getName();
+        String documentId = documentService.documentAdding(userUuid, userName);
 
-        // 함수 추가 (work_document 테이블 추가)
-        //
-        //
-        //
+        documentService.workDocumentAdd(workId, documentId);
 
         return "redirect:/document/write?id=" + documentId;
     }
@@ -73,6 +75,15 @@ public class DocumentController {
 
         model.addAttribute("document", documentDto);
         model.addAttribute("blockList", blockDtoList);
+
+        UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
+
+        String userUuid = sessionUser.getUuid();
+
+        if(documentService.accreditUserToWork(userUuid, id)){
+            return "?";
+        }
+
         return "documentWrite";
     }
 
@@ -88,11 +99,11 @@ public class DocumentController {
     @PostMapping("document/changeLogData")
     public String postDocumentReturnLog(String id, HttpSession session){
 
-        // needChange
-        /// 유저 uuid를 받아서 넣어줘야함
-        String userUuid = "1111-1111-test";
+        UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
 
-        String documentId = documentService.changeLogData(id, userUuid);
+        String userName = sessionUser.getName();
+
+        String documentId = documentService.changeLogData(id, userName);
         return "redirect:/document/write?id=" + documentId;
     }
 }

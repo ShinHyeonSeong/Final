@@ -13,4 +13,6 @@ public interface WorkRepository extends JpaRepository<WorkEntity, Long> {
     Optional<WorkEntity> findByTitle(String title);
 
     public List<WorkEntity> findAllByProjectIdToWork_ProjectId(Long projectId);
-}
+
+    public WorkEntity findByWorkId(Long id)
+;}

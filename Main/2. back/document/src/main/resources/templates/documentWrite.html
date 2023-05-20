@@ -26,6 +26,7 @@
                     <button type="button" class="font-btn" onclick="createBlockP()">P</button>
                     <div class="horizon-line"></div>
                     <button type="button" class="font-btn" id="image-btn">img</button>
+                    <button type="button" class="font-btn" id="video-btn">mp4</button>
                     <div class="horizon-line"></div>
 
                 </div>
@@ -38,7 +39,13 @@
                              class ="block"><img th:src="${block.content}" style="max-width: 80%;" ondragstart="return false"></div>
 
                         <div th:id="${block.category}"
-                             th:unless="${block.category == 'blockImage'}"
+                             th:if="${block.category == 'blockVideo'}"
+                             th:content="${block.content}"
+                             align="center"
+                             class ="block"><video th:src="${block.content}" controls style="max-width: 80%;" ondragstart="return false"></video></div>
+
+                        <div th:id="${block.category}"
+                             th:if="${block.category != 'blockImage' and block.category != 'blockVideo'}"
                              class ="block"
                              contenteditable="true"
                              placeholder="빈 블럭"
@@ -46,7 +53,8 @@
 
                     </th:block>
                 </div>
-                <input type="file" id="fileInput" style="display:none;">
+                <input type="file" id="imageInput" style="display:none;" accept="image/*">
+                <input type="file" id="videoInput" style="display:none;" accept="video/*">
             </div>
         </div>
         <div class="footer">
