@@ -47,6 +47,7 @@ public class DocumentService {
     @Autowired
     private WorkRepository workRepository;
 
+    @Autowired
     private DocumentCommentRepository documentCommentRepository;
 
     // 기타 비지니스 클래스
