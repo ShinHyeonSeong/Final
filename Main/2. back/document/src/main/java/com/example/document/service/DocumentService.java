@@ -12,11 +12,20 @@ import com.example.document.repository.DocumentRepository;
 import com.example.document.repository.LogRepository;
 import com.example.document.service.dateLogic.DateManager;
 import com.example.document.service.logLogic.LogManager;
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.BlobInfo;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,6 +33,11 @@ import java.util.UUID;
 
 @Service
 public class DocumentService {
+
+    // 필드
+
+    @Value("${spring.cloud.gcp.storage.bucket}")
+    private String bucketName;
 
     // 레파지토리 AutoWired
 
@@ -124,34 +138,25 @@ public class DocumentService {
     }
 
     // 파일 저장
-    public String saveFile(MultipartFile file){
+    public String saveFile(MultipartFile file) throws IOException {
 
-        if (file != null) {
-            // 파일 저장 경로
-            String projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\file\\image";
+        String uuid = UUID.randomUUID().toString();
+        String ext = file.getContentType();
 
-            // 랜덤 UUID를 생성 하여 UUID_본래 파일 이름 으로 파일 이름 생성
-            UUID uuid = UUID.randomUUID();
+        InputStream keyFile = ResourceUtils.getURL("classpath:" + "oceanic-will-385316-249d7b5e0f68.json").openStream();
 
-            String fileName = uuid + "_" + file.getOriginalFilename();
+        Storage storage = StorageOptions.newBuilder().setProjectId("oceanic-will-385316")
+                .setCredentials(GoogleCredentials.fromStream(keyFile))
+                .build().getService();
 
-            // 파일이 비어있지 않을때, 파일에 파일 명, 파일 경로 저장
-            if (file.getOriginalFilename() != "") {
-                File saveFile = new File(projectPath, fileName);
+        Blob blobInfo = storage.create(
+                BlobInfo.newBuilder(bucketName, uuid)
+                        .setContentType(ext)
+                        .build(),
+                file.getInputStream()
+        );
 
-                // 전달할 파일 저장
-                try {
-                    file.transferTo(saveFile);
-                }
-                catch (Exception e){
-                    return "error";
-                }
-            }
-
-            return "/file/image/" + fileName;
-        }
-
-        return "error";
+        return "https://storage.cloud.google.com/bpm-file-storage/"+uuid;
     }
 
     //////////////////////////////////////////////////////////////////

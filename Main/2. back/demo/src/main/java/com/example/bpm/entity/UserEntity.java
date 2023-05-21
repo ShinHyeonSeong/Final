@@ -44,6 +44,9 @@ public class UserEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userIdToUserWork")
     private List<UserWorkEntity> userWorkEntityList  = new ArrayList<>();
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userIdToComment")
+    private List<DocumentCommentEntity> documentCommentEntities  = new ArrayList<>();
+
     public static UserEntity toUserEntity(UserDto userDto) {
         UserEntity userEntity = new UserEntity();
         userEntity.setUuid(String.valueOf(userDto.getUuid()));

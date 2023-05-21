@@ -16,7 +16,7 @@ function ajaxPost(){
 
     			data.category = blocks.item(i).getAttribute('id');
     			data.index = i;
-    			if (data.category === 'blockImage'){
+    			if (data.category === 'blockImage' || data.category === 'blockVideo'){
     			    data.content = blocks.item(i).getAttribute('content');
     			}
     			else{

@@ -2,6 +2,7 @@ package com.example.bpm.controller;
 
 import com.example.bpm.dto.*;
 import com.example.bpm.entity.ProjectRoleEntity;
+import com.example.bpm.service.DocumentService;
 import com.example.bpm.service.ProjectDetailSerivce;
 import com.example.bpm.service.ProjectSerivce;
 import com.example.bpm.service.UserService;
@@ -27,6 +28,9 @@ public class ProjectDetailController {
     ProjectDetailSerivce projectDetailSerivce;
     @Autowired
     ProjectSerivce projectSerivce;
+    @Autowired
+    DocumentService documentService;
+
     @Autowired
     UserService userService;
     @Autowired
@@ -105,15 +109,16 @@ public class ProjectDetailController {
     public String goWorkDetail(@PathVariable("id")Long id, Model model) {
         WorkDto workDto = projectDetailSerivce.selectWork(id);
         UserDto userDto = projectDetailSerivce.selectUserForUserWork(workDto);
+        List<DocumentDto> documentDtoList = documentService.getDocumentByWorkId(id);
         Long auth = checkAuth();
+
         model.addAttribute("workDto", workDto);
         model.addAttribute("userDto", userDto);
+        model.addAttribute("DocumentList", documentDtoList);
         model.addAttribute("auth", auth);
         return "workDetail";
     }
-
-
-
+    
     /* - - - - 목표 관련 메서드- - - -*/
     // 목표 생성
     /* 클라이언트에서 전달 받을 때, Dto 내부 속성 중 전달받을 수 없는 속성들이 있다. 때문에 @ModelAttribute를 쓰지 않고 하나씩 전달 받은 후
@@ -187,9 +192,11 @@ public class ProjectDetailController {
 
     /* - - - - 작업 관련 메서드 끝 - - - -*/
 
-    /* - - - - 캘린더 관련 메서드- - - -*/
+    /* - - - - 댓글 관련 메서드 - - - -*/
 
-    /* - - - - 캘린더 관련 메서드 끝 - - - -*/
+
+    /* - - - - 댓글 관련 메서드 끝 - - - -*/
+
 
 }
 
