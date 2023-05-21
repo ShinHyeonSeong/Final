@@ -213,3 +213,31 @@ hr {
 #blockImage {
     text-align: center;
 }
+
+.move_block {
+    padding: 3px;
+    margin: 5px;
+    display: flex;
+}
+
+.move {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    text-transform: uppercase;
+    line-height: 40px;
+    font-family: Arial;
+    cursor: grab;
+    opacity: 0;
+    font-size: 40px;
+}
+
+.move:hover {
+    transition: 0.7s ease-out;
+    opacity: 1;
+}
+
+.move_block:hover > .move{
+    transition: 0.7s ease-out;
+    opacity: 1;
+}
