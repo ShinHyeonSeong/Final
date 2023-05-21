@@ -9,6 +9,9 @@
     <title>Document</title>
     <link rel="stylesheet" href="/css/documentWrite.css">
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
     <script src="/js/documentWrite.js"></script>
 </head>
 
@@ -31,27 +34,29 @@
 
             </div>
             <div class="content">
-                <th:block th:each="block : ${blockList}">
+                <div class="sortable">
+                    <div class="move_block" th:each="block : ${blockList}">
+                        <div class="move">+</div>
 
-                    <div th:id="${block.category}"
-                         th:if="${block.category == 'blockImage'}"
-                         th:content="${block.content}"
-                         class ="block"><img th:src="${block.content}" style="max-width: 80%;" ondragstart="return false"></div>
+                        <div th:id="${block.category}"
+                             th:if="${block.category == 'blockImage'}"
+                             th:content="${block.content}"
+                             class ="block"><img th:src="${block.content}" style="max-width: 90%;" ondragstart="return false"></div>
 
-                    <div th:id="${block.category}"
-                         th:if="${block.category == 'blockVideo'}"
-                         th:content="${block.content}"
-                         align="center"
-                         class ="block"><video th:src="${block.content}" controls style="max-width: 80%;" ondragstart="return false"></video></div>
+                        <div th:id="${block.category}"
+                             th:if="${block.category == 'blockVideo'}"
+                             th:content="${block.content}"
+                             align="center"
+                             class ="block"><video th:src="${block.content}" controls style="max-width: 90%;" ondragstart="return false"></video></div>
 
-                    <div th:id="${block.category}"
-                         th:if="${block.category != 'blockImage' and block.category != 'blockVideo'}"
-                         class ="block"
-                         contenteditable="true"
-                         placeholder="빈 블럭"
-                         th:utext="${block.content}">block content</div>
-
-                </th:block>
+                        <div th:id="${block.category}"
+                             th:if="${block.category != 'blockImage' and block.category != 'blockVideo'}"
+                             class ="block"
+                             contenteditable="true"
+                             placeholder="빈 블럭"
+                             th:utext="${block.content}">block content</div>
+                    </div>
+                </div>
             </div>
             <input type="file" id="imageInput" style="display:none;" accept="image/*">
             <input type="file" id="videoInput" style="display:none;" accept="video/*">

@@ -47,6 +47,18 @@ function ajaxPost(){
     });
 }
 
+$(document).ready(function(){
+    var sortable_element = $('.sortable');
+    sortable_element.sortable(
+    {
+        items: ".move_block",
+        handle: ".move",
+        cursor: "move",
+        opacity: 0.7,
+        containment: ".sortable"
+    });
+});
+
 function createBlockH1(){
     let tagArea = document.querySelector('.content');
 
