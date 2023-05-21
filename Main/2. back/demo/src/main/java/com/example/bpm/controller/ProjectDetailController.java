@@ -1,6 +1,7 @@
 package com.example.bpm.controller;
 
 import com.example.bpm.dto.*;
+import com.example.bpm.service.DocumentService;
 import com.example.bpm.service.ProjectDetailSerivce;
 import com.example.bpm.service.ProjectSerivce;
 import com.example.bpm.service.UserService;
@@ -26,6 +27,9 @@ public class ProjectDetailController {
     ProjectDetailSerivce projectDetailSerivce;
     @Autowired
     ProjectSerivce projectSerivce;
+    @Autowired
+    DocumentService documentService;
+
     @Autowired
     UserService userService;
     @Autowired
@@ -92,8 +96,10 @@ public class ProjectDetailController {
     public String goWorkDetail(@PathVariable("id")Long id, Model model) {
         WorkDto workDto = projectDetailSerivce.selectWork(id);
         UserDto userDto = projectDetailSerivce.selectUserWork(workDto);
+        List<DocumentDto> documentDtoList = documentService.getDocumentByWorkId(id);
         model.addAttribute("workDto", workDto);
         model.addAttribute("userDto", userDto);
+        model.addAttribute("DocumentList", documentDtoList);
         return "workDetail";
     }
     

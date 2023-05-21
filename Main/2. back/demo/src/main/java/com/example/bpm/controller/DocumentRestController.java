@@ -1,6 +1,7 @@
 package com.example.bpm.controller;
 
 import com.example.bpm.dto.JsonDocumentDto;
+import com.example.bpm.dto.UserDto;
 import com.example.bpm.service.DocumentService;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -17,7 +18,6 @@ import java.util.Map;
 @RestController
 public class DocumentRestController {
     //필드
-    String fileName = "" ;
 
     // 서비스 AutoWired
     @Autowired
@@ -35,31 +35,34 @@ public class DocumentRestController {
 
         jsonDocumentDto.setBlockList((ArrayList<LinkedHashMap>)data.get("blockList"));
 
-        // needChange
-        /// 유저 uuid를 받아서 넣어줘야함
-        String userUuid = "1111-1111-test";
-        documentService.saveDocument(jsonDocumentDto, userUuid);
+        UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
+
+        String userUuid = sessionUser.getUuid();
+        String userName = sessionUser.getName();
+        documentService.saveDocument(jsonDocumentDto, userUuid, userName);
 
         return true;
 
     }
 
-    //파일 저장
+    //이미지 저장
     @PostMapping("/fileUpload")
-    public void fileUpload(MultipartFile[] uploadFile){
+    public void fileUpload(MultipartFile[] uploadFile, HttpSession session) throws IOException {
 
-        fileName = documentService.saveFile(uploadFile[0]);
+        String fileContent = documentService.saveFile(uploadFile[0]);
+
+        session.setAttribute("fileName", fileContent);
     }
 
-    //파일 저장 정보 프론트로 반환
+    //이미지 저장 정보 프론트로 반환
     @RequestMapping(value = "/fileName/return", method = { RequestMethod.GET })
-    public void m1(HttpServletResponse resp) {
+    public void m1(HttpServletResponse resp, HttpSession session) {
 
         try {
             resp.setContentType("text/plain");
             resp.setCharacterEncoding("UTF-8");
 
-            String file = fileName;
+            String file = session.getAttribute("fileName").toString();
 
             PrintWriter writer = resp.getWriter();
             writer.print(file);
@@ -69,7 +72,7 @@ public class DocumentRestController {
             e.printStackTrace();
         }
         finally {
-            fileName = "";
+            session.removeAttribute("fileName");
         }
     }
 }

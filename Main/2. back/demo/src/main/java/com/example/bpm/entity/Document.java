@@ -12,7 +12,7 @@ import java.util.List;
 public class Document implements Serializable {
 
     @Id
-    @Column(name = "documentId")
+    @Column(name = "document_id")
     private String documentId;
 
     @Column(name = "title")
@@ -21,13 +21,15 @@ public class Document implements Serializable {
     @Column(name = "uuid")
     private String uuid;
 
-    @Column(name = "userName")
+    @Column(name = "user_name")
     private String userName;
 
-    @Column(name = "dateDocument")
+    @Column(name = "date_document")
     private String dateDocument;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "documentIdToWorkDocument")
+    private List<WorkDocumentEntity> workDocumentEntityList  = new ArrayList<>();
+    
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "DocumentIdToComment")
     private List<DocumentCommentEntity> documentCommentEntities  = new ArrayList<>();
-
 }

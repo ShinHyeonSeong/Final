@@ -13,49 +13,57 @@
 </head>
 
 <body>
-    <div class="main-content">
-        <div class="write">
-            <div class="detail">
-                <input type="text" class="title" placeholder="이곳에 제목을 입력하세요" th:value="${document.title}">
-                <div type="hidden" class="documentId" th:value="${document.documentId}"></div>
-                <hr>
-                <div class="toolbar">
-                    <button type="button" class="font-btn" onclick="createBlockH1()">H1</button>
-                    <button type="button" class="font-btn" onclick="createBlockH2()">H2</button>
-                    <button type="button" class="font-btn" onclick="createBlockH3()">H3</button>
-                    <button type="button" class="font-btn" onclick="createBlockP()">P</button>
-                    <div class="horizon-line"></div>
-                    <button type="button" class="font-btn" id="image-btn">img</button>
-                    <div class="horizon-line"></div>
+<div class="main-content">
+    <div class="write">
+        <div class="detail">
+            <input type="text" class="title" placeholder="이곳에 제목을 입력하세요" th:value="${document.title}">
+            <div type="hidden" class="documentId" th:value="${document.documentId}"></div>
+            <hr>
+            <div class="toolbar">
+                <button type="button" class="font-btn" onclick="createBlockH1()">H1</button>
+                <button type="button" class="font-btn" onclick="createBlockH2()">H2</button>
+                <button type="button" class="font-btn" onclick="createBlockH3()">H3</button>
+                <button type="button" class="font-btn" onclick="createBlockP()">P</button>
+                <div class="horizon-line"></div>
+                <button type="button" class="font-btn" id="image-btn">img</button>
+                <button type="button" class="font-btn" id="video-btn">mp4</button>
+                <div class="horizon-line"></div>
 
-                </div>
-                <div class="content">
-                    <th:block th:each="block : ${blockList}">
-
-                        <div th:id="${block.category}"
-                             th:if="${block.category == 'blockImage'}"
-                             th:content="${block.content}"
-                             class ="block"><img th:src="${block.content}" style="max-width: 80%;" ondragstart="return false"></div>
-
-                        <div th:id="${block.category}"
-                             th:unless="${block.category == 'blockImage'}"
-                             class ="block"
-                             contenteditable="true"
-                             placeholder="빈 블럭"
-                             th:utext="${block.content}">block content</div>
-
-                    </th:block>
-                </div>
-                <input type="file" id="fileInput" style="display:none;">
             </div>
+            <div class="content">
+                <th:block th:each="block : ${blockList}">
+
+                    <div th:id="${block.category}"
+                         th:if="${block.category == 'blockImage'}"
+                         th:content="${block.content}"
+                         class ="block"><img th:src="${block.content}" style="max-width: 80%;" ondragstart="return false"></div>
+
+                    <div th:id="${block.category}"
+                         th:if="${block.category == 'blockVideo'}"
+                         th:content="${block.content}"
+                         align="center"
+                         class ="block"><video th:src="${block.content}" controls style="max-width: 80%;" ondragstart="return false"></video></div>
+
+                    <div th:id="${block.category}"
+                         th:if="${block.category != 'blockImage' and block.category != 'blockVideo'}"
+                         class ="block"
+                         contenteditable="true"
+                         placeholder="빈 블럭"
+                         th:utext="${block.content}">block content</div>
+
+                </th:block>
+            </div>
+            <input type="file" id="imageInput" style="display:none;" accept="image/*">
+            <input type="file" id="videoInput" style="display:none;" accept="video/*">
         </div>
-        <div class="footer">
-            <!-- 요건 리스트로 돌아가기 -->
-            <a href="/document/list"><button class="footer-btn">나가기</button></a>
-            <a th:href="@{/document/log(id=${document.documentId})}"><button class="footer-btn">기록</button></a>
-            <!-- 요건 리스트로 넘김 -->
-            <button class="footer-btn" onclick="ajaxPost()">저장</button>
-        </div>
+    </div>
+    <div class="footer">
+        <!-- 요건 리스트로 돌아가기 -->
+        <a href="/document/list"><button class="footer-btn">나가기</button></a>
+        <a th:href="@{/document/log(id=${document.documentId})}"><button class="footer-btn">기록</button></a>
+        <!-- 요건 리스트로 넘김 -->
+        <button class="footer-btn" onclick="ajaxPost()">저장</button>
+    </div>
 </body>
 
 <script src="/js/documentFileUpload.js"></script>
