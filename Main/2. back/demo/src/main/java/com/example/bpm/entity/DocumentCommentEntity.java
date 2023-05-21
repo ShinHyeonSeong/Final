@@ -4,8 +4,6 @@ import com.example.bpm.dto.DocumentCommentDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.apache.catalina.User;
-import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
 
@@ -15,6 +13,7 @@ import javax.persistence.*;
 @RequiredArgsConstructor
 @Table(name = "document_comment")
 public class DocumentCommentEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "document_comment_id")
@@ -24,8 +23,8 @@ public class DocumentCommentEntity {
     private String comment;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "document_id")
-    private Document DocumentIdToComment;
+    @JoinColumn(name = "documentId")
+    private Document documentIdToComment;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "uuid")
