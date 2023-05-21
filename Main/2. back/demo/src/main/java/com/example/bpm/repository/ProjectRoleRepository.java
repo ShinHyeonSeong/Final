@@ -20,4 +20,6 @@ public interface ProjectRoleRepository extends JpaRepository<ProjectRoleEntity, 
     @Query(value = "insert into project_role(project_id, uuid, role)" +
             "values (?,?,?)", nativeQuery = true)
     ProjectRoleEntity insertToRoleEntity(Long projectId, String recvUUID, Long aLong);
+
+    ProjectRoleEntity findByProjectIdInRole_ProjectIdAndUuidInRole_Uuid(Long id, String uuid);
 }

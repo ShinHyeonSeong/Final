@@ -44,7 +44,7 @@
         <div class="linked-object">
           <div class="object-header">
             <div>하위 목표</div>
-            <button class="object-edit-btn">목표 변경</button>
+            <button class="object-edit-btn" th:if="${auth == 1}">목표 변경</button>
           </div>
           <div class="horizon-divider-semi"></div>
           <div class="object" th:if="${connectDetailList != null}" th:each="detail : ${connectDetailList}">
@@ -60,12 +60,6 @@
 
     <div class="right-section">
       <!-- 이것도 div로 묶어야 데이터를 잘 넘길 수 있을 거 같.. ㄱ -->
-      <div>
-        <h4 class="content-title">목표 담당자</h4>
-        <p class="content-detail">담당자명 1</p>
-        <p class="content-detail">담당자명 2</p>
-        <div class="horizon-divider"></div>
-      </div>
       <!-- 이걸 div로 해가지고 상위 목표와 연결 해야되는데 일단 내가 못함 미안 -->
       <div>
         <h4 class="content-title">마감 기간</h4>
@@ -74,7 +68,7 @@
       </div>
       <div>
         <a href="goal-create.html">
-          <button class="edit-btn">목표 수정</button>
+          <button class="edit-btn" th:if="${auth == 1}">목표 수정</button>
         </a>
       </div>
     </div>

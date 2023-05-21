@@ -5,9 +5,8 @@
 <head>
   <meta charset="UTF-8">
   <title>My Goals</title>
-  <link rel="stylesheet" href="/css/workDetail.css">
+  <link rel="stylesheet" href="/css/goalDetail.css">
   <link rel="stylesheet" href="/css/sidebar.css">
-  <script src="../js/goalDetail.js"></script>
 </head>
 <!-- 목표 > 내 목표 창-->
 <!-- 03.28 색 최적화 및 div 분류 완료
@@ -41,25 +40,12 @@
       </div>
 
       <div class="content">
-        <div class="linked-object">
-          <div class="object-header">
-            <div>하위 목표</div>
-            <button class="object-edit-btn">목표 변경</button>
-          </div>
-          <div class="horizon-divider-semi"></div>
-          <div class="object">
-            <a href="">
-              <div class="object-list" OnClick="location.href='#'">목표명</div>
-            </a>
-          </div>
-        </div>
-
         <div>
           <h4 class="content-title">연결된 목표</h4>
           <div class="linked-object">
             <div class="object-header">
               <div>상위 목표</div>
-              <button class="object-edit-btn">목표 변경</button>
+              <button class="object-edit-btn" th:if="${auth == 1}">목표 변경</button>
             </div>
             <div class="horizon-divider-semi"></div>
             <div class="object">
@@ -80,20 +66,10 @@
           </tr>
           </thead>
           <tbody>
-          <tr>
-            <td><a href="workDetail.html">작업명</a></td>
-            <td>담당자명</td>
-            <td>2023 01 01</td>
-          </tr>
-          <tr>
-            <td><a href="workDetail.html">작업명</a></td>
-            <td>담당자명</td>
-            <td>2023 01 01</td>
-          </tr>
-          <tr>
-            <td><a href="workDetail.html">작업명</a></td>
-            <td>담당자명</td>
-            <td>2023 01 01</td>
+          <tr th:each="userWork : ${userWorkMap}">
+            <td><a th:href="@{/project/work/detail/{id}(id=${userWork.key.workId})}" th:text="${userWork.key.title}">작업명</a></td>
+            <td th:text="${userWork.value.name}"></td>
+            <td th:text="${#dates.format(userWork.key.endDay, 'yyyy-MM-dd')}"></td>
           </tr>
           </tbody>
         </table>
@@ -118,7 +94,7 @@
 
       <div>
         <a href="goal-create.html">
-          <button class="edit-btn">목표 수정</button>
+          <button class="edit-btn" th:if="${auth == 1}">목표 수정</button>
         </a>
       </div>
     </div>

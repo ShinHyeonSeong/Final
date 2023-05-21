@@ -1,6 +1,7 @@
 package com.example.bpm.controller;
 
 import com.example.bpm.dto.*;
+import com.example.bpm.entity.ProjectRoleEntity;
 import com.example.bpm.service.ProjectDetailSerivce;
 import com.example.bpm.service.ProjectSerivce;
 import com.example.bpm.service.UserService;
@@ -32,14 +33,22 @@ public class ProjectDetailController {
     private HttpSession session;
 
     // 생각을 해보니 말야 매번 세션 호출하는것보다는 그냥 따로 메서드 만드는게 훨씬 효율이 좋을듯. 편하기도 하고
+    public UserDto getSessionUser() {
+        UserDto currentUser = (UserDto) session.getAttribute("userInfo");
+        return currentUser;
+    }
+
     public ProjectDto getSessionProject() {
         ProjectDto currentProject = (ProjectDto) session.getAttribute("currentProject");
         return currentProject;
     }
 
-    public UserDto getSessionUser() {
-        UserDto currentUser = (UserDto) session.getAttribute("userInfo");
-        return currentUser;
+    // 세션 유저 권한 확인
+    public Long checkAuth() {
+        ProjectDto projectDto = getSessionProject();
+        UserDto userDto = getSessionUser();
+        Long auth = userService.checkRole(projectDto.getProjectId(), userDto.getUuid());
+        return auth;
     }
 
     // 프로젝트 사이드바 및 내부 get 매핑
@@ -53,7 +62,9 @@ public class ProjectDetailController {
     public String goals(Model model) {
         ProjectDto currentProject = getSessionProject();
         List<HeadDto> headDtoList = projectDetailSerivce.selectAllHead(currentProject);
+        Long auth = checkAuth();
         model.addAttribute("headDtoList", headDtoList);
+        model.addAttribute("auth", auth);
         return "goal";
     }
 
@@ -71,10 +82,12 @@ public class ProjectDetailController {
         ProjectDto currentProject = getSessionProject();
         List<WorkDto> userWorkDtoList = projectDetailSerivce.selectAllWorkForUser(currentUser);
         List<WorkDto> projectWorkDtoList = projectDetailSerivce.selectAllWorkForProject(currentProject);
+        Long auth = checkAuth();
         if (projectWorkDtoList != null) {
             model.addAttribute("projectWorkDtoList", projectWorkDtoList);
         }
         model.addAttribute("userWorkDtoList", userWorkDtoList);
+        model.addAttribute("auth", auth);
         return"work";
     }
 
@@ -91,9 +104,11 @@ public class ProjectDetailController {
     @RequestMapping("/project/work/detail/{id}")
     public String goWorkDetail(@PathVariable("id")Long id, Model model) {
         WorkDto workDto = projectDetailSerivce.selectWork(id);
-        UserDto userDto = projectDetailSerivce.selectUserWork(workDto);
+        UserDto userDto = projectDetailSerivce.selectUserForUserWork(workDto);
+        Long auth = checkAuth();
         model.addAttribute("workDto", workDto);
         model.addAttribute("userDto", userDto);
+        model.addAttribute("auth", auth);
         return "workDetail";
     }
 
@@ -127,8 +142,10 @@ public class ProjectDetailController {
     public String goHeadView(@PathVariable("id")Long id, Model model) {
         HeadDto headDto = projectDetailSerivce.selectHead(id);
         List<DetailDto> detailDtoList = projectDetailSerivce.selectAllDetailForHead(headDto);
+        Long auth = checkAuth();
         model.addAttribute("headDto", headDto);
         model.addAttribute("connectDetailList", detailDtoList);
+        model.addAttribute("auth", auth);
         return "headView";
     }
 
@@ -136,8 +153,14 @@ public class ProjectDetailController {
     public String goDetailView(@PathVariable("id")Long id, Model model) {
         DetailDto detailDto = projectDetailSerivce.selectDetail(id);
         HeadDto headDto = projectDetailSerivce.selectHead(detailDto.getHeadIdToDetail().getHeadId());
+        List<WorkDto> workDtoList = projectDetailSerivce.selectAllWorkForDetail(id);
+        Map<WorkDto, UserDto> userWorkMap = projectDetailSerivce.selectAllUserWorkForWorkList(workDtoList);
+        Long auth = checkAuth();
         model.addAttribute("detailDto", detailDto);
         model.addAttribute("headDto", headDto);
+        model.addAttribute("workDtoList", workDtoList);
+        model.addAttribute("userWorkMap", userWorkMap);
+        model.addAttribute("auth", auth);
         return "detailView";
     }
 
