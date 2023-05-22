@@ -1,5 +1,6 @@
 package com.example.bpm.controller;
 
+import com.example.bpm.dto.ProjectDto;
 import com.example.bpm.dto.UserDto;
 import com.example.bpm.service.ProjectSerivce;
 import com.example.bpm.service.UserService;
@@ -28,6 +29,26 @@ public class UserController {
     final private UserService userService;
     @Autowired
     final private ProjectSerivce projectSerivce;
+
+    HttpSession session;
+
+    public UserDto getSessionUser() {
+        UserDto currentUser = (UserDto) session.getAttribute("userInfo");
+        return currentUser;
+    }
+
+    public ProjectDto getSessionProject() {
+        ProjectDto currentProject = (ProjectDto) session.getAttribute("currentProject");
+        return currentProject;
+    }
+
+    public Long checkAuth() {
+        ProjectDto projectDto = getSessionProject();
+        UserDto userDto = getSessionUser();
+        Long auth = userService.checkRole(projectDto.getProjectId(), userDto.getUuid());
+        return auth;
+    }
+
     @GetMapping("/index")
     public String index() {
         return "index";

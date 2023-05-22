@@ -29,6 +29,24 @@ public class ProjectController {
     @Autowired
     private UserRepository userRepository;
 
+    HttpSession session;
+    public UserDto getSessionUser() {
+        UserDto currentUser = (UserDto) session.getAttribute("userInfo");
+        return currentUser;
+    }
+
+    public ProjectDto getSessionProject() {
+        ProjectDto currentProject = (ProjectDto) session.getAttribute("currentProject");
+        return currentProject;
+    }
+
+    public Long checkAuth() {
+        ProjectDto projectDto = getSessionProject();
+        UserDto userDto = getSessionUser();
+        Long auth = userService.checkRole(projectDto.getProjectId(), userDto.getUuid());
+        return auth;
+    }
+
     // 관리자 권한 프로젝트 리스트 출력
     @GetMapping("/project/projectManagerList")
     public String getProjectList(HttpSession session, Model model) {

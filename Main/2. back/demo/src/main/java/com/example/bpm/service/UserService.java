@@ -136,5 +136,10 @@ public class UserService {
         }
         return userDtos;
     }
+
+    public Long checkRole(Long id, String uuid) {
+        ProjectRoleEntity projectRoleEntity = projectRoleRepository.findByProjectIdInRole_ProjectIdAndUuidInRole_Uuid(id, uuid);
+        return projectRoleEntity.getRole().getId();
+    }
 }
 

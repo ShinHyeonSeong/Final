@@ -25,7 +25,7 @@
 <div class="top-bar">
 	<h1>목표</h1>
 	<a href="/project/goal/create">
-		<button class="add-goal-btn">목표 추가</button>
+		<button class="add-goal-btn" th:if="${auth == 1}">목표 추가</button>
 	</a>
 </div>
 <hr>
@@ -38,21 +38,7 @@
 				<!-- 동적 값을 할당 받아야함 -->
 				<h2 th:text="${headDto.title}"></h2>
 				<p class = "content-font" th:text="${headDto.discription}">목표 설명</p>
-				<button>완료</button>
-			</a>
-			<a th:each="headDto : ${headDtoList}" th:href="@{/project/goal/headView/{id}(id=${headDto.headId})}"
-			   class="goal-item">
-				<!-- 동적 값을 할당 받아야함 -->
-				<h2 th:text="${headDto.title}"></h2>
-				<p class = "content-font" th:text="${headDto.discription}">목표 설명</p>
-				<button>완료</button>
-			</a>
-			<a th:each="headDto : ${headDtoList}" th:href="@{/project/goal/headView/{id}(id=${headDto.headId})}"
-			   class="goal-item">
-				<!-- 동적 값을 할당 받아야함 -->
-				<h2 th:text="${headDto.title}"></h2>
-				<p class = "content-font" th:text="${headDto.discription}">목표 설명</p>
-				<button>완료</button>
+				<button th:if="${auth == 1}">완료</button>
 			</a>
 		</div>
 	
