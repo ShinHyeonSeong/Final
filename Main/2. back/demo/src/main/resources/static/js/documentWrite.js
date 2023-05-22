@@ -82,6 +82,7 @@ function createBlockH1(){
     new_block.setAttribute('class', 'block');
     new_block.setAttribute('contenteditable', 'true');
     new_block.setAttribute('placeholder', '빈 블럭');
+    new_move_block.setAttribute('spellcheck', 'false');
 
     createMoveBlock(new_block);
 }
@@ -93,6 +94,7 @@ function createBlockH2(){
     new_block.setAttribute('class', 'block');
     new_block.setAttribute('contenteditable', 'true');
     new_block.setAttribute('placeholder', '빈 블럭');
+    new_move_block.setAttribute('spellcheck', 'false');
 
     createMoveBlock(new_block)
 }
@@ -104,6 +106,7 @@ function createBlockH3(){
     new_block.setAttribute('class', 'block');
     new_block.setAttribute('contenteditable', 'true');
     new_block.setAttribute('placeholder', '빈 블럭');
+    new_move_block.setAttribute('spellcheck', 'false');
 
     createMoveBlock(new_block);
 }
@@ -115,6 +118,7 @@ function createBlockP(){
     new_block.setAttribute('class', 'block');
     new_block.setAttribute('contenteditable', 'true');
     new_block.setAttribute('placeholder', '빈 블럭');
+    new_move_block.setAttribute('spellcheck', 'false');
 
     createMoveBlock(new_block)
 }
