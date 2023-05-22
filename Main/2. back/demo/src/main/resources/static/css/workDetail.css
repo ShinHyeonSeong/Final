@@ -246,7 +246,9 @@ a {
     outline: none;
     border: 1px solid #666;
 }
-
+.comment-read-section{
+    margin-top: 50px;
+}
 .comment-user-name {
     font-size: 12px;
     margin-bottom: 10px;
