@@ -30,6 +30,8 @@ public class ProjectDetailSerivce {
     private final WorkRepository workRepository;
     @Autowired
     private UserWorkRepository userWorkRepository;
+    @Autowired
+    private WorkCommentRepository workCommentRepository;
 
     Date currentDate = new Date(); // 시작 날짜(현재) 생성
 
@@ -306,6 +308,47 @@ public class ProjectDetailSerivce {
 
     /* - - - - 삭제 메서드 끝 - - - - - */
 
+
+    //댓글 기능 (댓글리스트 불러오기)
+    public List<WorkCommentDto> findByComment(Long workId) {
+        List<WorkCommentEntity> entityList = workCommentRepository.findAllByWorkIdToComment_WorkId(workId);
+        if (entityList.isEmpty()) {
+            log.info("해당 문서에 댓글 없음 (서비스)");
+            return null;
+        } else {
+            List<WorkCommentDto> commentDtoList = new ArrayList<>();
+            for (WorkCommentEntity commentEntity : entityList) {
+                commentDtoList.add(WorkCommentDto.toWorkCommentDto(commentEntity));
+            }
+            log.info("댓글 리스트 불러오기 성공(서비스)");
+            return commentDtoList;
+        }
+    }
+    //댓글기능 (댓글 추가)
+    public List<WorkCommentDto> plusComment(WorkCommentDto workCommentDto, Long workId) {
+        if (workCommentDto.equals(null)) {
+            log.info("코멘트가 비어있음 (서비스)");
+            return null;
+        } else {
+            workCommentRepository.save(WorkCommentDto.toWorkCommentEntity(workCommentDto));
+            return findByComment(workId);
+        }
+    }
+
+    //update를 위한 Comment Find
+    public WorkCommentDto findComment(Long documentId){
+        Optional<WorkCommentEntity> documentCommentEntity=  workCommentRepository.findById(documentId);
+        return WorkCommentDto.toWorkCommentDto(documentCommentEntity.get());
+    }
+
+
+    //댓글 삭제
+    public List<WorkCommentDto> deleteComment(Long workId){
+        Optional<WorkCommentEntity> now = workCommentRepository.findById(workId);
+        WorkCommentDto workCommentDto = WorkCommentDto.toWorkCommentDto(now.get());
+        workCommentRepository.deleteById(workId);
+        return findByComment(workId);
+    }
 
 }
 

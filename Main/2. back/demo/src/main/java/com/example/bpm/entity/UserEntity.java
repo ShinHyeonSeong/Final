@@ -2,10 +2,9 @@ package com.example.bpm.entity;
 
 import com.example.bpm.dto.UserDto;
 import javax.persistence.*;
-import lombok.Data;
+
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.jdbc.Work;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +44,7 @@ public class UserEntity {
     private List<UserWorkEntity> userWorkEntityList  = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userIdToComment")
-    private List<DocumentCommentEntity> documentCommentEntities  = new ArrayList<>();
+    private List<WorkCommentEntity> documentCommentEntities  = new ArrayList<>();
 
     public static UserEntity toUserEntity(UserDto userDto) {
         UserEntity userEntity = new UserEntity();
