@@ -1,7 +1,6 @@
 package com.example.bpm.controller;
 
 import com.example.bpm.dto.*;
-import com.example.bpm.entity.ProjectRoleEntity;
 import com.example.bpm.service.DocumentService;
 import com.example.bpm.service.ProjectDetailSerivce;
 import com.example.bpm.service.ProjectSerivce;
@@ -9,7 +8,6 @@ import com.example.bpm.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.jdbc.Work;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,7 +28,6 @@ public class ProjectDetailController {
     ProjectSerivce projectSerivce;
     @Autowired
     DocumentService documentService;
-
     @Autowired
     UserService userService;
     @Autowired
@@ -72,12 +69,19 @@ public class ProjectDetailController {
         return "goal";
     }
 
-    @GetMapping("/project/goal/create")
-    public String goCreateGoal(Model model) {
+    // 상위 목표 생성 진입
+    @GetMapping("/project/head/create")
+    public String goHeadDetail(Model model) {
+        return "head-create";
+    }
+
+    // 하위 목표 생성 진입
+    @GetMapping("/project/detail/create")
+    public String goCreateDetail(Model model) {
         ProjectDto currentProject = getSessionProject();
         List<HeadDto> headDtoList = projectDetailSerivce.selectAllHead(currentProject);
         model.addAttribute("headDtoList", headDtoList);
-        return "goal-create";
+        return "detail-create";
     }
 
     @GetMapping("/project/works")
@@ -123,7 +127,18 @@ public class ProjectDetailController {
     // 목표 생성
     /* 클라이언트에서 전달 받을 때, Dto 내부 속성 중 전달받을 수 없는 속성들이 있다. 때문에 @ModelAttribute를 쓰지 않고 하나씩 전달 받은 후
         서비스 단위로 때려박았음. 너무 보기 복잡하기도 하고 좀 그런데 보면서 다른 방법이 있으면 얘기해주면 좋게따. */
-    @PostMapping("/project/goal/createGoal")
+    @PostMapping("/project/goal/createHead")
+    public String createGoal(@RequestParam(value = "title") String title,
+                             @RequestParam(value = "deadline") String deadline,
+                             @RequestParam(value = "discription") String discription,
+                             Model model) {
+        ProjectDto currentProject = getSessionProject();
+        log.info("목표 생성 컨트롤러 작동, ");
+        HeadDto createHeadDto = projectDetailSerivce.createHead(title, deadline, discription, currentProject);
+        return "redirect:/main";
+    }
+
+    @PostMapping("/project/goal/createDetail")
     public String createGoal(@RequestParam(value = "title") String title,
                              @RequestParam(value = "deadline") String deadline,
                              @RequestParam(value = "discription") String discription,
