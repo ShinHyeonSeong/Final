@@ -63,7 +63,7 @@
         <div class="linked-object">
           <div class="document-header">
               <form action="/document/addDocument" method="post">
-                  <button class="object-edit-btn" th:if="${auth == 1 && 0}">새 문서 작성</button>
+                  <button class="object-edit-btn" th:if="${auth == 1 || 0}">새 문서 작성</button>
                   <input type="hidden" th:name="workId" th:value="${workDto.workId}">
               </form>
           </div>
