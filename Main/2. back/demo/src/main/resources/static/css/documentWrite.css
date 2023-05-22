@@ -143,6 +143,8 @@ hr {
     padding: 3px 2px;
     font-size: 18px;
     color: aliceblue;
+    caret-color: white;
+    padding-top: 7px;
 }
 
 #blockH1 {
@@ -155,6 +157,7 @@ hr {
     font-size: 32px;
     font-weight: bold;
     color: aliceblue;
+    caret-color: white;
 }
 
 #blockH2 {
@@ -167,6 +170,7 @@ hr {
     font-size: 28px;
     font-weight: bold;
     color: aliceblue;
+    caret-color: white;
 }
 
 #blockH3 {
@@ -179,6 +183,7 @@ hr {
     font-size: 24px;
     font-weight: bold;
     color: aliceblue;
+    caret-color: white;
 }
 
 [contenteditable=true]:empty:before{
@@ -196,6 +201,7 @@ hr {
     font-size: 18px;
     font-weight: bold;
     color: aliceblue;
+    caret-color: white;
 }
 
 #blockI {
@@ -208,6 +214,7 @@ hr {
     font-size: 18px;
     font-style: italic;
     color: aliceblue;
+    caret-color: white;
 }
 
 #blockImage {
@@ -241,3 +248,4 @@ hr {
     transition: 0.7s ease-out;
     opacity: 1;
 }
+
