@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface WorkCommentRepository extends JpaRepository<WorkCommentEntity, Long> {
 
-    List<WorkCommentEntity> findAllByWorkIdToComment_WorkId(String documentId);
+    List<WorkCommentEntity> findAllByWorkIdToComment_WorkId(Long workId);
 
 }
