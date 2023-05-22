@@ -49,6 +49,9 @@ public class WorkEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "workIdToWorkDocument")
     private List<WorkDocumentEntity> workDocumentEntityList  = new ArrayList<>();
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "workIdToComment")
+    private List<WorkCommentEntity> workCommentEntityList  = new ArrayList<>();
+
     public static WorkEntity toWorkEntity(WorkDto workDto) {
         WorkEntity workEntity = new WorkEntity();
         workEntity.setWorkId(workDto.getWorkId());

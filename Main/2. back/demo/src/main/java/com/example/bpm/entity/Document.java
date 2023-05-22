@@ -35,6 +35,4 @@ public class Document implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "documentIdToWorkDocument")
     private List<WorkDocumentEntity> workDocumentEntityList  = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "documentIdToComment")
-    private List<DocumentCommentEntity> documentCommentEntityList  = new ArrayList<>();
 }
