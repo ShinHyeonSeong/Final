@@ -68,8 +68,6 @@ function getVideo(){
 }
 
 function makeImage(imageName){
-    let tagArea = document.querySelector('.content');
-
     let new_block = document.createElement('div');
 
     new_block.setAttribute('id', 'blockImage');
@@ -83,12 +81,10 @@ function makeImage(imageName){
 
     new_block.appendChild(imageEl);
 
-    tagArea.appendChild(new_block);
+    createMoveBlock(new_block)
 }
 
 function makeVideo(videoName){
-    let tagArea = document.querySelector('.content');
-
     let new_block = document.createElement('div');
 
     new_block.setAttribute('id', 'blockVideo');
@@ -104,7 +100,7 @@ function makeVideo(videoName){
 
     new_block.appendChild(videoEl);
 
-    tagArea.appendChild(new_block);
+    createMoveBlock(new_block);
 }
 
 const uploadImage = document.getElementById("image-btn");

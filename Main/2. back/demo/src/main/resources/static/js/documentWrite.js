@@ -59,9 +59,23 @@ $(document).ready(function(){
     });
 });
 
-function createBlockH1(){
-    let tagArea = document.querySelector('.content');
+function createMoveBlock(new_block){
+    let tagArea = document.querySelector('.sortable');
 
+    let new_move_block = document.createElement('div');
+    new_move_block.setAttribute('class', 'move_block');
+
+    let move = document.createElement('div');
+    move.setAttribute('class', 'move');
+    move.innerText = '+';
+
+    new_move_block.appendChild(move);
+    new_move_block.appendChild(new_block);
+
+    tagArea.appendChild(new_move_block);
+}
+
+function createBlockH1(){
     let new_block = document.createElement('div');
 
     new_block.setAttribute('id', 'blockH1');
@@ -69,12 +83,10 @@ function createBlockH1(){
     new_block.setAttribute('contenteditable', 'true');
     new_block.setAttribute('placeholder', '빈 블럭');
 
-    tagArea.appendChild(new_block);
+    createMoveBlock(new_block);
 }
 
 function createBlockH2(){
-    let tagArea = document.querySelector('.content');
-
     let new_block = document.createElement('div');
 
     new_block.setAttribute('id', 'blockH2');
@@ -82,12 +94,10 @@ function createBlockH2(){
     new_block.setAttribute('contenteditable', 'true');
     new_block.setAttribute('placeholder', '빈 블럭');
 
-    tagArea.appendChild(new_block);
+    createMoveBlock(new_block)
 }
 
 function createBlockH3(){
-    let tagArea = document.querySelector('.content');
-
     let new_block = document.createElement('div');
 
     new_block.setAttribute('id', 'blockH3');
@@ -95,12 +105,10 @@ function createBlockH3(){
     new_block.setAttribute('contenteditable', 'true');
     new_block.setAttribute('placeholder', '빈 블럭');
 
-    tagArea.appendChild(new_block);
+    createMoveBlock(new_block);
 }
 
 function createBlockP(){
-    let tagArea = document.querySelector('.content');
-
     let new_block = document.createElement('div');
 
     new_block.setAttribute('id', 'blockP');
@@ -108,6 +116,6 @@ function createBlockP(){
     new_block.setAttribute('contenteditable', 'true');
     new_block.setAttribute('placeholder', '빈 블럭');
 
-    tagArea.appendChild(new_block);
+    createMoveBlock(new_block)
 }
 
