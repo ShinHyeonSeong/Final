@@ -80,26 +80,45 @@ public class DocumentController {
         return "redirect:/document/write?id=" + documentId;
     }
 
-    // 문서 작성 Document
+    // 문서 작성 Document write
     /// 문서 작성 페이지 이동
     @GetMapping("document/write")
     public String getDocumentWrite(String id, Model model, HttpSession session) {
-        DocumentDto documentDto = documentService.getDocumentById(id);
-        List<BlockDto> blockDtoList = documentService.getBlockListByDocumentId(id);
-
-        model.addAttribute("document", documentDto);
-        model.addAttribute("blockList", blockDtoList);
 
         UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
 
         String userUuid = sessionUser.getUuid();
 
         if(documentService.accreditUserToWork(userUuid, id)){
-            return "?";
+            return "redirect:/document/view?id="+id;
         }
+
+        DocumentDto documentDto = documentService.getDocumentById(id);
+        List<BlockDto> blockDtoList = documentService.getBlockListByDocumentId(id);
+
+        model.addAttribute("document", documentDto);
+        model.addAttribute("blockList", blockDtoList);
 
         return "documentWrite";
     }
+
+    // 문서 뷰 Document view
+    /// 문서 작성 페이지 이동
+    @GetMapping("document/view")
+    public String getDocumentView(String id, Model model, HttpSession session) {
+
+        UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
+        String userUuid = sessionUser.getUuid();
+
+        DocumentDto documentDto = documentService.getDocumentById(id);
+        List<BlockDto> blockDtoList = documentService.getBlockListByDocumentId(id);
+
+        model.addAttribute("document", documentDto);
+        model.addAttribute("blockList", blockDtoList);
+
+        return "documentDetail";
+    }
+
 
     // 로그 페이지
     /// 헤당 문서의 로그 페이지 이동
