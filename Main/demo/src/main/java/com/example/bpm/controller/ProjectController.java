@@ -40,6 +40,8 @@ public class ProjectController {
         return currentProject;
     }
 
+
+
     public Long checkAuth() {
         ProjectDto projectDto = getSessionProject();
         UserDto userDto = getSessionUser();
@@ -87,7 +89,7 @@ public class ProjectController {
     @GetMapping("/project/projectMemberList")
     public String projectMemberList(HttpSession session, Model model) {
         //세션에서 현재 로그인 되어있는 유저의 정보를 가져온다
-        UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
+        UserDto sessionUser = getSessionUser();
         //UUID를 활용하여 권한자 / 비권한자 프로젝트 리스트를 불러온다
         List<ProjectDto> memberToProjectList = projectSerivce.findParticipantsToProjectList(sessionUser.getUuid());
         model.addAttribute("user", sessionUser);
@@ -99,6 +101,13 @@ public class ProjectController {
         } else model.addAttribute("request", true);
         return "projectMemberList";
     }
+
+    // 전체 프로젝트 리스트 출력
+    @GetMapping("/project/projectAllList")
+    public String projectAllList(){
+
+            }
+
 
     @GetMapping("/project/lunch")
     public String lunchProject() {
@@ -119,7 +128,7 @@ public class ProjectController {
         } else {
             ProjectDto dto = projectSerivce.createProject(projectDto);
             log.info(dto.getProjectId().toString());
-            UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
+            UserDto sessionUser = getSessionUser();
             session.setAttribute("currentProject", projectDto);
             projectSerivce.autorization(dto, sessionUser);
             log.info("프로젝트 생성 정상 작동(컨트롤러 작동)");
@@ -186,6 +195,9 @@ public class ProjectController {
         log.info("프로젝트 정상 삭제 (컨트롤러 작동)");
         return "redirect:/project/projectList";
     }
+
+
+    /* - - - - - - onlyReadPage 접근 - - - - - - */
 
 }
 

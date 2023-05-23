@@ -137,6 +137,7 @@ public class UserService {
         return userDtos;
     }
 
+    //권한 설정 메서드
     public Long checkRole(Long id, String uuid) {
         ProjectRoleEntity projectRoleEntity = projectRoleRepository.findByProjectIdInRole_ProjectIdAndUuidInRole_Uuid(id, uuid);
         return projectRoleEntity.getRole().getId();
