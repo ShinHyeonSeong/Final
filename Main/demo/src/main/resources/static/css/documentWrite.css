@@ -221,6 +221,18 @@ hr {
     text-align: center;
 }
 
+.block_image {
+    max-width: 90%;
+}
+
+#blockVideo {
+    text-align: center;
+}
+
+.block_video{
+    max-width: 90%;
+}
+
 .move_block {
     padding: 3px;
     margin: 5px;
@@ -248,4 +260,3 @@ hr {
     transition: 0.7s ease-out;
     opacity: 1;
 }
-

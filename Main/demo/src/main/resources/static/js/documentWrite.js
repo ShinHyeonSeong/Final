@@ -1,3 +1,4 @@
+/* 문서저장 */
 function ajaxPost(){
 
 	var blockList = new Array();
@@ -27,7 +28,7 @@ function ajaxPost(){
 
     var jsonData = JSON.stringify({title: documentTitle, id: documentId, blockList: blockList});
 
-    alert(jsonData);
+    /*alert(jsonData);*/
 
 	$.ajax({
         url: "/document/save",
@@ -47,6 +48,7 @@ function ajaxPost(){
     });
 }
 
+/* sortable */
 $(document).ready(function(){
     var sortable_element = $('.sortable');
     sortable_element.sortable(
@@ -58,6 +60,19 @@ $(document).ready(function(){
         containment: ".sortable"
     });
 });
+
+/* 블럭 생성 */
+function createBlock(block_id){
+    let new_block = document.createElement('div');
+
+    new_block.setAttribute('id', block_id);
+    new_block.setAttribute('class', 'block');
+    new_block.setAttribute('contenteditable', 'true');
+    new_block.setAttribute('placeholder', '빈 블럭');
+    new_block.setAttribute('spellcheck', 'false');
+
+    createMoveBlock(new_block);
+}
 
 function createMoveBlock(new_block){
     let tagArea = document.querySelector('.sortable');
@@ -75,51 +90,31 @@ function createMoveBlock(new_block){
     tagArea.appendChild(new_move_block);
 }
 
+/* 블럭 생성 연결 함수 */
 function createBlockH1(){
-    let new_block = document.createElement('div');
-
-    new_block.setAttribute('id', 'blockH1');
-    new_block.setAttribute('class', 'block');
-    new_block.setAttribute('contenteditable', 'true');
-    new_block.setAttribute('placeholder', '빈 블럭');
-    new_move_block.setAttribute('spellcheck', 'false');
-
-    createMoveBlock(new_block);
+    createBlock('blockH1');
 }
 
 function createBlockH2(){
-    let new_block = document.createElement('div');
-
-    new_block.setAttribute('id', 'blockH2');
-    new_block.setAttribute('class', 'block');
-    new_block.setAttribute('contenteditable', 'true');
-    new_block.setAttribute('placeholder', '빈 블럭');
-    new_move_block.setAttribute('spellcheck', 'false');
-
-    createMoveBlock(new_block)
+    createBlock('blockH2');
 }
 
 function createBlockH3(){
-    let new_block = document.createElement('div');
-
-    new_block.setAttribute('id', 'blockH3');
-    new_block.setAttribute('class', 'block');
-    new_block.setAttribute('contenteditable', 'true');
-    new_block.setAttribute('placeholder', '빈 블럭');
-    new_move_block.setAttribute('spellcheck', 'false');
-
-    createMoveBlock(new_block);
+    createBlock('blockH3');
 }
 
 function createBlockP(){
-    let new_block = document.createElement('div');
-
-    new_block.setAttribute('id', 'blockP');
-    new_block.setAttribute('class', 'block');
-    new_block.setAttribute('contenteditable', 'true');
-    new_block.setAttribute('placeholder', '빈 블럭');
-    new_move_block.setAttribute('spellcheck', 'false');
-
-    createMoveBlock(new_block)
+    createBlock('blockP');
 }
 
+/* 단축키 설정 */
+
+//ctrl + s
+$(document).keydown(function(e) {
+    if((e.which == '115' || e.which == '83') && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault();
+        ajaxPost();
+    }
+});
+
+/* context 메뉴 */
