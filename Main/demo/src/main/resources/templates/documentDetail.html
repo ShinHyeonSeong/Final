@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
 	<title>List of Posts</title>
@@ -19,14 +19,34 @@
 	<div class="content-container">
 		
 		<div class="document-section">
-			<h1 class="document-title">Title</h1>
+			<h1 class="document-title" th:text="${document.title}">Title</h1>
 			<div class="document-detail">
-				<div class="detail">작성자명</div>
-				<div class="detail">2023 01 01</div>
+				<div class="detail" th:text="${document.userName}">작성자명</div>
+				<div class="detail" th:text="${document.dateDocument}">2023 01 01</div>
 			</div>
 			<div class="horizon-divider"></div>
 			<div class="document-content">
-				content
+				<th:block th:each="block : ${blockList}">
+					<div class="move_block">
+						<div th:id="${block.category}"
+							 th:if="${block.category == 'blockImage'}"
+							 th:content="${block.content}"
+							 class ="block"><img class = "block_image" th:src="${block.content}" ondragstart="return false"></div>
+
+						<div th:id="${block.category}"
+							 th:if="${block.category == 'blockVideo'}"
+							 th:content="${block.content}"
+							 class ="block"><video class = "block_video" th:src="${block.content}" controls ondragstart="return false"></video></div>
+
+						<div th:id="${block.category}"
+							 th:if="${block.category != 'blockImage' and block.category != 'blockVideo'}"
+							 class ="block"
+							 placeholder="빈 블럭"
+							 th:utext="${block.content}"
+							 spellcheck="false"
+							 controls ondragstart="return false">block content</div>
+					</div>
+				</th:block>
 			</div>
 			<div class="horizon-divider"></div>
 		</div>

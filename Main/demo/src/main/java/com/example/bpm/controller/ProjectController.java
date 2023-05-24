@@ -102,12 +102,12 @@ public class ProjectController {
         return "projectMemberList";
     }
 
-    // 전체 프로젝트 리스트 출력
+    /*// 전체 프로젝트 리스트 출력
     @GetMapping("/project/projectAllList")
     public String projectAllList(){
 
             }
-
+*/
 
     @GetMapping("/project/lunch")
     public String lunchProject() {
