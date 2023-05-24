@@ -76,8 +76,9 @@ function makeImage(imageName){
 
     let imageEl = document.createElement('img');
 
+    imageEl.setAttribute('class', 'block_image');
     imageEl.setAttribute('src', imageName);
-    imageEl.setAttribute('style', 'max-width: 80%;');
+    imageEl.setAttribute('ondragstart', 'return false');
 
     new_block.appendChild(imageEl);
 
@@ -96,7 +97,8 @@ function makeVideo(videoName){
 
     videoEl.setAttribute('src', videoName);
     videoEl.setAttribute('controls', '');
-    videoEl.setAttribute('style', 'max-width: 80%;');
+    videoEl.setAttribute('class', 'block_video');
+    videoEl.setAttribute('ondragstart', 'return false');
 
     new_block.appendChild(videoEl);
 

@@ -56,7 +56,7 @@ header {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	width: 768px;
+	max-width: 1200px;
 	padding-bottom: 100px;
 }
 
@@ -93,9 +93,113 @@ header {
 }
 
 .document-content {
-	display: flex;
 	justify-content: center;
 	align-items: center;
-	font-size: 128px;
-	height: 500px;
+	min-height: 500px;
+}
+
+
+#blockP {
+    max-width: 100%;
+    width: 100%;
+    white-space: pre-wrap;
+    word-break: break-word;
+    caret-color: rgb(0, 0, 0);
+    padding: 3px 2px;
+    font-size: 18px;
+    color: aliceblue;
+    caret-color: white;
+    padding-top: 7px;
+}
+
+#blockH1 {
+    max-width: 100%;
+    width: 100%;
+    white-space: pre-wrap;
+    word-break: break-word;
+    caret-color: rgb(0, 0, 0);
+    padding: 3px 2px;
+    font-size: 32px;
+    font-weight: bold;
+    color: aliceblue;
+    caret-color: white;
+}
+
+#blockH2 {
+    max-width: 100%;
+    width: 100%;
+    white-space: pre-wrap;
+    word-break: break-word;
+    caret-color: rgb(0, 0, 0);
+    padding: 3px 2px;
+    font-size: 28px;
+    font-weight: bold;
+    color: aliceblue;
+    caret-color: white;
+}
+
+#blockH3 {
+    max-width: 100%;
+    width: 100%;
+    white-space: pre-wrap;
+    word-break: break-word;
+    caret-color: rgb(0, 0, 0);
+    padding: 3px 2px;
+    font-size: 24px;
+    font-weight: bold;
+    color: aliceblue;
+    caret-color: white;
+}
+
+[contenteditable=true]:empty:before{
+  content: attr(placeholder);
+  color: gray;
+}
+
+#blockB {
+    max-width: 100%;
+    width: 100%;
+    white-space: pre-wrap;
+    word-break: break-word;
+    caret-color: rgb(0, 0, 0);
+    padding: 3px 2px;
+    font-size: 18px;
+    font-weight: bold;
+    color: aliceblue;
+    caret-color: white;
+}
+
+#blockI {
+    max-width: 100%;
+    width: 100%;
+    white-space: pre-wrap;
+    word-break: break-word;
+    caret-color: rgb(0, 0, 0);
+    padding: 3px 2px;
+    font-size: 18px;
+    font-style: italic;
+    color: aliceblue;
+    caret-color: white;
+}
+
+#blockImage {
+    text-align: center;
+}
+
+.block_image {
+    max-width: 90%;
+}
+
+#blockVideo {
+    text-align: center;
+}
+
+.block_video{
+    max-width: 90%;
+}
+
+.move_block {
+    padding: 3px;
+    margin: 5px;
+    display: block;
 }

@@ -41,13 +41,12 @@
                         <div th:id="${block.category}"
                              th:if="${block.category == 'blockImage'}"
                              th:content="${block.content}"
-                             class ="block"><img th:src="${block.content}" style="max-width: 90%;" ondragstart="return false"></div>
+                             class ="block"><img class = "block_image" th:src="${block.content}" ondragstart="return false"></div>
 
                         <div th:id="${block.category}"
                              th:if="${block.category == 'blockVideo'}"
                              th:content="${block.content}"
-                             align="center"
-                             class ="block"><video th:src="${block.content}" controls style="max-width: 90%;" ondragstart="return false"></video></div>
+                             class ="block"><video class = "block_video" th:src="${block.content}" controls ondragstart="return false"></video></div>
 
                         <div th:id="${block.category}"
                              th:if="${block.category != 'blockImage' and block.category != 'blockVideo'}"
