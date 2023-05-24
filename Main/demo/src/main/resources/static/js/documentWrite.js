@@ -207,11 +207,8 @@ function addMenuEvent(target){
             if(target.className == 'move_block'){
                 target.remove();
             }
-            else if (target.className == 'block' || target.className == 'move ui-sortable-handle' || target.className == 'move'){
-                target.parentNode.remove();
-            }
             else{
-                target.parentNode.parentNode.remove();
+                target.parentNode.closest('.move_block').remove();
             }
         });
     });
