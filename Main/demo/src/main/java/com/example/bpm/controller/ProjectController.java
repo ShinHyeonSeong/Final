@@ -1,9 +1,8 @@
 package com.example.bpm.controller;
 
-import com.example.bpm.dto.ProjectDto;
-import com.example.bpm.dto.ProjectRequestDto;
-import com.example.bpm.dto.UserDto;
+import com.example.bpm.dto.*;
 import com.example.bpm.repository.UserRepository;
+import com.example.bpm.service.ProjectDetailSerivce;
 import com.example.bpm.service.ProjectSerivce;
 //import jakarta.servlet.http.HttpSession;
 import com.example.bpm.service.UserService;
@@ -28,6 +27,8 @@ public class ProjectController {
     private UserService userService;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ProjectDetailSerivce projectDetailSerivce;
 
     HttpSession session;
     public UserDto getSessionUser() {
@@ -104,9 +105,12 @@ public class ProjectController {
 
     // 전체 프로젝트 리스트 출력
     @GetMapping("/project/projectAllList")
-    public String projectAllList(){
+    public String projectAllList(Model model){
+        UserDto nowUser = getSessionUser();
+        List<ProjectDto> AllProjectList = projectSerivce.findAllToProjectList();
+        model.addAttribute("projectAllList", AllProjectList);
 
-            }
+    }
 
 
     @GetMapping("/project/lunch")
@@ -118,6 +122,7 @@ public class ProjectController {
     public String projectCreate() {
         return "projectCreate";
     }
+
 
     //프로젝트 생성 버튼을 누르는 순간 프로젝트 생성되는 메서드
     @PostMapping("/project/createPage")
@@ -146,6 +151,15 @@ public class ProjectController {
         model.addAttribute("projectDto", presentDto);
         model.addAttribute("joinUsers", userDtoList);
         return "projectMain";
+    }
+
+    //전체 프로젝트 리스트에서 프로젝트 선택 시 해당 소개, 목표,
+    @RequestMapping("/projectAll/{id}")
+    public String selectAllProject(@PathVariable("id") Long id, HttpSession session, Model model){
+        ProjectDto presentDto = projectSerivce.selectProject(id);
+        List<UserDto> userDtoList = userService.searchUserToProject(id);
+        List<HeadDto> headDtoList = projectDetailSerivce.selectAllHead(projectSerivce.selectProject(id));
+        List<DetailDto> detailDtoList =
     }
 
 

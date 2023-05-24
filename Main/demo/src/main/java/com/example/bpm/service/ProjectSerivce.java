@@ -135,6 +135,17 @@ public class ProjectSerivce {
         }
     }
 
+    //전체 프로젝트 리스트 가져오는 메서드
+    public List<ProjectDto> findAllToProjectList(){
+        List<ProjectEntity> entityList = projectRepository.findAll();
+        List<ProjectDto> dtoList = new ArrayList<>();
+        for (ProjectEntity projectEntity : entityList) {
+            dtoList.add(ProjectDto.toProjectDto(projectEntity));
+        }
+        return dtoList;
+    }
+
+
     //관리자 프로젝트 권한 부여 메서드
     public ProjectRoleDto autorization(ProjectDto projectDto, UserDto userDto) {
         ProjectEntity projectEntity = ProjectEntity.toProjectEntity(projectDto);
@@ -148,6 +159,8 @@ public class ProjectSerivce {
         projectRoleRepository.save(projectRoleEntity);
         return ProjectRoleDto.toProjectRoleDto(projectRoleEntity);
     }
+
+
 
     //생성 메서드
     public ProjectDto createProject(ProjectDto projectDto) {

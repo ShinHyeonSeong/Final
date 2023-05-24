@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Project Showcase</title>
+  <link rel="stylesheet" href="../css/sidebar.css">
+  <link rel="stylesheet" type="text/css" href="../css/onlyReadPage.css">
+  <script src="../js/onlyReadPage.js"></script>
+</head>
+
+<body>
+  <div class="sidebar">
+    <ul>
+      <li class="active"><a href="/project/main">홈</a></li>
+      <li><a href="./calender.html">달력</a></li>
+      <li><a href="./projectCreate.html">나가기</a></li>
+    </ul>
+  </div>
+  <div class="centered-content">
+    <div class="project-name" th:text="${projectDto.title}"> Project 1</div>
+    <div class="centered-top">
+      <div class="project-intro">
+        <p class="div-h">Project Introduction</p>
+        <p class="div-content" th:text="${projectDto.subtitle}">
+      </div>
+      <div class="team-members">
+        <div class="div-h">Team Members</div>
+        <div class="member" th:each="member : ${joinUsers}">
+          <h3 th:text="${member.name}">John Doe</h3>
+          <div class="member-role" th:text="${member.email}">Web Developer</div>
+        </div>
+        <div class="member">
+          <h3>Jane Doe</h3>
+          <div class="member-role">Graphic Designer</div>
+        </div>
+      </div>
+    </div>
+    <div class="my-work">
+      <div class="div-h">내 작업</div>
+      <br>
+      <table>
+        <thead>
+          <tr>
+            <th class="job-name">작업명</th>
+            <th></th>
+            <th class="job-deadline">내용</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="job-name"><a href="workDetail.html">작업명</a></td>
+            <td></td>
+            <td class="job-deadline">2023 01 01</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="job-name"><a href="workDetail.html">작업명</a></td>
+            <td></td>
+            <td class="job-deadline">content</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="job-name"><a href="workDetail.html">작업명</a></td>
+            <td></td>
+            <td class="job-deadline">2023 01 01</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="job-name"><a href="workDetail.html">작업명</a></td>
+            <td></td>
+            <td class="job-deadline">진행중</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="goals">
+      <div class="div-h">목표</div>
+      <br>
+      <table>
+        <thead>
+          <tr>
+            <th class="job-name">작업명</th>
+            <th class="job-deadline">내용</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="job-name"><a href="workDetail.html">작업명</a></td>
+            <td class="job-deadline">2023 01 01</td>
+          </tr>
+          <tr>
+            <td class="job-name"><a href="workDetail.html">작업명</a></td>
+            <td class="job-deadline">content</td>
+          </tr>
+          <tr>
+            <td class="job-name"><a href="workDetail.html">작업명</a></td>
+            <td class="job-deadline">2023 01 01</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  </div>
+</body>
+
+</html>
