@@ -31,6 +31,7 @@ public class ProjectController {
     private ProjectDetailSerivce projectDetailSerivce;
 
     HttpSession session;
+
     public UserDto getSessionUser() {
         UserDto currentUser = (UserDto) session.getAttribute("userInfo");
         return currentUser;
@@ -40,7 +41,6 @@ public class ProjectController {
         ProjectDto currentProject = (ProjectDto) session.getAttribute("currentProject");
         return currentProject;
     }
-
 
 
     public Long checkAuth() {
@@ -103,15 +103,15 @@ public class ProjectController {
         return "projectMemberList";
     }
 
-    /*// 전체 프로젝트 리스트 출력
+    // 전체 프로젝트 리스트 출력
     @GetMapping("/project/projectAllList")
-    public String projectAllList(Model model){
+    public String projectAllList(Model model) {
         UserDto nowUser = getSessionUser();
         List<ProjectDto> AllProjectList = projectSerivce.findAllToProjectList();
         model.addAttribute("projectAllList", AllProjectList);
+        return "";
+    }
 
-            }
-*/
 
     @GetMapping("/project/lunch")
     public String lunchProject() {
@@ -155,13 +155,19 @@ public class ProjectController {
 
     //전체 프로젝트 리스트에서 프로젝트 선택 시 해당 소개, 목표,
     @RequestMapping("/projectAll/{id}")
-    public String selectAllProject(@PathVariable("id") Long id, HttpSession session, Model model){
+    public String selectAllProject(@PathVariable("id") Long id, HttpSession session, Model model) {
         ProjectDto presentDto = projectSerivce.selectProject(id);
         List<UserDto> userDtoList = userService.searchUserToProject(id);
         List<HeadDto> headDtoList = projectDetailSerivce.selectAllHead(projectSerivce.selectProject(id));
-        List<DetailDto> detailDtoList =
-    }
+        List<DetailDto> detailDtoList = projectDetailSerivce.selectAllDetailForProject(projectSerivce.selectProject(id));
 
+        model.addAttribute("projectIntro", presentDto.getSubtitle());
+        model.addAttribute("userList", userDtoList);
+        model.addAttribute("headList", headDtoList);
+        model.addAttribute("detailList", detailDtoList);
+
+        return ""
+    }
 
 
     // 프로젝트 초대 확인창
