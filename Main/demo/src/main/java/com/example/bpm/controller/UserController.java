@@ -42,11 +42,16 @@ public class UserController {
         return currentProject;
     }
 
-    public Long checkAuth() {
+    public Long getSessionAuth() {
+        Long auth = (Long)session.getAttribute("auth");
+        return auth;
+    }
+
+    public void checkAuth() {
         ProjectDto projectDto = getSessionProject();
         UserDto userDto = getSessionUser();
         Long auth = userService.checkRole(projectDto.getProjectId(), userDto.getUuid());
-        return auth;
+        session.setAttribute("auth", auth);
     }
 
     @GetMapping("/index")
@@ -115,7 +120,7 @@ public class UserController {
     //프로필로 가는 메서드 세션값을 활용해서 user의 정보를 찾아낸다
     @GetMapping("/user/account")
     public String goAccount(HttpSession session, Model model) {
-        UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
+        UserDto sessionUser = getSessionUser();
         UserDto result = userService.findByUser(sessionUser.getUuid());
         model.addAttribute("user", sessionUser);
         return "account";
@@ -131,26 +136,19 @@ public class UserController {
 
     @GetMapping("/user/accountUpdate")
     public String goAccountChange(HttpSession session, Model model) {
-        UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
+        UserDto sessionUser = getSessionUser();
         UserDto result = userService.findByUser(sessionUser.getUuid());
         model.addAttribute("user", sessionUser);
         return "accountUpdate";
     }
 
     //프로필에서 정보 변경 시 유저의 정보를 찾아오는 메서드
-    @GetMapping("/user/update")
-    public String updateForm(HttpSession session, Model model) {
-        UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
-        UserDto userDto = userService.updateForm(sessionUser.getUuid());
-        model.addAttribute("updateUserInfo", userDto);
-        return "user/update";
-    }
 
     //회원 정보 변경 시 메서드
     @PostMapping("/user/update")
     public String update(@RequestParam("email") String email,
                          @RequestParam("userName") String name, HttpSession session) {
-        UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
+        UserDto sessionUser = getSessionUser();
         log.info("변경 전 정보 " + sessionUser.getEmail() + sessionUser.getName());
         UserDto updateDto = userService.update(sessionUser, email, name);
         log.info("변경 후 정보 " + updateDto.getEmail() + updateDto.getName());
@@ -176,7 +174,7 @@ public class UserController {
                                  @RequestParam("newPassword") String newPassword,
                                  @RequestParam("confirmPassword") String confirmPassword,
                                  HttpSession session) {
-        UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
+        UserDto sessionUser = getSessionUser();
         log.info("컨트롤러 호출 완료");
         log.info(sessionUser.getPassword(), password, email, newPassword, confirmPassword);
         int result = userService.changePassword(sessionUser, email, password, newPassword, confirmPassword);
@@ -189,7 +187,7 @@ public class UserController {
     //회원 탈퇴 메서드
     @GetMapping("/user/delete")
     public String deleteById(HttpSession session) {
-        UserDto userDto = (UserDto)session.getAttribute("userInfo");
+        UserDto userDto = getSessionUser();
         userService.deleteById(userDto.getUuid());
         session.invalidate();
         log.info("탈퇴되었습니다 (컨트롤러 작동)");
