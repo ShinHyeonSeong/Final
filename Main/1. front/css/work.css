@@ -116,4 +116,9 @@ td a {
 
 .job-name {
 	width: 40rem;
+	column-span: 2;
+}
+.job-deadline{
+	width: 40rem;
+	column-span: 2;
 }
