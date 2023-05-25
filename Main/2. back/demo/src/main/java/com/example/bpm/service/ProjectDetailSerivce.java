@@ -343,7 +343,6 @@ public class ProjectDetailSerivce {
         return null;
     }
 
-<<<<<<< HEAD
     //댓글 기능 (댓글리스트 불러오기)
     public List<WorkCommentDto> findByComment(Long workId) {
         List<WorkCommentEntity> entityList = workCommentRepository.findAllByWorkIdToComment_WorkId(workId);
@@ -385,7 +384,6 @@ public class ProjectDetailSerivce {
         return findByComment(workId);
     }
 
-=======
     public DetailDto detailCompletionChange(DetailDto detailDto) {
         DetailDto changeDetailDto;
         if (detailDto.getCompletion() == 0) {
@@ -473,6 +471,5 @@ public class ProjectDetailSerivce {
             log.info("상위 head 미완 상태로 자동 수정");
         }
     }
->>>>>>> 476e4b0 (session 관련 전역 메서드 수정, 상태 변환 기능 추가)
 }
 
