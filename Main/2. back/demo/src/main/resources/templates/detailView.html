@@ -17,7 +17,7 @@
 		<li class="active"><a href="/project/main">홈</a></li>
 		<li><a href="/project/goals">목표</a></li>
 		<li><a href="/project/works">작업</a></li>
-		<li><a href="/project/document">문서</a></li>
+		<li><a href="/document/list">문서</a></li>
 		<li><a href="./calender.html">달력</a></li>
 		<li><a href="/user/search">멤버 초대</a></li>
 	</ul>
@@ -47,7 +47,7 @@
             </div>
             <div class="horizon-divider-semi"></div>
             <div class="object">
-              <a href=""><div class="object-list" OnClick="location.href='#'">목표명</div></a>
+              <a th:href="@{/project/goal/headView/{id}(id=${headDto.headId})}"><div class="object-list" th:text="${headDto.title}"></div></a>
             </div>
           </div>
         </div>
@@ -90,6 +90,19 @@
       </div>
 
       <div>
+        <h4 class="content-title">상태</h4>
+        <p class="content-detail" th:if="${detailDto.completion == 1}">완료</p>
+        <p class="content-detail" th:if="${detailDto.completion == 0}">진행중</p>
+        <div class="horizon-divider"></div>
+      </div>
+
+      <div>
+        <a th:href="@{/project/detail/completion/change/{id}(id=${detailDto.detailId})}">
+          <button class="edit-btn" th:if="${auth == 1 && detailDto.completion == 0}">완료로 표시</button>
+        </a>
+        <a th:href="@{/project/detail/completion/change/{id}(id=${detailDto.detailId})}">
+          <button class="edit-btn" th:if="${auth == 1 && detailDto.completion == 1}">진행중으로 표시</button>
+        </a>
         <a href="detail-create.html">
           <button class="edit-btn" th:if="${auth == 1}">목표 수정</button>
         </a>

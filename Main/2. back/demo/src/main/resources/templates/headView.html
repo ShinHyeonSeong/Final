@@ -59,18 +59,32 @@
     <div class="vertical-divider"></div>
 
     <div class="right-section">
-      <!-- 이것도 div로 묶어야 데이터를 잘 넘길 수 있을 거 같.. ㄱ -->
-      <!-- 이걸 div로 해가지고 상위 목표와 연결 해야되는데 일단 내가 못함 미안 -->
-      <div>
-        <h4 class="content-title">마감 기간</h4>
-        <p class="content-detail" th:text="${#dates.format(headDto.endDay, 'yyyy-MM-dd')}" ></p>
-        <div class="horizon-divider"></div>
-      </div>
-      <div>
-        <a href="detail-create.html">
-          <button class="edit-btn" th:if="${auth == 1}">목표 수정</button>
-        </a>
-      </div>
+        <!-- 이것도 div로 묶어야 데이터를 잘 넘길 수 있을 거 같.. ㄱ -->
+        <!-- 이걸 div로 해가지고 상위 목표와 연결 해야되는데 일단 내가 못함 미안 -->
+        <div>
+            <h4 class="content-title">마감 기간</h4>
+            <p class="content-detail" th:text="${#dates.format(headDto.endDay, 'yyyy-MM-dd')}" ></p>
+            <div class="horizon-divider"></div>
+        </div>
+
+        <div>
+            <h4 class="content-title">상태</h4>
+            <p class="content-detail" th:if="${headDto.completion == 1}">완료</p>
+            <p class="content-detail" th:if="${headDto.completion == 0}">진행중</p>
+            <div class="horizon-divider"></div>
+        </div>
+
+        <div>
+            <a th:href="@{/project/head/completion/change/{id}(id=${headDto.headId})}">
+                <button class="edit-btn" th:if="${auth == 1 && headDto.completion == 0}">완료로 표시</button>
+            </a>
+            <a th:href="@{/project/head/completion/change/{id}(id=${headDto.headId})}">
+                <button class="edit-btn" th:if="${auth == 1 && headDto.completion == 1}">진행중으로 표시</button>
+            </a>
+            <a th:href="@{/project/goal/head/edit/{id}(id=${headDto.headId})}">
+                <button class="edit-btn" th:if="${auth == 1}" >목표 수정</button>
+            </a>
+        </div>
     </div>
   </div>
 </div>

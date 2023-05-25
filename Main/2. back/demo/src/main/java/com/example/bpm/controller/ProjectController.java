@@ -40,11 +40,16 @@ public class ProjectController {
         return currentProject;
     }
 
-    public Long checkAuth() {
+    public Long getSessionAuth() {
+        Long auth = (Long)session.getAttribute("auth");
+        return auth;
+    }
+
+    public void checkAuth() {
         ProjectDto projectDto = getSessionProject();
         UserDto userDto = getSessionUser();
         Long auth = userService.checkRole(projectDto.getProjectId(), userDto.getUuid());
-        return auth;
+        session.setAttribute("auth", auth);
     }
 
     // 관리자 권한 프로젝트 리스트 출력
@@ -134,6 +139,7 @@ public class ProjectController {
         List<UserDto> userDtoList = userService.searchUserToProject(id);
         session.removeAttribute("currentProject");
         session.setAttribute("currentProject", presentDto);
+        checkAuth();
         model.addAttribute("projectDto", presentDto);
         model.addAttribute("joinUsers", userDtoList);
         return "projectMain";

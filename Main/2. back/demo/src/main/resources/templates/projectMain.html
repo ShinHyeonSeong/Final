@@ -35,12 +35,8 @@
 			<div class="team-members">
 				<div class="div-h">Team Members</div>
 				<div class="member" th:each="member : ${joinUsers}">
-					<h3 th:text="${member.name}">John Doe</h3>
+					<h3 th:text="${member.name}"></h3>
 					<div class="member-role" th:text="${member.email}">Web Developer</div>
-				</div>
-				<div class="member">
-					<h3>Jane Doe</h3>
-					<div class="member-role">Graphic Designer</div>
 				</div>
 			</div>
 		</div>
