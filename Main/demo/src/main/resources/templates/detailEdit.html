@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/css/goal-create.css">
+	<script src="../js/documentList.js"></script>
+	<title>create-document</title>
+</head>
+
+<body>
+<div class="container">
+	<div class="header">
+		<a href="/project/goals" class="back-button"> < </a>
+		<h1>하위 목표 생성</h1>
+	</div>
+	<form action="/project/goal/createDetail" method="post">
+		<div class="create-goal">
+			<div class="label-detail">
+				<label class="label" for="create-goal-input1">목표 이름</label>
+				<div class="essential">*</div>
+			</div>
+			<div class="input-detail">
+				<input name="title" class="input-box" id="create-goal-input1" type="text" placeholder="목표 이름 입력">
+			</div>
+		</div>
+
+		<div class="create-goal">
+			<div class="label-detail">
+				<label class="label" for="create-goal-input2">목표 설명</label>
+			</div>
+			<div class="input-detail">
+                <textarea name="discription" class="detail-input-box"
+						  id="create-goal-input2" cols="20" rows="10" placeholder="설명"></textarea>
+			</div>
+		</div>
+
+		<div class="create-goal">
+			<div class="label-detail">
+				<label class="label" for="create-goal-input4">마감 기한</label>
+			</div>
+			<div class="input-detail">
+				<input name="deadline" class="input-box" id="create-goal-input4" type="text" placeholder="0000-00-00(연 월 일)">
+			</div>
+		</div>
+
+		<div class="create-goal">
+			<div class="label-detail">
+				<label class="label" for="create-goal-input5">상위 연결 목표</label>
+			</div>
+			<div class="select">
+				<select class="select-connection-goal" id="create-goal-input5" name="headId" th:if="${headDtoList != null}">
+					<option th:value="0">없음</option>
+					<option th:each="headDto : ${headDtoList}"
+					th:text="${headDto.title}"
+					th:value="${headDto.headId}"></option>
+				</select>
+			</div>
+		</div>
+
+		<div class="horizon-divider"></div>
+		<div class="footer">
+			<button type="submit" class="footer-btn">생성</button>
+			<button type="reset" class="footer-btn">초기화</button>
+		</div>
+	</form>
+</div>
+
+</body>
+
+</html>

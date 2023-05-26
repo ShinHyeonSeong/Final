@@ -49,7 +49,7 @@ public class ProjectDetailSerivce {
 
     /* - - - - 생성 메서드 시작 - - - - */
 
-    //목표 만들기 -> projectId는 Session으로 적용시켜 값을 받아와야함
+    // head 생성 메서드
     public HeadDto createHead(String title, String deadline, String discription, ProjectDto projectDto) {
         if (headRepository.findByTitle(title).isPresent()) {
             log.info("head title 이 이미 존재한다. (서비스)");
@@ -73,7 +73,7 @@ public class ProjectDetailSerivce {
         }
     }
 
-    //작업 만들기 (컨트롤러에서 연결할 목표를 찾아서 매개변수 값으로 넣어줘야함)
+    // detail 생성 메서드
     public DetailDto createDetail(String title, String deadline, String discription,
                                   HeadDto connectedHead, ProjectDto projectDto) {
         if (detailRepository.findByTitle(title).isPresent()) {
@@ -240,8 +240,7 @@ public class ProjectDetailSerivce {
     }
 
     public HeadDto updateHead(HeadDto headDto) {
-        HeadEntity afterEntity = HeadEntity.toHeadEntity(headDto);
-        headRepository.save(afterEntity);
+        HeadEntity afterEntity = headRepository.save(HeadEntity.toHeadEntity(headDto));
         return HeadDto.toHeadDto(afterEntity);
     }
 
@@ -276,6 +275,20 @@ public class ProjectDetailSerivce {
         return WorkDto.toWorkDto(afterEntity);
     }
 
+    public HeadDto editHead(String title, String deadline, String discription, Long headId) {
+        Optional<HeadEntity> headEntity = headRepository.findById(headId);
+        if (headEntity.isPresent()) {
+            log.info("");
+            Date endDay = formatter(deadline);
+            HeadDto headDto = HeadDto.toHeadDto(headEntity.get());
+            headDto.setTitle(title);
+            headDto.setEndDay(endDay);
+            headDto.setDiscription(discription);
+            HeadDto editHeadDto = HeadDto.toHeadDto(headRepository.save(HeadEntity.toHeadEntity(headDto)));
+            return editHeadDto;
+        } else return null;
+    }
+
     /* - - - - 수정 메서드 끝 - - - - - */
 
     /* - - - - 삭제 메서드 시작 - - - - - */
@@ -308,6 +321,27 @@ public class ProjectDetailSerivce {
 
     /* - - - - 삭제 메서드 끝 - - - - - */
 
+    /* - - - - 상태 변경 메서드 - - - -  */
+    // work 상태 변경 메서드
+    public WorkDto workCompletionChange(WorkDto workDto) {
+        log.info("workCompletionChange 호출");
+        WorkDto changeWorkDto;
+        if(workDto.getCompletion() == 0) {
+            workDto.setCompletion(1);
+            changeWorkDto = updateWork(workDto);
+            log.info("완료 상태로 변경");
+            checkWorkCompletion(workDto);
+            return changeWorkDto;
+        } else if(workDto.getCompletion() == 1) {
+            workDto.setCompletion(0);
+            changeWorkDto = updateWork(workDto);
+            log.info("미완료 상태로 변경");
+            checkWorkCompletion(workDto);
+            return changeWorkDto;
+        }
+        // work 상태를 검사하여 상위 detail 상태 자동 수정
+        return null;
+    }
 
     //댓글 기능 (댓글리스트 불러오기)
     public List<WorkCommentDto> findByComment(Long workId) {
@@ -350,5 +384,92 @@ public class ProjectDetailSerivce {
         return findByComment(workId);
     }
 
+    public DetailDto detailCompletionChange(DetailDto detailDto) {
+        DetailDto changeDetailDto;
+        if (detailDto.getCompletion() == 0) {
+            detailDto.setCompletion(1);
+            changeDetailDto = updateDetail(detailDto);
+            checkDetailCompletion(detailDto);
+            return changeDetailDto;
+        } else if(detailDto.getCompletion() == 1) {
+            detailDto.setCompletion(0);
+            changeDetailDto = updateDetail(detailDto);
+            checkDetailCompletion(detailDto);
+            return changeDetailDto;
+        }
+        return null;
+    }
+
+    public HeadDto headCompletionChange(HeadDto headDto) {
+        HeadDto changeHeadDto;
+        if (headDto.getCompletion() == 0) {
+            headDto.setCompletion(1);
+            changeHeadDto = updateHead(headDto);
+            return changeHeadDto;
+        } else if(headDto.getCompletion() == 1) {
+            headDto.setCompletion(0);
+            changeHeadDto = updateHead(headDto);
+            return changeHeadDto;
+        }
+        return null;
+    }
+
+    // work 모두 완료시, 자동 완료. 미완료시 자동 미완료 처리
+    public void checkWorkCompletion(WorkDto workDto) {
+        log.info("checkWorkCompletion() 실행");
+        Optional<DetailEntity> detailEntity = detailRepository.findById(workDto.getDetailIdToWork().getDetailId());
+        log.info("상위 detail 확인 완료. title : " + detailEntity.get().getTitle());
+        List<WorkEntity> workEntityList = workRepository.findAllByDetailIdToWork_DetailId(detailEntity.get().getDetailId());
+        boolean allComplete = true;
+        for (WorkEntity workEntity : workEntityList) {
+            if(workEntity.getCompletion() == 0) {
+                log.info("미완 상태의 work 발견");
+                allComplete = false;
+            }
+        }
+
+        DetailDto detailDto = DetailDto.toDetailDto(detailEntity.get());
+
+        if (allComplete) {
+            log.info("모든 work 완료 확인됨");
+            detailDto.setCompletion(1);
+            updateDetail(detailDto);
+            log.info("상위 detail 완료 상태로 자동 수정");
+            checkDetailCompletion(detailDto);
+        } else if (!allComplete) {
+            log.info("미완 상태의 work 확인됨");
+            detailDto.setCompletion(0);
+            log.info("상위 detail 미완 상태로 자동 수정");
+            updateDetail(detailDto);
+        }
+    }
+
+    public void checkDetailCompletion(DetailDto detailDto) {
+        log.info("detail 상태 확인을 위한 checkDetailCompletion() 실행");
+        Optional<HeadEntity> headEntity = headRepository.findById(detailDto.getHeadIdToDetail().getHeadId());
+        log.info("상위 head 확인 완료. title : " + headEntity.get().getTitle());
+        List<DetailEntity> detailEntityList = detailRepository.findAllByHeadIdToDetail_HeadId(headEntity.get().getHeadId());
+        boolean allComplete = true;
+        for (DetailEntity detailEntity : detailEntityList) {
+            if(detailEntity.getCompletion() == 0) {
+                log.info("미완 상태의 head 발견");
+                allComplete = false;
+            }
+        }
+
+        HeadDto headDto = HeadDto.toHeadDto(headEntity.get());
+
+        if(allComplete) {
+            log.info("모든 detail 완료 확인됨");
+            headDto.setCompletion(1);
+            updateHead(headDto);
+            log.info("상위 head 완료 상태로 자동 수정");
+        } else if (!allComplete) {
+            log.info("미완 상태의 detail 식별됨");
+            headDto.setCompletion(0);
+            updateHead(headDto);
+            log.info("상위 head 미완 상태로 자동 수정");
+        }
+    }
 }
 
