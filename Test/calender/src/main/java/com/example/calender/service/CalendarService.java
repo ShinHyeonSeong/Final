@@ -17,7 +17,7 @@ public class CalendarService {
 
     public List<Map<String, Object>> getEventList() {
         List<HeadEntity> headEntityList = headRepository.findAll();
-        Map<String, Object> event = new HashMap<String, Object>();
+        HashMap<String, Object> event = new HashMap<String, Object>();
         List<Map<String, Object>> eventList = new ArrayList<Map<String, Object>>();
         for (HeadEntity headEntity : headEntityList) {
             //이게 event 객체를 다시 리셋 시켜야 먹히더라궁

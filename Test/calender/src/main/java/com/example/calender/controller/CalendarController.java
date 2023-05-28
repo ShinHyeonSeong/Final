@@ -22,10 +22,9 @@ public class CalendarController {
 
         return "main";
     }
-
     @GetMapping("/calender/event") //ajax 데이터 전송 URL
-    public @ResponseBody List<Map<String, Object>> getEvent() {
-        return  calendarService.getEventList();
+    public String getEvent() {
+        return "main";
     }
 
 }
