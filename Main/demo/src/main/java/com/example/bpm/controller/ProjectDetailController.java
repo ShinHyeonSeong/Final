@@ -257,7 +257,7 @@ public class ProjectDetailController {
         /*추가 시킬 댓글 내용과, 현재 documentID 를 같이 넘겨 리턴 값으로 자동 리스트를 뽑아온다*/
         List<WorkCommentDto> list = projectDetailSerivce.plusComment(workCommentDto, workId);
         model.addAttribute("commentList", list);
-        return ""
+        return "";
     }
 
     //댓글 수정을 하기 위한 댓글 데이터를 가져오는 메서드 (프론트에서는 댓글을 수정할 수 있는 화면이 필요하다
@@ -266,7 +266,7 @@ public class ProjectDetailController {
         WorkCommentDto updateComment = projectDetailSerivce.findComment(commentId);
         model.addAttribute("updateComment", updateComment);
 
-        return ""
+        return "";
     }
 
     @PostMapping("댓글 수정 완료 시")
@@ -282,14 +282,14 @@ public class ProjectDetailController {
 
         List<WorkCommentDto> list = projectDetailSerivce.plusComment(workCommentDto, workId);
         model.addAttribute("commentList", list);
-        return ""
+        return "";
     }
 
     @GetMapping(" 삭제 클릭 시 ")
     public String deleteComment(@RequestParam("workId") Long workId, Model model) {
         List<WorkCommentDto> dtoList = projectDetailSerivce.deleteComment(workId);
         model.addAttribute("commentList", dtoList);
-        return ""
+        return "";
     }
     /* - - - - 댓글 관련 메서드 끝 - - - -*/
 
