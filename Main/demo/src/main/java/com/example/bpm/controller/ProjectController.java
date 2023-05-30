@@ -43,7 +43,7 @@ public class ProjectController {
     }
 
     public Long getSessionAuth() {
-        Long auth = (Long)session.getAttribute("auth");
+        Long auth = (Long) session.getAttribute("auth");
         return auth;
     }
 
@@ -108,12 +108,19 @@ public class ProjectController {
     }
 
     // 전체 프로젝트 리스트 출력
-    @GetMapping("/project/projectAllList")
+    @GetMapping("/project/projecAllList")
     public String projectAllList(Model model) {
-        UserDto nowUser = getSessionUser();
+        UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
+        //UUID를 활용하여 권한자 / 비권한자 프로젝트 리스트를 불러온다
+        List<ProjectDto> ManagerToProjectList = projectSerivce.findManagerToProjectList(sessionUser.getUuid());
+        model.addAttribute("user", sessionUser);
         List<ProjectDto> AllProjectList = projectSerivce.findAllToProjectList();
         model.addAttribute("projectAllList", AllProjectList);
-        return "";
+        List<ProjectRequestDto> requestDtos = projectSerivce.findAllToRequestProject(sessionUser.getUuid());
+        if (requestDtos.isEmpty()) {
+            model.addAttribute("request", false);
+        } else model.addAttribute("request", true);
+        return "projectAllList";
     }
 
 
@@ -171,7 +178,7 @@ public class ProjectController {
         model.addAttribute("headList", headDtoList);
         model.addAttribute("detailList", detailDtoList);
 
-        return "";
+        return "onlyReadPage";
     }
 
 
