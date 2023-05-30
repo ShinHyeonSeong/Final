@@ -357,48 +357,6 @@ public class ProjectDetailSerivce {
         // work 상태를 검사하여 상위 detail 상태 자동 수정
         return null;
     }
-
-    //댓글 기능 (댓글리스트 불러오기)
-    public List<WorkCommentDto> findByComment(Long workId) {
-        List<WorkCommentEntity> entityList = workCommentRepository.findAllByWorkIdToComment_WorkId(workId);
-        if (entityList.isEmpty()) {
-            log.info("해당 문서에 댓글 없음 (서비스)");
-            return null;
-        } else {
-            List<WorkCommentDto> commentDtoList = new ArrayList<>();
-            for (WorkCommentEntity commentEntity : entityList) {
-                commentDtoList.add(WorkCommentDto.toWorkCommentDto(commentEntity));
-            }
-            log.info("댓글 리스트 불러오기 성공(서비스)");
-            return commentDtoList;
-        }
-    }
-    //댓글기능 (댓글 추가)
-    public List<WorkCommentDto> plusComment(WorkCommentDto workCommentDto, Long workId) {
-        if (workCommentDto.equals(null)) {
-            log.info("코멘트가 비어있음 (서비스)");
-            return null;
-        } else {
-            workCommentRepository.save(WorkCommentDto.toWorkCommentEntity(workCommentDto));
-            return findByComment(workId);
-        }
-    }
-
-    //update를 위한 Comment Find
-    public WorkCommentDto findComment(Long documentId){
-        Optional<WorkCommentEntity> documentCommentEntity=  workCommentRepository.findById(documentId);
-        return WorkCommentDto.toWorkCommentDto(documentCommentEntity.get());
-    }
-
-
-    //댓글 삭제
-    public List<WorkCommentDto> deleteComment(Long workId){
-        Optional<WorkCommentEntity> now = workCommentRepository.findById(workId);
-        WorkCommentDto workCommentDto = WorkCommentDto.toWorkCommentDto(now.get());
-        workCommentRepository.deleteById(workId);
-        return findByComment(workId);
-    }
-
     public DetailDto detailCompletionChange(DetailDto detailDto) {
         DetailDto changeDetailDto;
         if (detailDto.getCompletion() == 0) {
@@ -486,5 +444,51 @@ public class ProjectDetailSerivce {
             log.info("상위 head 미완 상태로 자동 수정");
         }
     }
+
+    /* - - - - 댓글 기능 - - - - - */
+
+    //댓글 기능 (댓글리스트 불러오기)
+    public List<WorkCommentDto> findByComment(Long workId) {
+        List<WorkCommentEntity> entityList = workCommentRepository.findAllByWorkIdToComment_WorkId(workId);
+        if (entityList.isEmpty()) {
+            log.info("해당 문서에 댓글 없음 (서비스)");
+            return null;
+        } else {
+            List<WorkCommentDto> commentDtoList = new ArrayList<>();
+            for (WorkCommentEntity commentEntity : entityList) {
+                commentDtoList.add(WorkCommentDto.toWorkCommentDto(commentEntity));
+            }
+            log.info("댓글 리스트 불러오기 성공(서비스)");
+            return commentDtoList;
+        }
+    }
+    //댓글기능 (댓글 추가)
+    public List<WorkCommentDto> plusComment(WorkCommentDto workCommentDto, Long workId) {
+        if (workCommentDto.equals(null)) {
+            log.info("코멘트가 비어있음 (서비스)");
+            return null;
+        } else {
+            workCommentRepository.save(WorkCommentDto.toWorkCommentEntity(workCommentDto));
+            return findByComment(workId);
+        }
+    }
+
+    //update를 위한 Comment Find
+    public WorkCommentDto findComment(Long documentId){
+        Optional<WorkCommentEntity> documentCommentEntity=  workCommentRepository.findById(documentId);
+        return WorkCommentDto.toWorkCommentDto(documentCommentEntity.get());
+    }
+
+
+    //댓글 삭제
+    public List<WorkCommentDto> deleteComment(Long workId){
+        Optional<WorkCommentEntity> now = workCommentRepository.findById(workId);
+        WorkCommentDto workCommentDto = WorkCommentDto.toWorkCommentDto(now.get());
+        workCommentRepository.deleteById(workId);
+        return findByComment(workId);
+    }
+
+
+    /* - - - - 댓글 기능 끝- - - - - */
 }
 
