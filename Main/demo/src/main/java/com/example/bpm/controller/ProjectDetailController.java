@@ -229,11 +229,13 @@ public class ProjectDetailController {
         WorkDto workDto = projectDetailSerivce.selectWork(id);
         UserDto userDto = projectDetailSerivce.selectUserForUserWork(workDto);
         List<DocumentDto> documentDtoList = documentService.getDocumentByWorkId(id);
+        List<WorkCommentDto> commentDtoList = projectDetailSerivce.findByComment(id);
         Long auth = getSessionAuth();
 
         model.addAttribute("workDto", workDto);
         model.addAttribute("userDto", userDto);
         model.addAttribute("DocumentList", documentDtoList);
+        model.addAttribute("CommentList", commentDtoList);
         model.addAttribute("auth", auth);
         return "workDetail";
     }

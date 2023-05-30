@@ -33,176 +33,129 @@
 </div>
 
 <div class="page-container">
-<<<<<<< HEAD
+	<<<<<<< HEAD
 	<div class="content-container">
 		<div class="left-section">
 			<div class="content">
 				<h4 class="content-title">설명</h4>
 				<p class="content-detail" th:text="${workDto.discription}"></p>
-=======
-  <div class="content-container">
-    <div class="left-section">
-      <div class="content">
-        <h4 class="content-title">설명</h4>
-        <p class="content-detail" th:text="${workDto.discription}"></p>
-      </div>
-
-      <div class="content">
-        <h4 class="content-title">연결된 목표</h4>
-        <div class="linked-object">
-          <div class="object-header">
-            <div>상위 목표</div>
-            <button class="object-edit-btn" th:if="${auth == 1}">목표 변경</button>
-          </div>
-          <div class="horizon-divider-semi"></div>
-          <div class="object">
-            <a>
-              <div class="object-list" OnClick="location.href='#'">
-                <div th:text="${workDto.getDetailIdToWork().title}"></div>
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>
-		
-      <div class="content">
-        <h4 class="content-title">관련 문서</h4>
-        <div class="linked-object">
-          <div class="document-header">
-              <form action="/document/addDocument" method="post">
-                  <button class="object-edit-btn" th:if="${auth == 1 || 0}">새 문서 작성</button>
-                  <input type="hidden" th:name="workId" th:value="${workDto.workId}">
-              </form>
-          </div>
-          <th:block th:each="document : ${DocumentList}">
-              <div class="object">
-                  <div class="document-list" th:OnClick="|window.location.href='@{/document/write(id=${document.documentId})}'|">
-                      <div class="document-title" th:text="${document.title}">문서명</div>
-                      <div class="document-detail">
-                          <div class="document-writer" th:text="${document.userName}">작성자명</div>
-                          <div class="vertical-divider-semi"></div>
-                          <div class="document-date" th:text="${document.dateDocument}">일자</div>
-                      </div>
-                  </div>
-              </div>
-          </th:block>
-        </div>
-      </div>
-		<div class="comment-section">
-			<div class="comment-write-section">
-				<div class="comment-count">N 개의 의견</div>
-				<form action="">
-					<textarea class="comment-write" placeholder="의견을 남겨주세요."></textarea>
-					<br>
-					<button type="submit" class="submit-btn">작성</button>
-				</form>
->>>>>>> origin/master
-			</div>
-			
-			<div class="content">
-				<h4 class="content-title">연결된 목표</h4>
-				<div class="linked-object">
-					<div class="object-header">
-						<div>상위 목표</div>
-						<button class="object-edit-btn" th:if="${auth == 1}">목표 변경</button>
-					</div>
-					<div class="horizon-divider-semi"></div>
-					<div class="object">
-						<a>
-							<div class="object-list" OnClick="location.href='#'">
-								<div th:text="${workDto.getDetailIdToWork().title}"></div>
-							</div>
-						</a>
-					</div>
-				</div>
-			</div>
-			
-			<div class="content">
-				<h4 class="content-title">관련 문서</h4>
-				<div class="linked-object">
-					<div class="document-header">
-						<form action="/document/addDocument" method="post">
-							<button class="object-edit-btn" th:if="${auth == 1 && 0}">새 문서 작성</button>
-							<input type="hidden" th:name="workId" th:value="${workDto.workId}">
-						</form>
-					</div>
-					<th:block th:each="document : ${DocumentList}">
-						<div class="object">
-							<div class="document-list"
-								 th:OnClick="|window.location.href='@{/document/write(id=${document.documentId})}'|">
-								<div class="document-title" th:text="${document.title}">문서명</div>
-								<div class="document-detail">
-									<div class="document-writer" th:text="${document.userName}">작성자명</div>
-									<div class="vertical-divider-semi"></div>
-									<div class="document-date" th:text="${document.dateDocument}">일자</div>
+				=======
+				<div class="content-container">
+					<div class="left-section">
+						<div class="content">
+							<h4 class="content-title">설명</h4>
+							<p class="content-detail" th:text="${workDto.discription}"></p>
+						</div>
+						
+						<div class="content">
+							<h4 class="content-title">연결된 목표</h4>
+							<div class="linked-object">
+								<div class="object-header">
+									<div>상위 목표</div>
+									<button class="object-edit-btn" th:if="${auth == 1}">목표 변경</button>
+								</div>
+								<div class="horizon-divider-semi"></div>
+								<div class="object">
+									<a>
+										<div class="object-list" OnClick="location.href='#'">
+											<div th:text="${workDto.getDetailIdToWork().title}"></div>
+										</div>
+									</a>
 								</div>
 							</div>
 						</div>
-					</th:block>
-				</div>
-			</div>
-			<div class="comment-section">
-				<div class="comment-write-section">
-					<div class="comment-count">N 개의 의견</div>
-					<form action="">
-						<textarea class="comment-write" placeholder="의견을 남겨주세요."></textarea>
-						<br>
-						<button type="submit" class="submit-btn">작성</button>
-					</form>
-				</div>
-				<div class="comment-read-section">
-					<div class="comment">
-						<div class="comment-user-name">유저명</div>
-						<div class="comment-content">댓글 내용</div>
-						<div class="horizon-divider-semi"></div>
+						
+						<div class="content">
+							<h4 class="content-title">관련 문서</h4>
+							<div class="linked-object">
+								<div class="document-header">
+									<form action="/document/addDocument" method="post">
+										<button class="object-edit-btn" th:if="${auth == 1 || 0}">새 문서 작성</button>
+										<input type="hidden" th:name="workId" th:value="${workDto.workId}">
+									</form>
+								</div>
+								<th:block th:each="document : ${DocumentList}">
+									<div class="object">
+										<div class="document-list"
+											 th:OnClick="|window.location.href='@{/document/write(id=${document.documentId})}'|">
+											<div class="document-title" th:text="${document.title}">문서명</div>
+											<div class="document-detail">
+												<div class="document-writer" th:text="${document.userName}">작성자명</div>
+												<div class="vertical-divider-semi"></div>
+												<div class="document-date" th:text="${document.dateDocument}">일자</div>
+											</div>
+										</div>
+									</div>
+								</th:block>
+							</div>
+						</div>
+						<div class="comment-section">
+							<div class="comment-write-section">
+								<div class="comment-count">N 개의 의견</div>
+								<form action="">
+									<textarea class="comment-write" placeholder="의견을 남겨주세요."></textarea>
+									<br>
+									<button type="submit" class="submit-btn">작성</button>
+								</form>
+							</div>
+							
+							<div class="content">
+								<h4 class="content-title">연결된 목표</h4>
+								<div class="linked-object">
+									<div class="object-header">
+										<div>상위 목표</div>
+										<button class="object-edit-btn" th:if="${auth == 1}">목표 변경</button>
+									</div>
+									<div class="horizon-divider-semi"></div>
+									<div class="object">
+										<a>
+											<div class="object-list" OnClick="location.href='#'">
+												<div th:text="${workDto.getDetailIdToWork().title}"></div>
+											</div>
+										</a>
+									</div>
+								</div>
+							</div>
+							<div class="vertical-divider"></div>
+							
+							<div class="right-section">
+								<!-- 이것도 div로 묶어야 데이터를 잘 넘길 수 있을 거 같.. ㄱ -->
+								<div>
+									<h4 class="content-title">상위 목표</h4>
+									<p><a href="#" class="content-detail"
+										  th:text="${workDto.getDetailIdToWork().title}"></a></p>
+									<div class="horizon-divider"></div>
+								</div>
+								
+								<div>
+									<h4 class="content-title">작업 담당자</h4>
+									<p class="content-detail" th:text="${userDto.name}"></p>
+									<div class="horizon-divider"></div>
+								</div>
+								<!-- 이걸 div로 해가지고 상위 목표와 연결 해야되는데 일단 내가 못함 미안 -->
+								<div>
+									<h4 class="content-title">상태</h4>
+									<p class="content-detail" th:if="${workDto.completion == 1}">완료</p>
+									<p class="content-detail" th:if="${workDto.completion == 0}">진행중</p>
+									<div class="horizon-divider"></div>
+								</div>
+								
+								<div>
+									<h4 class="content-title">마감 기간</h4>
+									<p class="content-detail"
+									   th:text="${#dates.format(workDto.endDay, 'yyyy-MM-dd')}"></p>
+									<div class="horizon-divider"></div>
+								</div>
+								
+								<div>
+									<a href="work-create.html">
+										<button class="edit-btn" th:if="${auth == 1}">작업 수정</button>
+									</a>
+								</div>
+							</div>
+						</div>
 					</div>
-					<div class="comment">
-						<div class="comment-user-name">유저명</div>
-						<div class="comment-content">댓글 내용</div>
-						<div class="horizon-divider-semi"></div>
-					</div>
-					<div class="comment">
-						<div class="comment-user-name">유저명</div>
-						<div class="comment-content">댓글 내용</div>
-						<div class="horizon-divider-semi"></div>
-					</div>
 				</div>
-			</div>
-		</div>
-		
-		<div class="vertical-divider"></div>
-		
-		<div class="right-section">
-			<!-- 이것도 div로 묶어야 데이터를 잘 넘길 수 있을 거 같.. ㄱ -->
-			<div>
-				<h4 class="content-title">상위 목표</h4>
-				<p><a href="#" class="content-detail" th:text="${workDto.getDetailIdToWork().title}"></a></p>
-				<div class="horizon-divider"></div>
-			</div>
-			
-			<div>
-				<h4 class="content-title">작업 담당자</h4>
-				<p class="content-detail" th:text="${userDto.name}"></p>
-				<div class="horizon-divider"></div>
-			</div>
-			<!-- 이걸 div로 해가지고 상위 목표와 연결 해야되는데 일단 내가 못함 미안 -->
-			<div>
-				<h4 class="content-title">상태</h4>
-				<p class="content-detail" th:if="${workDto.completion == 1}">완료</p>
-				<p class="content-detail" th:if="${workDto.completion == 0}">진행중</p>
-				<div class="horizon-divider"></div>
-			</div>
-			
-			<div>
-				<h4 class="content-title">마감 기간</h4>
-				<p class="content-detail" th:text="${#dates.format(workDto.endDay, 'yyyy-MM-dd')}"></p>
-				<div class="horizon-divider"></div>
-			</div>
-			
-			<div>
-				<a href="work-create.html">
-					<button class="edit-btn" th:if="${auth == 1}">작업 수정</button>
-				</a>
 			</div>
 		</div>
 	</div>
