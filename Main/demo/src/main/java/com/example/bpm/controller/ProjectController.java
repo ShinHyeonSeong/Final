@@ -50,7 +50,9 @@ public class ProjectController {
     public void checkAuth() {
         ProjectDto projectDto = getSessionProject();
         UserDto userDto = getSessionUser();
+        log.info("유저 권한 확인중. 유저명 : " + userDto.getName());
         Long auth = userService.checkRole(projectDto.getProjectId(), userDto.getUuid());
+        log.info("권한 검색 종료. 접근 권한 : " + auth);
         session.setAttribute("auth", auth);
     }
 
@@ -152,7 +154,8 @@ public class ProjectController {
         }
     }
 
-    //프로젝트 선택 시 그 프로젝트 정보를 가져오며 프로젝트 창으로 넘어가는 메서드
+    // 프로젝트 선택 시 그 프로젝트 정보를 가져오며 프로젝트 창으로 넘어가는 메서드
+    // 권한 검색 및 부여 후, 권한에 따라 페이지 리턴.
     @RequestMapping("/project/{id}")
     public String selectProject(@PathVariable("id") Long id, HttpSession session, Model model) {
         ProjectDto presentDto = projectSerivce.selectProject(id);
@@ -162,24 +165,41 @@ public class ProjectController {
         checkAuth();
         model.addAttribute("projectDto", presentDto);
         model.addAttribute("joinUsers", userDtoList);
-        return "projectMain";
+
+        if (getSessionAuth() != 2) {
+            return "projectMain";
+        } else if (getSessionAuth() == 2) {
+            List<HeadDto> headDtoList = projectDetailSerivce.selectAllHead(projectSerivce.selectProject(id));
+            List<DetailDto> detailDtoList = projectDetailSerivce.selectAllDetailForProject(projectSerivce.selectProject(id));
+            List<WorkDto> workDtoList = projectDetailSerivce.selectAllWorkForProject(presentDto);
+            List<DocumentDto> documentDtoList = projectDetailSerivce.selectAllDocumentForWorkList(workDtoList);
+
+            model.addAttribute("headDtoList", headDtoList);
+            model.addAttribute("detailDtoList", detailDtoList);
+            model.addAttribute("workDtoList", workDtoList);
+            model.addAttribute("documentDtoList", documentDtoList);
+            return "onlyReadPage";
+        }
+        return null;
     }
 
-    //전체 프로젝트 리스트에서 프로젝트 선택 시 해당 소개, 목표,
-    @RequestMapping("/projectAll/{id}")
-    public String selectAllProject(@PathVariable("id") Long id, HttpSession session, Model model) {
-        ProjectDto presentDto = projectSerivce.selectProject(id);
-        List<UserDto> userDtoList = userService.searchUserToProject(id);
-        List<HeadDto> headDtoList = projectDetailSerivce.selectAllHead(projectSerivce.selectProject(id));
-        List<DetailDto> detailDtoList = projectDetailSerivce.selectAllDetailForProject(projectSerivce.selectProject(id));
-
-        model.addAttribute("projectIntro", presentDto.getSubtitle());
-        model.addAttribute("userList", userDtoList);
-        model.addAttribute("headList", headDtoList);
-        model.addAttribute("detailList", detailDtoList);
-
-        return "onlyReadPage";
-    }
+//    //전체 프로젝트 리스트에서 프로젝트 선택 시 해당 소개, 목표,
+//    @RequestMapping("/projectAll/{id}")
+//    public String selectAllProject(@PathVariable("id") Long id, HttpSession session, Model model) {
+//        ProjectDto presentDto = projectSerivce.selectProject(id);
+//        List<UserDto> userDtoList = userService.searchUserToProject(id);
+//        List<HeadDto> headDtoList = projectDetailSerivce.selectAllHead(projectSerivce.selectProject(id));
+//        List<DetailDto> detailDtoList = projectDetailSerivce.selectAllDetailForProject(projectSerivce.selectProject(id));
+//        List<WorkDto> workDtoList = projectDetailSerivce.selectAllWorkForProject(presentDto);
+//        List<DocumentDto> documentDtoList = projectDetailSerivce.selectAllDocumentForWorkList(workDtoList);
+//
+//        model.addAttribute("projectIntro", presentDto.getSubtitle());
+//        model.addAttribute("userList", userDtoList);
+//        model.addAttribute("headList", headDtoList);
+//        model.addAttribute("detailList", detailDtoList);
+//
+//        return "onlyReadPage";
+//    }
 
 
     // 프로젝트 초대 확인창

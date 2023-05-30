@@ -32,6 +32,10 @@ public class ProjectDetailSerivce {
     private UserWorkRepository userWorkRepository;
     @Autowired
     private WorkCommentRepository workCommentRepository;
+    @Autowired
+    private DocumentRepository documentRepository;
+    @Autowired
+    private WorkDocumentRepository workDocumentRepository;
 
     Date currentDate = new Date(); // 시작 날짜(현재) 생성
 
@@ -223,6 +227,20 @@ public class ProjectDetailSerivce {
             userWorkMap.put(workDtoKey, userDtoValue);
         }
         return userWorkMap;
+    }
+
+    // work list 매개변수를 통해 workDocument 테이블을 경유하여 workId에 대응하는 모든 document를 리스트로 반환
+    public List<DocumentDto> selectAllDocumentForWorkList(List<WorkDto> workDtoList) {
+        List<DocumentDto> documentDtoList = new ArrayList<>();
+        for (WorkDto workDto : workDtoList) {
+            List<WorkDocumentEntity> workDocumentEntityList = workDocumentRepository.findAllByWorkIdToWorkDocument_WorkId(workDto.getWorkId());
+            for (WorkDocumentEntity workDocumentEntity : workDocumentEntityList) {
+                DocumentDto documentDto = new DocumentDto();
+                documentDto.insertEntity(documentRepository.findByDocumentId(workDocumentEntity.getDocumentIdToWorkDocument().getDocumentId()));
+                documentDtoList.add(documentDto);
+            }
+        }
+        return documentDtoList;
     }
 
     /* - - - - 선택 메서드 끝 - - - - - */
