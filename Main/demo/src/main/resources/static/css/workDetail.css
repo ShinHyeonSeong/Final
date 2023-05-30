@@ -58,7 +58,7 @@ a {
 
 .content-container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     margin-top: 150px;
     margin-bottom: 100px;
@@ -125,7 +125,7 @@ a {
     border-radius: 10px;
 }
 
-.object-header{
+.object-header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -247,9 +247,11 @@ a {
     outline: none;
     border: 1px solid #666;
 }
-.comment-read-section{
+
+.comment-read-section {
     margin-top: 50px;
 }
+
 .comment-user-name {
     font-size: 12px;
     margin-bottom: 10px;
