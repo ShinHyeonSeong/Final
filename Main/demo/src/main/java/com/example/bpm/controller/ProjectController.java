@@ -108,7 +108,7 @@ public class ProjectController {
     }
 
     // 전체 프로젝트 리스트 출력
-    @GetMapping("/project/projecAllList")
+    @GetMapping("/project/projectAllList")
     public String projectAllList(Model model) {
         UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
         //UUID를 활용하여 권한자 / 비권한자 프로젝트 리스트를 불러온다

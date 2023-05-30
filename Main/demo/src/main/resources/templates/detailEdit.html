@@ -17,14 +17,14 @@
 		<a href="/project/goals" class="back-button"> < </a>
 		<h1>하위 목표 생성</h1>
 	</div>
-	<form action="/project/goal/createDetail" method="post">
+	<form action="/project/detail/edit" method="post">
 		<div class="create-goal">
 			<div class="label-detail">
 				<label class="label" for="create-goal-input1">목표 이름</label>
 				<div class="essential">*</div>
 			</div>
 			<div class="input-detail">
-				<input name="title" class="input-box" id="create-goal-input1" type="text" placeholder="목표 이름 입력">
+				<input name="title" class="input-box" id="create-goal-input1" type="text" th:value="${detailDto.title}">
 			</div>
 		</div>
 
@@ -34,7 +34,7 @@
 			</div>
 			<div class="input-detail">
                 <textarea name="discription" class="detail-input-box"
-						  id="create-goal-input2" cols="20" rows="10" placeholder="설명"></textarea>
+						  id="create-goal-input2" cols="20" rows="10" th:value="${detailDto.discription}"></textarea>
 			</div>
 		</div>
 
@@ -43,7 +43,8 @@
 				<label class="label" for="create-goal-input4">마감 기한</label>
 			</div>
 			<div class="input-detail">
-				<input name="deadline" class="input-box" id="create-goal-input4" type="text" placeholder="0000-00-00(연 월 일)">
+				<input name="deadline" class="input-box" id="create-goal-input4" type="text"
+					   th:value="${#dates.format(detailDto.endDay, 'yyyy-MM-dd')}">
 			</div>
 		</div>
 
@@ -55,15 +56,19 @@
 				<select class="select-connection-goal" id="create-goal-input5" name="headId" th:if="${headDtoList != null}">
 					<option th:value="0">없음</option>
 					<option th:each="headDto : ${headDtoList}"
-					th:text="${headDto.title}"
-					th:value="${headDto.headId}"></option>
+							th:text="${headDto.title}"
+							th:value="${headDto.headId}"
+							th:selected="${headDto.headId} == ${detailDto.headIdToDetail.headId}">
+					</option>
 				</select>
 			</div>
 		</div>
 
+		<input th:name="detailId" th:value="${detailDto.detailId}" type="hidden">
+
 		<div class="horizon-divider"></div>
 		<div class="footer">
-			<button type="submit" class="footer-btn">생성</button>
+			<button type="submit" class="footer-btn">저장</button>
 			<button type="reset" class="footer-btn">초기화</button>
 		</div>
 	</form>

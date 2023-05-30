@@ -289,6 +289,21 @@ public class ProjectDetailSerivce {
         } else return null;
     }
 
+    public DetailDto editDetail(String title, String deadline, String discription,
+                                Long headId, Long detailId) {
+        Optional<DetailEntity> detailEntity = detailRepository.findById(detailId);
+        if (detailEntity.isPresent()) {
+            Date endDay = formatter(deadline);
+            DetailDto detailDto = DetailDto.toDetailDto(detailEntity.get());
+            detailDto.setTitle(title);
+            detailDto.setEndDay(endDay);
+            detailDto.setDiscription(discription);
+            detailDto.setHeadIdToDetail(headRepository.findById(headId).orElse(null));
+            DetailDto editDetailDto = DetailDto.toDetailDto(detailRepository.save(DetailEntity.toDetailEntity(detailDto)));
+            return editDetailDto;
+        } return null;
+    }
+
     /* - - - - 수정 메서드 끝 - - - - - */
 
     /* - - - - 삭제 메서드 시작 - - - - - */

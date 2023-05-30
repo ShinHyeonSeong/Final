@@ -3,47 +3,50 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title>Example Sidebar Menu</title>
-	<link rel="stylesheet" type="text/css" href="/css/goal.css">
-	<link rel="stylesheet" href="/css/sidebar.css">
-	<script src="/js/goal.js"></script>
+    <title>Example Sidebar Menu</title>
+    <link rel="stylesheet" type="text/css" href="/css/goal.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
+    <script src="/js/goal.js"></script>
 </head>
 <!-- 목표창 제목과 하단 세부사항들을 구분짓는 hr 태그들을 통일필요-->
 <body>
 <!-- Side menu bar -->
 <div class="sidebar">
-	<ul>
-		<li><a href="/project/projectManagerList">나가기</a></li>
-		<li ><a href="/project/main">홈</a></li>
-		<li class="active"><a href="/project/goals">목표</a></li>
-		<li><a href="/project/works">작업</a></li>
-		<li><a href="/document/list">문서</a></li>
-		<li><a href="./calender.html">달력</a></li>
-		<li><a href="/user/search">멤버 초대</a></li>
-	</ul>
+    <ul>
+        <li><a href="/project/projectManagerList">나가기</a></li>
+        <li><a href="/project/main">홈</a></li>
+        <li class="active"><a href="/project/goals">목표</a></li>
+        <li><a href="/project/works">작업</a></li>
+        <li><a href="/document/list">문서</a></li>
+        <li><a href="./calender.html">달력</a></li>
+        <li><a href="/user/search">멤버 초대</a></li>
+    </ul>
 </div>
 <div class="top-bar">
-	<h1>목표</h1>
-	<div>
-		<a href="/project/head/create"><button th:if="${auth == 1}" class="add-high-goal-btn">상위 목표 추가</button></a>
-		<a href="/project/detail/create"><button th:if="${auth == 1}" class="add-goal-btn">하위 목표 추가</button></a>
-	</div>
+    <h1>목표</h1>
+    <div>
+        <a href="/project/head/create">
+            <button th:if="${auth == 1}" class="add-high-goal-btn">상위 목표 추가</button>
+        </a>
+        <a href="/project/detail/create">
+            <button th:if="${auth == 1}" class="add-goal-btn">하위 목표 추가</button>
+        </a>
+    </div>
 </div>
 <hr>
 
 <div class="content-container">
-	<div class="content">
-		<div class="goal-container" th:if="${headDtoList != null}">
-			<a th:each="headDto : ${headDtoList}" th:href="@{/project/goal/headView/{id}(id=${headDto.headId})}"
-			   class="goal-item">
-				<!-- 동적 값을 할당 받아야함 -->
-				<h2 th:text="${headDto.title}"></h2>
-				<p class = "content-font" th:text="${headDto.discription}">목표 설명</p>
-				<button th:if="${auth == 1}">완료</button>
-			</a>
-		</div>
-	
-	</div>
+    <div class="content">
+        <div class="goal-container" th:if="${headDtoList != null}">
+            <a th:each="headDto : ${headDtoList}" th:href="@{/project/goal/headView/{id}(id=${headDto.headId})}"
+               class="goal-item">
+                <!-- 동적 값을 할당 받아야함 -->
+                <h2 th:text="${headDto.title}"></h2>
+                <p class="content-font" th:text="${headDto.discription}"></p>
+                <button th:if="${auth == 1}">완료</button>
+            </a>
+        </div>
+    </div>
 </div>
 </body>
 

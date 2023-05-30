@@ -24,7 +24,7 @@
 </div>
 <div class="top-bar">
   <!-- BackButton 디자인 필요 -->
-  <a href="#" class="back-button">
+  <a href="javascript:history.back(-1)" class="back-button">
     < </a>
   <h1 th:text="${detailDto.title}"></h1>
 </div>
@@ -103,7 +103,7 @@
         <a th:href="@{/project/detail/completion/change/{id}(id=${detailDto.detailId})}">
           <button class="edit-btn" th:if="${auth == 1 && detailDto.completion == 1}">진행중으로 표시</button>
         </a>
-        <a href="detail-create.html">
+        <a th:href="@{/project/goal/detail/edit/{id}(id=${detailDto.detailId})}">
           <button class="edit-btn" th:if="${auth == 1}">목표 수정</button>
         </a>
       </div>

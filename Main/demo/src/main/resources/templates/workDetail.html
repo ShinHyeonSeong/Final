@@ -3,10 +3,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8">
-	<title>My Goals</title>
-	<link rel="stylesheet" href="/css/workDetail.css">
-	<link rel="stylesheet" href="/css/sidebar.css">
+    <meta charset="UTF-8">
+    <title>My Goals</title>
+    <link rel="stylesheet" href="/css/workDetail.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
 </head>
 <!-- 목표 > 내 목표 창-->
 <!-- 03.28 색 최적화 및 div 분류 완료
@@ -14,32 +14,30 @@
 
 <body>
 <div class="sidebar">
-	<ul>
-		<li><a href="./projectCreate.html">프로젝트 만들기</a></li>
-		<li class="active"><a href="./main.html">홈</a></li>
-		<li><a href="/project/goals">목표</a></li>
-		<li><a href="/project/works">작업</a></li>
-		<li><a href="./documentList.html">문서</a></li>
-		<li><a href="./calender.html">달력</a></li>
-		<li><a href="/user/search">멤버 초대</a></li>
-	</ul>
+    <ul>
+        <li><a href="./projectCreate.html">프로젝트 만들기</a></li>
+        <li class="active"><a href="./main.html">홈</a></li>
+        <li><a href="/project/goals">목표</a></li>
+        <li><a href="/project/works">작업</a></li>
+        <li><a href="./documentList.html">문서</a></li>
+        <li><a href="./calender.html">달력</a></li>
+        <li><a href="/user/search">멤버 초대</a></li>
+    </ul>
 </div>
 <div class="top-bar">
-	<!-- BackButton 디자인 필요 -->
-	<a href="#" class="back-button">
-		< </a>
-	<h1>작업 1</h1>
+    <!-- BackButton 디자인 필요 -->
+    <a href="javascript:history.back(-1)" class="back-button">
+        < </a>
+    <h1>작업 1</h1>
 
 </div>
 
 <div class="page-container">
-	<<<<<<< HEAD
 	<div class="content-container">
 		<div class="left-section">
 			<div class="content">
 				<h4 class="content-title">설명</h4>
 				<p class="content-detail" th:text="${workDto.discription}"></p>
-				=======
 				<div class="content-container">
 					<div class="left-section">
 						<div class="content">
