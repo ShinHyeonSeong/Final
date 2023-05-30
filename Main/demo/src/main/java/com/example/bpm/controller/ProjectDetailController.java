@@ -165,6 +165,18 @@ public class ProjectDetailController {
         return "headEdit";
     }
 
+    // detail 수정창 매핑 메서드
+    @RequestMapping("/project/goal/detail/edit/{id}")
+    public String goEditDetail(@PathVariable("id")Long detailId, Model model) {
+        DetailDto detailDto = projectDetailSerivce.selectDetail(detailId);
+        ProjectDto currentProject = getSessionProject();
+        List<HeadDto> headDtoList = projectDetailSerivce.selectAllHead(currentProject);
+        model.addAttribute("detailDto", detailDto);
+        model.addAttribute("headDtoList", headDtoList);
+        return "detailEdit";
+    }
+
+    //
     @PostMapping("/project/head/edit")
     public String editHead(@RequestParam(value = "title") String title,
                            @RequestParam(value = "deadline") String deadline,
@@ -175,6 +187,16 @@ public class ProjectDetailController {
         return "redirect:/project/goals";
     }
 
+    @PostMapping("/project/detail/edit")
+    public String editDetail(@RequestParam(value = "title") String title,
+                             @RequestParam(value = "deadline") String deadline,
+                             @RequestParam(value = "discription") String discription,
+                             @RequestParam(value = "headId") Long headId,
+                             @RequestParam(value = "detailId") Long detailId,
+                             Model model) {
+        DetailDto detailDto = projectDetailSerivce.editDetail(title, deadline, discription, headId, detailId);
+        return "redirect:/project/goals";
+    }
     /* - - - - 목표 관련 메서드 끝 - - - -*/
 
 

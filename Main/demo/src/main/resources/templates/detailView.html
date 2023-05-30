@@ -103,7 +103,7 @@
         <a th:href="@{/project/detail/completion/change/{id}(id=${detailDto.detailId})}">
           <button class="edit-btn" th:if="${auth == 1 && detailDto.completion == 1}">진행중으로 표시</button>
         </a>
-        <a href="detail-create.html">
+        <a th:href="@{/project/goal/detail/edit/{id}(id=${detailDto.detailId})}">
           <button class="edit-btn" th:if="${auth == 1}">목표 수정</button>
         </a>
       </div>

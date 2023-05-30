@@ -48,7 +48,7 @@
           </div>
           <div class="horizon-divider-semi"></div>
           <div class="object" th:if="${connectDetailList != null}" th:each="detail : ${connectDetailList}">
-            <a th:href="@{/project/goal/detailView/{id}(id=${detail.headIdToDetail.headId})}">
+            <a th:href="@{/project/goal/detailView/{id}(id=${detail.detailId})}">
               <div class="object-list" th:text="${detail.title}"></div>
             </a>
           </div>

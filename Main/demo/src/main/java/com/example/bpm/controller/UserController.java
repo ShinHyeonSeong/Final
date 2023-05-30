@@ -29,7 +29,7 @@ public class UserController {
     final private UserService userService;
     @Autowired
     final private ProjectSerivce projectSerivce;
-
+    @Autowired
     HttpSession session;
 
     public UserDto getSessionUser() {
@@ -122,7 +122,7 @@ public class UserController {
     public String goAccount(HttpSession session, Model model) {
         UserDto sessionUser = getSessionUser();
         UserDto result = userService.findByUser(sessionUser.getUuid());
-        model.addAttribute("user", sessionUser);
+        model.addAttribute("user", result);
         return "account";
 //        if (result != null) {
 //            model.addAttribute("user", sessionUser);
@@ -138,7 +138,7 @@ public class UserController {
     public String goAccountChange(HttpSession session, Model model) {
         UserDto sessionUser = getSessionUser();
         UserDto result = userService.findByUser(sessionUser.getUuid());
-        model.addAttribute("user", sessionUser);
+        model.addAttribute("user", result);
         return "accountUpdate";
     }
 

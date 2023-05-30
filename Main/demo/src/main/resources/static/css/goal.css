@@ -92,15 +92,14 @@ a {
 
 .goal-container {
     display: flex;
-    gap: 30px 6%;
+    gap: 20px 6%;
     flex-wrap: wrap;
-    margin-left: 8%;
     margin-top: 100px;
 }
 
 .goal-item {
     display: flex;
-    width: 550px;
+    width: 500px;
     flex-direction: column;
     background-color: #333;
     color: #fff;
