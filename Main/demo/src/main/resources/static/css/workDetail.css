@@ -125,7 +125,7 @@ a {
     border-radius: 10px;
 }
 
-.object-header{
+.object-header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -191,7 +191,7 @@ a {
 }
 
 .horizon-divider-semi {
-    background-color: #222;
+    background-color: #f4f4f4;
     height: 0.5px;
     margin: 15px 0 25px 0;
 }
@@ -228,6 +228,11 @@ a {
     margin-bottom: 3rem;
 }
 
+.comment-count {
+    font-size: 20px;
+    font-weight: bolder;
+}
+
 .comment-write {
     resize: none;
     outline: none;
@@ -247,12 +252,32 @@ a {
     outline: none;
     border: 1px solid #666;
 }
-.comment-read-section{
-    margin-top: 50px;
+
+.comment-read-section {
+    vertical-align: top;
 }
+
+.comment-content-head {
+    display: flex;
+}
+
 .comment-user-name {
-    font-size: 12px;
-    margin-bottom: 10px;
+    flex: 2;
+    font-size: 20px;
+    margin-bottom: 2%;
+}
+
+.comment-head-button {
+    flex: 1;
+    all: unset;
+    margin: 10px;
+}
+
+.comment-head-button:hover {
+    color: #555555;
+}
+.comment-content {
+    font-size: 18px;
 }
 
 .submit-btn {
