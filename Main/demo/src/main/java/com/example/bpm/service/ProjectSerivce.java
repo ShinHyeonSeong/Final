@@ -28,7 +28,7 @@ public class ProjectSerivce {
     @Autowired
     final private ProjectRoleRepository projectRoleRepository;
     @Autowired
-    private RoleRepository roleRepository;
+    final private RoleRepository roleRepository;
 
     /*Request Table 관련 기능*/
 

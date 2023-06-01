@@ -4,10 +4,7 @@ import com.example.bpm.dto.*;
 import com.example.bpm.entity.Document;
 import com.example.bpm.entity.UserEntity;
 import com.example.bpm.entity.WorkEntity;
-import com.example.bpm.service.DocumentService;
-import com.example.bpm.service.ProjectDetailSerivce;
-import com.example.bpm.service.ProjectSerivce;
-import com.example.bpm.service.UserService;
+import com.example.bpm.service.*;
 import com.google.cloud.storage.Acl;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -31,13 +28,15 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProjectDetailController {
     @Autowired
-    ProjectDetailSerivce projectDetailSerivce;
+    private ProjectDetailSerivce projectDetailSerivce;
     @Autowired
-    ProjectSerivce projectSerivce;
+    private ProjectSerivce projectSerivce;
     @Autowired
-    DocumentService documentService;
+    private DocumentService documentService;
     @Autowired
-    UserService userService;
+    private UserService userService;
+    @Autowired
+    private CalendarService calendarService;
     @Autowired
     private HttpSession session;
 
@@ -353,5 +352,16 @@ public class ProjectDetailController {
         HeadDto changeHeadDto = projectDetailSerivce.headCompletionChange(targetHeadDto);
         return "redirect:/project/goals";
     }
+
+    /*  - - - - - Calendar Controller - - - - - */
+    @GetMapping("/calender") //기본 페이지 표시
+    public String viewCalendar() {
+        return "ccalendar";
+    }
+    @GetMapping("/calender/event") //ajax 데이터 전송 URL
+    public String getEvent() {
+        return "main";
+    }
+
 }
 

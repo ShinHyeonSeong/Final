@@ -47,9 +47,6 @@ public class DocumentService {
     @Autowired
     private WorkRepository workRepository;
 
-    @Autowired
-    private WorkCommentRepository workCommentRepository;
-
     // 기타 비지니스 클래스
 
     private LogManager logManager = new LogManager();
