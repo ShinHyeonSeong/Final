@@ -20,7 +20,7 @@
 		<li><a href="/project/goals">목표</a></li>
 		<li class="active"><a href="/project/works">작업</a></li>
 		<li><a href="/document/list">문서</a></li>
-		<li><a href="./calender.html">달력</a></li>
+		<li><a href="calenderEX.html">달력</a></li>
 		<li><a href="/user/search">멤버 초대</a></li>
 	</ul>
 </div>
@@ -84,17 +84,25 @@
 			</div>
 			<div class="comment-section">
 				<div class="comment-write-section">
-					<div class="comment-count">N 개의 의견</div>
-					<form action="">
-						<textarea class="comment-write" placeholder="의견을 남겨주세요."></textarea>
+					<div class="comment-count" th:text="${listNum} + '개의 의견'">댓글</div>
+					<form action="/workDetail/addComment" method="post">
+						<textarea name="comment" class="comment-write" placeholder="의견을 남겨주세요."></textarea>
 						<br>
 						<button type="submit" class="submit-btn">작성</button>
+						<input th:name="workId" th:value="${workDto.workId}" type="hidden">
 					</form>
 				</div>
 				<div class="comment-read-section">
-					<div class="comment">
-						<div class="comment-user-name">유저명</div>
-						<div class="comment-content">댓글 내용</div>
+					<div class="comment" th:each="comment:${CommentList}">
+						<div class="comment-content-head">
+							<div class="comment-user-name" th:text="${comment.userIdToComment.getName()} + ' 님'">
+							</div>
+<!--							<button onclick="" class="comment-head-button">수정</button>-->
+							<a th:href="@{/workDetail/commentDelete/{cid}(cid=${comment.getWorkCommentId()})}"
+							   class="comment-head-button">
+								삭제</a>
+						</div>
+						<div class="comment-content" th:text="${comment.comment}">댓글 내용</div>
 						<div class="horizon-divider-semi"></div>
 					</div>
 				</div>
@@ -142,7 +150,6 @@
 				</a>
 			</div>
 		</div>
-	
 	</div>
 </div>
 </body>

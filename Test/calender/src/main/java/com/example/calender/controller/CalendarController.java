@@ -3,9 +3,7 @@ package com.example.calender.controller;
 import com.example.calender.service.CalendarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -19,12 +17,12 @@ public class CalendarController {
 
     @GetMapping("/calender") //기본 페이지 표시
     public String viewCalendar() {
-
         return "main";
     }
-    @GetMapping("/calender/event") //ajax 데이터 전송 URL
-    public String getEvent() {
-        return "main";
+
+    @RequestMapping(value = "/calender/event", method = {RequestMethod.GET})
+    public @ResponseBody String getEvent() {
+        return "main"  ;
     }
 
 }

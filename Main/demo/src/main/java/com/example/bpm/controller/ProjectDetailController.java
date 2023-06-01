@@ -4,10 +4,7 @@ import com.example.bpm.dto.*;
 import com.example.bpm.entity.Document;
 import com.example.bpm.entity.UserEntity;
 import com.example.bpm.entity.WorkEntity;
-import com.example.bpm.service.DocumentService;
-import com.example.bpm.service.ProjectDetailSerivce;
-import com.example.bpm.service.ProjectSerivce;
-import com.example.bpm.service.UserService;
+import com.example.bpm.service.*;
 import com.google.cloud.storage.Acl;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -17,9 +14,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.net.http.HttpRequest;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @Slf4j
@@ -27,13 +28,15 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ProjectDetailController {
     @Autowired
-    ProjectDetailSerivce projectDetailSerivce;
+    private ProjectDetailSerivce projectDetailSerivce;
     @Autowired
-    ProjectSerivce projectSerivce;
+    private ProjectSerivce projectSerivce;
     @Autowired
-    DocumentService documentService;
+    private DocumentService documentService;
     @Autowired
-    UserService userService;
+    private UserService userService;
+    @Autowired
+    private CalendarService calendarService;
     @Autowired
     private HttpSession session;
 
@@ -50,7 +53,7 @@ public class ProjectDetailController {
 
     // 세션 유저 권한 확인
     public Long getSessionAuth() {
-        Long auth = (Long)session.getAttribute("auth");
+        Long auth = (Long) session.getAttribute("auth");
         return auth;
     }
 
@@ -131,7 +134,7 @@ public class ProjectDetailController {
 
     // 목표 상세창 이동 메서드
     @RequestMapping("/project/goal/headView/{id}")
-    public String goHeadView(@PathVariable("id")Long id, Model model) {
+    public String goHeadView(@PathVariable("id") Long id, Model model) {
         HeadDto headDto = projectDetailSerivce.selectHead(id);
         List<DetailDto> detailDtoList = projectDetailSerivce.selectAllDetailForHead(headDto);
         Long auth = getSessionAuth();
@@ -143,7 +146,7 @@ public class ProjectDetailController {
 
     // 디테일 상세창 이동 메서드
     @RequestMapping("/project/goal/detailView/{id}")
-    public String goDetailView(@PathVariable("id")Long id, Model model) {
+    public String goDetailView(@PathVariable("id") Long id, Model model) {
         DetailDto detailDto = projectDetailSerivce.selectDetail(id);
         HeadDto headDto = projectDetailSerivce.selectHead(detailDto.getHeadIdToDetail().getHeadId());
         List<WorkDto> workDtoList = projectDetailSerivce.selectAllWorkForDetail(id);
@@ -159,7 +162,7 @@ public class ProjectDetailController {
 
     // head 수정창 매핑 메서드
     @RequestMapping("/project/goal/head/edit/{id}")
-    public String goEditHead(@PathVariable("id")Long headId, Model model) {
+    public String goEditHead(@PathVariable("id") Long headId, Model model) {
         HeadDto headDto = projectDetailSerivce.selectHead(headId);
         model.addAttribute("headDto", headDto);
         return "headEdit";
@@ -167,7 +170,7 @@ public class ProjectDetailController {
 
     // detail 수정창 매핑 메서드
     @RequestMapping("/project/goal/detail/edit/{id}")
-    public String goEditDetail(@PathVariable("id")Long detailId, Model model) {
+    public String goEditDetail(@PathVariable("id") Long detailId, Model model) {
         DetailDto detailDto = projectDetailSerivce.selectDetail(detailId);
         ProjectDto currentProject = getSessionProject();
         List<HeadDto> headDtoList = projectDetailSerivce.selectAllHead(currentProject);
@@ -214,7 +217,7 @@ public class ProjectDetailController {
         }
         model.addAttribute("userWorkDtoList", userWorkDtoList);
         model.addAttribute("auth", auth);
-        return"work";
+        return "work";
     }
 
     // work 생성창 진입 메서드
@@ -247,17 +250,25 @@ public class ProjectDetailController {
 
     // work 상세창 진입 메서드
     @RequestMapping("/project/work/detail/{id}")
-    public String goWorkDetail(@PathVariable("id")Long id, Model model) {
+    public String goWorkDetail(@PathVariable("id") Long id, Model model) {
         WorkDto workDto = projectDetailSerivce.selectWork(id);
         UserDto userDto = projectDetailSerivce.selectUserForUserWork(workDto);
         List<DocumentDto> documentDtoList = documentService.getDocumentByWorkId(id);
         List<WorkCommentDto> commentDtoList = projectDetailSerivce.findByComment(id);
         Long auth = getSessionAuth();
+        if (commentDtoList.isEmpty()) {
+            int i = 0;
+            model.addAttribute("listNum", i);
+            model.addAttribute("CommentList", commentDtoList);
+        } else {
+            int i = commentDtoList.size();
+            model.addAttribute("listNum", i);
+            model.addAttribute("CommentList", commentDtoList);
+        }
 
         model.addAttribute("workDto", workDto);
         model.addAttribute("userDto", userDto);
         model.addAttribute("DocumentList", documentDtoList);
-        model.addAttribute("CommentList", commentDtoList);
         model.addAttribute("auth", auth);
         return "workDetail";
     }
@@ -265,10 +276,11 @@ public class ProjectDetailController {
 
 
     /* - - - - 댓글 관련 메서드 - - - -*/
-    @PostMapping("댓글작성 클릭 시")
+    @PostMapping("/workDetail/addComment")
     public String plusComment(@RequestParam("workId") Long workId,
                               @RequestParam("comment") String comment,
-                              HttpSession session, Model model) {
+                              HttpSession session, Model model, HttpServletRequest request) {
+        String referer = request.getHeader("Referer");
         /* 댓글을 추가 시키는 메서드 */
         WorkDto workDto = projectDetailSerivce.selectWork(workId);
         UserDto nowUser = getSessionUser();
@@ -281,11 +293,11 @@ public class ProjectDetailController {
         /*추가 시킬 댓글 내용과, 현재 documentID 를 같이 넘겨 리턴 값으로 자동 리스트를 뽑아온다*/
         List<WorkCommentDto> list = projectDetailSerivce.plusComment(workCommentDto, workId);
         model.addAttribute("commentList", list);
-        return "";
+        return "redirect:" + referer;
     }
 
     //댓글 수정을 하기 위한 댓글 데이터를 가져오는 메서드 (프론트에서는 댓글을 수정할 수 있는 화면이 필요하다
-    @GetMapping("댓글 수정 클릭 시")
+    @GetMapping("/workDetail/commentUpdate")
     public String updateForm(@RequestParam("commentId") Long commentId, Model model) {
         WorkCommentDto updateComment = projectDetailSerivce.findComment(commentId);
         model.addAttribute("updateComment", updateComment);
@@ -309,34 +321,47 @@ public class ProjectDetailController {
         return "";
     }
 
-    @GetMapping(" 삭제 클릭 시 ")
-    public String deleteComment(@RequestParam("workId") Long workId, Model model) {
-        List<WorkCommentDto> dtoList = projectDetailSerivce.deleteComment(workId);
-        model.addAttribute("commentList", dtoList);
-        return "";
+    @RequestMapping("/workDetail/commentDelete/{cid}")
+    public String deleteComment(@PathVariable("cid") Long commentId, Model model) {
+        WorkCommentDto workCommentDto = projectDetailSerivce.findComment(commentId);
+        Long workId = workCommentDto.getWorkIdToComment().getWorkId();
+        List<WorkCommentDto> dtoList = projectDetailSerivce.deleteComment(commentId, workId);
+        model.addAttribute("CommentList", dtoList);
+        return "redirect:/project/work/detail/" + workId;
     }
     /* - - - - 댓글 관련 메서드 끝 - - - -*/
 
     /* 상태 완료 처리 메서드 */
     @RequestMapping("/project/work/completion/change/{id}")
-    public String workCompletionChange(@PathVariable("id")Long workId) {
+    public String workCompletionChange(@PathVariable("id") Long workId) {
         WorkDto targetWorkDto = projectDetailSerivce.selectWork(workId);
         WorkDto changeWorkDto = projectDetailSerivce.workCompletionChange(targetWorkDto);
         return "redirect:/project/works";
     }
 
     @RequestMapping("/project/detail/completion/change/{id}")
-    public String detailCompletionChange(@PathVariable("id")Long detailId) {
+    public String detailCompletionChange(@PathVariable("id") Long detailId) {
         DetailDto targetDetailDto = projectDetailSerivce.selectDetail(detailId);
         DetailDto changeDetailDto = projectDetailSerivce.detailCompletionChange(targetDetailDto);
         return "redirect:/project/goals";
     }
 
     @RequestMapping("/project/head/completion/change/{id}")
-    public String headCompletionChange(@PathVariable("id")Long headId) {
+    public String headCompletionChange(@PathVariable("id") Long headId) {
         HeadDto targetHeadDto = projectDetailSerivce.selectHead(headId);
         HeadDto changeHeadDto = projectDetailSerivce.headCompletionChange(targetHeadDto);
         return "redirect:/project/goals";
     }
+
+    /*  - - - - - Calendar Controller - - - - - */
+    @GetMapping("/calender") //기본 페이지 표시
+    public String viewCalendar() {
+        return "ccalendar";
+    }
+    @GetMapping("/calender/event") //ajax 데이터 전송 URL
+    public String getEvent() {
+        return "main";
+    }
+
 }
 

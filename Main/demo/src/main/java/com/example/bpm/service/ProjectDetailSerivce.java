@@ -470,7 +470,8 @@ public class ProjectDetailSerivce {
         List<WorkCommentEntity> entityList = workCommentRepository.findAllByWorkIdToComment_WorkId(workId);
         if (entityList.isEmpty()) {
             log.info("해당 문서에 댓글 없음 (서비스)");
-            return null;
+            List<WorkCommentDto> commentDtoList = new ArrayList<>();
+            return commentDtoList;
         } else {
             List<WorkCommentDto> commentDtoList = new ArrayList<>();
             for (WorkCommentEntity commentEntity : entityList) {
@@ -492,17 +493,17 @@ public class ProjectDetailSerivce {
     }
 
     //update를 위한 Comment Find
-    public WorkCommentDto findComment(Long documentId){
-        Optional<WorkCommentEntity> documentCommentEntity=  workCommentRepository.findById(documentId);
+    public WorkCommentDto findComment(Long commentId){
+        Optional<WorkCommentEntity> documentCommentEntity=  workCommentRepository.findById(commentId);
         return WorkCommentDto.toWorkCommentDto(documentCommentEntity.get());
     }
 
 
     //댓글 삭제
-    public List<WorkCommentDto> deleteComment(Long workId){
-        Optional<WorkCommentEntity> now = workCommentRepository.findById(workId);
+    public List<WorkCommentDto> deleteComment(Long commentId, Long workId){
+        Optional<WorkCommentEntity> now = workCommentRepository.findById(commentId);
         WorkCommentDto workCommentDto = WorkCommentDto.toWorkCommentDto(now.get());
-        workCommentRepository.deleteById(workId);
+        workCommentRepository.deleteById(commentId);
         return findByComment(workId);
     }
 
