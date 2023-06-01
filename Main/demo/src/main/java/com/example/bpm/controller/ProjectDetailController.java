@@ -66,9 +66,9 @@ public class ProjectDetailController {
 
     // 프로젝트 메인 창 매핑
     @GetMapping("/project/main")
-    public String projectMain() {
-        ProjectDto currentProject = getSessionProject();
-        return "projectMain";
+    public String goProjectMain() {
+        ProjectDto sessionProject = getSessionProject();
+        return "redirect:/project/" + sessionProject.getProjectId();
     }
 
     /* - - - - 목표 관련 메서드- - - -*/
@@ -356,7 +356,7 @@ public class ProjectDetailController {
     /*  - - - - - Calendar Controller - - - - - */
     @GetMapping("/calender") //기본 페이지 표시
     public String viewCalendar() {
-        return "ccalendar";
+        return "calendar";
     }
     @GetMapping("/calender/event") //ajax 데이터 전송 URL
     public String getEvent() {
