@@ -64,7 +64,7 @@
 	<!--게시글 컨테이너-->
 	<div class="board">
 		<div class="board-item" th:if="${projectAllList != null}" th:each ="project : ${projectAllList}">
-			<a th:href="@{/projectAll/{id}(id=${project.projectId})}" class="post">
+			<a th:href="@{/project/{id}(id=${project.projectId})}" class="post">
 				<!--썸네일-->
 				<div class="thumbnail"
 					 style="background-image: url(https://w.namu.la/s/fbe29c52a03345a112f33d89632e39735b30e9cd3d85346db314841d27e13f5148542ea262ae9fcd04c1a5c86c1a07586e381983ef8c4ce600ea9378fe4066a21f9544ae827a380833ec15318c482bbadcb87834421adba003fecad4bba5923c);">

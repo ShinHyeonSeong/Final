@@ -140,7 +140,13 @@ public class UserService {
     //권한 설정 메서드
     public Long checkRole(Long id, String uuid) {
         ProjectRoleEntity projectRoleEntity = projectRoleRepository.findByProjectIdInRole_ProjectIdAndUuidInRole_Uuid(id, uuid);
-        return projectRoleEntity.getRole().getId();
+        if (projectRoleEntity != null) {
+            log.info("유저 권한 확인");
+            return projectRoleEntity.getRole().getId();
+        } else {
+            log.info("유저 권한 확인 실패, 외부 권한 반환");
+            return Long.valueOf(2);
+        }
     }
 }
 
