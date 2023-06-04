@@ -77,8 +77,10 @@ public class ProjectDetailController {
     public String goals(Model model) {
         ProjectDto currentProject = getSessionProject();
         List<HeadDto> headDtoList = projectDetailSerivce.selectAllHead(currentProject);
+        List<DetailDto> detailDtoList = projectDetailSerivce.selectAllDetailForProject(currentProject);
         Long auth = getSessionAuth();
         model.addAttribute("headDtoList", headDtoList);
+        model.addAttribute("detailDtoList", detailDtoList);
         model.addAttribute("auth", auth);
         return "goal";
     }
