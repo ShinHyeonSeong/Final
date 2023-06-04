@@ -78,7 +78,13 @@
 
     <div class="right-section">
       <div>
-        <h4 class="content-title">마감 기간</h4>
+        <h4 class="content-title">시작일자</h4>
+        <p class="content-detail" th:text="${#dates.format(detailDto.startDay, 'yyyy-MM-dd')}"></p>
+        <div class="horizon-divider"></div>
+      </div>
+
+      <div>
+        <h4 class="content-title">마감기간</h4>
         <p class="content-detail" th:text="${#dates.format(detailDto.endDay, 'yyyy-MM-dd')}"></p>
         <div class="horizon-divider"></div>
       </div>

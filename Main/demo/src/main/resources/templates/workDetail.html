@@ -49,8 +49,8 @@
 					</div>
 					<div class="horizon-divider-semi"></div>
 					<div class="object">
-						<a>
-							<div class="object-list" OnClick="location.href='#'">
+						<a th:href="@{/project/goal/detailView/{id}(id=${workDto.detailIdToWork.detailId})}">
+							<div class="object-list">
 								<div th:text="${workDto.getDetailIdToWork().title}"></div>
 							</div>
 						</a>
@@ -131,9 +131,15 @@
 				<p class="content-detail" th:if="${workDto.completion == 0}">진행중</p>
 				<div class="horizon-divider"></div>
 			</div>
+
+			<div>
+				<h4 class="content-title">시작일자</h4>
+				<p class="content-detail" th:text="${#dates.format(workDto.startDay, 'yyyy-MM-dd')}"></p>
+				<div class="horizon-divider"></div>
+			</div>
 			
 			<div>
-				<h4 class="content-title">마감 기간</h4>
+				<h4 class="content-title">마감기간</h4>
 				<p class="content-detail" th:text="${#dates.format(workDto.endDay, 'yyyy-MM-dd')}"></p>
 				<div class="horizon-divider"></div>
 			</div>

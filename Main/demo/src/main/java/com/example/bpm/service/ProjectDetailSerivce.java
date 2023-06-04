@@ -3,6 +3,7 @@ package com.example.bpm.service;
 import com.example.bpm.dto.*;
 import com.example.bpm.entity.*;
 import com.example.bpm.repository.*;
+import com.example.bpm.service.dateLogic.DateManager;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,35 +39,27 @@ public class ProjectDetailSerivce {
     private WorkDocumentRepository workDocumentRepository;
 
     Date currentDate = new Date(); // 시작 날짜(현재) 생성
+    DateManager dateManager = new DateManager();
 
     // 마감기한 문자열 Date 타입 반환 메서드. 문자열 형식 상이로 변환 실패시 null
-    public Date formatter(String dateString) {
-        Date date;
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            date = format.parse(dateString);
-        } catch (ParseException ex) {
-            return null;
-        }
-        return date;
-    }
 
     /* - - - - 생성 메서드 시작 - - - - */
 
     // head 생성 메서드
-    public HeadDto createHead(String title, String deadline, String discription, ProjectDto projectDto) {
+    public HeadDto createHead(String title, String startDate, String deadline, String discription, ProjectDto projectDto) {
         if (headRepository.findByTitle(title).isPresent()) {
             log.info("head title 이 이미 존재한다. (서비스)");
             return null;
         } else {
             log.info("createHead service 작동");
-            Date endDay = formatter(deadline);
+            Date startDay = dateManager.formatter(startDate);
+            Date endDay = dateManager.formatter(deadline);
             if (endDay == null) return null;
 
             HeadDto createHeadDto = new HeadDto();
             createHeadDto.setTitle(title);
             createHeadDto.setDiscription(discription);
-            createHeadDto.setStartDay(currentDate);
+            createHeadDto.setStartDay(startDay);
             createHeadDto.setEndDay(endDay);
             createHeadDto.setCompletion(0);
             createHeadDto.setProjectIdToHead(projectRepository.findById(projectDto.getProjectId()).orElse(null));
@@ -78,20 +71,21 @@ public class ProjectDetailSerivce {
     }
 
     // detail 생성 메서드
-    public DetailDto createDetail(String title, String deadline, String discription,
+    public DetailDto createDetail(String title, String startDate, String deadline, String discription,
                                   HeadDto connectedHead, ProjectDto projectDto) {
         if (detailRepository.findByTitle(title).isPresent()) {
             log.info("detail title 이 이미 존재한다. (서비스)");
             return null;
         } else {
             log.info("createDetail service 작동");
-            Date endDay = formatter(deadline);
+            Date startDay = dateManager.formatter(startDate);
+            Date endDay = dateManager.formatter(deadline);
             if (endDay == null) return null;
 
             DetailDto createDetailDto = new DetailDto();
             createDetailDto.setTitle(title);
             createDetailDto.setDiscription(discription);
-            createDetailDto.setStartDay(currentDate);
+            createDetailDto.setStartDay(startDay);
             createDetailDto.setEndDay(endDay);
             createDetailDto.setCompletion(0);
             createDetailDto.setHeadIdToDetail(headRepository.findById(connectedHead.getHeadId()).orElse(null));
@@ -104,19 +98,19 @@ public class ProjectDetailSerivce {
     }
 
     //내 작업 만들기
-    public WorkDto createWork(String title, String discription, String deadline,
+    public WorkDto createWork(String title, String discription, String startDate, String deadline,
                               DetailDto connectDetail, ProjectDto projectDto) {
         if (workRepository.findByTitle(title).isPresent()) {
             log.info("work title 이 이미 존재한다. (서비스)");
             return null;
         } else {
-            Date endDay = formatter(deadline);
-            if (endDay == null) return null;
+            Date startDay = dateManager.formatter(startDate);
+            Date endDay = dateManager.formatter(deadline);
 
             WorkDto createWorkDto = new WorkDto();
             createWorkDto.setTitle(title);
             createWorkDto.setDiscription(discription);
-            createWorkDto.setStartDay(currentDate);
+            createWorkDto.setStartDay(startDay);
             createWorkDto.setEndDay(endDay);
             createWorkDto.setCompletion(0);
             createWorkDto.setDetailIdToWork(detailRepository.findById(connectDetail.getDetailId()).orElse(null));
@@ -293,13 +287,15 @@ public class ProjectDetailSerivce {
         return WorkDto.toWorkDto(afterEntity);
     }
 
-    public HeadDto editHead(String title, String deadline, String discription, Long headId) {
+    public HeadDto editHead(String title, String startDate, String deadline, String discription, Long headId) {
         Optional<HeadEntity> headEntity = headRepository.findById(headId);
         if (headEntity.isPresent()) {
             log.info("");
-            Date endDay = formatter(deadline);
+            Date startDay = dateManager.formatter(startDate);
+            Date endDay = dateManager.formatter(deadline);
             HeadDto headDto = HeadDto.toHeadDto(headEntity.get());
             headDto.setTitle(title);
+            headDto.setStartDay(startDay);
             headDto.setEndDay(endDay);
             headDto.setDiscription(discription);
             HeadDto editHeadDto = HeadDto.toHeadDto(headRepository.save(HeadEntity.toHeadEntity(headDto)));
@@ -307,13 +303,15 @@ public class ProjectDetailSerivce {
         } else return null;
     }
 
-    public DetailDto editDetail(String title, String deadline, String discription,
+    public DetailDto editDetail(String title, String startDate, String deadline, String discription,
                                 Long headId, Long detailId) {
         Optional<DetailEntity> detailEntity = detailRepository.findById(detailId);
         if (detailEntity.isPresent()) {
-            Date endDay = formatter(deadline);
+            Date startDay = dateManager.formatter(startDate);
+            Date endDay = dateManager.formatter(deadline);
             DetailDto detailDto = DetailDto.toDetailDto(detailEntity.get());
             detailDto.setTitle(title);
+            detailDto.setStartDay(startDay);
             detailDto.setEndDay(endDay);
             detailDto.setDiscription(discription);
             detailDto.setHeadIdToDetail(headRepository.findById(headId).orElse(null));

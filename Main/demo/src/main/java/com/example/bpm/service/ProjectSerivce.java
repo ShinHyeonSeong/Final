@@ -6,6 +6,7 @@ import com.example.bpm.dto.ProjectRoleDto;
 import com.example.bpm.dto.UserDto;
 import com.example.bpm.entity.*;
 import com.example.bpm.repository.*;
+import com.example.bpm.service.dateLogic.DateManager;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,8 @@ public class ProjectSerivce {
     final private ProjectRoleRepository projectRoleRepository;
     @Autowired
     final private RoleRepository roleRepository;
+
+    DateManager dateManager = new DateManager();
 
     /*Request Table 관련 기능*/
 
@@ -160,10 +163,13 @@ public class ProjectSerivce {
         return ProjectRoleDto.toProjectRoleDto(projectRoleEntity);
     }
 
-
-
     //생성 메서드
-    public ProjectDto createProject(ProjectDto projectDto) {
+    public ProjectDto createProject(String title, String subtitle, String startDay, String endDay) {
+        ProjectDto projectDto = new ProjectDto();
+        projectDto.setTitle(title);
+        projectDto.setSubtitle(subtitle);
+        projectDto.setStartDay(dateManager.formatter(startDay));
+        projectDto.setEndDay(dateManager.formatter(endDay));
         ProjectEntity projectEntity = projectRepository.save(ProjectEntity.toProjectEntity(projectDto));
         log.info("프로젝트 정상 생성 (서비스 작동)");
         return ProjectDto.toProjectDto(projectEntity);
