@@ -20,9 +20,9 @@ public class CalendarController {
         return "main";
     }
 
-    @RequestMapping(value = "/calender/event", method = {RequestMethod.GET})
-    public @ResponseBody String getEvent() {
-        return "main"  ;
+    @RequestMapping(value = "/calendar/event", method = {RequestMethod.GET})
+    public @ResponseBody List<Map<String, Object>> getEvent() {
+        return calendarService.getEventList();
     }
 
 }

@@ -50,13 +50,13 @@
 <div class="container">
 	<div class="top-button">
 		<div class="left">
+			<a class="project-select" href="/project/projectAllList">전체 프로젝트</a>
 			<a class="project-select" href="/project/projectManagerList">내 프로젝트</a>
 			<a class="project-select" href="/project/projectMemberList">참여 프로젝트</a>
-			<a class="project-select" href="/project/projectAllList">전체 프로젝트</a>
-			<a class="project-select" href="/project/inviteList">프로젝트 초대
-				<div class="head-img" th:if="${request == true}"><img src="/img/warning.png" alt=""></div>
-			</a>
 		</div>
+		<a class="project-select" href="/project/inviteList" style="padding-left: 14%">프로젝트 초대
+			<div class="head-img" th:if="${request == true}"><img src="/img/warning.png" alt=""></div>
+		</a>
 		<a href="/project/create">
 			<button type="button" name="write" id="write-button">새 프로젝트</button>
 		</a>
@@ -68,8 +68,7 @@
 		<div class="board-item" th:if="${managerList != null}" th:each="project : ${managerList}">
 			<a th:href="@{/project/{id}(id=${project.projectId})}" class="post">
 				<!--썸네일-->
-				<div class="thumbnail"
-					 style="background-image: url(https://w.namu.la/s/fbe29c52a03345a112f33d89632e39735b30e9cd3d85346db314841d27e13f5148542ea262ae9fcd04c1a5c86c1a07586e381983ef8c4ce600ea9378fe4066a21f9544ae827a380833ec15318c482bbadcb87834421adba003fecad4bba5923c);">
+				<div class="thumbnail">
 				</div>
 				<article class="post-detail">
 					<h1 th:text="${project.title}"></h1>
@@ -77,7 +76,6 @@
 					<span th:text="${project.subtitle}"></span>
 					<div class="post-user">
 						<div th:text="${user.name}"></div>
-						<div>80</div>
 					</div>
 				</article>
 			</a>
