@@ -26,7 +26,7 @@
     height: 540px;
     display: flex;
     flex-direction: row;
-    box-shadow: 10px black;
+    box-shadow: black;
     border-radius: 10px;
 }
 
@@ -118,4 +118,9 @@
     font-size: 11px;
     color: gray;
 
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #fff inset;
+    border-bottom: solid 2px #333;
 }
