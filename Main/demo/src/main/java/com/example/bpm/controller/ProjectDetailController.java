@@ -77,8 +77,10 @@ public class ProjectDetailController {
     public String goals(Model model) {
         ProjectDto currentProject = getSessionProject();
         List<HeadDto> headDtoList = projectDetailSerivce.selectAllHead(currentProject);
+        List<DetailDto> detailDtoList = projectDetailSerivce.selectAllDetailForProject(currentProject);
         Long auth = getSessionAuth();
         model.addAttribute("headDtoList", headDtoList);
+        model.addAttribute("detailDtoList", detailDtoList);
         model.addAttribute("auth", auth);
         return "goal";
     }
@@ -102,19 +104,21 @@ public class ProjectDetailController {
     /* 클라이언트에서 전달 받을 때, Dto 내부 속성 중 전달받을 수 없는 속성들이 있다. 때문에 @ModelAttribute를 쓰지 않고 하나씩 전달 받은 후
         서비스 단위로 때려박았음. 너무 보기 복잡하기도 하고 좀 그런데 보면서 다른 방법이 있으면 얘기해주면 좋게따. */
     @PostMapping("/project/goal/createHead")
-    public String createGoal(@RequestParam(value = "title") String title,
-                             @RequestParam(value = "deadline") String deadline,
-                             @RequestParam(value = "discription") String discription,
+    public String createGoal(@RequestParam(value = "title")String title,
+                             @RequestParam(value = "startDay")String startDay,
+                             @RequestParam(value = "deadline")String deadline,
+                             @RequestParam(value = "discription")String discription,
                              Model model) {
         ProjectDto currentProject = getSessionProject();
         log.info("목표 생성 컨트롤러 작동, ");
-        HeadDto createHeadDto = projectDetailSerivce.createHead(title, deadline, discription, currentProject);
+        HeadDto createHeadDto = projectDetailSerivce.createHead(title, startDay, deadline, discription, currentProject);
         return "redirect:/project/goals";
     }
 
     // 디테일 생성 메서드
     @PostMapping("/project/goal/createDetail")
     public String createGoal(@RequestParam(value = "title") String title,
+                             @RequestParam(value = "startDay")String startDay,
                              @RequestParam(value = "deadline") String deadline,
                              @RequestParam(value = "discription") String discription,
                              @RequestParam(value = "headId") Long headId,
@@ -123,11 +127,11 @@ public class ProjectDetailController {
         log.info("목표 생성 컨트롤러 작동, ");
         if (headId == 0) {
             log.info("headDto == null");
-            HeadDto createHeadDto = projectDetailSerivce.createHead(title, deadline, discription, currentProject);
+            HeadDto createHeadDto = projectDetailSerivce.createHead(title, startDay, deadline, discription, currentProject);
         } else if (headId != 0) {
             HeadDto headDto = projectDetailSerivce.selectHead(headId);
             log.info("headDto.get" + headDto.getHeadId());
-            DetailDto createDetailDto = projectDetailSerivce.createDetail(title, deadline, discription, headDto, currentProject);
+            DetailDto createDetailDto = projectDetailSerivce.createDetail(title, startDay, deadline, discription, headDto, currentProject);
         }
         return "redirect:/project/goals";
     }
@@ -182,22 +186,24 @@ public class ProjectDetailController {
     //
     @PostMapping("/project/head/edit")
     public String editHead(@RequestParam(value = "title") String title,
+                           @RequestParam(value = "startDay")String startDay,
                            @RequestParam(value = "deadline") String deadline,
                            @RequestParam(value = "discription") String discription,
                            @RequestParam(value = "headId") Long headId,
                            Model model) {
-        HeadDto headDto = projectDetailSerivce.editHead(title, deadline, discription, headId);
+        HeadDto headDto = projectDetailSerivce.editHead(title, startDay, deadline, discription, headId);
         return "redirect:/project/goals";
     }
 
     @PostMapping("/project/detail/edit")
     public String editDetail(@RequestParam(value = "title") String title,
+                             @RequestParam(value = "startDay")String startDay,
                              @RequestParam(value = "deadline") String deadline,
                              @RequestParam(value = "discription") String discription,
                              @RequestParam(value = "headId") Long headId,
                              @RequestParam(value = "detailId") Long detailId,
                              Model model) {
-        DetailDto detailDto = projectDetailSerivce.editDetail(title, deadline, discription, headId, detailId);
+        DetailDto detailDto = projectDetailSerivce.editDetail(title, startDay, deadline, discription, headId, detailId);
         return "redirect:/project/goals";
     }
     /* - - - - 목표 관련 메서드 끝 - - - -*/
@@ -235,13 +241,14 @@ public class ProjectDetailController {
     @PostMapping("/project/work/createWork")
     public String createWork(@RequestParam("title") String title,
                              @RequestParam("discription") String discription,
+                             @RequestParam("startDay") String startDay,
                              @RequestParam("deadline") String deadline,
                              @RequestParam("chargeUser") String uuid,
                              @RequestParam("connectDetail") Long detailId) {
         ProjectDto currentProject = getSessionProject();
         UserDto chargeUser = userService.findByUser(uuid);
         DetailDto connectDetail = projectDetailSerivce.selectDetail(detailId);
-        WorkDto createWorkDto = projectDetailSerivce.createWork(title, discription, deadline,
+        WorkDto createWorkDto = projectDetailSerivce.createWork(title, discription, startDay, deadline,
                 connectDetail, currentProject);
         log.info("작업 생성 메서드 완료, id = " + createWorkDto.getWorkId());
         projectDetailSerivce.addUserWork(createWorkDto, chargeUser);

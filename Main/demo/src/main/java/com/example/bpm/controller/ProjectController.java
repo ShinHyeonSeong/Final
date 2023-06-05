@@ -136,19 +136,21 @@ public class ProjectController {
         return "projectCreate";
     }
 
-
-    //프로젝트 생성 버튼을 누르는 순간 프로젝트 생성되는 메서드
     @PostMapping("/project/createPage")
-    public String createProject(@ModelAttribute ProjectDto projectDto, HttpSession session, Model model) {
-        if (projectDto.equals(null)) {
+    public String createProject(@RequestParam(value = "title")String title,
+                                @RequestParam(value = "subtitle")String subtitle,
+                                @RequestParam(value = "startDay")String startDay,
+                                @RequestParam(value = "endDay")String endDay,
+                                HttpSession session) {
+        if (title.equals(null)||startDay.equals(null)||endDay.equals(null)) {
             log.info("값을 다 입력하지 못했음 (컨트롤러 작동)");
             return "projectCreate";
         } else {
-            ProjectDto dto = projectSerivce.createProject(projectDto);
-            log.info(dto.getProjectId().toString());
+            ProjectDto projectDto = projectSerivce.createProject(title, subtitle, startDay, endDay);
+            log.info(projectDto.getProjectId().toString());
             UserDto sessionUser = getSessionUser();
             session.setAttribute("currentProject", projectDto);
-            projectSerivce.autorization(dto, sessionUser);
+            projectSerivce.autorization(projectDto, sessionUser);
             log.info("프로젝트 생성 정상 작동(컨트롤러 작동)");
             return "redirect:/project/projectManagerList";
         }

@@ -92,9 +92,10 @@ a {
 
 .goal-container {
     display: flex;
-    gap: 20px 6%;
+    gap: 10px 8%;
     flex-wrap: wrap;
     margin-top: 100px;
+    margin-left: 100px;
 }
 
 .goal-item {

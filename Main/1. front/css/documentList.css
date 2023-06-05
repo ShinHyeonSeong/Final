@@ -15,9 +15,16 @@ a {
 
 .header {
   display: flex;
-  justify-content: row;
+  justify-content: space-between;
   align-items: center;
   margin: 5rem 0;
+}
+
+.headerLeft {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
 }
 
 .back-button {
@@ -36,6 +43,25 @@ a {
 
 .back-button:hover {
 	background-color: #444;
+}
+
+.create-document-btn {
+	font-size: 18px;
+	background-color: #333;
+	width: 150px;
+	height: 60px;
+	color: #fff;
+	padding: 10px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: 0.5s;
+	margin-left: auto;
+}
+
+.create-document-btn:hover {
+	background-color: #444;
+	color: #fff;
 }
 
 .document-list {

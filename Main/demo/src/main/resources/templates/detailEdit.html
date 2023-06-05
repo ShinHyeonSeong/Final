@@ -40,6 +40,16 @@
 
 		<div class="create-goal">
 			<div class="label-detail">
+				<label class="label" for="create-goal-input3">시작일자</label>
+			</div>
+			<div class="input-detail">
+				<input name="startDay" class="input-box" id="create-goal-input3" type="text"
+					   th:value="${#dates.format(detailDto.startDay, 'yyyy-MM-dd')}">
+			</div>
+		</div>
+
+		<div class="create-goal">
+			<div class="label-detail">
 				<label class="label" for="create-goal-input4">마감 기한</label>
 			</div>
 			<div class="input-detail">

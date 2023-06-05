@@ -39,20 +39,29 @@
 
     <div class="create-goal">
       <div class="label-detail">
-        <label class="label" for="create-goal-input3">작업 마감일</label>
+        <label class="label" for="create-goal-input3">작업 시작일</label>
       </div>
       <div class="input-detail">
-        <input name="deadline" class="input-box" id="create-goal-input3" type="text" placeholder="마감일 입력 (0000-00-00)">
+        <input name="startDay" class="input-box" id="create-goal-input3" type="text" placeholder="마감일 입력 (0000-00-00)">
       </div>
     </div>
 
     <div class="create-goal">
       <div class="label-detail">
-        <label class="label" for="create-goal-input4">작업 담당자</label>
+        <label class="label" for="create-goal-input4">작업 마감일</label>
+      </div>
+      <div class="input-detail">
+        <input name="deadline" class="input-box" id="create-goal-input4" type="text" placeholder="마감일 입력 (0000-00-00)">
+      </div>
+    </div>
+
+    <div class="create-goal">
+      <div class="label-detail">
+        <label class="label" for="create-goal-input5">작업 담당자</label>
       </div>
       <div class="input-detail">
         <div class="select">
-          <select class="select-connection-goal" id="create-goal-input4" name="chargeUser" th:if="${userDtoList != null}">
+          <select class="select-connection-goal" id="create-goal-input5" name="chargeUser" th:if="${userDtoList != null}">
             <option th:each="user : ${userDtoList}"
             th:text="${user.name}"
             th:value="${user.uuid}"></option>
@@ -63,11 +72,11 @@
 
     <div class="create-goal">
       <div class="label-detail">
-        <label class="label" for="create-goal-input5">연결 목표</label>
+        <label class="label" for="create-goal-input6">연결 목표</label>
       </div>
       <div class="input-detail">
         <div class="select">
-          <select class="select-connection-goal" id="create-goal-input5" name="connectDetail" th:if="${detailDtoList != null}">
+          <select class="select-connection-goal" id="create-goal-input6" name="connectDetail" th:if="${detailDtoList != null}">
             <option th:each="detail : ${detailDtoList}"
                     th:text="${detail.title}"
                     th:value="${detail.detailId}"></option>
