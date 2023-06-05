@@ -10,15 +10,11 @@
 <body>
 <div id='calendar'></div>
 </body>
-
 <script>
 	var calendarEl = document.getElementById('calendar');
 	var request = $.ajax({
 				url: "/calendar/event",
-				method: "GET",
-				success: function (result) {
-					return request;
-				}
+				method: "GET"
 			}
 	);
 	request.done(function (data) {

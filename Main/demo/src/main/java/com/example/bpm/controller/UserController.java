@@ -4,6 +4,7 @@ import com.example.bpm.dto.ProjectDto;
 import com.example.bpm.dto.UserDto;
 import com.example.bpm.service.ProjectSerivce;
 import com.example.bpm.service.UserService;
+
 import javax.persistence.*;
 import javax.servlet.http.HttpSession;
 
@@ -43,7 +44,7 @@ public class UserController {
     }
 
     public Long getSessionAuth() {
-        Long auth = (Long)session.getAttribute("auth");
+        Long auth = (Long) session.getAttribute("auth");
         return auth;
     }
 
@@ -162,9 +163,14 @@ public class UserController {
             return "redirect:/user/accountUpdate";
         }
     }
+
     @GetMapping("/user/passwordChange")
-    public String goPasswordChange() {
+    public String goPasswordChange(Model model) {
+        UserDto sessionUser = getSessionUser();
+        UserDto result = userService.findByUser(sessionUser.getUuid());
+        model.addAttribute("user", result);
         return "passwordChange";
+
     }
 
     // 비밀번호 변경 메서드
@@ -196,7 +202,7 @@ public class UserController {
 
     @GetMapping("/user/search")
     public String searchMember() {
-        return"searchMember";
+        return "searchMember";
     }
 
     @PostMapping("/user/returnSearch")
@@ -204,7 +210,7 @@ public class UserController {
         log.info("검색 키워드 : " + searchKeyword);
         List<UserDto> dtoList = userService.searchUser(searchKeyword);
 
-        if(dtoList.isEmpty()) {
+        if (dtoList.isEmpty()) {
             log.info("검색 결과 없음");
             return "redirect:/user/search";
         }
