@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -27,6 +28,12 @@ public class ProjectEntity {
     @Column(name = "subtitle")
     private String subtitle;
 
+    @Column(name = "start_day")
+    private Date startDay;
+
+    @Column(name = "end_day")
+    private Date endDay;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "projectIdInRole", cascade = CascadeType.REMOVE)
     private List<ProjectRoleEntity> projectRoleEntityList = new ArrayList<>();
 
@@ -41,6 +48,8 @@ public class ProjectEntity {
         projectEntity.setProjectId(projectDto.getProjectId());
         projectEntity.setTitle(projectDto.getTitle());
         projectEntity.setSubtitle(projectDto.getSubtitle());
+        projectEntity.setStartDay(projectDto.getStartDay());
+        projectEntity.setEndDay(projectDto.getEndDay());
         return projectEntity;
     }
 
