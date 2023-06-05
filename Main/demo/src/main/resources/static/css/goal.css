@@ -39,10 +39,10 @@ a {
 .content-container {
     display: flex;
     justify-content: center;
+    margin-left: 200px;
 }
 
 .content {
-    margin-left: 200px;
     padding: 20px;
     width: 80%;
     display: flex;

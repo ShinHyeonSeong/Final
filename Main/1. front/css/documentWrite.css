@@ -84,6 +84,8 @@ hr {
 }
 
 .horizon-line {
+    width: 1px;
+    margin: 0, 5px;
     height: 20px;
     background-color: #dee2e6;
 }
