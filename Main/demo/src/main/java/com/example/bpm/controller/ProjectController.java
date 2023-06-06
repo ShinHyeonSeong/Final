@@ -132,7 +132,9 @@ public class ProjectController {
     }
 
     @GetMapping("/project/create")
-    public String projectCreate() {
+    public String projectCreate(Model model) {
+        UserDto nowUser = getSessionUser();
+        model.addAttribute("nowUser", nowUser);
         return "projectCreate";
     }
 
@@ -169,6 +171,7 @@ public class ProjectController {
         model.addAttribute("joinUsers", userDtoList);
 
         if (getSessionAuth() != 2) {
+            //권한이 없습니다 알람창 띄우기
             return "projectMain";
         } else if (getSessionAuth() == 2) {
             List<HeadDto> headDtoList = projectDetailSerivce.selectAllHead(projectSerivce.selectProject(id));

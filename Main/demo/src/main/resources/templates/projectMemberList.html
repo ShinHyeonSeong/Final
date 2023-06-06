@@ -54,7 +54,7 @@
 			<a class="project-select" href="/project/projectManagerList">내 프로젝트</a>
 			<a class="project-select" href="/project/projectMemberList">참여 프로젝트</a>
 		</div>
-		<a class="project-select" href="/project/inviteList" style="padding-left: 14%">프로젝트 초대
+		<a class="project-select" href="/project/inviteList" style="padding-left: 10%">프로젝트 초대
 			<div class="head-img" th:if="${request == true}"><img src="/img/warning.png" alt=""></div>
 		</a>
 		<a href="/project/create">
@@ -62,20 +62,16 @@
 		</a>
 	</div>
 	
-	
-	<!--게시글 컨테이너-->
 	<div class="board">
 		<div class="board-item" th:if="${memberList != null}" th:each="project : ${memberList}">
 			<a th:href="@{/project/{id}(id=${project.projectId})}" class="post">
-				<!--썸네일-->
 				<div class="thumbnail">
-				
 				</div>
 				<article class="post-detail">
 					<h1 th:text="${project.title}"></h1>
-					<p th:text="${project.title}"></p>
 					<span th:text="${project.subtitle}"></span>
-					<div class="post-user">
+					<div class="post-user" style="padding-top: 30px;">
+						<p>관리자 :</p>
 						<div th:text="${user.name}"></div>
 					</div>
 				</article>

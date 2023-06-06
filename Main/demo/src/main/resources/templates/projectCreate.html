@@ -8,19 +8,23 @@
 
 <body>
 <div class="container">
-	<a href="/project/main" class="back-button"> < </a>
-	<h1>프로젝트 생성</h1>
+	<input type="hidden" th:name="nowUser" th:value="${nowUser.getUuid()}">
+	<div class="head-container">
+		<a href="/project/projectAllList" class="back-button"> < </a>
+		<h1>프로젝트 생성</h1>
+	</div>
 	<div class="section">
 		<form id="project-form" action="/project/createPage" method="post">
 			<label for="project-title">프로젝트 제목:</label><br>
 			<input type="text" id="project-title" name="title"><br>
-
+			
 			<label for="project-description">프로젝트 소개:</label><br>
 			<textarea id="project-description" name="subtitle"></textarea><br>
-
+			
 			<label for="create-goal-input1">프로젝트 소개:</label><br>
-			<input name="startDay" class="input-box" id="create-goal-input1" type="text" placeholder="0000-00-00(연 월 일)">
-
+			<input name="startDay" class="input-box" id="create-goal-input1" type="text"
+				   placeholder="0000-00-00(연 월 일)">
+			
 			<label for="create-goal-input2">프로젝트 소개:</label><br>
 			<input name="endDay" class="input-box" id="create-goal-input2" type="text" placeholder="0000-00-00(연 월 일)">
 			<button style=' width : 100%; padding:20px; margin-top:50px; font-size: 2rem; font-family:Arial, Helvetica, sans-serif;'

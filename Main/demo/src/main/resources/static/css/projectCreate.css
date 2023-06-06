@@ -14,6 +14,17 @@ label {
     margin-top: 20px;
 }
 
+.container {
+    text-align: center;
+}
+
+.head-container {
+    margin-left: -5%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
 
 .back-button {
     background-color: #333;
@@ -66,10 +77,6 @@ button:hover {
     display: inline-block;
     width: 35%;
     vertical-align: top;
-}
-
-.container {
-    text-align: center;
 }
 
 .friend-form {
