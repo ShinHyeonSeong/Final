@@ -237,6 +237,16 @@ public class ProjectDetailSerivce {
         return documentDtoList;
     }
 
+    public List<WorkCommentDto> selectAllWorkCommentForWork(WorkDto workDto) {
+        List<WorkCommentEntity> workCommentEntityList =
+                workCommentRepository.findAllByWorkIdToComment_WorkId(workDto.getWorkId());
+        List<WorkCommentDto> workCommentDtoList = new ArrayList<>();
+        for (WorkCommentEntity workCommentEntity : workCommentEntityList) {
+            workCommentDtoList.add(WorkCommentDto.toWorkCommentDto(workCommentEntity));
+        }
+        return workCommentDtoList;
+    }
+
     /* - - - - 선택 메서드 끝 - - - - - */
 
     /* - - - - 수정 메서드 시작 - - - - - */
@@ -323,13 +333,9 @@ public class ProjectDetailSerivce {
     /* - - - - 수정 메서드 끝 - - - - - */
 
     /* - - - - 삭제 메서드 시작 - - - - - */
-    public boolean deleteHead(Long id) {
-        headRepository.deleteById(id);
-        if (headRepository.findById(id).isPresent()) {
-            return false;
-        } else {
-            return true;
-        }
+    public void deleteHead(HeadDto headDto) {
+        HeadEntity targetEntity = headRepository.findById(headDto.getHeadId()).orElse(null);
+        headRepository.deleteById(targetEntity.getHeadId());
     }
 
     public boolean deleteDetail(Long id) {

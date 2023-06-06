@@ -38,7 +38,7 @@ public class DetailEntity {
     private int completion;
 
     @JoinColumn(name = "head_id")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private HeadEntity headIdToDetail;
 
     @JoinColumn(name = "project_id")

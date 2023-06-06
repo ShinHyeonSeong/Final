@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.net.http.HttpRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -280,6 +281,25 @@ public class ProjectDetailController {
         return "workDetail";
     }
     /* - - - - 작업 관련 메서드 끝 - - - -*/
+
+    /* - - - - 삭제 메서드 - - - - */
+//    @RequestMapping("/project/goal/head/delete/{id}")
+//    public String deleteHead(@PathVariable("id") Long headId) {
+//        HeadDto headDto = projectDetailSerivce.selectHead(headId);
+//        List<DetailDto> detailDtoList = projectDetailSerivce.selectAllDetailForHead(headDto);
+//        List<WorkDto> workDtoList = new ArrayList<>();
+//        for (DetailDto detailDto : detailDtoList) {
+//            workDtoList.add((WorkDto) projectDetailSerivce.selectAllWorkForDetail(detailDto.getDetailId()));
+//        }
+//
+//        List<DocumentDto> documentList = projectDetailSerivce.selectAllDocumentForWorkList(workDtoList);
+//        List<WorkCommentDto>
+//        for (WorkDto workDto : workDtoList) {
+//            projectDetailSerivce.selectAllWorkCommentForWork(workDto);
+//        }
+//
+//        return "redirect:/project/goal/headView/id=?" + headId;
+//    }
 
 
     /* - - - - 댓글 관련 메서드 - - - -*/

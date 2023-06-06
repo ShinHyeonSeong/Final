@@ -39,7 +39,7 @@ public class HeadEntity {
     private int completion;
 
     @JoinColumn(name = "project_id")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private ProjectEntity projectIdToHead;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "headIdToDetail")
