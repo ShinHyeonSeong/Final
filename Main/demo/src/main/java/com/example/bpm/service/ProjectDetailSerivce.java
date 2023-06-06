@@ -430,6 +430,7 @@ public class ProjectDetailSerivce {
             detailDto.setCompletion(0);
             log.info("상위 detail 미완 상태로 자동 수정");
             updateDetail(detailDto);
+            checkDetailCompletion(detailDto);
         }
     }
 
