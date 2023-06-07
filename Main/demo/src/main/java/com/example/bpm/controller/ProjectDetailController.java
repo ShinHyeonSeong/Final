@@ -291,39 +291,8 @@ public class ProjectDetailController {
     /* - - - - 삭제 메서드 - - - - */
     @RequestMapping("/project/goal/head/delete/{id}")
     public String deleteHead(@PathVariable("id") Long headId) {
-        //head
-        HeadDto headDto = projectDetailSerivce.selectHead(headId);
-        //하위 detail list
-        List<DetailDto> detailDtoList = projectDetailSerivce.selectAllDetailForHead(headDto);
-        //하위 work list
-        List<WorkDto> workDtoList = new ArrayList<>();
-        for (DetailDto detailDto : detailDtoList) {
-            workDtoList.add((WorkDto) projectDetailSerivce.selectAllWorkForDetail(detailDto.getDetailId()));
-        }
-        //하위 userWork list
-        List<UserWorkDto> userWorkDtoList = new ArrayList<>();
-        for (WorkDto workDto : workDtoList) {
-            userWorkDtoList.add(projectDetailSerivce.selectUserWorkForWork(workDto));
-        }
-        //하위 workComment list
-        List<WorkCommentDto> workCommentDtoList = new ArrayList<>();
-        for (WorkDto workDto : workDtoList) {
-            workCommentDtoList.add((WorkCommentDto)projectDetailSerivce.selectAllWorkCommentForWork(workDto));
-        }
-        //하위 workDocument list
-        List<WorkDocumentDto>workDocumentDtoList = new ArrayList<>();
-        for (WorkDto workDto : workDtoList) {
-            workDocumentDtoList.add((WorkDocumentDto) projectDetailSerivce.selectAllWorkDocumentForWork(workDto));
-        }
-        //하위 document list
-        List<DocumentDto> documentList = projectDetailSerivce.selectAllDocumentForWorkList(workDtoList);
-        //하위 log list
-        List<LogDto> logDtoList = new ArrayList<>();
-        for (DocumentDto documentDto : documentList) {
-            logDtoList.add((LogDto) projectDetailSerivce.selectAllLogForDocument(documentDto));
-        }
-
-        return "redirect:/project/goal/headView/id=?" + headId;
+        projectDetailSerivce.deleteHead(headId);
+        return "redirect:/project/goal/headView/?id=" + headId;
     }
 
 

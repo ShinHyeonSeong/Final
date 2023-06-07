@@ -11,12 +11,12 @@ import javax.persistence.*;
 public class WorkDocumentEntity {
 
     @Id
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "work_id")
     private WorkEntity workIdToWorkDocument;
 
     @Id
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "document_id")
     private Document documentIdToWorkDocument;
 

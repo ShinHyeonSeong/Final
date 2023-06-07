@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -376,6 +377,91 @@ public class ProjectDetailSerivce {
     /* - - - - 수정 메서드 끝 - - - - - */
 
     /* - - - - 삭제 메서드 시작 - - - - - */
+    @Transactional
+    public void deleteHead(Long headId) {
+        //head
+        HeadDto targetHeadDto = HeadDto.toHeadDto(headRepository.findById(headId).orElse(null));
+        log.info("head 검색 완료, head : " + targetHeadDto.getTitle());
+        //하위 detail list
+        List<DetailDto> detailDtoList = selectAllDetailForHead(targetHeadDto);
+        log.info("detail 검색 완료");
+        //하위 work list
+        List<WorkDto> workDtoList = new ArrayList<>();
+        for (DetailDto detailDto : detailDtoList) {
+            List<WorkDto> searchWorkDtoList = selectAllWorkForDetail(detailDto.getDetailId());
+            for (WorkDto workDto : searchWorkDtoList) {
+                workDtoList.add(workDto);
+            }
+        }
+        log.info("work 검색 완료");
+        //하위 userWork list
+        List<UserWorkDto> userWorkDtoList = new ArrayList<>();
+        for (WorkDto workDto : workDtoList) {
+            userWorkDtoList.add(selectUserWorkForWork(workDto));
+        }
+        //하위 workComment list
+        List<WorkCommentDto> workCommentDtoList = new ArrayList<>();
+        for (WorkDto workDto : workDtoList) {
+            List<WorkCommentDto> searchWorkCommentDtoList = selectAllWorkCommentForWork(workDto);
+            for (WorkCommentDto workCommentDto : searchWorkCommentDtoList) {
+                workCommentDtoList.add(workCommentDto);
+            }
+        }
+        log.info("workComment 검색 완료");
+        //하위 workDocument list
+        List<WorkDocumentDto>workDocumentDtoList = new ArrayList<>();
+        for (WorkDto workDto : workDtoList) {
+            List<WorkDocumentDto> searchWorkDocumentDtoList = selectAllWorkDocumentForWork(workDto);
+            for (WorkDocumentDto workDocumentDto : searchWorkDocumentDtoList) {
+                workDocumentDtoList.add(workDocumentDto);
+            }
+        }
+        log.info("workDocument 검색 완료");
+        //하위 document list
+        List<DocumentDto> documentList = selectAllDocumentForWorkList(workDtoList);
+        //하위 log list
+        List<LogDto> logDtoList = new ArrayList<>();
+        for (DocumentDto documentDto : documentList) {
+            List<LogDto> searchLogDtoList = selectAllLogForDocument(documentDto);
+            for (LogDto logDto : searchLogDtoList) {
+                logDtoList.add(logDto);
+            }
+        }
+        log.info("document 검색 완료");
+
+        //log, block delete
+        for (DocumentDto documentDto : documentList) {
+            deleteLogForDocument(documentDto);
+            log.info("log 삭제 완료");
+            deleteBlockForDocument(documentDto);
+            log.info("block 삭제 완료");
+        }
+        //하위 workDocument 삭제
+        deleteWorkDocumentList(workDocumentDtoList);
+        log.info("workDocument 삭제 완료");
+        //하위 document 삭제
+        deleteDocumentList(documentList);
+        log.info("document 삭제 완료");
+        //하위 userWork 삭제
+        deleteUserWorkList(userWorkDtoList);
+        log.info("userWork 삭제 완료");
+        //하위 work 삭제
+        deleteWorkList(workDtoList);
+        log.info("work 삭제 완료");
+        //하위 detail 삭제
+        deleteDetailList(detailDtoList);
+        log.info("detail 삭제 완료");
+        //head 삭제
+        headRepository.deleteById(targetHeadDto.getHeadId());
+        log.info("head 삭제 완료");
+    }
+
+    public void deleteDetailList(List<DetailDto> detailDtoList) {
+        for (DetailDto detailDto : detailDtoList) {
+            detailRepository.deleteAllByDetailId(detailDto.getDetailId());
+        }
+    }
+
     public void deleteWorkList(List<WorkDto> workDtoList) {
         for (WorkDto workDto : workDtoList) {
             workRepository.deleteAllByWorkId(workDto.getWorkId());
