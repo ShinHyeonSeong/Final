@@ -20,11 +20,11 @@ public class WorkRequestEntity {
     private int completion;
 
     @JoinColumn(name = "requst_user")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private UserEntity userIdToWorkRequest;
 
     @JoinColumn(name = "detail_id")
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private DetailEntity detailIdToWorkRequest;
 
 }

@@ -18,5 +18,8 @@ public interface WorkRepository extends JpaRepository<WorkEntity, Long> {
     public List<WorkEntity> findAllByDetailIdToWork_DetailId(Long detailId);
 
     public WorkEntity findByWorkId(Long id);
+
+    public void deleteAllByWorkId(Long id);
+
 }
 

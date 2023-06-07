@@ -13,12 +13,12 @@ import javax.persistence.*;
 @IdClass(UserWorkPKEntity.class)
 public class UserWorkEntity {
     @Id
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "work_id")
     private WorkEntity workIdToUserWork;
 
     @Id
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "uuid")
     private UserEntity userIdToUserWork;
 

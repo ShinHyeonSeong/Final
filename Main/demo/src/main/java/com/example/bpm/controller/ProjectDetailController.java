@@ -2,6 +2,7 @@ package com.example.bpm.controller;
 
 import com.example.bpm.dto.*;
 import com.example.bpm.entity.Document;
+import com.example.bpm.entity.Log;
 import com.example.bpm.entity.UserEntity;
 import com.example.bpm.entity.WorkEntity;
 import com.example.bpm.service.*;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.net.http.HttpRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -285,6 +287,44 @@ public class ProjectDetailController {
         return "workDetail";
     }
     /* - - - - 작업 관련 메서드 끝 - - - -*/
+
+    /* - - - - 삭제 메서드 - - - - */
+    @RequestMapping("/project/goal/head/delete/{id}")
+    public String deleteHead(@PathVariable("id") Long headId) {
+        //head
+        HeadDto headDto = projectDetailSerivce.selectHead(headId);
+        //하위 detail list
+        List<DetailDto> detailDtoList = projectDetailSerivce.selectAllDetailForHead(headDto);
+        //하위 work list
+        List<WorkDto> workDtoList = new ArrayList<>();
+        for (DetailDto detailDto : detailDtoList) {
+            workDtoList.add((WorkDto) projectDetailSerivce.selectAllWorkForDetail(detailDto.getDetailId()));
+        }
+        //하위 userWork list
+        List<UserWorkDto> userWorkDtoList = new ArrayList<>();
+        for (WorkDto workDto : workDtoList) {
+            userWorkDtoList.add(projectDetailSerivce.selectUserWorkForWork(workDto));
+        }
+        //하위 workComment list
+        List<WorkCommentDto> workCommentDtoList = new ArrayList<>();
+        for (WorkDto workDto : workDtoList) {
+            workCommentDtoList.add((WorkCommentDto)projectDetailSerivce.selectAllWorkCommentForWork(workDto));
+        }
+        //하위 workDocument list
+        List<WorkDocumentDto>workDocumentDtoList = new ArrayList<>();
+        for (WorkDto workDto : workDtoList) {
+            workDocumentDtoList.add((WorkDocumentDto) projectDetailSerivce.selectAllWorkDocumentForWork(workDto));
+        }
+        //하위 document list
+        List<DocumentDto> documentList = projectDetailSerivce.selectAllDocumentForWorkList(workDtoList);
+        //하위 log list
+        List<LogDto> logDtoList = new ArrayList<>();
+        for (DocumentDto documentDto : documentList) {
+            logDtoList.add((LogDto) projectDetailSerivce.selectAllLogForDocument(documentDto));
+        }
+
+        return "redirect:/project/goal/headView/id=?" + headId;
+    }
 
 
     /* - - - - 댓글 관련 메서드 - - - -*/
