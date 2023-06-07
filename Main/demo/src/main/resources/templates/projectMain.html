@@ -27,17 +27,19 @@
 		<div class="centered-top">
 			<div class="project-intro">
 				<p class="div-h">Project Introduction</p>
-				<p class="div-content" th:text="${projectDto.subtitle}">Lorem ipsum dolor sit amet, consectetur
-					adipiscing elit. Sed auctor semper
-					massa, in scelerisque
-					velit euismod in. Fusce vehicula enim id velit sagittis, a bibendum ipsum imperdiet.</p>
+				<p class="div-content" th:text="${projectDto.subtitle}"></p>
 			</div>
 			<div class="team-members">
 				<div class="div-h">Team Members</div>
 				<div class="member" th:each="member : ${joinUsers}">
-					<h3 th:text="${member.name}"></h3>
-					<div class="member-role" th:text="${member.email}">Web Developer</div>
+					<div style="display: flex; flex-direction: row">
+						<p>User : </p>
+						<div style="font-size: 20px; margin: 15px;" th:text="${member.name}"></div>
+					</div>
+						<div class="member-role" th:text="${member.email}"></div>
+					<hr>
 				</div>
+			
 			</div>
 		</div>
 		<div class="my-work">

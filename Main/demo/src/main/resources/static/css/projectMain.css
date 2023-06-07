@@ -78,6 +78,12 @@ a {
     margin-top: -1rem;
 }
 
+.member > hr {
+    background: #ffffff;
+    height: 1px;
+    border: 0;
+}
+
 .my-work {
     min-width: 1050px;
     background-color: #333;

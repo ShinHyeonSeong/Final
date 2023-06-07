@@ -66,8 +66,13 @@ public class ProjectDetailController {
 
     // 프로젝트 메인 창 매핑
     @GetMapping("/project/main")
-    public String goProjectMain() {
+    public String goProjectMain(Model model) {
         ProjectDto sessionProject = getSessionProject();
+        UserDto userDto = getSessionUser();
+        List<HeadDto> headDtoList = projectDetailSerivce.selectAllHead(sessionProject);
+        List<WorkDto> userWorkDtoList = projectDetailSerivce.selectAllWorkForUser(userDto);
+        model.addAttribute("headDtoList", headDtoList);
+        model.addAttribute("userWorkDtoList", userWorkDtoList);
         return "redirect:/project/" + sessionProject.getProjectId();
     }
 
@@ -91,7 +96,7 @@ public class ProjectDetailController {
         return "head-create";
     }
 
-    // 하위 목표 생성 진입
+    // 하위 목표 생성 main
     @GetMapping("/project/detail/create")
     public String goCreateDetail(Model model) {
         ProjectDto currentProject = getSessionProject();
@@ -104,10 +109,10 @@ public class ProjectDetailController {
     /* 클라이언트에서 전달 받을 때, Dto 내부 속성 중 전달받을 수 없는 속성들이 있다. 때문에 @ModelAttribute를 쓰지 않고 하나씩 전달 받은 후
         서비스 단위로 때려박았음. 너무 보기 복잡하기도 하고 좀 그런데 보면서 다른 방법이 있으면 얘기해주면 좋게따. */
     @PostMapping("/project/goal/createHead")
-    public String createGoal(@RequestParam(value = "title")String title,
-                             @RequestParam(value = "startDay")String startDay,
-                             @RequestParam(value = "deadline")String deadline,
-                             @RequestParam(value = "discription")String discription,
+    public String createGoal(@RequestParam(value = "title") String title,
+                             @RequestParam(value = "startDay") String startDay,
+                             @RequestParam(value = "deadline") String deadline,
+                             @RequestParam(value = "discription") String discription,
                              Model model) {
         ProjectDto currentProject = getSessionProject();
         log.info("목표 생성 컨트롤러 작동, ");
@@ -118,7 +123,7 @@ public class ProjectDetailController {
     // 디테일 생성 메서드
     @PostMapping("/project/goal/createDetail")
     public String createGoal(@RequestParam(value = "title") String title,
-                             @RequestParam(value = "startDay")String startDay,
+                             @RequestParam(value = "startDay") String startDay,
                              @RequestParam(value = "deadline") String deadline,
                              @RequestParam(value = "discription") String discription,
                              @RequestParam(value = "headId") Long headId,
@@ -186,7 +191,7 @@ public class ProjectDetailController {
     //
     @PostMapping("/project/head/edit")
     public String editHead(@RequestParam(value = "title") String title,
-                           @RequestParam(value = "startDay")String startDay,
+                           @RequestParam(value = "startDay") String startDay,
                            @RequestParam(value = "deadline") String deadline,
                            @RequestParam(value = "discription") String discription,
                            @RequestParam(value = "headId") Long headId,
@@ -197,7 +202,7 @@ public class ProjectDetailController {
 
     @PostMapping("/project/detail/edit")
     public String editDetail(@RequestParam(value = "title") String title,
-                             @RequestParam(value = "startDay")String startDay,
+                             @RequestParam(value = "startDay") String startDay,
                              @RequestParam(value = "deadline") String deadline,
                              @RequestParam(value = "discription") String discription,
                              @RequestParam(value = "headId") Long headId,
@@ -365,6 +370,7 @@ public class ProjectDetailController {
     public String viewCalendar() {
         return "calendar";
     }
+
     @GetMapping("/calender/event") //ajax 데이터 전송 URL
     public String getEvent() {
         return "main";
