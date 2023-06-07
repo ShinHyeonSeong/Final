@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -13,7 +13,7 @@
 	<ul>
 		<li class="active"><a href="/project/main">홈</a></li>
 		<li><a href="calenderEX.html">달력</a></li>
-		<li><a href="./projectCreate.html">나가기</a></li>
+		<li><a href="/project/projectAllList">나가기</a></li>
 	</ul>
 </div>
 <div class="centered-content">
@@ -31,51 +31,58 @@
 			</div>
 		</div>
 	</div>
-
+	
 	<div class="goals">
-		<div class="div-h">목표 목록</div>
+		<div class="div-h" style="margin-left: 5%;">목표 목록</div>
+		<hr style="background: #ffffff; height: 1px; border: 0;">
 		<br>
 		<table>
 			<thead>
 			<tr>
-				<th class="job-name">작업명</th>
+				<th class="job-deadline">이름</th>
+				<th class="job-deadline">설명</th>
 				<th class="job-deadline">마감기한</th>
+				<th class="job-name">상태</th>
 			</tr>
 			</thead>
 			<tbody>
 			<tr th:each="headDto : ${headDtoList}">
-				<td class="job-name"><a th:text="${headDto.title}"></a></td>
-				<td class="job-deadline" th:text="${#dates.format(headDto.endDay, 'yyyy-MM-dd')}"></td>
-			</tr>
-			<tr th:each="detailDto : ${detailDtoList}">
-				<td class="job-name"><a th:text="${detailDto.title}"></a></td>
-				<td class="job-deadline" th:text="${#dates.format(detailDto.endDay, 'yyyy-MM-dd')}"></td>
+				<td class="job-deadline" th:text="${headDto.title}"></td>
+				<td class="job-deadline" th:text="${headDto.discription}"></td>
+				<td class="job-name" th:text="${#dates.format(headDto.endDay, 'yyyy-MM-dd')}"></td>
+				<td class="job-name" style="color: white;" th:if="${headDto.completion == 1}">완료</td>
+				<td class="job-name" style="color: red;" th:if="${headDto.completion == 0}">진행중</td>
 			</tr>
 			</tbody>
 		</table>
 	</div>
-
-	<div class="my-work">
-		<div class="div-h">작업 목록</div>
+	
+	<div class="goals">
+		<div style="margin-left: 5%;" class="div-h">작업 목록</div>
 		<br>
 		<table>
 			<thead>
 			<tr>
-				<th class="job-name">작업명</th>
+				<th class="job-deadline">이름</th>
+				<th class="job-deadline">설명</th>
 				<th class="job-deadline">마감기한</th>
+				<th class="job-name">상태</th>
 			</tr>
 			</thead>
 			<tbody>
 			<tr th:each="workDto : ${workDtoList}">
-				<td class="job-name"><a th:text="${workDto.title}"></a></td>
-				<td class="job-deadline" th:text="${#dates.format(workDto.endDay, 'yyyy-MM-dd')}"></td>
+				<td class="job-deadline" th:text="${workDto.title}"></td>
+				<td class="job-deadline" th:text="${workDto.discription}"></td>
+				<td class="job-name" th:text="${#dates.format(workDto.endDay, 'yyyy-MM-dd')}"></td>
+				<td class="job-name" style="color: white;" th:if="${workDto.completion == 1}">완료</td>
+				<td class="job-name" style="color: red;" th:if="${workDto.completion == 0}">진행중</td>
 			</tr>
 			</tbody>
 		</table>
 	</div>
-
+	
 	<div class="my-work">
-		<div class="div-h">문서 목록</div>
+		<div class="div-h" style="margin-left: 5%;" >문서 목록</div>
 		<br>
 		<table>
 			<thead>

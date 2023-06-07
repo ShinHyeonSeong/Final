@@ -38,9 +38,9 @@ a {
     margin-left: 4rem;
 }
 
-.top-bar a {
-    margin-left: auto;
-}
+/*.top-bar a {*/
+/*    margin-left: auto;*/
+/*}*/
 
 .add-work-btn {
     font-size: 18px;
@@ -53,7 +53,7 @@ a {
     border-radius: 5px;
     cursor: pointer;
     transition: 0.5s;
-    margin-right: 2rem;
+    margin-left: -600px;
 }
 
 .add-work-btn:hover {

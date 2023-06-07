@@ -139,12 +139,12 @@ public class ProjectController {
     }
 
     @PostMapping("/project/createPage")
-    public String createProject(@RequestParam(value = "title")String title,
-                                @RequestParam(value = "subtitle")String subtitle,
-                                @RequestParam(value = "startDay")String startDay,
-                                @RequestParam(value = "endDay")String endDay,
+    public String createProject(@RequestParam(value = "title") String title,
+                                @RequestParam(value = "subtitle") String subtitle,
+                                @RequestParam(value = "startDay") String startDay,
+                                @RequestParam(value = "endDay") String endDay,
                                 HttpSession session) {
-        if (title.equals(null)||startDay.equals(null)||endDay.equals(null)) {
+        if (title.equals(null) || startDay.equals(null) || endDay.equals(null)) {
             log.info("값을 다 입력하지 못했음 (컨트롤러 작동)");
             return "projectCreate";
         } else {
@@ -162,19 +162,26 @@ public class ProjectController {
     // 권한 검색 및 부여 후, 권한에 따라 페이지 리턴.
     @RequestMapping("/project/{id}")
     public String selectProject(@PathVariable("id") Long id, HttpSession session, Model model) {
+        UserDto userDto = getSessionUser();
         ProjectDto presentDto = projectSerivce.selectProject(id);
-        List<UserDto> userDtoList = userService.searchUserToProject(id);
+
         session.removeAttribute("currentProject");
         session.setAttribute("currentProject", presentDto);
         checkAuth();
-        model.addAttribute("projectDto", presentDto);
-        model.addAttribute("joinUsers", userDtoList);
 
         if (getSessionAuth() != 2) {
-            //권한이 없습니다 알람창 띄우기
+            List<UserDto> userDtoList = userService.searchUserToProject(id);
+            List<HeadDto> headDtoList = projectDetailSerivce.selectAllHead(presentDto);
+            List<WorkDto> userWorkDtoList = projectDetailSerivce.selectAllWorkForUser(userDto);
+
+            model.addAttribute("headDtoList", headDtoList);
+            model.addAttribute("userWorkDtoList", userWorkDtoList);
+            model.addAttribute("projectDto", presentDto);
+            model.addAttribute("joinUsers", userDtoList);
+
             return "projectMain";
         } else if (getSessionAuth() == 2) {
-            List<HeadDto> headDtoList = projectDetailSerivce.selectAllHead(projectSerivce.selectProject(id));
+            List<HeadDto> headDtoList = projectDetailSerivce.selectAllHead(presentDto);
             List<DetailDto> detailDtoList = projectDetailSerivce.selectAllDetailForProject(projectSerivce.selectProject(id));
             List<WorkDto> workDtoList = projectDetailSerivce.selectAllWorkForProject(presentDto);
             List<DocumentDto> documentDtoList = projectDetailSerivce.selectAllDocumentForWorkList(workDtoList);
@@ -185,6 +192,7 @@ public class ProjectController {
             model.addAttribute("documentDtoList", documentDtoList);
             return "onlyReadPage";
         }
+        //권한이 없습니다 알람창 띄우기
         return null;
     }
 

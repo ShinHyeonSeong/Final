@@ -36,19 +36,55 @@
 						<p>User : </p>
 						<div style="font-size: 20px; margin: 15px;" th:text="${member.name}"></div>
 					</div>
-						<div class="member-role" th:text="${member.email}"></div>
+					<div class="member-role" th:text="${member.email}"></div>
 					<hr>
 				</div>
 			
 			</div>
 		</div>
-		<div class="my-work">
-			<div class="div-h">내 작업</div>
-			<p class="div-content">작업 설명</p>
-		</div>
 		<div class="goals">
 			<div class="div-h">목표</div>
-			<p class="div-content">목표 설명</p>
+			<table>
+				<thead>
+				<tr>
+					<th class="job-deadline">이름</th>
+					<th class="job-deadline">설명</th>
+					<th class="job-deadline">마감기한</th>
+					<th class="job-name">상태</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr th:each="headDto : ${headDtoList}">
+					<td class="job-deadline" th:text="${headDto.title}"></td>
+					<td class="job-deadline" th:text="${headDto.discription}"></td>
+					<td class="job-name" th:text="${#dates.format(headDto.endDay, 'yyyy-MM-dd')}"></td>
+					<td class="job-name" style="color: white;" th:if="${headDto.completion == 1}">완료</td>
+					<td class="job-name" style="color: red;" th:if="${headDto.completion == 0}">진행중</td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="my-work">
+			<div class="div-h">내 작업</div>
+			<table>
+				<thead>
+				<tr>
+					<th class="job-deadline">이름</th>
+					<th class="job-deadline">설명</th>
+					<th class="job-deadline">마감기한</th>
+					<th class="job-name">상태</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr th:each="workDto : ${userWorkDtoList}">
+					<td class="job-deadline" th:text="${workDto.title}"></td>
+					<td class="job-deadline" th:text="${workDto.discription}"></td>
+					<td class="job-name" th:text="${#dates.format(workDto.endDay, 'yyyy-MM-dd')}"></td>
+					<td class="job-name" style="color: white;" th:if="${workDto.completion == 1}">완료</td>
+					<td class="job-name" style="color: red;" th:if="${workDto.completion == 0}">진행중</td>
+				</tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
 </div>

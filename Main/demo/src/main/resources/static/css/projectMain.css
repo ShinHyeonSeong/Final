@@ -101,3 +101,112 @@ a {
     border-radius: 10px;
     margin: 10px;
 }
+
+
+/* 목표 및 작업 리스트 css*/
+.goal-container {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.goal-container > h1 {
+    text-align: center;
+    font-size: 32px;
+}
+
+.board {
+    display: flex;
+}
+
+.column {
+    background: #333333;
+    flex: 1;
+    margin-right: 20px;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.column > h2 {
+    text-align: center;
+    margin-top: 0;
+    font-size: 34px;
+}
+
+.user-story {
+    background-color: #444444;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    position: relative;
+}
+
+.user-story span {
+    display: block;
+}
+
+.status {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 14px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin: 15px;
+    color: #fff;
+}
+
+.sortable {
+    min-height: 60px;
+}
+
+
+table {
+    border-top: 1px #333 solid;
+    border-bottom: 1px #333 solid;
+    font-size: .9em;
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+}
+
+th {
+    padding: 1em 1.5em;
+    vertical-align: middle;
+    font-size: 20px;
+    text-align: left;
+}
+
+thead {
+    font-weight: bold;
+    color: #fff;
+}
+
+td {
+    font-size: 17px;
+    padding: 1em 1.5em;
+    vertical-align: middle;
+    border-top: 1px #333 solid;
+    transition: 0.5s;
+}
+
+td:hover {
+    background-color: #555;
+}
+
+td a {
+    display: block;
+    width: 100%;
+    height: 100%
+}
+
+.job-name {
+    width: 40rem;
+    column-span: 2;
+}
+.job-deadline{
+    width: 80rem;
+    column-span: 2;
+}
+
