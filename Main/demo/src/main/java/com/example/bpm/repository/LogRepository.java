@@ -12,4 +12,7 @@ import java.util.List;
 public interface LogRepository extends JpaRepository<Log, String> {
     List<Log> findByDocumentId(String id);
     Log findBylogId(String id);
+    List<Log> findAllByDocumentId(String id);
+
+    void deleteAllByDocumentId(String id);
 }

@@ -10,4 +10,6 @@ public interface WorkDocumentRepository extends JpaRepository<WorkDocumentEntity
 
     public List<WorkDocumentEntity> findAllByWorkIdToWorkDocument_WorkId(Long id);
     public WorkDocumentEntity findByDocumentIdToWorkDocument_DocumentId(String id);
+
+    public void deleteAllByWorkIdToWorkDocument_WorkId(Long id);
 }

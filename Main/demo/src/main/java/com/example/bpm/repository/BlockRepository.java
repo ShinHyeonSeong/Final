@@ -11,4 +11,7 @@ import java.util.List;
 @Table(name = "block")
 public interface BlockRepository extends JpaRepository<Block, String> {
     List<Block> findByDocumentId(String id);
+    List<Block> findAllByDocumentId(String id);
+
+    void deleteAllByDocumentId(String id);
 }

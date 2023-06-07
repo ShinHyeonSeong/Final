@@ -37,6 +37,10 @@ public class ProjectDetailSerivce {
     private DocumentRepository documentRepository;
     @Autowired
     private WorkDocumentRepository workDocumentRepository;
+    @Autowired
+    private LogRepository logRepository;
+    @Autowired
+    private BlockRepository blockRepository;
 
     Date currentDate = new Date(); // 시작 날짜(현재) 생성
     DateManager dateManager = new DateManager();
@@ -212,6 +216,12 @@ public class ProjectDetailSerivce {
         return UserDto.toUserDto(userEntity.get());
     }
 
+    public UserWorkDto selectUserWorkForWork(WorkDto workDto) {
+        UserWorkDto userWorkDto = UserWorkDto.toUserWorkDto(
+                userWorkRepository.findByWorkIdToUserWork_WorkId(workDto.getWorkId()));
+        return userWorkDto;
+    }
+
     public Map<WorkDto, UserDto> selectAllUserWorkForWorkList(List<WorkDto> workDtoList) {
         Map<WorkDto, UserDto> userWorkMap = new HashMap<>();
         for (WorkDto workDto : workDtoList) {
@@ -221,6 +231,17 @@ public class ProjectDetailSerivce {
             userWorkMap.put(workDtoKey, userDtoValue);
         }
         return userWorkMap;
+    }
+
+    public List<WorkDocumentDto> selectAllWorkDocumentForWork(WorkDto workDto) {
+        List<WorkDocumentEntity> workDocumentEntityList =
+                workDocumentRepository.findAllByWorkIdToWorkDocument_WorkId(workDto.getWorkId());
+        List<WorkDocumentDto> workDocumentDtoList = new ArrayList<>();
+        WorkDocumentDto workDocumentDto = new WorkDocumentDto();
+        for (WorkDocumentEntity workDocumentEntity : workDocumentEntityList) {
+            workDocumentDtoList.add(workDocumentDto.toWorkDocumentDto(workDocumentEntity));
+        }
+        return workDocumentDtoList;
     }
 
     // work list 매개변수를 통해 workDocument 테이블을 경유하여 workId에 대응하는 모든 document를 리스트로 반환
@@ -245,6 +266,28 @@ public class ProjectDetailSerivce {
             workCommentDtoList.add(WorkCommentDto.toWorkCommentDto(workCommentEntity));
         }
         return workCommentDtoList;
+    }
+
+    public List<LogDto> selectAllLogForDocument(DocumentDto documentDto) {
+        List<Log> logEntityList = logRepository.findAllByDocumentId(documentDto.getDocumentId());
+        List<LogDto> logDtoList = new ArrayList<>();
+        for (Log log : logEntityList) {
+            LogDto logDto = new LogDto();
+            logDto.insertEntity(log);
+            logDtoList.add(logDto);
+        }
+        return logDtoList;
+    }
+
+    public List<BlockDto> selectAllBlockForDocument(DocumentDto documentDto) {
+        List<Block> blockEntityList = blockRepository.findAllByDocumentId(documentDto.getDocumentId());
+        List<BlockDto> blockDtoList = new ArrayList<>();
+        for (Block block : blockEntityList) {
+            BlockDto blockDto = new BlockDto();
+            blockDto.insertEntity(block);
+            blockDtoList.add(blockDto);
+        }
+        return blockDtoList;
     }
 
     /* - - - - 선택 메서드 끝 - - - - - */
@@ -333,29 +376,38 @@ public class ProjectDetailSerivce {
     /* - - - - 수정 메서드 끝 - - - - - */
 
     /* - - - - 삭제 메서드 시작 - - - - - */
-    public void deleteHead(HeadDto headDto) {
-        HeadEntity targetEntity = headRepository.findById(headDto.getHeadId()).orElse(null);
-        headRepository.deleteById(targetEntity.getHeadId());
-    }
-
-    public boolean deleteDetail(Long id) {
-        detailRepository.deleteById(id);
-        if (detailRepository.findById(id).isPresent()) {
-            return false;
-        } else {
-            return true;
+    public void deleteWorkList(List<WorkDto> workDtoList) {
+        for (WorkDto workDto : workDtoList) {
+            workRepository.deleteAllByWorkId(workDto.getWorkId());
         }
     }
 
-    public boolean deleteWork(Long id) {
-        workRepository.deleteById(id);
-        if (workRepository.findById(id).isPresent()) {
-            return false;
-        } else {
-            return true;
+    public void deleteUserWorkList(List<UserWorkDto> userWorkDtoList) {
+        for (UserWorkDto userWorkDto : userWorkDtoList) {
+            userWorkRepository.deleteAllByWorkIdToUserWork_WorkId(userWorkDto.getWorkIdToUserWork().getWorkId());
         }
     }
 
+    public void deleteWorkDocumentList(List<WorkDocumentDto> workDocumentDtoList) {
+        for (WorkDocumentDto workDocumentDto : workDocumentDtoList) {
+            workDocumentRepository.deleteAllByWorkIdToWorkDocument_WorkId(
+                    workDocumentDto.getWorkIdToWorkDocument().getWorkId());
+        }
+    }
+
+    public void deleteDocumentList(List<DocumentDto> documentDtoList) {
+        for (DocumentDto documentDto : documentDtoList) {
+            documentRepository.deleteById(documentDto.getDocumentId());
+        }
+    }
+
+    public void deleteBlockForDocument(DocumentDto documentDto) {
+        blockRepository.deleteAllByDocumentId(documentDto.getDocumentId());
+    }
+
+    public void deleteLogForDocument(DocumentDto documentDto) {
+        logRepository.deleteAllByDocumentId(documentDto.getDocumentId());
+    }
     /* - - - - 삭제 메서드 끝 - - - - - */
 
     /* - - - - 상태 변경 메서드 - - - -  */
