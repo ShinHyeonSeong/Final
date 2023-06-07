@@ -291,9 +291,16 @@ public class ProjectDetailController {
     /* - - - - 삭제 메서드 - - - - */
     @RequestMapping("/project/goal/head/delete/{id}")
     public String deleteHead(@PathVariable("id") Long headId) {
-        projectDetailSerivce.deleteHead(headId);
-        return "redirect:/project/goal/headView/?id=" + headId;
+        projectDetailSerivce.deleteHeadEntity(headId);
+        return "redirect:/project/goal/headView/" + headId;
     }
+
+    @RequestMapping("/project/goal/detail/delete/{id}")
+    public String deleteDetail(@PathVariable("id") Long detailId) {
+        projectDetailSerivce.deleteDetailEntity(detailId);
+        return "redirect:/project/goal/detailView/" + detailId;
+    }
+
 
 
     /* - - - - 댓글 관련 메서드 - - - -*/

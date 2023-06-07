@@ -378,7 +378,7 @@ public class ProjectDetailSerivce {
 
     /* - - - - 삭제 메서드 시작 - - - - - */
     @Transactional
-    public void deleteHead(Long headId) {
+    public void deleteHeadEntity(Long headId) {
         //head
         HeadDto targetHeadDto = HeadDto.toHeadDto(headRepository.findById(headId).orElse(null));
         log.info("head 검색 완료, head : " + targetHeadDto.getTitle());
@@ -455,6 +455,82 @@ public class ProjectDetailSerivce {
         headRepository.deleteById(targetHeadDto.getHeadId());
         log.info("head 삭제 완료");
     }
+
+    @Transactional
+    public void deleteDetailEntity(Long detailId) {
+        //detail
+        DetailDto detailDto = DetailDto.toDetailDto(detailRepository.findById(detailId).orElse(null));
+        //workDto 변환
+        List<WorkEntity> workEntityList = workRepository.findAllByDetailIdToWork_DetailId(detailId);
+        List<WorkDto> workDtoList = new ArrayList<>();
+        for (WorkEntity workEntity : workEntityList) {
+            workDtoList.add(WorkDto.toWorkDto(workEntity));
+        }
+        log.info("work 검색 완료");
+        //하위 userWork list
+        List<UserWorkDto> userWorkDtoList = new ArrayList<>();
+        for (WorkDto workDto : workDtoList) {
+            userWorkDtoList.add(selectUserWorkForWork(workDto));
+        }
+        log.info("userWork 검색 완료");
+        //하위 workComment list
+        List<WorkCommentDto> workCommentDtoList = new ArrayList<>();
+        for (WorkDto workDto : workDtoList) {
+            List<WorkCommentDto> searchWorkCommentDtoList = selectAllWorkCommentForWork(workDto);
+            for (WorkCommentDto workCommentDto : searchWorkCommentDtoList) {
+                workCommentDtoList.add(workCommentDto);
+            }
+        }
+        log.info("workComment 검색 완료");
+        //하위 workDocument list
+        List<WorkDocumentDto>workDocumentDtoList = new ArrayList<>();
+        for (WorkDto workDto : workDtoList) {
+            List<WorkDocumentDto> searchWorkDocumentDtoList = selectAllWorkDocumentForWork(workDto);
+            for (WorkDocumentDto workDocumentDto : searchWorkDocumentDtoList) {
+                workDocumentDtoList.add(workDocumentDto);
+            }
+        }
+        log.info("workDocument 검색 완료");
+        //하위 document list
+        List<DocumentDto> documentList = selectAllDocumentForWorkList(workDtoList);
+        //하위 log list
+        List<LogDto> logDtoList = new ArrayList<>();
+        for (DocumentDto documentDto : documentList) {
+            List<LogDto> searchLogDtoList = selectAllLogForDocument(documentDto);
+            for (LogDto logDto : searchLogDtoList) {
+                logDtoList.add(logDto);
+            }
+        }
+        log.info("document 검색 완료");
+
+        //log, block delete
+        for (DocumentDto documentDto : documentList) {
+            deleteLogForDocument(documentDto);
+            log.info("log 삭제 완료");
+            deleteBlockForDocument(documentDto);
+            log.info("block 삭제 완료");
+        }
+        //하위 workDocument 삭제
+        deleteWorkDocumentList(workDocumentDtoList);
+        log.info("workDocument 삭제 완료");
+        //하위 document 삭제
+        deleteDocumentList(documentList);
+        log.info("document 삭제 완료");
+        //하위 userWork 삭제
+        deleteUserWorkList(userWorkDtoList);
+        log.info("userWork 삭제 완료");
+        //하위 work 삭제
+        deleteWorkList(workDtoList);
+        log.info("work 삭제 완료");
+        //detail 삭제
+        deleteDetail(detailDto);
+        log.info("detail 삭제 완료");
+    }
+
+    public void deleteDetail(DetailDto detailDto) {
+        detailRepository.deleteByDetailId(detailDto.getDetailId());
+    }
+
 
     public void deleteDetailList(List<DetailDto> detailDtoList) {
         for (DetailDto detailDto : detailDtoList) {

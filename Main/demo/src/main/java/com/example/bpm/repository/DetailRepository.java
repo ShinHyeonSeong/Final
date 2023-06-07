@@ -19,5 +19,6 @@ public interface DetailRepository extends JpaRepository<DetailEntity, Long> {
     public List<DetailEntity>findAllByProjectIdToDetail_ProjectId(Long projectId);
     @Transactional
     public void deleteAllByDetailId(Long id);
+    public void deleteByDetailId(Long id);
 
 }
