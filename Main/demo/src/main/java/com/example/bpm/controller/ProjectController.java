@@ -164,32 +164,31 @@ public class ProjectController {
     public String selectProject(@PathVariable("id") Long id, HttpSession session, Model model) {
         UserDto userDto = getSessionUser();
         ProjectDto presentDto = projectSerivce.selectProject(id);
+        List<UserDto> userDtoList = userService.searchUserToProject(id);
+        List<HeadDto> headDtoList = projectDetailSerivce.selectAllHead(presentDto);
 
         session.removeAttribute("currentProject");
         session.setAttribute("currentProject", presentDto);
         checkAuth();
 
+        model.addAttribute("projectDto", presentDto);
+        model.addAttribute("joinUsers", userDtoList);
+        model.addAttribute("headDtoList", headDtoList);
+
         if (getSessionAuth() != 2) {
-            List<UserDto> userDtoList = userService.searchUserToProject(id);
-            List<HeadDto> headDtoList = projectDetailSerivce.selectAllHead(presentDto);
             List<WorkDto> userWorkDtoList = projectDetailSerivce.selectAllWorkForUser(userDto);
 
-            model.addAttribute("headDtoList", headDtoList);
             model.addAttribute("userWorkDtoList", userWorkDtoList);
-            model.addAttribute("projectDto", presentDto);
-            model.addAttribute("joinUsers", userDtoList);
-
             return "projectMain";
         } else if (getSessionAuth() == 2) {
-            List<HeadDto> headDtoList = projectDetailSerivce.selectAllHead(presentDto);
             List<DetailDto> detailDtoList = projectDetailSerivce.selectAllDetailForProject(projectSerivce.selectProject(id));
             List<WorkDto> workDtoList = projectDetailSerivce.selectAllWorkForProject(presentDto);
             List<DocumentDto> documentDtoList = projectDetailSerivce.selectAllDocumentForWorkList(workDtoList);
 
-            model.addAttribute("headDtoList", headDtoList);
             model.addAttribute("detailDtoList", detailDtoList);
             model.addAttribute("workDtoList", workDtoList);
             model.addAttribute("documentDtoList", documentDtoList);
+
             return "onlyReadPage";
         }
         //권한이 없습니다 알람창 띄우기
