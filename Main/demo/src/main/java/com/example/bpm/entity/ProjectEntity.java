@@ -34,7 +34,7 @@ public class ProjectEntity {
     @Column(name = "end_day")
     private Date endDay;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "projectIdInRole", cascade = CascadeType.REMOVE)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "projectIdInRole")
     private List<ProjectRoleEntity> projectRoleEntityList = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "projectIdToRequest")

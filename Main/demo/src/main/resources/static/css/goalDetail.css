@@ -244,7 +244,7 @@ td a {
     margin-bottom: 1rem;
 }
 
-.delete-btn {
+.delete-btn:hover {
     background-color: rgb(122, 56, 56);
 }
 

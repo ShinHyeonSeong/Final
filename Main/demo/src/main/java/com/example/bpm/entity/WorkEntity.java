@@ -36,11 +36,11 @@ public class WorkEntity {
     private int completion;
 
     @JoinColumn(name = "detail_id")
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     private DetailEntity detailIdToWork;
 
     @JoinColumn(name = "project_id")
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     private ProjectEntity projectIdToWork;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "workIdToUserWork")
