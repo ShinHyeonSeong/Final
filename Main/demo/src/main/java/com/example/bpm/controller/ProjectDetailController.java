@@ -257,7 +257,7 @@ public class ProjectDetailController {
         DetailDto connectDetail = projectDetailSerivce.selectDetail(detailId);
         WorkDto createWorkDto = projectDetailSerivce.createWork(title, discription, startDay, deadline,
                 connectDetail, currentProject);
-        log.info("작업 생성 메서드 완료, id = " + createWorkDto.getWorkId());
+//        log.info("작업 생성 메서드 완료, id = " + createWorkDto.getWorkId());
         projectDetailSerivce.addUserWork(createWorkDto, chargeUser);
         return "redirect:/project/works";
     }
