@@ -108,23 +108,22 @@ public class ProjectDetailSerivce {
         if (workRepository.findByTitle(title).isPresent()) {
             log.info("work title 이 이미 존재한다. (서비스)");
             return null;
-        } else {
-            Date startDay = dateManager.formatter(startDate);
-            Date endDay = dateManager.formatter(deadline);
-
-            WorkDto createWorkDto = new WorkDto();
-            createWorkDto.setTitle(title);
-            createWorkDto.setDiscription(discription);
-            createWorkDto.setStartDay(startDay);
-            createWorkDto.setEndDay(endDay);
-            createWorkDto.setCompletion(0);
-            createWorkDto.setDetailIdToWork(detailRepository.findById(connectDetail.getDetailId()).orElse(null));
-            createWorkDto.setProjectIdToWork(projectRepository.findById(projectDto.getProjectId()).orElse(null));
-            log.info("work 생성 성공 (서비스)");
-            WorkEntity createWork = workRepository.save(WorkEntity.toWorkEntity(createWorkDto));
-            log.info("workEntity Id = " + createWork.getWorkId().toString());
-            return WorkDto.toWorkDto(createWork);
         }
+        Date startDay = dateManager.formatter(startDate);
+        Date endDay = dateManager.formatter(deadline);
+
+        WorkDto createWorkDto = new WorkDto();
+        createWorkDto.setTitle(title);
+        createWorkDto.setDiscription(discription);
+        createWorkDto.setStartDay(startDay);
+        createWorkDto.setEndDay(endDay);
+        createWorkDto.setCompletion(0);
+        createWorkDto.setDetailIdToWork(detailRepository.findById(connectDetail.getDetailId()).orElse(null));
+        createWorkDto.setProjectIdToWork(projectRepository.findById(projectDto.getProjectId()).orElse(null));
+        log.info("work 생성 성공 (서비스)");
+        WorkEntity createWork = workRepository.save(WorkEntity.toWorkEntity(createWorkDto));
+        log.info("workEntity Id = " + createWork.getWorkId().toString());
+        return WorkDto.toWorkDto(createWork);
     }
 
     //유저 작업 테이블 추가 메서드
