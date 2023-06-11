@@ -203,7 +203,7 @@ public class ProjectDetailSerivce {
     public List<WorkDto> selectAllWorkForUser(UserDto userDto) {
         List<UserWorkEntity> userWorkList = userWorkRepository.findAllByUserIdToUserWork_Uuid(userDto.getUuid());
         List<WorkDto> workDtoList = new ArrayList<>();
-        for(UserWorkEntity userWorkEntity : userWorkList) {
+        for (UserWorkEntity userWorkEntity : userWorkList) {
             workDtoList.add(WorkDto.toWorkDto(workRepository.findById(
                     userWorkEntity.getWorkIdToUserWork().getWorkId()).orElse(null)));
         }
@@ -334,6 +334,7 @@ public class ProjectDetailSerivce {
             return WorkDto.toWorkDto(find.get());
         }
     }
+
     public WorkDto updateWork(WorkDto workDto) {
         WorkEntity afterEntity = WorkEntity.toWorkEntity(workDto);
         workRepository.save(afterEntity);
@@ -370,7 +371,8 @@ public class ProjectDetailSerivce {
             detailDto.setHeadIdToDetail(headRepository.findById(headId).orElse(null));
             DetailDto editDetailDto = DetailDto.toDetailDto(detailRepository.save(DetailEntity.toDetailEntity(detailDto)));
             return editDetailDto;
-        } return null;
+        }
+        return null;
     }
 
     /* - - - - 수정 메서드 끝 - - - - - */
@@ -408,7 +410,7 @@ public class ProjectDetailSerivce {
         }
         log.info("workComment 검색 완료");
         //하위 workDocument list
-        List<WorkDocumentDto>workDocumentDtoList = new ArrayList<>();
+        List<WorkDocumentDto> workDocumentDtoList = new ArrayList<>();
         for (WorkDto workDto : workDtoList) {
             List<WorkDocumentDto> searchWorkDocumentDtoList = selectAllWorkDocumentForWork(workDto);
             for (WorkDocumentDto workDocumentDto : searchWorkDocumentDtoList) {
@@ -482,7 +484,7 @@ public class ProjectDetailSerivce {
         }
         log.info("workComment 검색 완료");
         //하위 workDocument list
-        List<WorkDocumentDto>workDocumentDtoList = new ArrayList<>();
+        List<WorkDocumentDto> workDocumentDtoList = new ArrayList<>();
         for (WorkDto workDto : workDtoList) {
             List<WorkDocumentDto> searchWorkDocumentDtoList = selectAllWorkDocumentForWork(workDto);
             for (WorkDocumentDto workDocumentDto : searchWorkDocumentDtoList) {
@@ -576,13 +578,13 @@ public class ProjectDetailSerivce {
     public WorkDto workCompletionChange(WorkDto workDto) {
         log.info("workCompletionChange 호출");
         WorkDto changeWorkDto;
-        if(workDto.getCompletion() == 0) {
+        if (workDto.getCompletion() == 0) {
             workDto.setCompletion(1);
             changeWorkDto = updateWork(workDto);
             log.info("완료 상태로 변경");
             checkWorkCompletion(workDto);
             return changeWorkDto;
-        } else if(workDto.getCompletion() == 1) {
+        } else if (workDto.getCompletion() == 1) {
             workDto.setCompletion(0);
             changeWorkDto = updateWork(workDto);
             log.info("미완료 상태로 변경");
@@ -592,6 +594,7 @@ public class ProjectDetailSerivce {
         // work 상태를 검사하여 상위 detail 상태 자동 수정
         return null;
     }
+
     public DetailDto detailCompletionChange(DetailDto detailDto) {
         DetailDto changeDetailDto;
         if (detailDto.getCompletion() == 0) {
@@ -599,7 +602,7 @@ public class ProjectDetailSerivce {
             changeDetailDto = updateDetail(detailDto);
             checkDetailCompletion(detailDto);
             return changeDetailDto;
-        } else if(detailDto.getCompletion() == 1) {
+        } else if (detailDto.getCompletion() == 1) {
             detailDto.setCompletion(0);
             changeDetailDto = updateDetail(detailDto);
             checkDetailCompletion(detailDto);
@@ -614,7 +617,7 @@ public class ProjectDetailSerivce {
             headDto.setCompletion(1);
             changeHeadDto = updateHead(headDto);
             return changeHeadDto;
-        } else if(headDto.getCompletion() == 1) {
+        } else if (headDto.getCompletion() == 1) {
             headDto.setCompletion(0);
             changeHeadDto = updateHead(headDto);
             return changeHeadDto;
@@ -630,7 +633,7 @@ public class ProjectDetailSerivce {
         List<WorkEntity> workEntityList = workRepository.findAllByDetailIdToWork_DetailId(detailEntity.get().getDetailId());
         boolean allComplete = true;
         for (WorkEntity workEntity : workEntityList) {
-            if(workEntity.getCompletion() == 0) {
+            if (workEntity.getCompletion() == 0) {
                 log.info("미완 상태의 work 발견");
                 allComplete = false;
             }
@@ -660,7 +663,7 @@ public class ProjectDetailSerivce {
         List<DetailEntity> detailEntityList = detailRepository.findAllByHeadIdToDetail_HeadId(headEntity.get().getHeadId());
         boolean allComplete = true;
         for (DetailEntity detailEntity : detailEntityList) {
-            if(detailEntity.getCompletion() == 0) {
+            if (detailEntity.getCompletion() == 0) {
                 log.info("미완 상태의 head 발견");
                 allComplete = false;
             }
@@ -668,7 +671,7 @@ public class ProjectDetailSerivce {
 
         HeadDto headDto = HeadDto.toHeadDto(headEntity.get());
 
-        if(allComplete) {
+        if (allComplete) {
             log.info("모든 detail 완료 확인됨");
             headDto.setCompletion(1);
             updateHead(headDto);
@@ -699,6 +702,7 @@ public class ProjectDetailSerivce {
             return commentDtoList;
         }
     }
+
     //댓글기능 (댓글 추가)
     public List<WorkCommentDto> plusComment(WorkCommentDto workCommentDto, Long workId) {
         if (workCommentDto.equals(null)) {
@@ -711,14 +715,14 @@ public class ProjectDetailSerivce {
     }
 
     //update를 위한 Comment Find
-    public WorkCommentDto findComment(Long commentId){
-        Optional<WorkCommentEntity> documentCommentEntity=  workCommentRepository.findById(commentId);
+    public WorkCommentDto findComment(Long commentId) {
+        Optional<WorkCommentEntity> documentCommentEntity = workCommentRepository.findById(commentId);
         return WorkCommentDto.toWorkCommentDto(documentCommentEntity.get());
     }
 
 
     //댓글 삭제
-    public List<WorkCommentDto> deleteComment(Long commentId, Long workId){
+    public List<WorkCommentDto> deleteComment(Long commentId, Long workId) {
         Optional<WorkCommentEntity> now = workCommentRepository.findById(commentId);
         WorkCommentDto workCommentDto = WorkCommentDto.toWorkCommentDto(now.get());
         workCommentRepository.deleteById(commentId);
