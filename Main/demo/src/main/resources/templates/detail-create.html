@@ -9,6 +9,50 @@
 	<link rel="stylesheet" href="/css/goal-create.css">
 	<script src="../js/documentList.js"></script>
 	<title>create-document</title>
+
+	<script th:inline="javascript">
+		const message = /*[[${message}]]*/ '';
+		if (message !== null) {
+			alert(message);
+		}
+		function createDetail_check() {
+			var title = document.getElementById("title");
+			var discription = document.getElementById("discription");
+			var startDay = document.getElementById("startDay");
+			var endDay = document.getElementById("endDay");
+			/*yyyy--mm-dd 정규식*/
+			var regDate = new RegExp("^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$");
+
+			if (title.value == "") {
+				alert("목표 제목을 입력해주십시오.");
+				title.focus();
+				return false;
+			};
+
+			if (startDay.value == "") {
+				alert("시작기한을 입력해주십시오.");
+				startDay.focus();
+				return false;
+			} else if (!regDate.test(startDay.value)) {
+				alert("연-월-일 형식으로 입력해주십시오.")
+				startDay.focus();
+				return false;
+			}
+
+			if (deadline.value == "") {
+				alert("마감기한을 입력해주십시오.");
+				deadline.focus();
+				return false;
+			} else if (!regDate.test(deadline.value)) {
+				alert("연-월-일 형식으로 입력해주십시오.")
+				deadline.focus();
+				return false;
+			}
+
+
+			document.createDetail_form.submit();
+		}
+	</script>
 </head>
 
 <body>
@@ -17,51 +61,51 @@
 		<a href="/project/goals" class="back-button"> < </a>
 		<h1>하위 목표 생성</h1>
 	</div>
-	<form action="/project/goal/createDetail" method="post">
+	<form name="createDetail_form" action="/project/goal/createDetail" method="post">
 		<div class="create-goal">
 			<div class="label-detail">
-				<label class="label" for="create-goal-input1">목표 이름</label>
+				<label class="label" for="title">목표 이름</label>
 				<div class="essential">*</div>
 			</div>
 			<div class="input-detail">
-				<input name="title" class="input-box" id="create-goal-input1" type="text" placeholder="목표 이름 입력">
+				<input name="title" class="input-box" id="title" type="text" placeholder="목표 이름 입력">
 			</div>
 		</div>
 
 		<div class="create-goal">
 			<div class="label-detail">
-				<label class="label" for="create-goal-input2">목표 설명</label>
+				<label class="label" for="discription">목표 설명</label>
 			</div>
 			<div class="input-detail">
                 <textarea name="discription" class="detail-input-box"
-						  id="create-goal-input2" cols="20" rows="10" placeholder="설명"></textarea>
+						  id="discription" cols="20" rows="10" placeholder="설명"></textarea>
 			</div>
 		</div>
 
 		<div class="create-goal">
 			<div class="label-detail">
-				<label class="label" for="create-goal-input3">시작일자</label>
+				<label class="label" for="startDay">시작일자</label>
 			</div>
 			<div class="input-detail">
-				<input name="startDay" class="input-box" id="create-goal-input3" type="text" placeholder="0000-00-00 (연 월 일)">
+				<input name="startDay" class="input-box" id="startDay" type="text" placeholder="0000-00-00 (연 월 일)">
 			</div>
 		</div>
 
 		<div class="create-goal">
 			<div class="label-detail">
-				<label class="label" for="create-goal-input4">마감 기한</label>
+				<label class="label" for="deadline">마감 기한</label>
 			</div>
 			<div class="input-detail">
-				<input name="deadline" class="input-box" id="create-goal-input4" type="text" placeholder="0000-00-00(연 월 일)">
+				<input name="deadline" class="input-box" id="deadline" type="text" placeholder="0000-00-00(연 월 일)">
 			</div>
 		</div>
 
 		<div class="create-goal">
 			<div class="label-detail">
-				<label class="label" for="create-goal-input5">상위 연결 목표</label>
+				<label class="label" for="headId">상위 연결 목표</label>
 			</div>
 			<div class="select">
-				<select class="select-connection-goal" id="create-goal-input5" name="headId" th:if="${headDtoList != null}">
+				<select class="select-connection-goal" id="headId" name="headId" th:if="${headDtoList != null}">
 					<option th:value="0">없음</option>
 					<option th:each="headDto : ${headDtoList}"
 					th:text="${headDto.title}"
@@ -72,7 +116,7 @@
 
 		<div class="horizon-divider"></div>
 		<div class="footer">
-			<button type="submit" class="footer-btn">생성</button>
+			<button type="button" class="footer-btn" th:onclick="createDetail_check()">생성</button>
 			<button type="reset" class="footer-btn">초기화</button>
 		</div>
 	</form>

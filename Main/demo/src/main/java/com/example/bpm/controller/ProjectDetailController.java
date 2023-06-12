@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -103,10 +104,13 @@ public class ProjectDetailController {
 
     // 하위 목표 생성 main
     @GetMapping("/project/detail/create")
-    public String goCreateDetail(Model model) {
+    public String goCreateDetail(Model model, @RequestParam(value = "message", required = false)String message) {
         ProjectDto currentProject = getSessionProject();
         List<HeadDto> headDtoList = projectDetailSerivce.selectAllHead(currentProject);
         model.addAttribute("headDtoList", headDtoList);
+        if (message != null) {
+            model.addAttribute("message", message);
+        }
         return "detail-create";
     }
 
@@ -123,7 +127,7 @@ public class ProjectDetailController {
         log.info("목표 생성 컨트롤러 작동, ");
         String message = exceptionService.headErrorCheck(currentProject, title, startDay, deadline);
         log.info("head 생성 예외 처리 검사");
-        if (!message.isEmpty()) {
+        if (message != null) {
             log.info("예외 처리 결과 : " + message);
             model.addAttribute("message", message);
             return "head-create";
@@ -139,9 +143,18 @@ public class ProjectDetailController {
                              @RequestParam(value = "deadline") String deadline,
                              @RequestParam(value = "discription") String discription,
                              @RequestParam(value = "headId") Long headId,
+                             HttpServletRequest request,
+                             RedirectAttributes rttr,
                              Model model) {
         ProjectDto currentProject = getSessionProject();
         log.info("목표 생성 컨트롤러 작동, ");
+        String message = exceptionService.detailErrorCheck(title, startDay, deadline, headId);
+        if (message != null) {
+            log.info("예외 처리 결과 : " + message);
+            rttr.addFlashAttribute("message", message);
+            String referer = request.getHeader("Referer");
+            return "redirect:/project/detail/create";
+        }
         if (headId == 0) {
             log.info("headDto == null");
             HeadDto createHeadDto = projectDetailSerivce.createHead(title, startDay, deadline, discription, currentProject);
@@ -313,7 +326,7 @@ public class ProjectDetailController {
     @RequestMapping("/project/goal/detail/delete/{id}")
     public String deleteDetail(@PathVariable("id") Long detailId) {
         projectDetailSerivce.deleteDetailEntity(detailId);
-        return "redirect:/project/goal/detailView/" + detailId;
+        return "redirect:/project/goals";
     }
 
 
