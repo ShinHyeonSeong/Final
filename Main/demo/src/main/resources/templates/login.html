@@ -6,17 +6,34 @@
 	<title>Login</title>
 	<link rel="stylesheet" href="/css/login.css">
 	<script th:inline="javascript">
-		/* 타임리프 변수를 해당 표현식으로 사용해야함. 뒤의 ''는 기본값을 의미 */
-		var message = /*[[${message}]]*/ '';
-		console.log(message);
+		const message = /*[[${message}]]*/ '';
 		if (message !== null) {
 			alert(message);
 		}
+		function loginform_check() {
+			var email = document.getElementById("email");
+			var password = document.getElementById("password");
+
+			if (email.value == "") {
+				alert("이메일을 입력해주십시오.");
+				email.focus();
+				return false;
+			};
+
+			if (password.value == "") {
+				alert("비밀번호를 입력해주십시오.");
+				password.focus();
+				return false;
+			};
+
+			document.login_form.submit();
+		}
+
 	</script>
 </head>
 <body>
 <div class="page-container">
-	<form action="/user/dologin" method="post">
+	<form name="login_form" action="/user/dologin" method="post">
 		<div class="login-form-container shadow">
 			<div class="login-form-left-side">
 				<div class="top-logo-wrap">
@@ -28,14 +45,14 @@
 				<h1>Login</h1>
 				<div class="login-input-container">
 					<div class="login-input-wrap input-id">
-						<input placeholder="Email" type="text" name="email">
+						<input placeholder="Email" type="text" name="email" id="email">
 					</div>
 					<div class="login-input-wrap input-password">
-						<input placeholder="Password" type="password" name="password">
+						<input placeholder="Password" type="password" name="password" id="password">
 					</div>
 				</div>
 				<div class="login-btn-wrap">
-					<button type="submit" class="login-btn">Login</button>
+					<button type="button" class="login-btn" onclick="loginform_check()">Login</button>
 					<div class="login-btn-wrap2">
 						<a href="/user/join">회원가입</a> &nbsp &nbsp&nbsp
 						<a href="/index"> 나가기 </a>
