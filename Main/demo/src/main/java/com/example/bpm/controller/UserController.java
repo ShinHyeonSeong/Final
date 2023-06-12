@@ -69,19 +69,19 @@ public class UserController {
     @PostMapping("/user/dosave")
     public String save(@RequestParam("email") String email,
                        @RequestParam("password") String password,
-                       @RequestParam("username") String name) {
-        //UUID 부여를 위해 생성자로 접근을 한번 더한다
-        UserDto NewUser = new UserDto(email, password, name);
-        log.info("DTO 정상 값 입력 (컨트롤러)" + "/" + email + "/" + password + "/" + name);
-        UserDto result = userService.save(NewUser);
-        if (result == null) {
-            log.info("서비스에서 NULL값이 넘어옴 (컨트롤러 작동");
-            return null;
-        } else {
-            log.info("save 정상 작동 (컨트롤러)");
+                       @RequestParam("username") String name, Model model) {
+        UserDto findUser = userService.findByEmail(email);
+        if (findUser == null) {
+            UserDto NewUser = new UserDto(email, password, name);
+            log.info("DTO 정상 값 입력 (컨트롤러)" + "/" + email + "/" + password + "/" + name);
+            UserDto result = userService.save(NewUser);
             return "login";
+        } else {
+            model.addAttribute("message", "이미 있는 이메일 입니다.");
+            return "join";
         }
     }
+
 
 
     @GetMapping("/user/login")

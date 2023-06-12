@@ -37,6 +37,14 @@ public class UserService {
         }
     }
 
+    public UserDto findByEmail(String email) {
+        Optional<UserEntity> userEntity = userRepository.findByEmail(email);
+        if (userEntity.isEmpty()) {
+            return null;
+        }
+        return UserDto.toUserDto(userEntity.get());
+    }
+
 
     //로그인
     public UserDto login(String email, String password) {
