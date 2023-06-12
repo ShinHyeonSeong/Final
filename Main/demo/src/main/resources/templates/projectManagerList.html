@@ -73,8 +73,8 @@
 					<h1 th:text="${project.title}"></h1>
 					<span th:text="${project.subtitle}"></span>
 					<div class="post-user" style="padding-top: 30px;">
-						<p>관리자 :</p>
-						<div th:text="${user.name}"></div>
+						<p>만든 날짜 : </p>
+						<div th:text="${#dates.format(project.startDay, 'yyyy-MM-dd')}"></div>
 					</div>
 				</article>
 			</a>
