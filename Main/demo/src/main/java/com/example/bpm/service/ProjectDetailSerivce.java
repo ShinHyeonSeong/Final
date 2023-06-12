@@ -124,7 +124,6 @@ public class ProjectDetailSerivce {
         WorkEntity createWork = workRepository.save(WorkEntity.toWorkEntity(createWorkDto));
         log.info("workEntity Id = " + createWork.getWorkId().toString());
         return WorkDto.toWorkDto(createWork);
-
     }
 
     //유저 작업 테이블 추가 메서드
