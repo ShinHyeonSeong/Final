@@ -40,7 +40,10 @@ public class ProjectDetailController {
     @Autowired
     private CalendarService calendarService;
     @Autowired
+    private ExceptionService exceptionService;
+    @Autowired
     private HttpSession session;
+
 
     // 생각을 해보니 말야 매번 세션 호출하는것보다는 그냥 따로 메서드 만드는게 훨씬 효율이 좋을듯. 편하기도 하고
     public UserDto getSessionUser() {
@@ -118,6 +121,13 @@ public class ProjectDetailController {
                              Model model) {
         ProjectDto currentProject = getSessionProject();
         log.info("목표 생성 컨트롤러 작동, ");
+        String message = exceptionService.headErrorCheck(currentProject, title, startDay, deadline);
+        log.info("head 생성 예외 처리 검사");
+        if (!message.isEmpty()) {
+            log.info("예외 처리 결과 : " + message);
+            model.addAttribute("message", message);
+            return "head-create";
+        }
         HeadDto createHeadDto = projectDetailSerivce.createHead(title, startDay, deadline, discription, currentProject);
         return "redirect:/project/goals";
     }
@@ -269,7 +279,6 @@ public class ProjectDetailController {
         UserDto userDto = projectDetailSerivce.selectUserForUserWork(workDto);
         List<DocumentDto> documentDtoList = documentService.getDocumentByWorkId(id);
         List<WorkCommentDto> commentDtoList = projectDetailSerivce.findByComment(id);
-        Long auth = getSessionAuth();
         if (commentDtoList.isEmpty()) {
             int i = 0;
             model.addAttribute("listNum", i);
@@ -279,11 +288,17 @@ public class ProjectDetailController {
             model.addAttribute("listNum", i);
             model.addAttribute("CommentList", commentDtoList);
         }
-
+        Long auth = getSessionAuth();
+        if (auth == 1 || auth == 0) {
+            model.addAttribute("auth", true);
+            log.info("권한 true 설정");
+        } else {
+            model.addAttribute("auth", false);
+            log.info("권한 false 설정");
+        }
         model.addAttribute("workDto", workDto);
         model.addAttribute("userDto", userDto);
         model.addAttribute("DocumentList", documentDtoList);
-        model.addAttribute("auth", auth);
         return "workDetail";
     }
     /* - - - - 작업 관련 메서드 끝 - - - -*/
