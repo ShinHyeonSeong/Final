@@ -5,6 +5,14 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Login</title>
 	<link rel="stylesheet" href="/css/login.css">
+	<script th:inline="javascript">
+		/* 타임리프 변수를 해당 표현식으로 사용해야함. 뒤의 ''는 기본값을 의미 */
+		var message = /*[[${message}]]*/ '';
+		console.log(message);
+		if (message !== null) {
+			alert(message);
+		}
+	</script>
 </head>
 <body>
 <div class="page-container">

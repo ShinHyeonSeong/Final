@@ -103,7 +103,7 @@ public class UserController {
             log.info("로그인 성공 세션 정상 입력 (컨트롤러 작동)");
             return "redirect:/project/projectManagerList";
         } else {
-            //로그인 실패 알림창을 만들어줘야함
+            model.addAttribute("message", "이메일 혹은 비밀번호가 일치하지 않습니다.");
             log.info("로그인 실패 세션 적용 실패 (컨트롤러 작동)");
             return "login";
         }

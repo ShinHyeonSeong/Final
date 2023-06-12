@@ -41,6 +41,9 @@ public class UserService {
     //로그인
     public UserDto login(String email, String password) {
         Optional<UserEntity> findUser = userRepository.findByEmail(email);
+        if (findUser.isEmpty()) {
+            return null;
+        }
         UserEntity loginUser = findUser.get();
         if (loginUser.getEmail().equals(email) && loginUser.getPassword().equals(password)) {
             log.info("이메일 && 패스워드 일치 로그인 성공 ");
