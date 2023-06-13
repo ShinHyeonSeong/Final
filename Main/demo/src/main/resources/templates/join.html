@@ -13,17 +13,17 @@
 			<h1>Join</h1>
 			<div class="join-input-container">
 				<div class="join-input-wrap">
-					<input placeholder="이메일 형식을 맞추시오." type="text" name="email" id="email">
+					<input placeholder="이메일 형식을 맞추시오." type="text" id="email">
 				</div>
 				<div class="join-input-wrap">
-					<input placeholder="4 ~ 8자 이내로 적으시오." type="text" name="username" id="username">
+					<input placeholder="4 ~ 8자 이내로 적으시오." type="text" id="username">
 				</div>
 				<div class="join-input-wrap">
-					<input placeholder="4 ~ 12자 이내로 적으시오." type="password" name="password" id="password">
+					<input placeholder="4 ~ 12자 이내로 적으시오." type="password" id="password">
 				</div>
 			</div>
 			<div class="join-btn-wrap">
-				<button class="join-btn" onclick="checkAll()">Join</button>
+				<button class="join-btn" type="button" onclick="checkAll()">Join</button>
 				<button class="join-btn" type="button"><a href="/index"
 														  style="color: #fff; text-decoration: none">Back</a></button>
 			</div>
@@ -39,17 +39,17 @@
 	if (message !== null) {
 		alert(message);
 	}
+	var email = document.getElementById("email");
+	var username = document.getElementById("username");
+	var password = document.getElementById("password");
+	
+	//2~15 자리 이내의 한글과 영어만
+	var regName = /^[가-힣a-zA-Z]{2,15}$/;
+	//4 ~ 12 자리 이내의 영어와 숫자 조합의
+	var regPassword = /^[a-zA-Z0-9]{4,12}$/;
+	var regMail = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
 	
 	function checkAll() {
-		var email = document.getElementById("email");
-		var username = document.getElementById("username");
-		var password = document.getElementById("password");
-		
-		//2~15 자리 이내의 한글과 영어만
-		var regName = /^[가-힣a-zA-Z]{2,15}$/;
-		//4 ~ 12 자리 이내의 영어와 숫자 조합의
-		var regPassword = /^[a-zA-Z0-9]{4,12}$/;
-		var regMail = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
 		
 		//메일주소 확인
 		if (email.value.length == 0) {
@@ -60,7 +60,7 @@
 			alert("잘못된 이메일 형식입니다.")
 			email.focus();
 			return false;
-		};
+		}
 		
 		//이름 확인 = 한글과 영어만 가능하도록
 		if (username.value == "") {
@@ -71,7 +71,7 @@
 			alert("최소 2글자 이상, 한글과 영어만 입력하세요.")
 			username.focus();
 			return false;
-		};
+		}
 		
 		//비밀번호 확인
 		if (password.value == "") {
@@ -84,7 +84,7 @@
 			alert("4~12자 영문 대소문자, 숫자만 입력하세요.")
 			password.focus();
 			return false;
-		};
+		}
 		
 		document.joinForm.submit();
 	}

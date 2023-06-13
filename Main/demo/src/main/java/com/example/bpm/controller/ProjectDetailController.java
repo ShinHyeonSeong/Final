@@ -85,9 +85,9 @@ public class ProjectDetailController {
         ProjectDto currentProject = getSessionProject();
         List<HeadDto> headDtoList = projectDetailSerivce.selectAllHead(currentProject);
         List<DetailDto> detailDtoList = projectDetailSerivce.selectAllDetailForProject(currentProject);
+            model.addAttribute("detailDtoList", detailDtoList);
         Long auth = getSessionAuth();
         model.addAttribute("headDtoList", headDtoList);
-        model.addAttribute("detailDtoList", detailDtoList);
         model.addAttribute("auth", auth);
         return "goal";
     }
@@ -108,8 +108,6 @@ public class ProjectDetailController {
     }
 
     // head 생성 메서드
-    /* 클라이언트에서 전달 받을 때, Dto 내부 속성 중 전달받을 수 없는 속성들이 있다. 때문에 @ModelAttribute를 쓰지 않고 하나씩 전달 받은 후
-        서비스 단위로 때려박았음. 너무 보기 복잡하기도 하고 좀 그런데 보면서 다른 방법이 있으면 얘기해주면 좋게따. */
     @PostMapping("/project/goal/createHead")
     public String createGoal(@RequestParam(value = "title") String title,
                              @RequestParam(value = "startDay") String startDay,
@@ -300,7 +298,6 @@ public class ProjectDetailController {
         projectDetailSerivce.deleteDetailEntity(detailId);
         return "redirect:/project/goal/detailView/" + detailId;
     }
-
 
 
     /* - - - - 댓글 관련 메서드 - - - -*/
