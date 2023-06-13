@@ -1,3 +1,3 @@
-<script th:inline >
-
-</script>
+if (message !== null) {
+    alert(message);
+}
