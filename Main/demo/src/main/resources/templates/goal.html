@@ -33,38 +33,46 @@
 		</a>
 	</div>
 </div>
-<hr>
 
 <div class="content-container">
 	<div class="content">
 		<div class="goal-container">
 			<div class="board">
 				<div class="column">
-					<h2>상위 목표</h2>
+					<h2>목표 리스트</h2>
 					<div id="backlog" class="sortable">
 						<a th:each="headDto : ${headDtoList}"
 						   th:href="@{/project/goal/headView/{id}(id=${headDto.headId})}">
 							<div class="user-story">
-								<h3 th:text="${headDto.title}"/>
-								<span class="status"><p th:if="${headDto.getCompletion() ==1 }">완료 </p></span>
-								<span class="status"><p style="color: rgb(160, 60, 60);" th:if=" ${headDto.getCompletion()==0 }">진행중 </p></span>
+								<div class="inline-content">
+									<h2 style="margin-left: 15px;" th:text="${headDto.title}"/>
+									<p class="status" th:if="${headDto.getCompletion() ==1 }">완료 </p>
+									<p class="status" style="color: rgb(160, 60, 60);"
+									   th:if=" ${headDto.getCompletion()==0 }">진행중 </p>
+								</div>
+								<div class="column" style="justify-self: center;">
+									<h3>하위 목표</h3>
+									<div class="sortable">
+										<a th:each="detailDto : ${detailDtoList}"
+										   th:if="${headDto.headId} == ${detailDto.headIdToDetail.headId}"
+										   th:href="@{/project/goal/detailView/{id}(id=${detailDto.detailId})}">
+											<div class="user-story">
+												<div class="inline-content">
+													<h3 th:text="${detailDto.title}"/>
+													<p class="status"
+													   th:if="${detailDto.getCompletion() ==1 }">완료 </p>
+													<p class="status" style="color: rgb(160, 60, 60);"
+													   th:if="${detailDto.getCompletion() ==0 }">진행중 </p>
+												</div>
+											</div>
+										</a>
+									</div>
+								</div>
 							</div>
 						</a>
 					</div>
 				</div>
-				<div class="column">
-					<h2>하위 목표</h2>
-					<div id="todo" class="sortable">
-						<a th:each="detailDto : ${detailDtoList}"
-						   th:href="@{/project/goal/detailView/{id}(id=${detailDto.detailId})}">
-							<div class="user-story">
-								<h3 th:text="${detailDto.title}"/>
-								<span class="status"><p th:if="${detailDto.getCompletion() ==1 }">완료 </p></span>
-								<span class="status"><p style="color: rgb(160, 60, 60);" th:if="${detailDto.getCompletion() ==0 }">진행중 </p></span>
-							</div>
-						</a>
-					</div>
-				</div>
+			
 			</div>
 		</div>
 	</div>
