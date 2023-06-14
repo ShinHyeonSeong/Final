@@ -20,6 +20,46 @@ body {
     margin: 20px;
   }
   
+  #message-box {
+    background-color: #333;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+    width: 500px;
+    margin: 0 auto;
+  }
+  
+  h2 {
+    margin: 0 0 10px;
+    font-size: 18px;
+  }
+  
+  #subject,
+  #content {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #1a1a1a;
+    border: none;
+    color: #e0e0e0;
+  }
+  
+  textarea {
+    height: 100px;
+  }
+  
+  #send-btn {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  #send-btn:hover {
+    background-color: #45a049;
+  }
+  
   #message-list {
     list-style: none;
     padding: 0;

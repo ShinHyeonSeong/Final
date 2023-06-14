@@ -3,9 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../css/ex.css">
-  <script type="text/javascript" src="../js/ex.js"></script>
-
+  <link rel="stylesheet" href="../css/ex2.css">
   <title>Dark Theme Mailbox</title>
 </head>
 <body>
@@ -14,10 +12,18 @@
   </header>
 
   <div id="mailbox">
+    <div id="message-box">
+      <h2>Compose New Message</h2>
+      <input type="text" id="subject" placeholder="Subject">
+      <textarea id="content" placeholder="Message Content"></textarea>
+      <button id="send-btn">Send</button>
+    </div>
+
     <ul id="message-list">
       <!-- Message list items will be dynamically added here -->
     </ul>
   </div>
 
+  <script src="../js/ex2.js"></script>
 </body>
 </html>
