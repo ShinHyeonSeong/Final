@@ -1,25 +1,34 @@
-// Sample data for message list
-const messages = [
-    { subject: 'Hello', content: 'This is a test message.' },
-    { subject: 'Important Notice', content: 'Please read this message carefully.' },
-    { subject: 'Reminder', content: 'Don\'t forget about our meeting tomorrow.' }
-  ];
-  
-  // Function to render message list
-  function renderMessageList() {
-    const messageList = document.getElementById('message-list');
-    
-    messages.forEach(message => {
-      const messageItem = document.createElement('li');
-      messageItem.className = 'message-item';
-      messageItem.innerHTML = `
-        <h2>${message.subject}</h2>
-        <p>${message.content}</p>
-      `;
-      messageList.appendChild(messageItem);
-    });
-  }
-  
-  // Render the message list when the page loads
-  window.addEventListener('load', renderMessageList);
-  
+// Function to open a new window and display note content
+function viewNote() {
+  const noteContent = document.getElementById('content').value;
+  const noteWindow = window.open('', '_blank', 'width=500,height=300');
+  noteWindow.document.write(`
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="styles.css">
+      <title>Note</title>
+    </head>
+    <body>
+      <div class="note-container">
+        <h2>Note Content</h2>
+        <p>${noteContent}</p>
+      </div>
+    </body>
+    </html>
+  `);
+  noteWindow.document.close();
+}
+
+// Event listeners for buttons
+const sendBtn = document.getElementById('send-btn');
+const viewBtn = document.getElementById('view-btn');
+
+sendBtn.addEventListener('click', () => {
+  // Logic to send the message
+  console.log('Message sent!');
+});
+
+viewBtn.addEventListener('click', viewNote);

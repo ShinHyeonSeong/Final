@@ -1,84 +1,88 @@
 body {
-    background-color: #1a1a1a;
-    color: #e0e0e0;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-  }
-  
-  header {
-    background-color: #333;
-    padding: 20px;
-    text-align: center;
-  }
-  
-  h1 {
-    margin: 0;
-  }
-  
-  #mailbox {
-    margin: 20px;
-  }
-  
-  #message-box {
-    background-color: #333;
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 20px;
-    width: 500px;
-    margin: 0 auto;
-  }
-  
-  h2 {
-    margin: 0 0 10px;
-    font-size: 18px;
-  }
-  
-  #subject,
-  #content {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    background-color: #1a1a1a;
-    border: none;
-    color: #e0e0e0;
-  }
-  
-  textarea {
-    height: 100px;
-  }
-  
-  #send-btn {
-    background-color: #4CAF50;
-    border: none;
-    color: white;
-    padding: 10px;
-    cursor: pointer;
-  }
-  
-  #send-btn:hover {
-    background-color: #45a049;
-  }
-  
-  #message-list {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .message-item {
-    background-color: #333;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    padding: 10px;
-  }
-  
-  .message-item h2 {
-    margin: 0;
-    font-size: 18px;
-  }
-  
-  .message-item p {
-    margin: 5px 0;
-    font-size: 14px;
-  }
-  
+  margin-left: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #222;
+  color: #fff;
+  font-family: Arial, sans-serif;
+}
+
+header, nav {
+  width: 100%;
+}
+
+nav {
+  background-color: #222;
+  padding: 10px;
+  width: 70%;
+}
+
+.nav-list {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item {
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+.nav-item.active {
+  font-weight: bold;
+  color: #fff;
+  background-color: #333;
+}
+
+#message-list {
+  width: 70%;
+  margin-top: 20px;
+}
+
+.message-item {
+  display: flex;
+  flex-direction: column;
+  background-color: #333;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.message-title {
+  color: #fff;
+  font-size: 18px;
+  margin-bottom: 5px;
+  text-decoration: none;
+}
+
+.message-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; /* Align to the right */
+  align-items: center;
+}
+
+.message-sender {
+  color: #ccc;
+  font-size: 14px;
+}
+
+.message-date {
+  color: #ccc;
+  font-size: 14px;
+}
+
+#send-btn {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+#send-btn:hover {
+  background-color: #555;
+}

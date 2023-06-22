@@ -1,29 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../css/ex2.css">
   <title>Dark Theme Mailbox</title>
 </head>
+
 <body>
   <header>
     <h1>Dark Theme Mailbox</h1>
   </header>
 
-  <div id="mailbox">
-    <div id="message-box">
-      <h2>Compose New Message</h2>
-      <input type="text" id="subject" placeholder="Subject">
-      <textarea id="content" placeholder="Message Content"></textarea>
-      <button id="send-btn">Send</button>
-    </div>
-
-    <ul id="message-list">
-      <!-- Message list items will be dynamically added here -->
+  <nav>
+    <ul class="nav-list">
+      <li class="nav-item active" id="received-msgs">Received Messages</li>
+      <li class="nav-item" id="sent-msgs">Sent Messages</li>
+      <li class="nav-item send-msg-btn">Send Message</li>
     </ul>
-  </div>
+  </nav>
 
-  <script src="../js/ex2.js"></script>
+  <div id="message-list">
+    <div class="message-item">
+      <a class="message-title" href="#">제목</a>
+      <div class="message-info">
+        <p class="message-sender">From: John Doe</p>
+        <p class="message-date">Sent: June 13, 2023</p>
+      </div>
+    </div>
+    <div class="message-item">
+      <a class="message-title" href="#">제목</a>
+      <div class="message-info">
+        <p class="message-sender">From: John Doe</p>
+        <p class="message-date">Sent: June 13, 2023</p>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
 </body>
+
 </html>

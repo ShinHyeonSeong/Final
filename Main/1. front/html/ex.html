@@ -1,23 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../css/ex.css">
-  <script type="text/javascript" src="../js/ex.js"></script>
-
   <title>Dark Theme Mailbox</title>
 </head>
-<body>
-  <header>
-    <h1>Dark Theme Mailbox</h1>
-  </header>
 
+<body>
   <div id="mailbox">
+    <div id="message-box">
+      <h2 style="text-align: center;">쪽지 보내기</h2>
+      <input type="text" id="subject" placeholder="Subject">
+      <textarea id="content" placeholder="Message Content"></textarea>
+      <div class="button-container">
+        <button id="send-btn">보내기</button>
+        <button id="view-btn">메세지 확인하기</button>
+      </div>
+    </div>
+
     <ul id="message-list">
-      <!-- Message list items will be dynamically added here -->
+      <li class="message-item">
+        <h2>Hello</h2>
+        <p>This is a test message.</p>
+      </li>
+      <li class="message-item">
+        <h2>Important Notice</h2>
+        <p>Please read this message carefully.</p>
+      </li>
+      <li class="message-item">
+        <h2>Reminder</h2>
+        <p>Don't forget about our meeting tomorrow.</p>
+      </li>
     </ul>
   </div>
 
+  <script src="script.js"></script>
 </body>
+
 </html>
