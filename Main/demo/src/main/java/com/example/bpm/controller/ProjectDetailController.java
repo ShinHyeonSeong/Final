@@ -407,14 +407,18 @@ public class ProjectDetailController {
     }
 
     /*  - - - - - Calendar Controller - - - - - */
-    @GetMapping("/calender") //기본 페이지 표시
+    @GetMapping("/project/calender") //기본 페이지 표시
     public String viewCalendar() {
+
         return "calendar";
     }
 
-    @GetMapping("/calender/event") //ajax 데이터 전송 URL
-    public String getEvent() {
-        return "main";
+    @RequestMapping(value = "/calendar/event", method = {RequestMethod.GET}) //ajax 데이터 전송 URL
+    public @ResponseBody List<Map<String, Object>> getEvent() {
+
+        ProjectDto projectDto = getSessionProject();
+
+        return calendarService.getEventList(projectDto.getProjectId());
     }
 
 }

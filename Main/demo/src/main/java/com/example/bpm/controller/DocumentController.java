@@ -47,7 +47,7 @@ public class DocumentController {
         String userUuid = sessionUser.getUuid();
         Long projectId = projectDto.getProjectId();
 
-        List<DocumentDto> documentDtoList = documentService.getDocumentListByUser(userUuid);
+        List<DocumentDto> documentDtoList = documentService.getDocumentListByUserAndProjectId(userUuid, projectId);
 
         List<ProjectDocumentListDto> projectDocumentList = documentService.getDocumentListByProjectId(projectId);
 

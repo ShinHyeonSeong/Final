@@ -252,6 +252,31 @@ public class DocumentService {
         return documentDtoList;
     }
 
+    // 유저 및 프로젝트 아이디 기준으로 문서 리스트 받아오기
+    public  List<DocumentDto> getDocumentListByUserAndProjectId(String userUuid, Long id) {
+        List<DocumentDto> documentDtoList = new ArrayList<>();
+
+        List<WorkEntity> workEntityList = workRepository.findAllByProjectIdToWork_ProjectId(id);
+        List<WorkEntity> workUserEntityList = new ArrayList<>();
+
+        List<UserWorkEntity> userWorkEntityList = userWorkRepository.findAllByUserIdToUserWork_Uuid(userUuid);
+
+        for (WorkEntity workEntity : workEntityList) {
+            for (UserWorkEntity userWorkEntity : userWorkEntityList) {
+                if (workEntity.getWorkId() == userWorkEntity.getWorkIdToUserWork().getWorkId()){
+                    workUserEntityList.add(workEntity);
+                    break;
+                }
+            }
+        }
+
+        for (WorkEntity workEntity: workUserEntityList) {
+            documentDtoList.addAll(getDocumentByWorkId(workEntity.getWorkId()));
+        }
+
+        return documentDtoList;
+    }
+
     // 문서 아이디 기준으로 문서 받아오기
     public DocumentDto getDocumentById(String id) {
         Document document = documentRepository.findByDocumentId(id);
