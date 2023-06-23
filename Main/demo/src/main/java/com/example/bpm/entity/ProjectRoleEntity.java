@@ -1,6 +1,7 @@
 package com.example.bpm.entity;
 
 import javax.persistence.*;
+
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.User;
@@ -21,7 +22,6 @@ public class ProjectRoleEntity implements Serializable {
     @JoinColumn(name = "project_id", referencedColumnName = "project_id")
     private ProjectEntity projectIdInRole;
 
-    //    @MapsId("uuid")
     @Id
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "uuid", referencedColumnName = "uuid")

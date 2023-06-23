@@ -27,13 +27,14 @@
 			};
 
 			document.login_form.submit();
+			event.preventDefault();
 		}
 
 	</script>
 </head>
 <body>
 <div class="page-container">
-	<form name="login_form" action="/user/dologin" method="post">
+	<form name="login_form" action="/user/dologin" method="post"  onsubmit="return false">
 		<div class="login-form-container shadow">
 			<div class="login-form-left-side">
 				<div class="top-logo-wrap">

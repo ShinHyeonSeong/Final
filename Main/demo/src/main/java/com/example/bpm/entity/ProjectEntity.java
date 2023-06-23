@@ -43,6 +43,9 @@ public class ProjectEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "projectIdToHead")
     private List<HeadEntity> HeadEntityList = new ArrayList<>();
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "projectIdToMessage")
+    private List<MessageEntity> MessageEntityList = new ArrayList<>();
+
     public static ProjectEntity toProjectEntity(ProjectDto projectDto) {
         ProjectEntity projectEntity = new ProjectEntity();
         projectEntity.setProjectId(projectDto.getProjectId());
