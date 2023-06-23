@@ -5,35 +5,41 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../css/ex.css">
+  <link rel="stylesheet" href="../css/sidebar.css">
   <title>Dark Theme Mailbox</title>
 </head>
 
 <body>
-  <div id="mailbox">
-    <div id="message-box">
+
+  <!-- Side menu bar -->
+  <div class="sidebar">
+    <ul>
+      <li><a href="./projectCreate.html">프로젝트 만들기</a></li>
+      <li class="active"><a href="/project/main">홈</a></li>
+      <li><a href="/project/goals">목표</a></li>
+      <li><a href="/project/works">작업</a></li>
+      <li><a href="/project/document">문서</a></li>
+      <li><a href="./calender.html">달력</a></li>
+      <li><a href="/user/search">멤버 초대</a></li>
+    </ul>
+  </div>
+  <div class="top-bar">
+    <h1>메세지함</h1>
+    <a href="/project/goal/create">
+      <button class="add-goal-btn">목표 추가</button>
+    </a>
+  </div>
+  <hr>
+  <div class="mailbox">
+    <div class="message-box">
       <h2 style="text-align: center;">쪽지 보내기</h2>
-      <input type="text" id="subject" placeholder="Subject">
-      <textarea id="content" placeholder="Message Content"></textarea>
+      <input type="text" class="subject" placeholder="Subject">
+      <textarea class="content" placeholder="Message Content"></textarea>
       <div class="button-container">
-        <button id="send-btn">보내기</button>
-        <button id="view-btn">메세지 확인하기</button>
+        <button class="send-btn">보내기</button>
+        <button class="view-btn">메세지 확인하기</button>
       </div>
     </div>
-
-    <ul id="message-list">
-      <li class="message-item">
-        <h2>Hello</h2>
-        <p>This is a test message.</p>
-      </li>
-      <li class="message-item">
-        <h2>Important Notice</h2>
-        <p>Please read this message carefully.</p>
-      </li>
-      <li class="message-item">
-        <h2>Reminder</h2>
-        <p>Don't forget about our meeting tomorrow.</p>
-      </li>
-    </ul>
   </div>
 
   <script src="script.js"></script>

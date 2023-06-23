@@ -6,6 +6,7 @@ import com.example.bpm.entity.Log;
 import com.example.bpm.entity.UserEntity;
 import com.example.bpm.entity.WorkEntity;
 import com.example.bpm.service.*;
+import com.google.api.Http;
 import com.google.cloud.storage.Acl;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -42,6 +43,8 @@ public class ProjectDetailController {
     private CalendarService calendarService;
     @Autowired
     private ExceptionService exceptionService;
+    @Autowired
+    private MessageService messageService;
     @Autowired
     private HttpSession session;
 
@@ -89,7 +92,7 @@ public class ProjectDetailController {
         ProjectDto currentProject = getSessionProject();
         List<HeadDto> headDtoList = projectDetailSerivce.selectAllHead(currentProject);
         List<DetailDto> detailDtoList = projectDetailSerivce.selectAllDetailForProject(currentProject);
-            model.addAttribute("detailDtoList", detailDtoList);
+        model.addAttribute("detailDtoList", detailDtoList);
         Long auth = getSessionAuth();
         model.addAttribute("headDtoList", headDtoList);
         model.addAttribute("auth", auth);
@@ -104,7 +107,7 @@ public class ProjectDetailController {
 
     // 하위 목표 생성 main
     @GetMapping("/project/detail/create")
-    public String goCreateDetail(Model model, @RequestParam(value = "message", required = false)String message) {
+    public String goCreateDetail(Model model, @RequestParam(value = "message", required = false) String message) {
         ProjectDto currentProject = getSessionProject();
         List<HeadDto> headDtoList = projectDetailSerivce.selectAllHead(currentProject);
         model.addAttribute("headDtoList", headDtoList);
@@ -417,5 +420,47 @@ public class ProjectDetailController {
         return "main";
     }
 
+    /* - - - - - Message Contorller - - - - - - */
+    @GetMapping("/recvMessageList")
+    public String viewRecvMessage(HttpSession session, Model model) {
+        UserDto userDto = getSessionUser();
+        ProjectDto projectDto = getSessionProject();
+        List<MessageDto> messageDtoList = messageService.selectAllRecv(userDto, projectDto);
+
+        model.addAttribute("List", messageDtoList);
+        return "recvMessageList";
+    }
+
+    @GetMapping("/sendMessageList")
+    public String viewSendMessage(HttpSession session, Model model) {
+        UserDto userDto = getSessionUser();
+        ProjectDto projectDto = getSessionProject();
+        List<MessageDto> messageDtoList = messageService.selectAllSend(userDto, projectDto);
+
+        model.addAttribute("List", messageDtoList);
+
+        return "sendMessageList";
+    }
+
+    @GetMapping("/message")
+    public String sendMessageForm() {
+        return "message";
+    }
+
+    @PostMapping("/selectmessage/{id}")
+    public String selectMessage(@PathVariable("id") Long id, Model model) {
+        MessageDto messageDto = messageService.selectMessage(id);
+        model.addAttribute("message");
+
+        return "messageDetail";
+    }
+
+    @PostMapping("/sendMessage")
+    public String sendMessage(@RequestParam(value = "title") String title,
+                              @RequestParam(value = "content") String content,
+                              @RequestParam(value = "recv") String startDay,
+                              HttpSession session) {
+
+    }
 }
 
