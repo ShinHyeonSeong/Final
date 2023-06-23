@@ -4,6 +4,8 @@ import com.example.bpm.dto.MessageDto;
 import com.example.bpm.dto.ProjectDto;
 import com.example.bpm.dto.UserDto;
 import com.example.bpm.entity.MessageEntity;
+import com.example.bpm.entity.ProjectEntity;
+import com.example.bpm.entity.UserEntity;
 import com.example.bpm.repository.MessageRepository;
 import com.example.bpm.repository.ProjectRepository;
 import com.example.bpm.repository.UserRepository;
@@ -12,7 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +34,10 @@ public class MessageService {
     private final MessageRepository messageRepository;
 
     //메세지 보내기
-    public void sendMessage(MessageDto messageDto){
+    public void sendMessage(String title, String content, UserDto nowUuid, String recvName, ProjectDto nowProject) {
+        Date now = new Date();
+        UserEntity recvUser = userRepository.findByName(recvName);
+        MessageDto messageDto = new MessageDto(title, content, now, UserEntity.toUserEntity(nowUuid), recvUser, ProjectEntity.toProjectEntity(nowProject));
 
         messageRepository.save(MessageEntity.toMessageEntity(messageDto));
         log.info("보내기 완료 (서비스)" + messageDto.toString());
@@ -48,6 +56,7 @@ public class MessageService {
         }
         return messageDtos;
     }
+
     //발신함 확인
     public List<MessageDto> selectAllSend(UserDto sendUser, ProjectDto projectDto) {
         String sendUserUuid = sendUser.getUuid();
@@ -66,6 +75,5 @@ public class MessageService {
     public MessageDto selectMessage(Long id) {
         return MessageDto.toMessageDto(messageRepository.findById(id).get());
     }
-
 
 }

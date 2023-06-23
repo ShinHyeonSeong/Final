@@ -36,88 +36,84 @@ a {
   margin-left: auto;
 }
 
-
-.mailbox {
+nav {
   margin-top: 120px;
-  margin-left: 250px;
-  text-align: center;
-}
-
-.message-box {
-  background-color: #333;
-  border-radius: 5px;
+  margin-left: 33%;
+  margin-bottom: 50px;
+  background-color: #222;
   padding: 10px;
-  margin-bottom: 20px;
-  width: 500px;
-  margin: 0 auto;
+  width: 50%;
 }
 
-h2 {
-  margin: 0 0 10px;
-  font-size: 18px;
-}
-
-.subject,
-.content {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  background-color: #1a1a1a;
-  border: none;
-  color: #e0e0e0;
-  box-sizing: border-box;
-}
-
-textarea {
-  width: 100%;
-  height: 100px;
-  padding: 10px;
-  margin-bottom: 10px;
-  background-color: #1a1a1a;
-  border: none;
-  color: #e0e0e0;
-  resize: vertical;
-  box-sizing: border-box;
-}
-
-.button-container {
-  text-align: right;
-  margin-top: 10px;
-}
-
-.send-btn {
-  background-color: #1a1a1a;
-  border: none;
-  color: #e0e0e0;
-  padding: 10px;
-  cursor: pointer;
-}
-
-.send-btn:hover {
-  background-color: #333;
-}
-
-.view-btn {
-  background-color: #1a1a1a;
-  border: none;
-  color: #e0e0e0;
-  padding: 10px;
-  cursor: pointer;
-}
-
-.view-btn:hover {
-  background-color: #333;
-}
-
-.message-list {
-  list-style-type: none;
-  padding: 0;
+.nav-list {
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
   margin: 0;
+  padding: 0;
 }
 
-.message-item {
+.nav-list li {
+  font-size: 20px;
+}
+
+.nav-item {
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+.nav-item.active {
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: #fff;
+  border-bottom: 1px solid #555;
   background-color: #333;
-  border-radius: 5px;
+}
+
+.container {
+  max-width: 60%;
+  margin-left: 25%;
+  background-color: #333;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.container h2{
+  font-size: 30px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 20px;
+}
+
+input[type="text"],
+textarea {
+  margin: 1%;
+  width: 95%;
   padding: 10px;
-  margin-bottom: 10px;
+  border: 1px solid #555;
+  border-radius: 4px;
+  resize: vertical;
+  background-color: #444;
+  color: #fff;
+}
+
+input[type="submit"] {
+  background-color: #444;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+}
+
+input[type="submit"]:hover {
+  background-color: #666;
 }

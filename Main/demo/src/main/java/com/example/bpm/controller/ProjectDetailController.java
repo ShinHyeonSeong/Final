@@ -1,13 +1,9 @@
 package com.example.bpm.controller;
 
 import com.example.bpm.dto.*;
-import com.example.bpm.entity.Document;
-import com.example.bpm.entity.Log;
 import com.example.bpm.entity.UserEntity;
 import com.example.bpm.entity.WorkEntity;
 import com.example.bpm.service.*;
-import com.google.api.Http;
-import com.google.cloud.storage.Acl;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
@@ -17,14 +13,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.net.http.HttpRequest;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Controller
 @Slf4j
@@ -420,6 +412,7 @@ public class ProjectDetailController {
         return "main";
     }
 
+
     /* - - - - - Message Contorller - - - - - - */
     @GetMapping("/recvMessageList")
     public String viewRecvMessage(HttpSession session, Model model) {
@@ -442,15 +435,17 @@ public class ProjectDetailController {
         return "sendMessageList";
     }
 
-    @GetMapping("/message")
-    public String sendMessageForm() {
-        return "message";
+    @GetMapping("/messageForm")
+    public String sendMessageForm(Model model) {
+        List<UserDto> userDtos = userService.searchUserToProject(getSessionProject().getProjectId());
+        model.addAttribute("userList", userDtos);
+        return "messageForm";
     }
 
-    @PostMapping("/selectmessage/{id}")
+    @PostMapping("/message/{id}")
     public String selectMessage(@PathVariable("id") Long id, Model model) {
         MessageDto messageDto = messageService.selectMessage(id);
-        model.addAttribute("message");
+        model.addAttribute("message", messageDto);
 
         return "messageDetail";
     }
@@ -458,9 +453,11 @@ public class ProjectDetailController {
     @PostMapping("/sendMessage")
     public String sendMessage(@RequestParam(value = "title") String title,
                               @RequestParam(value = "content") String content,
-                              @RequestParam(value = "recv") String startDay,
+                              @RequestParam(value = "recvName") String name,
                               HttpSession session) {
-
+        log.info(name + "입니다.");
+        messageService.sendMessage(title, content, getSessionUser(), name, getSessionProject());
+        return "redirect:/sendMessageList";
     }
 }
 

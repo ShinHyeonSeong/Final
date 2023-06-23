@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -21,19 +22,31 @@ public class MessageDto {
 
     private String content;
 
+    private Date date;
+
     private UserEntity userIdToMessageSend;
 
-    private ProjectEntity userIdToMessageRecv;
+    private UserEntity userIdToMessageRecv;
 
     private ProjectEntity projectIdToMessage;
 
-    public static MessageDto toMessageDto(MessageEntity messageEntity){
+    public MessageDto(String title, String content, Date date, UserEntity userIdToMessageSend, UserEntity userIdToMessageRecv, ProjectEntity projectIdToMessage) {
+        this.title = title;
+        this.content = content;
+        this.date = date;
+        this.userIdToMessageSend = userIdToMessageSend;
+        this.userIdToMessageRecv = userIdToMessageRecv;
+        this.projectIdToMessage = projectIdToMessage;
+    }
+
+    public static MessageDto toMessageDto(MessageEntity messageEntity) {
         MessageDto messageDto = new MessageDto();
         messageDto.setMessageId(messageEntity.getMessageId());
         messageDto.setTitle(messageEntity.getTitle());
         messageDto.setContent(messageEntity.getContent());
+        messageDto.setDate(messageEntity.getDate());
         messageDto.setUserIdToMessageSend(messageEntity.getUserIdToMessageSend());
-        messageDto.setUserIdToMessageRecv(getUserIdToMessageRecv());
+        messageDto.setUserIdToMessageRecv(messageEntity.getUserIdToMessageRecv());
         messageDto.setProjectIdToMessage(messageEntity.getProjectIdToMessage());
         return messageDto;
     }

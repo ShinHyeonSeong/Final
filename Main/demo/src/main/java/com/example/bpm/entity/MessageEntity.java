@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -21,19 +22,22 @@ public class MessageEntity {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "title")
+    @Column(name = "content")
     private String content;
 
+    @Column(name = "date")
+    private Date date;
+
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "send_uuid", referencedColumnName = "send_uuid")
+    @JoinColumn(name = "send_uuid")
     private UserEntity userIdToMessageSend;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "recv_uuid", referencedColumnName = "recv_uuid")
-    private ProjectEntity userIdToMessageRecv;
+    @JoinColumn(name = "recv_uuid")
+    private UserEntity userIdToMessageRecv;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "project_id", referencedColumnName = "project_id")
+    @JoinColumn(name = "project_id")
     private ProjectEntity projectIdToMessage;
 
     public static MessageEntity toMessageEntity(MessageDto messageDto) {
@@ -41,6 +45,7 @@ public class MessageEntity {
         messageEntity.setMessageId(messageDto.getMessageId());
         messageEntity.setTitle(messageDto.getTitle());
         messageEntity.setContent(messageDto.getContent());
+        messageEntity.setDate(messageDto.getDate());
         messageEntity.setUserIdToMessageSend(messageDto.getUserIdToMessageSend());
         messageEntity.setUserIdToMessageRecv(messageDto.getUserIdToMessageRecv());
         messageEntity.setProjectIdToMessage(messageDto.getProjectIdToMessage());

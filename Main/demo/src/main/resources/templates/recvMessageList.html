@@ -1,10 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
+
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/css/messageList.css">
+	<link rel="stylesheet" href="/css/sidebar.css">
+	<title>Dark Theme Mailbox</title>
 </head>
+
 <body>
-$END$
+
+<!-- Side menu bar -->
+<div class="sidebar">
+	<ul>
+		<li><a href="/project/projectAllList">나가기</a></li>
+		<li><a href="/project/main">홈</a></li>
+		<li><a href="/project/goals">목표</a></li>
+		<li><a href="/project/works">작업</a></li>
+		<li><a href="/project/document">문서</a></li>
+		<li><a href="./calender.html">달력</a></li>
+		<li class="active"><a href="/recvMessageList">메세지</a></li>
+		<li><a href="/user/search">멤버 초대</a></li>
+	</ul>
+</div>
+<div class="top-bar">
+	<h1>메세지함</h1>
+</div>
+<hr>
+<nav>
+	<ul class="nav-list">
+		<li class="nav-item active" id="received-msgs"><a href="/recvMessageList">받은 메세지</a></li>
+		<li class="nav-item" id="sent-msgs"><a href="/sendMessageList">보낸 메세지</a></li>
+		<li class="nav-item send-msg-btn"><a href="/messageForm">메세지 보내기</a></li>
+	</ul>
+</nav>
+
+<div id="message-list" >
+	<div class="message-item" th:if="${List != null}" th:each="message : ${List}">
+		<a class="message-title" th:href="@{/message/{id}(id=${message.messageId})}" th:text = "${message.getTitle()}">
+			<div class="message-info">
+				<p class="message-sender" th:text="'From : ' + ${message.getUserIdToMessageRecv().name}"> </p>
+				<p class="message-date" th:text="${#dates.format(message.date, 'yyyy-MM-dd')}"></p>
+			</div>
+		</a>
+	</div>
+</div>
 </body>
+
 </html>
