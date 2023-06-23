@@ -294,9 +294,9 @@ public class ProjectDetailController {
     @GetMapping("/project/work/create")
     public String goCreateWork(Model model) {
         ProjectDto currentProject = getSessionProject();
-        List<UserDto> userDtoList = userService.searchUserToProject(currentProject.getProjectId());
+//        List<UserDto> userDtoList = userService.searchUserToProject(currentProject.getProjectId());
         List<DetailDto> detailDtoList = projectDetailSerivce.selectAllDetailForProject(currentProject);
-        model.addAttribute("userDtoList", userDtoList);
+//        model.addAttribute("userDtoList", userDtoList);
         model.addAttribute("detailDtoList", detailDtoList);
         return "workCreate";
     }

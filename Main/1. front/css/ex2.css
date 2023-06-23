@@ -1,0 +1,88 @@
+body {
+  margin-left: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #222;
+  color: #fff;
+  font-family: Arial, sans-serif;
+}
+
+header, nav {
+  width: 100%;
+}
+
+nav {
+  background-color: #222;
+  padding: 10px;
+  width: 70%;
+}
+
+.nav-list {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item {
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+.nav-item.active {
+  font-weight: bold;
+  color: #fff;
+  background-color: #333;
+}
+
+#message-list {
+  width: 70%;
+  margin-top: 20px;
+}
+
+.message-item {
+  display: flex;
+  flex-direction: column;
+  background-color: #333;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.message-title {
+  color: #fff;
+  font-size: 18px;
+  margin-bottom: 5px;
+  text-decoration: none;
+}
+
+.message-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; /* Align to the right */
+  align-items: center;
+}
+
+.message-sender {
+  color: #ccc;
+  font-size: 14px;
+}
+
+.message-date {
+  color: #ccc;
+  font-size: 14px;
+}
+
+#send-btn {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+#send-btn:hover {
+  background-color: #555;
+}
