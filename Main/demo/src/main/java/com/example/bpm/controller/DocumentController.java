@@ -119,7 +119,7 @@ public class DocumentController {
 
     // 로그 페이지
     /// 헤당 문서의 로그 페이지 이동
-    @GetMapping("document/log")
+    @GetMapping("document/history")
     public String getDocumentLog(String id, Model model, HttpSession session) {
         List<LogDto> logDtoList = documentService.getLogListById(id);
         model.addAttribute("logList", logDtoList);
