@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -264,7 +265,7 @@ public class ProjectDetailController {
         UserDto currentUser = getSessionUser();
         ProjectDto currentProject = getSessionProject();
         List<WorkDto> sessionUserWorkDtoList = projectDetailSerivce.selectAllWorkForUser(currentUser);
-        List<WorkDto> userWorkDtoList = new ArrayList<>();
+        List<WorkDto> userWorkDtoList = new ArrayList();
         log.info("현재 진입 프로젝트 : " + currentProject.getProjectId());
 
         for (WorkDto workDto : sessionUserWorkDtoList) {
