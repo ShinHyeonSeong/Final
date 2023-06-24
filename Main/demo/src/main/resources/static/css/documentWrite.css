@@ -292,3 +292,8 @@ hr {
 .custom-context-menu li:hover {
     background-color: #e2e2e26c;
 }
+
+.icon-img {
+    height: 30%;
+    width: 30%;
+}
