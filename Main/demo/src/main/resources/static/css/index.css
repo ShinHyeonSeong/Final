@@ -34,7 +34,7 @@ img {
     align-items: center;
     overflow: hidden;
     color: #000;
-    margin: 10rem auto 5rem auto;
+    margin: 2rem auto 5rem auto;
 }
 
 .bpm-point-text {
@@ -45,8 +45,6 @@ img {
     letter-spacing: 10px;
 }
 
-
-/* title styles */
 .home-title span{
     font-size: 2.5em;
     font-weight: normal;
