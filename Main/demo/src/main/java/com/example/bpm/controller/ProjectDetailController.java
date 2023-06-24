@@ -136,7 +136,6 @@ public class ProjectDetailController {
                              @RequestParam(value = "deadline") String deadline,
                              @RequestParam(value = "discription") String discription,
                              @RequestParam(value = "headId") Long headId,
-                             HttpServletRequest request,
                              RedirectAttributes rttr,
                              Model model) {
         ProjectDto currentProject = getSessionProject();
@@ -145,7 +144,6 @@ public class ProjectDetailController {
         if (message != null) {
             log.info("예외 처리 결과 : " + message);
             rttr.addFlashAttribute("message", message);
-            String referer = request.getHeader("Referer");
             return "redirect:/project/detail/create";
         }
         if (headId == 0) {
@@ -189,7 +187,12 @@ public class ProjectDetailController {
 
     // head 수정창 매핑 메서드
     @RequestMapping("/project/goal/head/edit/{id}")
-    public String goEditHead(@PathVariable("id") Long headId, Model model) {
+    public String goEditHead(@PathVariable("id") Long headId,
+                             @RequestParam(value = "message", required = false)String message,
+                             Model model) {
+        if (message != null) {
+            model.addAttribute("message", message);
+        }
         HeadDto headDto = projectDetailSerivce.selectHead(headId);
         model.addAttribute("headDto", headDto);
         return "headEdit";
@@ -197,27 +200,42 @@ public class ProjectDetailController {
 
     // detail 수정창 매핑 메서드
     @RequestMapping("/project/goal/detail/edit/{id}")
-    public String goEditDetail(@PathVariable("id") Long detailId, Model model) {
+    public String goEditDetail(@PathVariable("id") Long detailId,
+                               @RequestParam(value = "message", required = false)String message,
+                               Model model) {
+
         DetailDto detailDto = projectDetailSerivce.selectDetail(detailId);
         ProjectDto currentProject = getSessionProject();
         List<HeadDto> headDtoList = projectDetailSerivce.selectAllHead(currentProject);
+        if (message != null) {
+            model.addAttribute("message", message);
+        }
         model.addAttribute("detailDto", detailDto);
         model.addAttribute("headDtoList", headDtoList);
         return "detailEdit";
     }
 
-    //
+    // head 수정 실행 메서드
     @PostMapping("/project/head/edit")
     public String editHead(@RequestParam(value = "title") String title,
                            @RequestParam(value = "startDay") String startDay,
                            @RequestParam(value = "deadline") String deadline,
                            @RequestParam(value = "discription") String discription,
                            @RequestParam(value = "headId") Long headId,
+                           RedirectAttributes rttr,
                            Model model) {
+        ProjectDto currentProject = getSessionProject();
+        String message = exceptionService.headEditErrorCheck(currentProject, title, startDay, deadline);
+        if (message != null) {
+            log.info("예외 처리 결과 : " + message);
+            rttr.addFlashAttribute("message", message);
+            return "redirect:/project/goal/head/edit/" + headId;
+        }
         HeadDto headDto = projectDetailSerivce.editHead(title, startDay, deadline, discription, headId);
         return "redirect:/project/goals";
     }
 
+    // detail 수정 실행 메서드
     @PostMapping("/project/detail/edit")
     public String editDetail(@RequestParam(value = "title") String title,
                              @RequestParam(value = "startDay") String startDay,
@@ -225,7 +243,14 @@ public class ProjectDetailController {
                              @RequestParam(value = "discription") String discription,
                              @RequestParam(value = "headId") Long headId,
                              @RequestParam(value = "detailId") Long detailId,
+                             RedirectAttributes rttr,
                              Model model) {
+        String message = exceptionService.detailEditErrorCheck(title, startDay, deadline, headId);
+        if (message != null) {
+            log.info("예외 처리 결과 : " + message);
+            rttr.addFlashAttribute("message", message);
+            return "redirect:/project/goal/detail/edit/" + detailId;
+        }
         DetailDto detailDto = projectDetailSerivce.editDetail(title, startDay, deadline, discription, headId, detailId);
         return "redirect:/project/goals";
     }
@@ -238,7 +263,18 @@ public class ProjectDetailController {
     public String works(Model model) {
         UserDto currentUser = getSessionUser();
         ProjectDto currentProject = getSessionProject();
-        List<WorkDto> userWorkDtoList = projectDetailSerivce.selectAllWorkForUser(currentUser);
+        List<WorkDto> sessionUserWorkDtoList = projectDetailSerivce.selectAllWorkForUser(currentUser);
+        List<WorkDto> userWorkDtoList = new ArrayList<>();
+        log.info("현재 진입 프로젝트 : " + currentProject.getProjectId());
+
+        for (WorkDto workDto : sessionUserWorkDtoList) {
+            log.info("session user workDto list에서 현재 프로젝트 id와 같은 dto 리스트에 삽입 " + currentProject.getProjectId());
+            if (workDto.getProjectIdToWork().getProjectId() == currentProject.getProjectId()) {
+                log.info("리스트 삽입 : " + workDto.getWorkId() + ".");
+                log.info("해당 dto의 projectId : " + workDto.getProjectIdToWork().getProjectId() + ".");
+                userWorkDtoList.add(workDto);
+            }
+        }
         List<WorkDto> projectWorkDtoList = projectDetailSerivce.selectAllWorkForProject(currentProject);
         Long auth = getSessionAuth();
         if (projectWorkDtoList != null) {
