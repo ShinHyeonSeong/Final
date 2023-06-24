@@ -72,4 +72,44 @@ public class ExceptionService {
         }
         return null;
     }
+
+    public String headEditErrorCheck(ProjectDto projectDto, String title, String startDay, String endDay) {
+        Date projectStartDate = projectDto.getStartDay();
+        Date projectEndDate = projectDto.getEndDay();
+
+        Date headStartDate = dateManager.formatter(startDay);
+        Date headEndDate = dateManager.formatter(endDay);
+
+        int startDateResult = headStartDate.compareTo(projectStartDate);
+        int endDateResult = headEndDate.compareTo(projectEndDate);
+
+        if(startDateResult < 0) {
+            return "프로젝트 시작기한보다 빠릅니다.";
+        }
+        if(endDateResult > 0) {
+            return "프로젝트 마감기한을 초과했습니다.";
+        }
+        return null;
+    }
+
+    public String detailEditErrorCheck(String title, String startDay, String endDay, Long headId) {
+        HeadDto headDto = HeadDto.toHeadDto((headRepository.findById(headId)).orElse(null));
+
+        Date headStartDate = headDto.getStartDay();
+        Date headEndDate = headDto.getEndDay();
+
+        Date detailStartDate = dateManager.formatter(startDay);
+        Date detailEndDate = dateManager.formatter(endDay);
+
+        int startDateResult = detailStartDate.compareTo(headStartDate);
+        int endDateResult = detailEndDate.compareTo(headEndDate);
+
+        if(startDateResult < 0) {
+            return "상위 목표의 시작기한보다 빠릅니다.";
+        }
+        if(endDateResult > 0) {
+            return "상위 목표의 마감기한을 초과했습니다.";
+        }
+        return null;
+    }
 }
