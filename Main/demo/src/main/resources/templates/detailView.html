@@ -4,12 +4,10 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>My Goals</title>
+  <title>Border Project Manager</title>
   <link rel="stylesheet" href="/css/goalDetail.css">
   <link rel="stylesheet" href="/css/sidebar.css">
 </head>
-<!-- 목표 > 내 목표 창-->
-
 <body>
 <div class="sidebar">
 	<ul>
@@ -25,9 +23,9 @@
 </div>
 <div class="top-bar">
   <!-- BackButton 디자인 필요 -->
-  <a href="javascript:history.back(-1)" class="back-button">
+  <a th:href="@{/project/goal/headView/{id}(id=${detailDto.headIdToDetail.headId})}" class="back-button">
     < </a>
-  <h1 th:text="${detailDto.title}"></h1>
+  <h1 th:text="'하위 목표 : ' + ${detailDto.title}"></h1>
 </div>
 
 <div class="page-container">
@@ -55,7 +53,8 @@
       </div>
 
       <div class="content">
-        <h4 class="content-title">연결된 작업</h4>
+        <h4 class="work-title">연결된 작업</h4>
+        <a href="/project/work/create" th:if="${auth == 1}"><button class="work-edit-btn">작업 추가</button></a>
         <table>
           <thead>
           <tr>
@@ -67,7 +66,7 @@
           <tbody>
           <tr th:each="userWork : ${userWorkMap}">
             <td><a th:href="@{/project/work/detail/{id}(id=${userWork.key.workId})}" th:text="${userWork.key.title}">작업명</a></td>
-            <td th:text="${userWork.value.name}"></td>
+            <td><th:block th:each="value : ${userWork.value}">&nbsp;<th:block th:text="${value.name}"></th:block></th:block></td>
             <td th:text="${#dates.format(userWork.key.endDay, 'yyyy-MM-dd')}"></td>
           </tr>
           </tbody>

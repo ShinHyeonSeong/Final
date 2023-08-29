@@ -170,13 +170,16 @@ public class ProjectController {
         session.removeAttribute("currentProject");
         session.setAttribute("currentProject", presentDto);
         checkAuth();
+        Long auth = getSessionAuth();
+
+        model.addAttribute("auth", auth);
 
         model.addAttribute("projectDto", presentDto);
         model.addAttribute("joinUsers", userDtoList);
         model.addAttribute("headDtoList", headDtoList);
 
         if (getSessionAuth() != 2) {
-            List<WorkDto> userWorkDtoList = projectDetailSerivce.selectAllWorkForUser(userDto);
+            List<WorkDto> userWorkDtoList = projectDetailSerivce.selectAllWorkForProject(presentDto);
 
             model.addAttribute("userWorkDtoList", userWorkDtoList);
             return "projectMain";
@@ -251,13 +254,6 @@ public class ProjectController {
         log.info("전달 완료, " + sendUuid + recvUuid + projectId + acceptable);
         projectSerivce.submitInvite(sendUuid, recvUuid, projectId, acceptable);
         return "redirect:/project/inviteList";
-    }
-
-    @GetMapping("/project/delete/{id}")
-    public String deleteProject(@PathVariable Long id) {
-        projectSerivce.deleteProject(id);
-        log.info("프로젝트 정상 삭제 (컨트롤러 작동)");
-        return "redirect:/project/projectList";
     }
 
 

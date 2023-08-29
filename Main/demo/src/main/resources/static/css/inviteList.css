@@ -135,7 +135,7 @@ td a {
 
 .btn-wrap {
     display: flex;
-    flex-direction: row-reverse;
+    flex-direction: row;
 }
 
 .btn-wrap a {

@@ -4,7 +4,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>My Goals</title>
+	<title>Border Project Manager</title>
 	<link rel="stylesheet" href="/css/workDetail.css">
 	<link rel="stylesheet" href="/css/sidebar.css">
 </head>
@@ -26,9 +26,10 @@
 	</ul>
 </div>
 <div class="top-bar">
-	<a href="javascript:history.back(-1)" class="back-button">
+	<!-- BackButton 디자인 필요 -->
+	<a th:href="@{/project/goal/detailView/{id}(id=${workDto.detailIdToWork.detailId})}" class="back-button">
 		< </a>
-	<h1>작업 1</h1>
+	<h1 th:text="'작업 : ' + ${workDto.title}"></h1>
 
 </div>
 
@@ -39,7 +40,7 @@
 				<h4 class="content-title">설명</h4>
 				<p class="content-detail" th:text="${workDto.discription}"></p>
 			</div>
-			
+
 			<div class="content">
 				<h4 class="content-title">연결된 목표</h4>
 				<div class="linked-object">
@@ -57,7 +58,7 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="content">
 				<h4 class="content-title">관련 문서</h4>
 				<div class="linked-object">
@@ -97,7 +98,7 @@
 						<div class="comment-content-head">
 							<div class="comment-user-name" th:text="${comment.userIdToComment.getName()} + ' 님'">
 							</div>
-<!--							<button onclick="" class="comment-head-button">수정</button>-->
+							<!--							<button onclick="" class="comment-head-button">수정</button>-->
 							<a th:href="@{/workDetail/commentDelete/{cid}(cid=${comment.getWorkCommentId()})}"
 							   class="comment-head-button">
 								삭제</a>
@@ -108,9 +109,9 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="vertical-divider"></div>
-		
+
 		<div class="right-section">
 			<!-- 이것도 div로 묶어야 데이터를 잘 넘길 수 있을 거 같.. ㄱ -->
 			<div>
@@ -118,10 +119,11 @@
 				<p><a href="#" class="content-detail" th:text="${workDto.getDetailIdToWork().title}"></a></p>
 				<div class="horizon-divider"></div>
 			</div>
-			
+
 			<div>
 				<h4 class="content-title">작업 담당자</h4>
-				<p class="content-detail" th:text="${userDto.name}"></p>
+				<p class="content-detail"th:each="userWorkDto : ${userWorkDtoList}"
+				   th:text="${userWorkDto.userIdToUserWork.name}"></p>
 				<div class="horizon-divider"></div>
 			</div>
 			<!-- 이걸 div로 해가지고 상위 목표와 연결 해야되는데 일단 내가 못함 미안 -->
@@ -137,22 +139,25 @@
 				<p class="content-detail" th:text="${#dates.format(workDto.startDay, 'yyyy-MM-dd')}"></p>
 				<div class="horizon-divider"></div>
 			</div>
-			
+
 			<div>
 				<h4 class="content-title">마감기간</h4>
 				<p class="content-detail" th:text="${#dates.format(workDto.endDay, 'yyyy-MM-dd')}"></p>
 				<div class="horizon-divider"></div>
 			</div>
-			
+
 			<div>
 				<a th:href="@{/project/work/completion/change/{id}(id=${workDto.workId})}">
-					<button class="edit-btn" th:if="${auth && workDto.completion == 0}">완료로 표시</button>
+					<button class="edit-btn" th:if="${auth == 1 && workDto.completion == 0}">완료로 표시</button>
 				</a>
 				<a th:href="@{/project/work/completion/change/{id}(id=${workDto.workId})}">
-					<button class="edit-btn" th:if="${auth && workDto.completion == 1}">진행중으로 표시</button>
+					<button class="edit-btn" th:if="${auth == 1 && workDto.completion == 1}">진행중으로 표시</button>
 				</a>
-				<a href="work-create.html">
-					<button class="edit-btn" th:if="${auth}">작업 수정</button>
+				<a th:href="@{/project/goal/work/edit/{id}(id=${workDto.workId})}">
+					<button class="edit-btn" th:if="${auth == 1}">작업 수정</button>
+				</a>
+				<a th:href="@{/project/goal/work/delete/{id}(id=${workDto.workId})}">
+					<button class="delete-btn" th:if="${auth == 1}" >작업 삭제</button>
 				</a>
 			</div>
 		</div>

@@ -42,6 +42,14 @@ public class ProjectDetailSerivce {
     private LogRepository logRepository;
     @Autowired
     private BlockRepository blockRepository;
+    @Autowired
+    private MessageRepository messageRepository;
+    @Autowired
+    private ProjectRequestRepository projectRequestRepository;
+    @Autowired
+    private ProjectRoleRepository projectRoleRepository;
+    @Autowired
+    private ProjectSerivce projectSerivce;
 
     Date currentDate = new Date(); // 시작 날짜(현재) 생성
     DateManager dateManager = new DateManager();
@@ -102,7 +110,7 @@ public class ProjectDetailSerivce {
         }
     }
 
-    //내 작업 만들기
+    // 내 작업 만들기
     public WorkDto createWork(String title, String discription, String startDate, String deadline,
                               DetailDto connectDetail, ProjectDto projectDto) {
         if (workRepository.findByTitle(title).isPresent()) {
@@ -127,12 +135,15 @@ public class ProjectDetailSerivce {
     }
 
     //유저 작업 테이블 추가 메서드
-    public void addUserWork(WorkDto workDto, UserDto userDto) {
+    public void addUserWork(WorkDto workDto, List<String> chargeUsers) {
         log.info("user_work table insert method");
         WorkEntity workEntity = WorkEntity.toWorkEntity(workDto);
-        UserEntity userEntity = UserEntity.toUserEntity(userDto);
-        UserWorkEntity userWorkEntity = UserWorkEntity.toUserWorkEntity(workEntity, userEntity);
-        userWorkRepository.save(userWorkEntity);
+        UserWorkEntity userWorkEntity = new UserWorkEntity();
+        for (String uuid : chargeUsers) {
+            Optional<UserEntity> userEntity = userRepository.findById(uuid);
+            userWorkEntity = UserWorkEntity.toUserWorkEntity(workEntity, userEntity.get());
+            userWorkRepository.save(userWorkEntity);
+        }
     }
 
     /* - - - - 생성 메서드 끝 - - - - */
@@ -216,19 +227,39 @@ public class ProjectDetailSerivce {
         return UserDto.toUserDto(userEntity.get());
     }
 
+    public List<UserWorkDto> selectAllUserWorkForWork(Long workId) {
+        List<UserWorkEntity> userWorkEntityList = userWorkRepository.findAllByWorkIdToUserWork_WorkId(workId);
+        List<UserWorkDto> userWorkDtoList = new ArrayList<>();
+        for (UserWorkEntity userWorkEntity : userWorkEntityList) {
+            userWorkDtoList.add(UserWorkDto.toUserWorkDto(userWorkEntity));
+        }
+        return userWorkDtoList;
+    }
+
     public UserWorkDto selectUserWorkForWork(WorkDto workDto) {
         UserWorkDto userWorkDto = UserWorkDto.toUserWorkDto(
                 userWorkRepository.findByWorkIdToUserWork_WorkId(workDto.getWorkId()));
         return userWorkDto;
     }
 
-    public Map<WorkDto, UserDto> selectAllUserWorkForWorkList(List<WorkDto> workDtoList) {
-        Map<WorkDto, UserDto> userWorkMap = new HashMap<>();
+    public List<UserWorkDto> selectUserWorkForWorkList(WorkDto workDto) {
+        List<UserWorkDto> userWorkDtoList = new ArrayList<>();
+        for (UserWorkEntity userWorkEntity : userWorkRepository.findAllByWorkIdToUserWork_WorkId(workDto.getWorkId())){
+            userWorkDtoList.add(UserWorkDto.toUserWorkDto(userWorkEntity));
+        }
+        return userWorkDtoList;
+    }
+
+    public Map<WorkDto, List<UserDto>> selectAllUserWorkForWorkList(List<WorkDto> workDtoList) {
+        Map<WorkDto, List<UserDto>> userWorkMap = new HashMap<>();
         for (WorkDto workDto : workDtoList) {
-            UserWorkEntity userWorkEntity = userWorkRepository.findByWorkIdToUserWork_WorkId(workDto.getWorkId());
-            WorkDto workDtoKey = WorkDto.toWorkDto(userWorkEntity.getWorkIdToUserWork());
-            UserDto userDtoValue = UserDto.toUserDto(userWorkEntity.getUserIdToUserWork());
-            userWorkMap.put(workDtoKey, userDtoValue);
+            List<UserWorkEntity> userWorkEntityList = userWorkRepository.findAllByWorkIdToUserWork_WorkId(workDto.getWorkId());
+            WorkDto workDtoKey = WorkDto.toWorkDto(userWorkEntityList.get(0).getWorkIdToUserWork());
+            List<UserDto> userDtoList = new ArrayList<>();
+            for (UserWorkEntity userWorkEntity : userWorkEntityList) {
+                userDtoList.add(UserDto.toUserDto(userWorkEntity.getUserIdToUserWork()));
+            }
+            userWorkMap.put(workDtoKey, userDtoList );
         }
         return userWorkMap;
     }
@@ -375,9 +406,46 @@ public class ProjectDetailSerivce {
         return null;
     }
 
+    public WorkDto editWork(String title, String startDate, String deadline, String discription,
+                            Long workId, Long linkedDetailId) {
+        Optional<WorkEntity> workEntity = workRepository.findById(workId);
+        Optional<DetailEntity> detailEntity = detailRepository.findById(linkedDetailId);
+        if(workEntity.isPresent()) {
+            Date startDay = dateManager.formatter(startDate);
+            Date endDay = dateManager.formatter(deadline);
+            workEntity.get().setTitle(title);
+            workEntity.get().setStartDay(startDay);
+            workEntity.get().setEndDay(endDay);
+            workEntity.get().setDiscription(discription);
+            workEntity.get().setDetailIdToWork(detailEntity.get());
+            WorkDto workDto = WorkDto.toWorkDto(workRepository.save(workEntity.get()));
+            return workDto;
+        }
+        return null;
+    }
+
     /* - - - - 수정 메서드 끝 - - - - - */
 
     /* - - - - 삭제 메서드 시작 - - - - - */
+    @Transactional
+    public void deleteProjectEntity(ProjectDto projectDto) {
+        List<HeadDto> headDtoList = selectAllHead(projectDto);
+        for (HeadDto headDto : headDtoList) {
+            deleteHeadEntity(headDto.getHeadId());
+        }
+        log.info("Head 삭제");
+        deleteMessageForProject(projectDto.getProjectId());
+        log.info("Message 삭제");
+        deleteProjectRequestForProject(projectDto.getProjectId());
+        log.info("ProjectRequest 삭제");
+        deleteProjectRoleForProject(projectDto.getProjectId());
+        log.info("ProjectRole 삭제");
+        deleteProjectRequest(projectDto.getProjectId());
+        log.info("ProjectRequest 삭제");
+        deleteProject(projectDto.getProjectId());
+        log.info("Project 삭제");
+    }
+
     @Transactional
     public void deleteHeadEntity(Long headId) {
         //head
@@ -398,7 +466,7 @@ public class ProjectDetailSerivce {
         //하위 userWork list
         List<UserWorkDto> userWorkDtoList = new ArrayList<>();
         for (WorkDto workDto : workDtoList) {
-            userWorkDtoList.add(selectUserWorkForWork(workDto));
+            userWorkDtoList.addAll(selectUserWorkForWorkList(workDto));
         }
         //하위 workComment list
         List<WorkCommentDto> workCommentDtoList = new ArrayList<>();
@@ -471,7 +539,7 @@ public class ProjectDetailSerivce {
         //하위 userWork list
         List<UserWorkDto> userWorkDtoList = new ArrayList<>();
         for (WorkDto workDto : workDtoList) {
-            userWorkDtoList.add(selectUserWorkForWork(workDto));
+            userWorkDtoList.addAll(selectUserWorkForWorkList(workDto));
         }
         log.info("userWork 검색 완료");
         //하위 workComment list
@@ -528,10 +596,50 @@ public class ProjectDetailSerivce {
         log.info("detail 삭제 완료");
     }
 
+    @Transactional
+    public void deleteWorkEntity(Long workId) {
+        // work
+        WorkDto workDto = selectWork(workId);
+
+        List<UserWorkDto> userWorkDtoList = selectAllUserWorkForWork(workId);
+        List<WorkCommentDto> workCommentDtoList = selectAllWorkCommentForWork(workDto);
+        List<WorkDocumentDto> workDocumentDtoList = selectAllWorkDocumentForWork(workDto);
+        List<DocumentDto> documentDtoList = new ArrayList<>();
+        for (WorkDocumentDto workDocumentDto : workDocumentDtoList) {
+            DocumentDto documentDto = new DocumentDto();
+            documentDto.insertEntity(workDocumentDto.getDocumentIdToWorkDocument());
+            documentDtoList.add(documentDto);
+        }
+
+        for (DocumentDto documentDto : documentDtoList) {
+            deleteLogForDocument(documentDto);
+            log.info("log 삭제 완료");
+            deleteBlockForDocument(documentDto);
+            log.info("block 삭제 완료");
+        }
+        deleteWorkDocumentList(workDocumentDtoList);
+        log.info("workDocument 삭제 완료");
+        deleteDocumentList(documentDtoList);
+        log.info("document 삭제 완료");
+        deleteAllWorkCommentForWorkId(workId);
+        log.info("WorkComment 삭제 완료");
+        deleteAllUserWorkForWork(workId);
+        log.info("userWork 삭제 완료");
+        deleteWork(workId);
+        log.info("work 삭제 완료");
+    }
+
+    public void deleteProject(Long projectId) {
+        projectRepository.deleteByProjectId(projectId);
+    }
     public void deleteDetail(DetailDto detailDto) {
         detailRepository.deleteByDetailId(detailDto.getDetailId());
     }
+    public void deleteWork(Long workId) {
+        workRepository.deleteAllByWorkId(workId);
+    }
 
+    public void deleteProjectRequest(Long projectId) { projectRequestRepository.deleteAllByProjectIdToRequest_ProjectId(projectId); }
 
     public void deleteDetailList(List<DetailDto> detailDtoList) {
         for (DetailDto detailDto : detailDtoList) {
@@ -549,6 +657,14 @@ public class ProjectDetailSerivce {
         for (UserWorkDto userWorkDto : userWorkDtoList) {
             userWorkRepository.deleteAllByWorkIdToUserWork_WorkId(userWorkDto.getWorkIdToUserWork().getWorkId());
         }
+    }
+
+    public void deleteAllUserWorkForWork(Long workId) {
+        userWorkRepository.deleteAllByWorkIdToUserWork_WorkId(workId);
+    }
+
+    public void deleteAllWorkCommentForWorkId(Long workId) {
+        workCommentRepository.deleteAllByWorkIdToComment_WorkId(workId);
     }
 
     public void deleteWorkDocumentList(List<WorkDocumentDto> workDocumentDtoList) {
@@ -571,6 +687,20 @@ public class ProjectDetailSerivce {
     public void deleteLogForDocument(DocumentDto documentDto) {
         logRepository.deleteAllByDocumentId(documentDto.getDocumentId());
     }
+
+    public void deleteMessageForProject(Long projectId) {
+        messageRepository.deleteAllByProjectIdToMessage_ProjectId(projectId);
+    }
+
+    public void deleteProjectRequestForProject(Long projectId) {
+        projectRequestRepository.deleteAllByProjectIdToRequest_ProjectId(projectId);
+    }
+
+    public void deleteProjectRoleForProject(Long projectId) {
+        projectRoleRepository.deleteAllByProjectIdInRole_ProjectId(projectId);
+    }
+
+
     /* - - - - 삭제 메서드 끝 - - - - - */
 
     /* - - - - 상태 변경 메서드 - - - -  */

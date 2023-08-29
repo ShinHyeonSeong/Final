@@ -14,18 +14,37 @@
         background: white;
     }
     
-    .container {
-        display: flex;
-        flex-direction: column;
-        width: 70%;
-        justify-content: center;
-        align-items: center;
-    }
-    
-    .title {
-        margin-top: 10rem;
-        color: white;
-    }
+    .hr {
+            padding-top: 10em;
+            width: 100%;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            width: 70%;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .back-button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 40px;
+            margin-right: 2rem;
+            transition: 0.5s;
+        }
+
+        .title {
+            color: white;
+            display: inline-block;
+            text-align: center;
+        }
     
     .middle-box {
         width: 100%;

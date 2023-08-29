@@ -58,6 +58,19 @@ body {
     color: grey;
 }
 
+.project-select-active {
+    display: flex;
+    flex-direction: row;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-right: 4rem;
+    transition: all 0.5s;
+    border-bottom: 1px solid #ffffff;
+}
+
+
 .head-img img {
     width: 20px;
     height: 20px;

@@ -14,4 +14,7 @@ public interface WorkDocumentRepository extends JpaRepository<WorkDocumentEntity
 
     @Transactional
     public void deleteAllByWorkIdToWorkDocument_WorkId(Long id);
+
+    @Transactional
+    public void deleteAllByDocumentIdToWorkDocument_DocumentId(String id);
 }

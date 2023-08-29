@@ -4,15 +4,13 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>작업</title>
+	<title>Border Project Manager</title>
 	<link rel="stylesheet" href="/css/work.css">
 	<link rel="stylesheet" href="/css/sidebar.css">
 	<script src="/js/work.js"></script>
 </head>
 
 <body>
-
-<!-- Side menu bar -->
 <div class="sidebar">
 	<ul>
 		<li><a href="/project/projectAllList">나가기</a></li>
@@ -52,8 +50,8 @@
 						   th:text="${userWork.title}"></a></td>
 					<!--          <td th:text="">담당자명</td>-->
 					<td th:text="${#dates.format(userWork.endDay, 'yyyy-MM-dd')}"></td>
-					<td style="color: #ffffff" th:if="${userWork.completion == 1}">완료</td>
-					<td th:if="${userWork.completion == 0}">진행중</td>
+					<td style="color: rgb(80, 150, 220);" th:if="${userWork.completion == 1}">완료</td>
+					<td style="color: rgb(220, 80, 80);" th:if="${userWork.completion == 0}">진행중</td>
 				</tr>
 				</tbody>
 			</table>
@@ -74,8 +72,10 @@
 					<td><a th:href="@{/project/work/detail/{id}(id=${projectWork.workId})}"
 						   th:text="${projectWork.title}"></a></td>
 					<td th:text="${#dates.format(projectWork.endDay, 'yyyy-MM-dd')}"></td>
-					<td style="color: #ffffff" th:if="${projectWork.completion == 1}">완료</td>
-					<td th:if="${projectWork.completion == 0}">진행중</td>
+					<td style="color: rgb(80, 150, 220);" th:if="${projectWork.completion == 1}">완료</td>
+					<td style="color: rgb(220, 80, 80);"
+						th:if="${projectWork.completion == 0}">진행중
+					</td>
 				</tr>
 				</tbody>
 			</table>

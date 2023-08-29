@@ -11,4 +11,8 @@ public interface MessageRepository extends JpaRepository<MessageEntity, Long> {
     List<MessageEntity> findAllByUserIdToMessageRecv_Uuid(String recvUserUuid);
 
     List<MessageEntity> findAllByUserIdToMessageSend_Uuid(String sendUserUuid);
+
+    public List<MessageEntity> findAllByProjectIdToMessage_ProjectId(Long projectId);
+    public void deleteAllByProjectIdToMessage_ProjectId(Long projectId);
+
 }

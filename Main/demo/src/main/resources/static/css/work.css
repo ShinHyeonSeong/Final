@@ -53,7 +53,7 @@ a {
     border-radius: 5px;
     cursor: pointer;
     transition: 0.5s;
-    margin-left: -600px;
+    margin-left: -400px;
 }
 
 .add-work-btn:hover {

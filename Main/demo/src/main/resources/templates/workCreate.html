@@ -8,57 +8,57 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/css/workCreate.css">
   <script src="/js/documentList.js"></script>
-  <title>work-create</title>
-	
-	<script th:inline="javascript">
-		const message = /*[[${message}]]*/ '';
-		if (message !== null) {
-			alert(message);
-		}
-		function createWork_check() {
-			var title = document.getElementById("create-goal-input1");
-			var discription = document.getElementById("create-goal-input2");
-			var startDay = document.getElementById("create-goal-input3");
-			var endDay = document.getElementById("create-goal-input4");
-			/*yyyy--mm-dd 정규식*/
-			var regDate = new RegExp("^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$");
-			
-			if (title.value == "") {
-				alert("목표 제목을 입력해주십시오.");
-				title.focus();
-				return false;
-			}
-			
-			if (startDay.value == "") {
-				alert("시작기한을 입력해주십시오.");
-				startDay.focus();
-				return false;
-			} else if (!regDate.test(startDay.value)) {
-				alert("연-월-일 형식으로 입력해주십시오.")
-				startDay.focus();
-				return false;
-			}
-			
-			if (endDay.value == "") {
-				alert("마감기한을 입력해주십시오.");
-				endDay.focus();
-				return false;
-			} else if (!regDate.test(endDay.value)) {
-				alert("연-월-일 형식으로 입력해주십시오.")
-				endDay.focus();
-				return false;
-			}
-			
-			
-			document.createWork_form.submit();
-		}
-	</script>
+  <title>Border Project Manager</title>
+
+  <script th:inline="javascript">
+    const message = /*[[${message}]]*/ '';
+    if (message !== null) {
+      alert(message);
+    }
+    function createWork_check() {
+      var title = document.getElementById("create-goal-input1");
+      var discription = document.getElementById("create-goal-input2");
+      var startDay = document.getElementById("create-goal-input3");
+      var endDay = document.getElementById("create-goal-input4");
+      /*yyyy--mm-dd 정규식*/
+      var regDate = new RegExp("^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$");
+
+      if (title.value == "") {
+        alert("목표 제목을 입력해주십시오.");
+        title.focus();
+        return false;
+      }
+
+      if (startDay.value == "") {
+        alert("시작기한을 입력해주십시오.");
+        startDay.focus();
+        return false;
+      } else if (!regDate.test(startDay.value)) {
+        alert("연-월-일 형식으로 입력해주십시오.")
+        startDay.focus();
+        return false;
+      }
+
+      if (endDay.value == "") {
+        alert("마감기한을 입력해주십시오.");
+        endDay.focus();
+        return false;
+      } else if (!regDate.test(endDay.value)) {
+        alert("연-월-일 형식으로 입력해주십시오.")
+        endDay.focus();
+        return false;
+      }
+
+
+      document.createWork_form.submit();
+    }
+  </script>
 </head>
 
 <body>
 <div class="container">
   <div class="header">
-    <a href="/project/works" class="back-button"> < </a>
+    <a href="javascript:history.back(-1)" class="back-button"> < </a>
     <h1>작업 생성</h1>
   </div>
   <form action="/project/work/createWork" method="post" name="createWork_form">
@@ -99,20 +99,20 @@
       </div>
     </div>
 
-<!--    <div class="create-goal">-->
-<!--      <div class="label-detail">-->
-<!--        <label class="label" for="create-goal-input5">작업 담당자</label>-->
-<!--      </div>-->
-<!--      <div class="input-detail">-->
-<!--        <div class="select">-->
-<!--          <select class="select-connection-goal" id="create-goal-input5" name="chargeUser" th:if="${userDtoList != null}">-->
-<!--            <option th:each="user : ${userDtoList}"-->
-<!--            th:text="${user.name}"-->
-<!--            th:value="${user.uuid}"></option>-->
-<!--          </select>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
+    <div class="create-goal">
+      <div class="label-detail">
+        <label class="label" for="create-goal-input5">작업 담당자</label>
+      </div>
+      <div class="search-input-detail">
+        <ul id="create-goal-input5">
+          <li th:each="userDto : ${userDtoList}" th:object="${userDtoList}">
+            <input type="checkbox" th:id="${userDto.name}" th:name="chargeUsers" th:value="${userDto.uuid}">
+            <label th:for="${userDto.name}" th:text="${userDto.name}" class="user-label"></label>
+            <div class="check"></div>
+          </li>
+        </ul>
+      </div>
+    </div>
 
     <div class="create-goal">
       <div class="label-detail">

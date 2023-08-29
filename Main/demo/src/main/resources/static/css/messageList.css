@@ -70,7 +70,7 @@ nav {
 }
 
 #message-list {
-    margin-left: 250px;
+    margin-left: 22%;
     width: 70%;
     margin-top: 20px;
 }
@@ -79,15 +79,16 @@ nav {
     display: flex;
     flex-direction: column;
     background-color: #333;
+    height: 100px;
     border-radius: 5px;
     padding: 10px;
     margin-bottom: 10px;
 }
 
 .message-title {
+    margin: 10px;
     color: #fff;
     font-size: 18px;
-    margin-bottom: 5px;
     text-decoration: none;
 }
 
@@ -95,8 +96,8 @@ nav {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    /* Align to the right */
     align-items: center;
+    padding: 30px;
 }
 
 .message-sender {

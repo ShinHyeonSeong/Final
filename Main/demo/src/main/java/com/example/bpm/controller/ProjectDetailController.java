@@ -72,7 +72,7 @@ public class ProjectDetailController {
         ProjectDto sessionProject = getSessionProject();
         UserDto userDto = getSessionUser();
         List<HeadDto> headDtoList = projectDetailSerivce.selectAllHead(sessionProject);
-        List<WorkDto> userWorkDtoList = projectDetailSerivce.selectAllWorkForUser(userDto);
+        List<WorkDto> userWorkDtoList = projectDetailSerivce.selectAllWorkForProject(sessionProject);
         model.addAttribute("headDtoList", headDtoList);
         model.addAttribute("userWorkDtoList", userWorkDtoList);
         return "redirect:/project/" + sessionProject.getProjectId();
@@ -94,7 +94,10 @@ public class ProjectDetailController {
 
     // 상위 목표 생성 진입
     @GetMapping("/project/head/create")
-    public String goHeadDetail(Model model) {
+    public String goHeadDetail(Model model, @RequestParam(value = "message", required = false) String message) {
+        if (message != null) {
+            model.addAttribute("message", message);
+        }
         return "head-create";
     }
 
@@ -158,7 +161,7 @@ public class ProjectDetailController {
         return "redirect:/project/goals";
     }
 
-    // 목표 상세창 이동 메서드
+    // head 상세창 이동 메서드
     @RequestMapping("/project/goal/headView/{id}")
     public String goHeadView(@PathVariable("id") Long id, Model model) {
         HeadDto headDto = projectDetailSerivce.selectHead(id);
@@ -176,7 +179,8 @@ public class ProjectDetailController {
         DetailDto detailDto = projectDetailSerivce.selectDetail(id);
         HeadDto headDto = projectDetailSerivce.selectHead(detailDto.getHeadIdToDetail().getHeadId());
         List<WorkDto> workDtoList = projectDetailSerivce.selectAllWorkForDetail(id);
-        Map<WorkDto, UserDto> userWorkMap = projectDetailSerivce.selectAllUserWorkForWorkList(workDtoList);
+        Map<WorkDto, List<UserDto>> userWorkMap = projectDetailSerivce.selectAllUserWorkForWorkList(workDtoList);
+        //detail 하위 작업 표에 work 담당자를 넣어주려 했으나 오류로 수정.
         Long auth = getSessionAuth();
         model.addAttribute("detailDto", detailDto);
         model.addAttribute("headDto", headDto);
@@ -189,7 +193,7 @@ public class ProjectDetailController {
     // head 수정창 매핑 메서드
     @RequestMapping("/project/goal/head/edit/{id}")
     public String goEditHead(@PathVariable("id") Long headId,
-                             @RequestParam(value = "message", required = false)String message,
+                             @RequestParam(value = "message", required = false) String message,
                              Model model) {
         if (message != null) {
             model.addAttribute("message", message);
@@ -202,7 +206,7 @@ public class ProjectDetailController {
     // detail 수정창 매핑 메서드
     @RequestMapping("/project/goal/detail/edit/{id}")
     public String goEditDetail(@PathVariable("id") Long detailId,
-                               @RequestParam(value = "message", required = false)String message,
+                               @RequestParam(value = "message", required = false) String message,
                                Model model) {
 
         DetailDto detailDto = projectDetailSerivce.selectDetail(detailId);
@@ -214,6 +218,26 @@ public class ProjectDetailController {
         model.addAttribute("detailDto", detailDto);
         model.addAttribute("headDtoList", headDtoList);
         return "detailEdit";
+    }
+
+    // work 수정창 매핑 메서드
+    @RequestMapping("/project/goal/work/edit/{id}")
+    public String goEditWork(@PathVariable("id") Long workId,
+                             @RequestParam(value = "message", required = false) String message,
+                             Model model) {
+        WorkDto workDto = projectDetailSerivce.selectWork(workId);
+        List<UserDto> userDtoList = userService.searchUserToProject(getSessionProject().getProjectId());
+        List<UserWorkDto> userWorkDtoList = projectDetailSerivce.selectAllUserWorkForWork(workId);
+        List<DetailDto> detailDtoList = projectDetailSerivce.selectAllDetailForProject(getSessionProject());
+
+        if (message != null) {
+            model.addAttribute("message", message);
+        }
+        model.addAttribute("workDto", workDto);
+        model.addAttribute("userDtoList", userDtoList);
+        model.addAttribute("userWorkDtoList", userWorkDtoList);
+        model.addAttribute("detailDtoList", detailDtoList);
+        return "workEdit";
     }
 
     // head 수정 실행 메서드
@@ -255,6 +279,29 @@ public class ProjectDetailController {
         DetailDto detailDto = projectDetailSerivce.editDetail(title, startDay, deadline, discription, headId, detailId);
         return "redirect:/project/goals";
     }
+
+    // work 수정 실행 메서드
+    @PostMapping("/project/work/edit")
+    public String editWork(@RequestParam(value = "title") String title,
+                           @RequestParam(value = "startDay") String startDay,
+                           @RequestParam(value = "deadline") String endDay,
+                           @RequestParam(value = "discription") String discription,
+                           @RequestParam("connectDetail") Long detailId,
+                           @RequestParam(value = "workId") Long workId,
+                           @RequestParam("chargeUsers") List<String> chargeUsers,
+                           RedirectAttributes rttr) {
+        WorkDto workDto = projectDetailSerivce.selectWork(workId);
+        String message = exceptionService.workEditErrorCheck(startDay, endDay, detailId);
+        if (message != null) {
+            log.info("예외 처리 결과 : " + message);
+            rttr.addFlashAttribute("message", message);
+            return "redirect:/project/goal/work/edit/" + workId;
+        }
+        projectDetailSerivce.editWork(title, startDay, endDay, discription, workId, detailId);
+        projectDetailSerivce.deleteAllUserWorkForWork(workId);
+        projectDetailSerivce.addUserWork(workDto, chargeUsers);
+        return "redirect:/project/work/detail/" + workId;
+    }
     /* - - - - 목표 관련 메서드 끝 - - - -*/
 
 
@@ -265,7 +312,7 @@ public class ProjectDetailController {
         UserDto currentUser = getSessionUser();
         ProjectDto currentProject = getSessionProject();
         List<WorkDto> sessionUserWorkDtoList = projectDetailSerivce.selectAllWorkForUser(currentUser);
-        List<WorkDto> userWorkDtoList = new ArrayList();
+        List<WorkDto> userWorkDtoList = new ArrayList<>();
         log.info("현재 진입 프로젝트 : " + currentProject.getProjectId());
 
         for (WorkDto workDto : sessionUserWorkDtoList) {
@@ -288,11 +335,14 @@ public class ProjectDetailController {
 
     // work 생성창 진입 메서드
     @GetMapping("/project/work/create")
-    public String goCreateWork(Model model) {
+    public String goCreateWork(Model model, @RequestParam(value = "message", required = false) String message) {
         ProjectDto currentProject = getSessionProject();
-//        List<UserDto> userDtoList = userService.searchUserToProject(currentProject.getProjectId());
+        List<UserDto> userDtoList = userService.searchUserToProject(currentProject.getProjectId());
         List<DetailDto> detailDtoList = projectDetailSerivce.selectAllDetailForProject(currentProject);
-//        model.addAttribute("userDtoList", userDtoList);
+        if (message != null) {
+            model.addAttribute("message", message);
+        }
+        model.addAttribute("userDtoList", userDtoList);
         model.addAttribute("detailDtoList", detailDtoList);
         return "workCreate";
     }
@@ -303,15 +353,21 @@ public class ProjectDetailController {
                              @RequestParam("discription") String discription,
                              @RequestParam("startDay") String startDay,
                              @RequestParam("deadline") String deadline,
-                             @RequestParam("chargeUser") String uuid,
-                             @RequestParam("connectDetail") Long detailId) {
+                             @RequestParam("connectDetail") Long detailId,
+                             @RequestParam("chargeUsers") List<String> chargeUsers,
+                             RedirectAttributes rttr) {
         ProjectDto currentProject = getSessionProject();
-        UserDto chargeUser = userService.findByUser(uuid);
+        String message = exceptionService.workEditErrorCheck(startDay, deadline, detailId);
+        if (message != null) {
+            log.info("예외 처리 결과 : " + message);
+            rttr.addFlashAttribute("message", message);
+            return "redirect:/project/work/create";
+        }
         DetailDto connectDetail = projectDetailSerivce.selectDetail(detailId);
         WorkDto createWorkDto = projectDetailSerivce.createWork(title, discription, startDay, deadline,
                 connectDetail, currentProject);
-//        log.info("작업 생성 메서드 완료, id = " + createWorkDto.getWorkId());
-        projectDetailSerivce.addUserWork(createWorkDto, chargeUser);
+        log.info("작업 생성 메서드 완료, id = " + createWorkDto.getWorkId());
+        projectDetailSerivce.addUserWork(createWorkDto, chargeUsers);
         return "redirect:/project/works";
     }
 
@@ -319,7 +375,7 @@ public class ProjectDetailController {
     @RequestMapping("/project/work/detail/{id}")
     public String goWorkDetail(@PathVariable("id") Long id, Model model) {
         WorkDto workDto = projectDetailSerivce.selectWork(id);
-        UserDto userDto = projectDetailSerivce.selectUserForUserWork(workDto);
+        List<UserWorkDto> userWorkDtoList = projectDetailSerivce.selectAllUserWorkForWork(id);
         List<DocumentDto> documentDtoList = documentService.getDocumentByWorkId(id);
         List<WorkCommentDto> commentDtoList = projectDetailSerivce.findByComment(id);
         if (commentDtoList.isEmpty()) {
@@ -332,31 +388,38 @@ public class ProjectDetailController {
             model.addAttribute("CommentList", commentDtoList);
         }
         Long auth = getSessionAuth();
-        if (auth == 1 || auth == 0) {
-            model.addAttribute("auth", true);
-            log.info("권한 true 설정");
-        } else {
-            model.addAttribute("auth", false);
-            log.info("권한 false 설정");
-        }
+        model.addAttribute("auth", auth);
         model.addAttribute("workDto", workDto);
-        model.addAttribute("userDto", userDto);
+        model.addAttribute("userWorkDtoList", userWorkDtoList);
         model.addAttribute("DocumentList", documentDtoList);
         return "workDetail";
     }
     /* - - - - 작업 관련 메서드 끝 - - - -*/
 
     /* - - - - 삭제 메서드 - - - - */
+    @RequestMapping("/project/delete/{id}")
+    public String deleteProject(@PathVariable("id")Long projectId) {
+        ProjectDto projectDto = projectSerivce.selectProject(projectId);
+        projectDetailSerivce.deleteProjectEntity(projectDto);
+        return "redirect:/project/projectManagerList";
+    }
+
     @RequestMapping("/project/goal/head/delete/{id}")
     public String deleteHead(@PathVariable("id") Long headId) {
         projectDetailSerivce.deleteHeadEntity(headId);
-        return "redirect:/project/goal/headView/" + headId;
+        return "redirect:/project/goals";
     }
 
     @RequestMapping("/project/goal/detail/delete/{id}")
     public String deleteDetail(@PathVariable("id") Long detailId) {
         projectDetailSerivce.deleteDetailEntity(detailId);
         return "redirect:/project/goals";
+    }
+
+    @RequestMapping("/project/goal/work/delete/{id}")
+    public String deleteWork(@PathVariable("id") Long workId) {
+        projectDetailSerivce.deleteWorkEntity(workId);
+        return "redirect:/project/works";
     }
 
 
@@ -483,7 +546,7 @@ public class ProjectDetailController {
         return "messageForm";
     }
 
-    @PostMapping("/message/{id}")
+    @RequestMapping("/message/{id}")
     public String selectMessage(@PathVariable("id") Long id, Model model) {
         MessageDto messageDto = messageService.selectMessage(id);
         model.addAttribute("message", messageDto);

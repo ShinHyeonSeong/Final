@@ -29,4 +29,7 @@ public interface ProjectRequestRepository extends JpaRepository<ProjectRequestEn
 
     @Query(value = "select * from project_requst where recv_uuid = :recvUUID", nativeQuery = true)
     List<ProjectRequestEntity> selectParticipantsList(String recvUUID);
+
+    public List<ProjectRequestEntity> findAllByProjectIdToRequest_ProjectId(Long projectId);
+    public void deleteAllByProjectIdToRequest_ProjectId(Long projectId);
 }

@@ -7,7 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="/css/messageDetail.css">
 	<link rel="stylesheet" href="/css/sidebar.css">
-	<title>Dark Theme Mailbox</title>
+	<title>Border Project Manager</title>
 
 </head>
 
@@ -19,29 +19,27 @@
 		<li><a href="/project/goals">목표</a></li>
 		<li><a href="/project/works">작업</a></li>
 		<li><a href="/project/document">문서</a></li>
-		<li><a href="./calender.html">달력</a></li>
+		<li><a href="/project/calender">달력</a></li>
 		<li class="active"><a href="/recvMessageList">메세지</a></li>
 		<li><a href="/user/search">멤버 초대</a></li>
 	</ul>
 </div>
-<div class="top-bar">
+<div class="top-bar"><!-- BackButton 디자인 필요 -->
+	<a href="/recvMessageList" class="back-button">
+		< </a>
 	<h1>메세지함</h1>
 </div>
 <hr>
-<nav>
-	<ul class="nav-list">
-		<li class="nav-item" id="received-msgs"><a href="/recvMessageList">받은 메세지</a></li>
-		<li class="nav-item" id="sent-msgs"><a href="/sendMessageList">보낸 메세지</a></li>
-		<li class="nav-item send-msg-btn"><a href="/messageForm">메세지 보내기</a></li>
-	</ul>
-</nav>
+
 
 <div class="container">
 	<div class="message">
 		<h2 class="message-title" th:text="${message.title}"></h2>
 		<div style="display: flex; flex-direction: row; justify-content: space-between;">
-			<div class="message-sender" th:text="'From' + ${message.getUserIdToMessageSend().getName()}"></div>
-			<div style="text-align: right;"  th:text="${#dates.format(message.date, 'yyyy-MM-dd')}"class="message-date"></div>
+			<div class="message-sender"
+				 th:text="'보낸사람 : &nbsp&nbsp' + ${message.getUserIdToMessageSend().getName()}"></div>
+			<div style="text-align: right;" th:text="${#dates.format(message.date, 'yyyy-MM-dd')}"
+				 class="message-date"></div>
 		</div>
 		<hr>
 		<div class="message-content" th:text="${message.content}"></div>

@@ -5,6 +5,7 @@ import com.example.bpm.entity.ProjectRolePKEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 public interface ProjectRoleRepository extends JpaRepository<ProjectRoleEntity, ProjectRolePKEntity> {
@@ -22,4 +23,9 @@ public interface ProjectRoleRepository extends JpaRepository<ProjectRoleEntity, 
     ProjectRoleEntity insertToRoleEntity(Long projectId, String recvUUID, Long aLong);
 
     ProjectRoleEntity findByProjectIdInRole_ProjectIdAndUuidInRole_Uuid(Long id, String uuid);
+
+    public List<ProjectRoleEntity> findAllByProjectIdInRole_ProjectId(Long projectId);
+
+    @Transactional
+    public void deleteAllByProjectIdInRole_ProjectId(Long projectId);
 }

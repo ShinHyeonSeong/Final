@@ -88,6 +88,8 @@ function createMoveBlock(new_block){
     new_move_block.appendChild(new_block);
 
     tagArea.appendChild(new_move_block);
+
+    addContextMenuEvent();
 }
 
 /* 블럭 생성 연결 함수 */

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>프로젝트 생성</title>
+	<title>Border Project Manager</title>
 	<link rel="stylesheet" href="/css/projectCreate.css">
 </head>
 
@@ -53,14 +53,8 @@
 				return false;
 			}
 			if (description.value.length == 0) {
-				alert("제목을 입력하시오.")
+				alert("설명 입력하시오.")
 				title.focus();
-				return false;
-			}
-			
-			if (!regMail.test(email.value)) {
-				alert("잘못된 이메일 형식입니다.")
-				email.focus();
 				return false;
 			}
 			

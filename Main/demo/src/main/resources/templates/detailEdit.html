@@ -8,7 +8,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="/css/goal-create.css">
 	<script src="../js/documentList.js"></script>
-	<title>create-document</title>
+	<title>Border Project Manager</title>
 	<script th:inline="javascript">
 		const message = /*[[${message}]]*/ '';
 		if (message !== null) {
@@ -105,7 +105,6 @@
 			</div>
 			<div class="select">
 				<select class="select-connection-goal" id="create-goal-input5" name="headId" th:if="${headDtoList != null}">
-					<option th:value="0">없음</option>
 					<option th:each="headDto : ${headDtoList}"
 							th:text="${headDto.title}"
 							th:value="${headDto.headId}"

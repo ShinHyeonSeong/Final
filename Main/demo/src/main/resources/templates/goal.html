@@ -3,7 +3,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title>Example Sidebar Menu</title>
+	<title>Border Project Manager</title>
 	<link rel="stylesheet" type="text/css" href="/css/goal.css">
 	<link rel="stylesheet" href="/css/sidebar.css">
 	<script src="/js/goal.js"></script>
@@ -15,7 +15,7 @@
 	<ul>
 		<li><a href="/project/projectAllList">나가기</a></li>
 		<li><a href="/project/main">홈</a></li>
-		<li  class="active"><a href="/project/goals">목표</a></li>
+		<li class="active"><a href="/project/goals">목표</a></li>
 		<li><a href="/project/works">작업</a></li>
 		<li><a href="/project/document">문서</a></li>
 		<li><a href="/project/calender">달력</a></li>
@@ -47,8 +47,9 @@
 							<div class="user-story">
 								<div class="inline-content">
 									<h2 style="margin-left: 15px;" th:text="${headDto.title}"/>
-									<p class="status" th:if="${headDto.getCompletion() ==1 }">완료 </p>
-									<p class="status" style="color: rgb(160, 60, 60);"
+									<p class="status" style="color: rgb(80, 150, 220)"
+									   th:if="${headDto.getCompletion() ==1 }">완료 </p>
+									<p class="status" style="color: rgb(220, 80, 80);"
 									   th:if=" ${headDto.getCompletion()==0 }">진행중 </p>
 								</div>
 								<div class="column" style="justify-self: center;">
@@ -60,9 +61,9 @@
 											<div class="user-story">
 												<div class="inline-content">
 													<h3 th:text="${detailDto.title}"/>
-													<p class="status"
+													<p class="status" style="color: rgb(80, 150, 220)"
 													   th:if="${detailDto.getCompletion() ==1 }">완료 </p>
-													<p class="status" style="color: rgb(160, 60, 60);"
+													<p class="status" style="color: rgb(220, 80, 80);"
 													   th:if="${detailDto.getCompletion() ==0 }">진행중 </p>
 												</div>
 											</div>

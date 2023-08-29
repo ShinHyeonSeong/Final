@@ -181,14 +181,5 @@ public class ProjectSerivce {
         return ProjectDto.toProjectDto(projectEntity.get());
     }
 
-    //프로젝트를 삭제하는 메서드
-    public void deleteProject(Long projectId) {
-        projectRepository.deleteById(projectId);
-        if (projectRepository.findById(projectId).isPresent()) {
-            log.info("삭제 오류 (서비스 작동)");
-        } else {
-            log.info("삭제 성공(서비스 작동)");
-        }
-    }
 
 }

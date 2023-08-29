@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title>Project Showcase</title>
+	<title>Border Project Manager</title>
 	<link rel="stylesheet" href="/css/sidebar.css">
 	<link rel="stylesheet" type="text/css" href="/css/onlyReadPage.css">
 	<script src="/js/onlyReadPage.js"></script>
@@ -12,7 +12,6 @@
 <div class="sidebar">
 	<ul>
 		<li class="active"><a href="/project/main">홈</a></li>
-		<li><a href="calender.html">달력</a></li>
 		<li><a href="/project/projectAllList">나가기</a></li>
 	</ul>
 </div>
@@ -93,7 +92,7 @@
 			</thead>
 			<tbody>
 			<tr th:each="documentDto : ${documentDtoList}">
-				<td class="job-name"><a href="*" th:text="${documentDto.title}"></a></td>
+				<td class="job-name"><a th:href="@{/document/view(id=${documentDto.documentId})}" th:text="${documentDto.title}"></a></td>
 				<td class="job-deadline" th:text="${documentDto.dateDocument}"></td>
 			</tr>
 			</tbody>

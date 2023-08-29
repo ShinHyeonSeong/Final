@@ -78,6 +78,24 @@ public class DocumentService {
         return documentDto.getDocumentId();
     }
 
+    // 문서 제거
+    public void deleteDocument(String documentId){
+        List<Block> deleteBlockList = blockRepository.findByDocumentId(documentId);
+        List<Log> deleteLogList = logRepository.findByDocumentId(documentId);
+
+        workDocumentRepository.deleteAllByDocumentIdToWorkDocument_DocumentId(documentId);
+
+        for (Block block : deleteBlockList) {
+            blockRepository.delete(block);
+        }
+
+        for (Log log : deleteLogList) {
+            logRepository.delete(log);
+        }
+
+        documentRepository.deleteById(documentId);
+    }
+
     // 문서 저장
     public void saveDocument(JsonDocumentDto jsonDocumentDto, String userUuid, String userName){
 
@@ -155,12 +173,15 @@ public class DocumentService {
         workDocumentRepository.save(workDocumentEntity);
     }
 
-    public boolean accreditUserToWork(String uuid, String DocumentId){
+    public boolean accreditUserToWork(String uuid, String DocumentId, Long auth){
 
         List<UserWorkEntity> userWorkEntityList = userWorkRepository.findAllByUserIdToUserWork_Uuid(uuid);
 
         WorkDocumentEntity workDocumentEntity = workDocumentRepository.findByDocumentIdToWorkDocument_DocumentId(DocumentId);
 
+        if (auth == 0){
+            return false;
+        }
         for (UserWorkEntity userWorkEntity: userWorkEntityList) {
             if (userWorkEntity.getWorkIdToUserWork().getWorkId().equals(workDocumentEntity.getWorkIdToWorkDocument().getWorkId()))
                 return false;

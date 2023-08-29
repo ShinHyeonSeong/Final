@@ -4,15 +4,13 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>My Goals</title>
+    <title>Border Project Manager</title>
 	<link rel="stylesheet" href="/css/goalDetail.css">
 	<link rel="stylesheet" href="/css/sidebar.css">
 	<script src="../js/goalDetail.js"></script>
 </head>
-<!-- 목표 > 내 목표 창-->
 
 <body>
-<!-- Side menu bar -->
 <div class="sidebar">
 	<ul>
 		<li><a href="/project/projectAllList">나가기</a></li>
@@ -20,16 +18,16 @@
 		<li class="active"><a href="/project/goals">목표</a></li>
 		<li><a href="/project/works">작업</a></li>
 		<li><a href="/project/document">문서</a></li>
-		<li><a href="./calender.html">달력</a></li>
+		<li><a href="/project/calender">달력</a></li>
 		<li><a href="/recvMessageList">메세지</a></li>
 		<li><a href="/user/search">멤버 초대</a></li>
 	</ul>
 </div>
 
 <div class="top-bar">
-	<a href="javascript:history.back(-1)" class="back-button">
+	<a href="/project/goals" class="back-button">
 		< </a>
-	<h1 th:text="${headDto.title}"></h1>
+	<h1 th:text="'상위 목표 : ' + ${headDto.title}"></h1>
 </div>
 
 <div class="page-container">
@@ -45,7 +43,7 @@
         <div class="linked-object">
           <div class="object-header">
             <div>하위 목표</div>
-            <button class="object-edit-btn" th:if="${auth == 1}">목표 변경</button>
+              <a href="/project/detail/create" th:if="${auth == 1}"><button class="object-edit-btn">하위 목표 추가</button></a>
           </div>
           <div class="horizon-divider-semi"></div>
           <div class="object" th:if="${connectDetailList != null}" th:each="detail : ${connectDetailList}">

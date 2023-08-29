@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>Project Template Website</title>
+	<title>Border Project Manager</title>
 	<link rel="stylesheet" href="/css/projectMain.css">
 	<link rel="stylesheet" href="/css/sidebar.css">
 </head>
@@ -59,8 +59,8 @@
 					<td class="job-deadline" th:text="${headDto.title}"></td>
 					<td class="job-deadline" th:text="${headDto.discription}"></td>
 					<td class="job-name" th:text="${#dates.format(headDto.endDay, 'yyyy-MM-dd')}"></td>
-					<td class="job-name" style="color: white;" th:if="${headDto.completion == 1}">완료</td>
-					<td class="job-name" style="color: red;" th:if="${headDto.completion == 0}">진행중</td>
+					<td class="job-name" style="color: rgb(80, 150, 220);" th:if="${headDto.completion == 1}">완료</td>
+					<td class="job-name" style="color: rgb(220, 80, 80);;" th:if="${headDto.completion == 0}">진행중</td>
 				</tr>
 				</tbody>
 			</table>
@@ -81,12 +81,15 @@
 					<td class="job-deadline" th:text="${workDto.title}"></td>
 					<td class="job-deadline" th:text="${workDto.discription}"></td>
 					<td class="job-name" th:text="${#dates.format(workDto.endDay, 'yyyy-MM-dd')}"></td>
-					<td class="job-name" style="color: white;" th:if="${workDto.completion == 1}">완료</td>
-					<td class="job-name" style="color: red;" th:if="${workDto.completion == 0}">진행중</td>
+					<td class="job-name" style="color: rgb(80, 150, 220);;" th:if="${workDto.completion == 1}">완료</td>
+					<td class="job-name" style="color: rgb(220, 80, 80);;" th:if="${workDto.completion == 0}">진행중</td>
 				</tr>
 				</tbody>
 			</table>
 		</div>
+		<a th:href="@{/project/delete/{id}(id=${projectDto.projectId})}">
+			<button class="delete-btn" th:if="${auth == 1}" >프로젝트 삭제</button>
+		</a>
 	</div>
 </div>
 </body>

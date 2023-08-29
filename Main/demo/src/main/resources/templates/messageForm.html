@@ -6,12 +6,10 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="/css/messageForm.css">
 	<link rel="stylesheet" href="/css/sidebar.css">
-	<title>Dark Theme Mailbox</title>
+	<title>Border Project Manager</title>
 </head>
 
 <body>
-
-<!-- Side menu bar -->
 <div class="sidebar">
 	<ul>
 		<li><a href="/project/projectAllList">나가기</a></li>
@@ -19,7 +17,7 @@
 		<li><a href="/project/goals">목표</a></li>
 		<li><a href="/project/works">작업</a></li>
 		<li><a href="/project/document">문서</a></li>
-		<li><a href="./calender.html">달력</a></li>
+		<li><a href="/project/calender">달력</a></li>
 		<li class="active"><a href="/recvMessageList">메세지</a></li>
 		<li><a href="/user/search">멤버 초대</a></li>
 	</ul>
@@ -32,15 +30,15 @@
 	<ul class="nav-list">
 		<li class="nav-item" id="received-msgs"><a href="/recvMessageList">받은 메세지</a></li>
 		<li class="nav-item" id="sent-msgs"><a href="/sendMessageList">보낸 메세지</a></li>
-		<li class="nav-item send-msg-btn"><a href="/messageForm">메세지 보내기</a></li>
+		<li class="nav-item active"><a href="/messageForm">메세지 보내기</a></li>
 	</ul>
 </nav>
 
 <div class="container">
-	<h2>메세지</h2>
+	<h2>메세지 보내기</h2>
 	<form action="/sendMessage" method="post">
 		<div class="form-group">
-			<label>받는 사람 </label>
+			<label style="margin-bottom: 10px;">받는 사람 </label>
 			<div class="input-detail">
 				<div class="select">
 					<select class="select-connection-goal" id="create-goal-input6" name="recvName" th:if="${userList != null}">

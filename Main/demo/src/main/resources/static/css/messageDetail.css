@@ -14,58 +14,44 @@ a {
 
 .top-bar {
     display: flex;
-    justify-content: space-between;
-    flex-direction: row;
     align-items: center;
     width: 100%;
-    height: 90px;
+    height: 70px;
     border-bottom: solid 0.8px #333;
     position: fixed;
-    top: 0;
     left: 200px;
     background-color: #222;
 }
 
 .top-bar h1 {
-    font-size: 40px;
+    font-size: 30px;
     font-weight: bold;
-    margin-left: 4rem;
+    margin: 50px;
 }
 
-.top-bar a {
-    margin-left: auto;
-}
 
-nav {
-    margin-top: 120px;
-    margin-left: 250px;
-    background-color: #222;
-    padding: 10px;
-    width: 70%;
-}
-
-.nav-list {
-    display: flex;
-    justify-content: center;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.nav-item {
-    margin: 0 10px;
-    cursor: pointer;
-}
-
-.nav-item.active {
-    font-weight: bold;
+.back-button {
+    background-color: transparent;
     color: #fff;
-    background-color: #333;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    transition: 0.5s;
+}
+
+.back-button:hover {
+    background-color: #444;
 }
 
 .container {
     max-width: 900px;
-    margin: 0 auto;
+    margin: auto;
     padding: 20px;
 }
 
@@ -74,14 +60,15 @@ nav {
 }
 
 .message-title {
-    font-size: 30px;
+    font-size: 24px;
     font-weight: bold;
-    margin: 30px;
+    margin-top: 10%;
 }
 
 .message-content {
     color: #fff;
-    margin-top: 5px;
+    margin-top: 5%;
+    font-size: 18px;
 }
 
 .message-sender {
@@ -95,3 +82,4 @@ nav {
     font-size: 15px;
     margin: 5px;
 }
+
