@@ -1,7 +1,7 @@
 package com.example.bpm.repository;
 
-import com.example.bpm.entity.WorkDocumentEntity;
-import com.example.bpm.entity.WorkDocumentPKEntity;
+import com.example.bpm.entity.project.relation.WorkDocumentEntity;
+import com.example.bpm.entity.project.pk.WorkDocumentPKEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.transaction.Transactional;

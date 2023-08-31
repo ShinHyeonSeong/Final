@@ -1,7 +1,7 @@
 package com.example.bpm.controller;
 
-import com.example.bpm.dto.JsonDocumentDto;
-import com.example.bpm.dto.UserDto;
+import com.example.bpm.dto.document.json.JsonDocumentDto;
+import com.example.bpm.dto.user.UserDto;
 import com.example.bpm.service.DocumentService;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;

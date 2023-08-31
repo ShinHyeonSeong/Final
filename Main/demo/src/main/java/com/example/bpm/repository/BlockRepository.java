@@ -1,6 +1,6 @@
 package com.example.bpm.repository;
 
-import com.example.bpm.entity.Block;
+import com.example.bpm.entity.document.BlockEntity;
 import javax.persistence.Table;
 import javax.transaction.Transactional;
 
@@ -11,9 +11,9 @@ import java.util.List;
 
 @Repository
 @Table(name = "block")
-public interface BlockRepository extends JpaRepository<Block, String> {
-    List<Block> findByDocumentId(String id);
-    List<Block> findAllByDocumentId(String id);
+public interface BlockRepository extends JpaRepository<BlockEntity, String> {
+    List<BlockEntity> findByDocumentId(String id);
+    List<BlockEntity> findAllByDocumentId(String id);
 
     @Transactional
     void deleteAllByDocumentId(String id);

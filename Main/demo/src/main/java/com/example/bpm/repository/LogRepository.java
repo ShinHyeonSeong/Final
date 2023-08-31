@@ -1,6 +1,6 @@
 package com.example.bpm.repository;
 
-import com.example.bpm.entity.Log;
+import com.example.bpm.entity.document.LogEntity;
 import javax.persistence.Table;
 import javax.transaction.Transactional;
 
@@ -11,10 +11,10 @@ import java.util.List;
 
 @Repository
 @Table(name = "log")
-public interface LogRepository extends JpaRepository<Log, String> {
-    List<Log> findByDocumentId(String id);
-    Log findBylogId(String id);
-    List<Log> findAllByDocumentId(String id);
+public interface LogRepository extends JpaRepository<LogEntity, String> {
+    List<LogEntity> findByDocumentId(String id);
+    LogEntity findBylogId(String id);
+    List<LogEntity> findAllByDocumentId(String id);
 
     @Transactional
     void deleteAllByDocumentId(String id);

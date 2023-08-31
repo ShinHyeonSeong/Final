@@ -41,10 +41,10 @@
 	정적 화면을 위한 일시적 비활성화. 재사용 예정-->
 	
 	<script>
-		var title = document.getElementById("project-title");
-		var description = document.getElementById("project-description");
-		var startDay = document.getElementById("startDay");
-		var endDay = document.getElementById("endDay");
+		var title = documentEntity.getElementById("project-title");
+		var description = documentEntity.getElementById("project-description");
+		var startDay = documentEntity.getElementById("startDay");
+		var endDay = documentEntity.getElementById("endDay");
 		
 		function checkForm() {
 			if (title.value.length == 0) {
@@ -69,7 +69,7 @@
 			} catch (err) {
 				result = false;
 			}
-			document.projectForm.submit();
+			documentEntity.projectForm.submit();
 		}
 		
 	</script>

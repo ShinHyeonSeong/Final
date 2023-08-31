@@ -1,8 +1,8 @@
 package com.example.bpm.service;
 
-import com.example.bpm.entity.DetailEntity;
-import com.example.bpm.entity.HeadEntity;
-import com.example.bpm.entity.WorkEntity;
+import com.example.bpm.entity.project.data.DetailEntity;
+import com.example.bpm.entity.project.data.HeadEntity;
+import com.example.bpm.entity.project.data.WorkEntity;
 import com.example.bpm.repository.DetailRepository;
 import com.example.bpm.repository.HeadRepository;
 import com.example.bpm.repository.WorkRepository;

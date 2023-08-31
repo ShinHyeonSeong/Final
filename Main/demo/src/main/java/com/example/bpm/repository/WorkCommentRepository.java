@@ -1,6 +1,6 @@
 package com.example.bpm.repository;
 
-import com.example.bpm.entity.WorkCommentEntity;
+import com.example.bpm.entity.project.data.work.WorkCommentEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -11,8 +11,8 @@
 			alert(message);
 		}
 		function loginform_check() {
-			var email = document.getElementById("email");
-			var password = document.getElementById("password");
+			var email = documentEntity.getElementById("email");
+			var password = documentEntity.getElementById("password");
 
 			if (email.value == "") {
 				alert("이메일을 입력해주십시오.");
@@ -26,7 +26,7 @@
 				return false;
 			};
 
-			document.login_form.submit();
+			documentEntity.login_form.submit();
 			event.preventDefault();
 		}
 

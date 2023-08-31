@@ -1,7 +1,7 @@
 package com.example.bpm.repository;
 
-import com.example.bpm.entity.ProjectRoleEntity;
-import com.example.bpm.entity.ProjectRolePKEntity;
+import com.example.bpm.entity.project.relation.ProjectRoleEntity;
+import com.example.bpm.entity.project.pk.ProjectRolePKEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

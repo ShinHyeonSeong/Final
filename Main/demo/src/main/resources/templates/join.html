@@ -35,14 +35,14 @@
 <script th:inline="javascript">
 	/* 타임리프 변수를 해당 표현식으로 사용해야함. 뒤의 ''는 기본값을 의미 */
 	var message = /*[[${message}]]*/ '';
-	console.log(message);
+	console.logEntity(message);
 	if (message !== null) {
 		alert(message);
 	}
 
-	var email = document.getElementById("email");
-	var username = document.getElementById("username");
-	var password = document.getElementById("password");
+	var email = documentEntity.getElementById("email");
+	var username = documentEntity.getElementById("username");
+	var password = documentEntity.getElementById("password");
 	
 	//2~15 자리 이내의 한글과 영어만
 	var regName = /^[가-힣a-zA-Z]{2,15}$/;
@@ -52,9 +52,9 @@
 	
 	function checkAll() {
 		function checkAll() {
-			var email = document.getElementById("email");
-			var username = document.getElementById("username");
-			var password = document.getElementById("password");
+			var email = documentEntity.getElementById("email");
+			var username = documentEntity.getElementById("username");
+			var password = documentEntity.getElementById("password");
 			
 			//2~15 자리 이내의 한글과 영어만
 			var regName = /^[가-힣a-zA-Z]{2,15}$/;
@@ -101,7 +101,7 @@
 				return false;
 			}
 		};
-		document.joinForm.submit();
+		documentEntity.joinForm.submit();
 	}
 </script>
 </html>

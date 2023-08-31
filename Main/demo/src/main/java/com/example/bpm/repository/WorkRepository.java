@@ -1,7 +1,6 @@
 package com.example.bpm.repository;
 
-import com.example.bpm.entity.DetailEntity;
-import com.example.bpm.entity.WorkEntity;
+import com.example.bpm.entity.project.data.WorkEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

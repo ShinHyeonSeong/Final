@@ -1,6 +1,12 @@
 package com.example.bpm.controller;
 
-import com.example.bpm.dto.*;
+import com.example.bpm.dto.document.DocumentDto;
+import com.example.bpm.dto.project.DetailDto;
+import com.example.bpm.dto.project.HeadDto;
+import com.example.bpm.dto.project.ProjectDto;
+import com.example.bpm.dto.project.WorkDto;
+import com.example.bpm.dto.project.request.ProjectRequestDto;
+import com.example.bpm.dto.user.UserDto;
 import com.example.bpm.repository.UserRepository;
 import com.example.bpm.service.ProjectDetailSerivce;
 import com.example.bpm.service.ProjectSerivce;

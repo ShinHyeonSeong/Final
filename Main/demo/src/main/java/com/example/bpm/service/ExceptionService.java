@@ -1,14 +1,11 @@
 package com.example.bpm.service;
 
-import com.example.bpm.dto.HeadDto;
-import com.example.bpm.dto.ProjectDto;
-import com.example.bpm.dto.DetailDto;
-import com.example.bpm.entity.DetailEntity;
-import com.example.bpm.entity.HeadEntity;
+import com.example.bpm.dto.project.HeadDto;
+import com.example.bpm.dto.project.ProjectDto;
+import com.example.bpm.dto.project.DetailDto;
 import com.example.bpm.repository.DetailRepository;
 import com.example.bpm.repository.HeadRepository;
-import com.example.bpm.service.dateLogic.DateManager;
-import lombok.AllArgsConstructor;
+import com.example.bpm.service.Logic.dateLogic.DateManager;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

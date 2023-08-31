@@ -92,7 +92,7 @@
 			</thead>
 			<tbody>
 			<tr th:each="documentDto : ${documentDtoList}">
-				<td class="job-name"><a th:href="@{/document/view(id=${documentDto.documentId})}" th:text="${documentDto.title}"></a></td>
+				<td class="job-name"><a th:href="@{/documentEntity/view(id=${documentDto.documentId})}" th:text="${documentDto.title}"></a></td>
 				<td class="job-deadline" th:text="${documentDto.dateDocument}"></td>
 			</tr>
 			</tbody>

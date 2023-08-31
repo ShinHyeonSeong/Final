@@ -1,8 +1,7 @@
 package com.example.bpm.repository;
 
-import com.example.bpm.entity.UserEntity;
-import com.example.bpm.entity.UserWorkEntity;
-import com.example.bpm.entity.UserWorkPKEntity;
+import com.example.bpm.entity.user.relation.UserWorkEntity;
+import com.example.bpm.entity.user.pk.UserWorkPKEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.transaction.Transactional;

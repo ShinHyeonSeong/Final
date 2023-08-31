@@ -1,17 +1,33 @@
 package com.example.bpm.service;
 
-import com.example.bpm.dto.*;
-import com.example.bpm.entity.*;
+import com.example.bpm.dto.document.BlockDto;
+import com.example.bpm.dto.document.DocumentDto;
+import com.example.bpm.dto.document.LogDto;
+import com.example.bpm.dto.project.DetailDto;
+import com.example.bpm.dto.project.HeadDto;
+import com.example.bpm.dto.project.ProjectDto;
+import com.example.bpm.dto.project.WorkDto;
+import com.example.bpm.dto.project.relation.WorkCommentDto;
+import com.example.bpm.dto.project.relation.WorkDocumentDto;
+import com.example.bpm.dto.user.UserDto;
+import com.example.bpm.dto.user.relation.UserWorkDto;
+import com.example.bpm.entity.document.BlockEntity;
+import com.example.bpm.entity.document.LogEntity;
+import com.example.bpm.entity.project.data.DetailEntity;
+import com.example.bpm.entity.project.data.HeadEntity;
+import com.example.bpm.entity.project.data.work.WorkCommentEntity;
+import com.example.bpm.entity.project.data.WorkEntity;
+import com.example.bpm.entity.project.relation.WorkDocumentEntity;
+import com.example.bpm.entity.user.UserEntity;
+import com.example.bpm.entity.user.relation.UserWorkEntity;
 import com.example.bpm.repository.*;
-import com.example.bpm.service.dateLogic.DateManager;
+import com.example.bpm.service.Logic.dateLogic.DateManager;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -300,22 +316,22 @@ public class ProjectDetailSerivce {
     }
 
     public List<LogDto> selectAllLogForDocument(DocumentDto documentDto) {
-        List<Log> logEntityList = logRepository.findAllByDocumentId(documentDto.getDocumentId());
+        List<LogEntity> logEntityEntityList = logRepository.findAllByDocumentId(documentDto.getDocumentId());
         List<LogDto> logDtoList = new ArrayList<>();
-        for (Log log : logEntityList) {
+        for (LogEntity logEntity : logEntityEntityList) {
             LogDto logDto = new LogDto();
-            logDto.insertEntity(log);
+            logDto.insertEntity(logEntity);
             logDtoList.add(logDto);
         }
         return logDtoList;
     }
 
     public List<BlockDto> selectAllBlockForDocument(DocumentDto documentDto) {
-        List<Block> blockEntityList = blockRepository.findAllByDocumentId(documentDto.getDocumentId());
+        List<BlockEntity> blockEntityEntityList = blockRepository.findAllByDocumentId(documentDto.getDocumentId());
         List<BlockDto> blockDtoList = new ArrayList<>();
-        for (Block block : blockEntityList) {
+        for (BlockEntity blockEntity : blockEntityEntityList) {
             BlockDto blockDto = new BlockDto();
-            blockDto.insertEntity(block);
+            blockDto.insertEntity(blockEntity);
             blockDtoList.add(blockDto);
         }
         return blockDtoList;
@@ -607,6 +623,7 @@ public class ProjectDetailSerivce {
         List<DocumentDto> documentDtoList = new ArrayList<>();
         for (WorkDocumentDto workDocumentDto : workDocumentDtoList) {
             DocumentDto documentDto = new DocumentDto();
+
             documentDto.insertEntity(workDocumentDto.getDocumentIdToWorkDocument());
             documentDtoList.add(documentDto);
         }

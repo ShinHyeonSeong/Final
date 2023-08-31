@@ -15,7 +15,7 @@
 		<li><a href="/project/main">홈</a></li>
 		<li class="active"><a href="/project/goals">목표</a></li>
 		<li><a href="/project/works">작업</a></li>
-		<li><a href="/project/document">문서</a></li>
+		<li><a href="/project/documentEntity">문서</a></li>
 		<li><a href="/project/calender">달력</a></li>
 		<li><a href="/recvMessageList">메세지</a></li>
 		<li><a href="/user/search">멤버 초대</a></li>
@@ -66,7 +66,7 @@
           <tbody>
           <tr th:each="userWork : ${userWorkMap}">
             <td><a th:href="@{/project/work/detail/{id}(id=${userWork.key.workId})}" th:text="${userWork.key.title}">작업명</a></td>
-            <td><th:block th:each="value : ${userWork.value}">&nbsp;<th:block th:text="${value.name}"></th:block></th:block></td>
+            <td><th:blockEntity th:each="value : ${userWork.value}">&nbsp;<th:blockEntity th:text="${value.name}"></th:blockEntity></th:blockEntity></td>
             <td th:text="${#dates.format(userWork.key.endDay, 'yyyy-MM-dd')}"></td>
           </tr>
           </tbody>

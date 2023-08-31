@@ -24,20 +24,20 @@
 <body>
 <div class="container">
     <div class="hr">
-        <a th:href="@{/document/write(id=${projectId})}" class="back-button"> < </a>
+        <a th:href="@{/documentEntity/write(id=${projectId})}" class="back-button"> < </a>
         <h1 class="title">Project History</h1>
     </div>
     <hr/>
     <div class="middle-box">
         <table class="board_list">
             <tbody>
-            <tr th:each="log : ${logList}">
-                <td class="project-name" th:text="${log.dateLog}">히스토리 저장 일자</td>
-                <td th:utext="${log.logType}">히스토리 저장 타입</td>
+            <tr th:each="logEntity : ${logEntityList}">
+                <td class="project-name" th:text="${logEntity.dateLog}">히스토리 저장 일자</td>
+                <td th:utext="${logEntity.logType}">히스토리 저장 타입</td>
                 <td>
                     <form action="changeLogData" method="post">
                         <button class="revert-button">되돌리기</button>
-                        <input name="id" type="hidden" th:value="${log.logId}">
+                        <input name="id" type="hidden" th:value="${logEntity.logId}">
                     </form>
                 </td>
             </tr>

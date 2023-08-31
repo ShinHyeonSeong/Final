@@ -1,8 +1,8 @@
 package com.example.bpm.service;
 
-import com.example.bpm.dto.UserDto;
-import com.example.bpm.entity.ProjectRoleEntity;
-import com.example.bpm.entity.UserEntity;
+import com.example.bpm.dto.user.UserDto;
+import com.example.bpm.entity.project.relation.ProjectRoleEntity;
+import com.example.bpm.entity.user.UserEntity;
 import com.example.bpm.repository.ProjectRoleRepository;
 import com.example.bpm.repository.UserRepository;
 import lombok.*;

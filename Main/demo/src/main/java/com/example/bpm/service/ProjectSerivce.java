@@ -1,19 +1,21 @@
 package com.example.bpm.service;
 
-import com.example.bpm.dto.ProjectDto;
-import com.example.bpm.dto.ProjectRequestDto;
-import com.example.bpm.dto.ProjectRoleDto;
-import com.example.bpm.dto.UserDto;
-import com.example.bpm.entity.*;
+import com.example.bpm.dto.project.ProjectDto;
+import com.example.bpm.dto.project.request.ProjectRequestDto;
+import com.example.bpm.dto.project.relation.ProjectRoleDto;
+import com.example.bpm.dto.user.UserDto;
+import com.example.bpm.entity.project.data.ProjectEntity;
+import com.example.bpm.entity.project.request.ProjectRequestEntity;
+import com.example.bpm.entity.project.relation.ProjectRoleEntity;
+import com.example.bpm.entity.project.data.RoleEntity;
+import com.example.bpm.entity.user.UserEntity;
 import com.example.bpm.repository.*;
-import com.example.bpm.service.dateLogic.DateManager;
-import lombok.Builder;
+import com.example.bpm.service.Logic.dateLogic.DateManager;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.management.relation.Role;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

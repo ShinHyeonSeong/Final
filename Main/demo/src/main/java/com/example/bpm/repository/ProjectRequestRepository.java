@@ -1,6 +1,6 @@
 package com.example.bpm.repository;
 
-import com.example.bpm.entity.ProjectRequestEntity;
+import com.example.bpm.entity.project.request.ProjectRequestEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

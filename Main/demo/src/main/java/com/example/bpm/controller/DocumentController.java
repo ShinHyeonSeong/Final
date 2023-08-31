@@ -1,8 +1,11 @@
 package com.example.bpm.controller;
 
-import com.example.bpm.dto.*;
-import com.example.bpm.entity.Document;
-import com.example.bpm.entity.UserEntity;
+import com.example.bpm.dto.document.BlockDto;
+import com.example.bpm.dto.document.DocumentDto;
+import com.example.bpm.dto.document.LogDto;
+import com.example.bpm.dto.project.ProjectDto;
+import com.example.bpm.dto.project.relation.ProjectDocumentListDto;
+import com.example.bpm.dto.user.UserDto;
 import com.example.bpm.service.DocumentService;
 
 import javax.servlet.http.HttpServletRequest;

@@ -1,6 +1,6 @@
 package com.example.bpm.repository;
 
-import com.example.bpm.entity.ProjectEntity;
+import com.example.bpm.entity.project.data.ProjectEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.transaction.Transactional;

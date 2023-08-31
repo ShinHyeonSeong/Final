@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/css/workCreate.css">
-  <script src="/js/documentList.js"></script>
+  <script src="/js/documentEntityList.js"></script>
   <title>Border Project Manager</title>
 
   <script th:inline="javascript">
@@ -16,10 +16,10 @@
       alert(message);
     }
     function createWork_check() {
-      var title = document.getElementById("create-goal-input1");
-      var discription = document.getElementById("create-goal-input2");
-      var startDay = document.getElementById("create-goal-input3");
-      var endDay = document.getElementById("create-goal-input4");
+      var title = documentEntity.getElementById("create-goal-input1");
+      var discription = documentEntity.getElementById("create-goal-input2");
+      var startDay = documentEntity.getElementById("create-goal-input3");
+      var endDay = documentEntity.getElementById("create-goal-input4");
       /*yyyy--mm-dd 정규식*/
       var regDate = new RegExp("^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])$");
 
@@ -50,7 +50,7 @@
       }
 
 
-      document.createWork_form.submit();
+      documentEntity.createWork_form.submit();
     }
   </script>
 </head>

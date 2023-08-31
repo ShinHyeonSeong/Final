@@ -1,11 +1,11 @@
 package com.example.bpm.service;
 
-import com.example.bpm.dto.MessageDto;
-import com.example.bpm.dto.ProjectDto;
-import com.example.bpm.dto.UserDto;
-import com.example.bpm.entity.MessageEntity;
-import com.example.bpm.entity.ProjectEntity;
-import com.example.bpm.entity.UserEntity;
+import com.example.bpm.dto.message.MessageDto;
+import com.example.bpm.dto.project.ProjectDto;
+import com.example.bpm.dto.user.UserDto;
+import com.example.bpm.entity.message.MessageEntity;
+import com.example.bpm.entity.project.data.ProjectEntity;
+import com.example.bpm.entity.user.UserEntity;
 import com.example.bpm.repository.MessageRepository;
 import com.example.bpm.repository.ProjectRepository;
 import com.example.bpm.repository.UserRepository;
@@ -14,12 +14,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j

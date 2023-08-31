@@ -1,8 +1,16 @@
 package com.example.bpm.controller;
 
-import com.example.bpm.dto.*;
-import com.example.bpm.entity.UserEntity;
-import com.example.bpm.entity.WorkEntity;
+import com.example.bpm.dto.document.DocumentDto;
+import com.example.bpm.dto.message.MessageDto;
+import com.example.bpm.dto.project.DetailDto;
+import com.example.bpm.dto.project.HeadDto;
+import com.example.bpm.dto.project.ProjectDto;
+import com.example.bpm.dto.project.WorkDto;
+import com.example.bpm.dto.project.relation.WorkCommentDto;
+import com.example.bpm.dto.user.UserDto;
+import com.example.bpm.dto.user.relation.UserWorkDto;
+import com.example.bpm.entity.user.UserEntity;
+import com.example.bpm.entity.project.data.WorkEntity;
 import com.example.bpm.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
