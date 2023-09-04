@@ -25,7 +25,7 @@ public class UserService {
 
     //회원가입
     public UserDto save(UserDto userDto) {
-        UserEntity userEntity = UserEntity.toUserEntity(userDto);
+        UserEntity userEntity = userDto.toEntity();
         Optional<UserEntity> userResult = userRepository.findByEmail(userDto.getEmail());
         if (userResult.isPresent()) {
             log.info("이미 있는 이메일이다 회원가입 실패! (서비스 작동)");
@@ -33,7 +33,8 @@ public class UserService {
         } else {
             userRepository.save(userEntity);
             log.info("회원 가입 성공 (서비스 동작)");
-            return UserDto.toUserDto(userEntity);
+            userDto.insertEntity(userEntity);
+            return userDto;
         }
     }
 
@@ -42,7 +43,10 @@ public class UserService {
         if (userEntity.isEmpty()) {
             return null;
         }
-        return UserDto.toUserDto(userEntity.get());
+
+        UserDto userDto = new UserDto();
+        userDto.insertEntity(userEntity.get());
+        return userDto;
     }
 
 
@@ -55,7 +59,9 @@ public class UserService {
         UserEntity loginUser = findUser.get();
         if (loginUser.getEmail().equals(email) && loginUser.getPassword().equals(password)) {
             log.info("이메일 && 패스워드 일치 로그인 성공 ");
-            return UserDto.toUserDto(loginUser);
+            UserDto userDto = new UserDto();
+            userDto.insertEntity(loginUser);
+            return userDto;
         } else {
             log.info("로그인 실패 -> 존재하지 않는 이뭬일 패스워드 (서비스 동작)");
             return null;
@@ -68,7 +74,9 @@ public class UserService {
         if (findId.isPresent()) {
             UserEntity userEntity = findId.get();
             log.info(userEntity.getEmail() + "의 아이디를 찾았습니다(서비스 동작)");
-            return UserDto.toUserDto(userEntity);
+            UserDto userDto = new UserDto();
+            userDto.insertEntity(userEntity);
+            return userDto;
         } else {
             log.info("찾으신 결과가 없습니다 (서비스 동작)");
             return null;
@@ -80,7 +88,9 @@ public class UserService {
         Optional<UserEntity> optionalUserEntity = userRepository.findById(myId);
         if (optionalUserEntity.isPresent()) {
             log.info("회원정보 찾기 성공 회원 수정페이지를 엽니다 (updateForm() 서비스 작동)");
-            return UserDto.toUserDto(optionalUserEntity.get());
+            UserDto userDto = new UserDto();
+            userDto.insertEntity(optionalUserEntity.get());
+            return userDto;
         } else {
             log.info("회원정보를 못찾아 수정페이지를 못연다 (updateForm () 서비스 작동)");
             return null;
@@ -92,9 +102,11 @@ public class UserService {
     public UserDto update(UserDto dto, String email, String name) {
         dto.setEmail(email);
         dto.setName(name);
-        UserEntity afterEntity = UserEntity.toUserEntity(dto);
+        UserEntity afterEntity = dto.toEntity();
         UserEntity saveEntity = userRepository.save(afterEntity);
-        return UserDto.toUserDto(saveEntity);
+
+        dto.insertEntity(saveEntity);
+        return dto;
     }
 
     // 비밀번호 변경 메서드. 각 결과 번호에 대응하는 alert 메시지 전송 필요.
@@ -133,7 +145,9 @@ public class UserService {
         List<UserDto> dtoList = new ArrayList<UserDto>();
         for (UserEntity entity : entities) {
             log.info(entity.getEmail());
-            dtoList.add(UserDto.toUserDto(entity));
+            UserDto userDto = new UserDto();
+            userDto.insertEntity(entity);
+            dtoList.add(userDto);
         }
         return dtoList;
     }
@@ -143,7 +157,10 @@ public class UserService {
         List<UserDto> userDtos = new ArrayList<UserDto>();
         for (ProjectRoleEntity projectRoleEntity : projectRoleEntities) {
             Optional<UserEntity> userEntity = userRepository.findById(projectRoleEntity.getUuidInRole().getUuid());
-            userDtos.add(UserDto.toUserDto(userEntity.get()));
+
+            UserDto userDto = new UserDto();
+            userDto.insertEntity(userEntity.get());
+            userDtos.add(userDto);
         }
         return userDtos;
     }

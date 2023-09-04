@@ -24,6 +24,7 @@ import com.example.bpm.repository.*;
 import com.example.bpm.service.Logic.dateLogic.DateManager;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -93,9 +94,9 @@ public class ProjectDetailSerivce {
             createHeadDto.setCompletion(0);
             createHeadDto.setProjectIdToHead(projectRepository.findById(projectDto.getProjectId()).orElse(null));
             log.info("HeadDto 생성 완료");
-            HeadEntity createHead = headRepository.save(HeadEntity.toHeadEntity(createHeadDto));
+            HeadEntity createHead = headRepository.save(createHeadDto.toEntity());
             log.info("HeadEntity 저장 및 생성 완료");
-            return HeadDto.toHeadDto(createHead);
+            return createHeadDto;
         }
     }
 
@@ -120,9 +121,9 @@ public class ProjectDetailSerivce {
             createDetailDto.setHeadIdToDetail(headRepository.findById(connectedHead.getHeadId()).orElse(null));
             createDetailDto.setProjectIdToDetail(projectRepository.findById(projectDto.getProjectId()).orElse(null));
             log.info("DetailDto 생성 완료");
-            DetailEntity createHead = detailRepository.save(DetailEntity.toDetailEntity(createDetailDto));
+            DetailEntity createHead = detailRepository.save(createDetailDto.toEntity());
             log.info("DetailEntity 저장 및 생성 완료");
-            return DetailDto.toDetailDto(createHead);
+            return createDetailDto;
         }
     }
 
@@ -145,19 +146,19 @@ public class ProjectDetailSerivce {
         createWorkDto.setDetailIdToWork(detailRepository.findById(connectDetail.getDetailId()).orElse(null));
         createWorkDto.setProjectIdToWork(projectRepository.findById(projectDto.getProjectId()).orElse(null));
         log.info("work 생성 성공 (서비스)");
-        WorkEntity createWork = workRepository.save(WorkEntity.toWorkEntity(createWorkDto));
+        WorkEntity createWork = workRepository.save(createWorkDto.toEntity());
         log.info("workEntity Id = " + createWork.getWorkId().toString());
-        return WorkDto.toWorkDto(createWork);
+        return createWorkDto;
     }
 
     //유저 작업 테이블 추가 메서드
     public void addUserWork(WorkDto workDto, List<String> chargeUsers) {
         log.info("user_work table insert method");
-        WorkEntity workEntity = WorkEntity.toWorkEntity(workDto);
+        WorkEntity workEntity = workDto.toEntity();
         UserWorkEntity userWorkEntity = new UserWorkEntity();
         for (String uuid : chargeUsers) {
             Optional<UserEntity> userEntity = userRepository.findById(uuid);
-            userWorkEntity = UserWorkEntity.toUserWorkEntity(workEntity, userEntity.get());
+            userWorkEntity = new UserWorkDto(workEntity, userEntity.get()).toEntity();
             userWorkRepository.save(userWorkEntity);
         }
     }
@@ -168,28 +169,36 @@ public class ProjectDetailSerivce {
 
     public HeadDto selectHead(Long id) {
         Optional<HeadEntity> find = headRepository.findById(id);
-        return HeadDto.toHeadDto(find.get());
+        HeadDto headDto = new HeadDto();
+        headDto.insertEntity(find.get());
+        return headDto;
     }
 
     public List<HeadDto> selectAllHead(ProjectDto projectDto) {
         List<HeadDto> headDtoList = new ArrayList<>();
         List<HeadEntity> headEntityList = headRepository.findAllByProjectIdToHead_ProjectId(projectDto.getProjectId());
         for (HeadEntity headEntity : headEntityList) {
-            headDtoList.add(HeadDto.toHeadDto(headEntity));
+            HeadDto headDto = new HeadDto();
+            headDto.insertEntity(headEntity);
+            headDtoList.add(headDto);
         }
         return headDtoList;
     }
 
     public DetailDto selectDetail(Long id) {
         Optional<DetailEntity> find = detailRepository.findById(id);
-        return DetailDto.toDetailDto(find.get());
+        DetailDto detailDto = new DetailDto();
+        detailDto.insertEntity(find.get());
+        return detailDto;
     }
 
     public List<DetailDto> selectAllDetailForHead(HeadDto headDto) {
         List<DetailDto> detailDtoList = new ArrayList<>();
         List<DetailEntity> detailEntityList = detailRepository.findAllByHeadIdToDetail_HeadId(headDto.getHeadId());
         for (DetailEntity detailEntity : detailEntityList) {
-            detailDtoList.add(DetailDto.toDetailDto(detailEntity));
+            DetailDto detailDto = new DetailDto();
+            detailDto.insertEntity(detailEntity);
+            detailDtoList.add(detailDto);
         }
         return detailDtoList;
     }
@@ -199,21 +208,27 @@ public class ProjectDetailSerivce {
         List<DetailEntity> detailEntityList = detailRepository.
                 findAllByProjectIdToDetail_ProjectId(projectDto.getProjectId());
         for (DetailEntity detailEntity : detailEntityList) {
-            detailDtoList.add(DetailDto.toDetailDto(detailEntity));
+            DetailDto detailDto = new DetailDto();
+            detailDto.insertEntity(detailEntity);
+            detailDtoList.add(detailDto);
         }
         return detailDtoList;
     }
 
     public WorkDto selectWork(Long id) {
         Optional<WorkEntity> find = workRepository.findById(id);
-        return WorkDto.toWorkDto(find.get());
+        WorkDto workDto = new WorkDto();
+        workDto.insertEntity(find.get());
+        return workDto;
     }
 
     public List<WorkDto> selectAllWorkForProject(ProjectDto projectDto) {
         List<WorkDto> workDtoList = new ArrayList<>();
         List<WorkEntity> workEntityList = workRepository.findAllByProjectIdToWork_ProjectId(projectDto.getProjectId());
         for (WorkEntity workEntity : workEntityList) {
-            workDtoList.add(WorkDto.toWorkDto(workEntity));
+            WorkDto workDto = new WorkDto();
+            workDto.insertEntity(workEntity);
+            workDtoList.add(workDto);
         }
         return workDtoList;
     }
@@ -222,7 +237,9 @@ public class ProjectDetailSerivce {
         List<WorkEntity> workEntityList = workRepository.findAllByDetailIdToWork_DetailId(id);
         List<WorkDto> workDtoList = new ArrayList<>();
         for (WorkEntity workEntity : workEntityList) {
-            workDtoList.add(WorkDto.toWorkDto(workEntity));
+            WorkDto workDto = new WorkDto();
+            workDto.insertEntity(workEntity);
+            workDtoList.add(workDto);
         }
         return workDtoList;
     }
@@ -231,8 +248,9 @@ public class ProjectDetailSerivce {
         List<UserWorkEntity> userWorkList = userWorkRepository.findAllByUserIdToUserWork_Uuid(userDto.getUuid());
         List<WorkDto> workDtoList = new ArrayList<>();
         for (UserWorkEntity userWorkEntity : userWorkList) {
-            workDtoList.add(WorkDto.toWorkDto(workRepository.findById(
-                    userWorkEntity.getWorkIdToUserWork().getWorkId()).orElse(null)));
+            WorkDto workDto = new WorkDto();
+            workDto.insertEntity(workRepository.findById(userWorkEntity.getWorkIdToUserWork().getWorkId()).orElse(null));
+            workDtoList.add(workDto);
         }
         return workDtoList;
     }
@@ -240,28 +258,33 @@ public class ProjectDetailSerivce {
     public UserDto selectUserForUserWork(WorkDto workDto) {
         UserWorkEntity userWorkEntity = userWorkRepository.findByWorkIdToUserWork_WorkId(workDto.getWorkId());
         Optional<UserEntity> userEntity = userRepository.findById(userWorkEntity.getUserIdToUserWork().getUuid());
-        return UserDto.toUserDto(userEntity.get());
+        UserDto userDto = new UserDto();
+        userDto.insertEntity(userEntity.get());
+        return userDto;
     }
 
     public List<UserWorkDto> selectAllUserWorkForWork(Long workId) {
         List<UserWorkEntity> userWorkEntityList = userWorkRepository.findAllByWorkIdToUserWork_WorkId(workId);
         List<UserWorkDto> userWorkDtoList = new ArrayList<>();
         for (UserWorkEntity userWorkEntity : userWorkEntityList) {
-            userWorkDtoList.add(UserWorkDto.toUserWorkDto(userWorkEntity));
+            UserWorkDto userWorkDto = new UserWorkDto();
+            userWorkDto.insertEntity(userWorkEntity);
+            userWorkDtoList.add(userWorkDto);
         }
         return userWorkDtoList;
     }
 
     public UserWorkDto selectUserWorkForWork(WorkDto workDto) {
-        UserWorkDto userWorkDto = UserWorkDto.toUserWorkDto(
-                userWorkRepository.findByWorkIdToUserWork_WorkId(workDto.getWorkId()));
+        UserWorkDto userWorkDto = new UserWorkDto();
         return userWorkDto;
     }
 
     public List<UserWorkDto> selectUserWorkForWorkList(WorkDto workDto) {
         List<UserWorkDto> userWorkDtoList = new ArrayList<>();
         for (UserWorkEntity userWorkEntity : userWorkRepository.findAllByWorkIdToUserWork_WorkId(workDto.getWorkId())){
-            userWorkDtoList.add(UserWorkDto.toUserWorkDto(userWorkEntity));
+            UserWorkDto userWorkDto = new UserWorkDto();
+            userWorkDto.insertEntity(userWorkEntity);
+            userWorkDtoList.add(userWorkDto);
         }
         return userWorkDtoList;
     }
@@ -270,10 +293,13 @@ public class ProjectDetailSerivce {
         Map<WorkDto, List<UserDto>> userWorkMap = new HashMap<>();
         for (WorkDto workDto : workDtoList) {
             List<UserWorkEntity> userWorkEntityList = userWorkRepository.findAllByWorkIdToUserWork_WorkId(workDto.getWorkId());
-            WorkDto workDtoKey = WorkDto.toWorkDto(userWorkEntityList.get(0).getWorkIdToUserWork());
+            WorkDto workDtoKey = new WorkDto();
+            workDtoKey.insertEntity(userWorkEntityList.get(0).getWorkIdToUserWork());
             List<UserDto> userDtoList = new ArrayList<>();
             for (UserWorkEntity userWorkEntity : userWorkEntityList) {
-                userDtoList.add(UserDto.toUserDto(userWorkEntity.getUserIdToUserWork()));
+                UserDto userDto = new UserDto();
+                userDto.insertEntity(userWorkEntity.getUserIdToUserWork());
+                userDtoList.add(userDto);
             }
             userWorkMap.put(workDtoKey, userDtoList );
         }
@@ -284,9 +310,10 @@ public class ProjectDetailSerivce {
         List<WorkDocumentEntity> workDocumentEntityList =
                 workDocumentRepository.findAllByWorkIdToWorkDocument_WorkId(workDto.getWorkId());
         List<WorkDocumentDto> workDocumentDtoList = new ArrayList<>();
-        WorkDocumentDto workDocumentDto = new WorkDocumentDto();
         for (WorkDocumentEntity workDocumentEntity : workDocumentEntityList) {
-            workDocumentDtoList.add(workDocumentDto.toWorkDocumentDto(workDocumentEntity));
+            WorkDocumentDto workDocumentDto = new WorkDocumentDto();
+            workDocumentDto.insertEntity(workDocumentEntity);
+            workDocumentDtoList.add(workDocumentDto);
         }
         return workDocumentDtoList;
     }
@@ -298,7 +325,7 @@ public class ProjectDetailSerivce {
             List<WorkDocumentEntity> workDocumentEntityList = workDocumentRepository.findAllByWorkIdToWorkDocument_WorkId(workDto.getWorkId());
             for (WorkDocumentEntity workDocumentEntity : workDocumentEntityList) {
                 DocumentDto documentDto = new DocumentDto();
-                documentDto.insertEntity(documentRepository.findByDocumentId(workDocumentEntity.getDocumentIdToWorkDocument().getDocumentId()));
+                documentDto.insertEntity(documentRepository.findByDocumentId(workDocumentEntity.getDocumentIdToWorkDocumentEntity().getDocumentId()));
                 documentDtoList.add(documentDto);
             }
         }
@@ -310,7 +337,9 @@ public class ProjectDetailSerivce {
                 workCommentRepository.findAllByWorkIdToComment_WorkId(workDto.getWorkId());
         List<WorkCommentDto> workCommentDtoList = new ArrayList<>();
         for (WorkCommentEntity workCommentEntity : workCommentEntityList) {
-            workCommentDtoList.add(WorkCommentDto.toWorkCommentDto(workCommentEntity));
+            WorkCommentDto workCommentDto = new WorkCommentDto();
+            workCommentDto.insertEntity(workCommentEntity);
+            workCommentDtoList.add(workCommentDto);
         }
         return workCommentDtoList;
     }
@@ -347,20 +376,24 @@ public class ProjectDetailSerivce {
             return null;
         } else {
             log.info(find.get().getTitle() + "의 내용을 찾음 (서비스)");
-            return HeadDto.toHeadDto(find.get());
+            HeadDto headDto = new HeadDto();
+            headDto.insertEntity(find.get());
+            return headDto;
         }
     }
 
     public HeadDto updateHead(HeadDto headDto) {
-        HeadEntity afterEntity = headRepository.save(HeadEntity.toHeadEntity(headDto));
-        return HeadDto.toHeadDto(afterEntity);
+        HeadEntity afterEntity = headRepository.save(headDto.toEntity());
+        return headDto;
     }
 
     public DetailDto updateSelectDetail(Long detailId) {
         Optional<DetailEntity> findDetail = detailRepository.findById(detailId);
         if (findDetail.isPresent()) {
             log.info(findDetail.get().getTitle() + "의 내용을 찾음 (서비스)");
-            return DetailDto.toDetailDto(findDetail.get());
+            DetailDto detailDto = new DetailDto();
+            detailDto.insertEntity(findDetail.get());
+            return detailDto;
         } else {
             log.info("찾은 결과가 없음 (서비스)");
             return null;
@@ -368,9 +401,9 @@ public class ProjectDetailSerivce {
     }
 
     public DetailDto updateDetail(DetailDto detailDto) {
-        DetailEntity afterEntity = DetailEntity.toDetailEntity(detailDto);
+        DetailEntity afterEntity = detailDto.toEntity();
         detailRepository.save(afterEntity);
-        return DetailDto.toDetailDto(afterEntity);
+        return detailDto;
     }
 
     public WorkDto updateSelectWork(Long workId) {
@@ -378,14 +411,16 @@ public class ProjectDetailSerivce {
         if (find.isEmpty()) {
             return null;
         } else {
-            return WorkDto.toWorkDto(find.get());
+            WorkDto workDto = new WorkDto();
+            workDto.insertEntity(find.get());
+            return workDto;
         }
     }
 
     public WorkDto updateWork(WorkDto workDto) {
-        WorkEntity afterEntity = WorkEntity.toWorkEntity(workDto);
+        WorkEntity afterEntity = workDto.toEntity();
         workRepository.save(afterEntity);
-        return WorkDto.toWorkDto(afterEntity);
+        return workDto;
     }
 
     public HeadDto editHead(String title, String startDate, String deadline, String discription, Long headId) {
@@ -394,12 +429,14 @@ public class ProjectDetailSerivce {
             log.info("");
             Date startDay = dateManager.formatter(startDate);
             Date endDay = dateManager.formatter(deadline);
-            HeadDto headDto = HeadDto.toHeadDto(headEntity.get());
+            HeadDto headDto = new HeadDto();
+            headDto.insertEntity(headEntity.get());
             headDto.setTitle(title);
             headDto.setStartDay(startDay);
             headDto.setEndDay(endDay);
             headDto.setDiscription(discription);
-            HeadDto editHeadDto = HeadDto.toHeadDto(headRepository.save(HeadEntity.toHeadEntity(headDto)));
+            HeadDto editHeadDto = new HeadDto();
+            editHeadDto.insertEntity(headRepository.save(headDto.toEntity()));
             return editHeadDto;
         } else return null;
     }
@@ -410,13 +447,15 @@ public class ProjectDetailSerivce {
         if (detailEntity.isPresent()) {
             Date startDay = dateManager.formatter(startDate);
             Date endDay = dateManager.formatter(deadline);
-            DetailDto detailDto = DetailDto.toDetailDto(detailEntity.get());
+            DetailDto detailDto = new DetailDto();
+            detailDto.insertEntity(detailEntity.get());
             detailDto.setTitle(title);
             detailDto.setStartDay(startDay);
             detailDto.setEndDay(endDay);
             detailDto.setDiscription(discription);
             detailDto.setHeadIdToDetail(headRepository.findById(headId).orElse(null));
-            DetailDto editDetailDto = DetailDto.toDetailDto(detailRepository.save(DetailEntity.toDetailEntity(detailDto)));
+            DetailDto editDetailDto = new DetailDto();
+            editDetailDto.insertEntity(detailRepository.save(detailDto.toEntity()));
             return editDetailDto;
         }
         return null;
@@ -434,7 +473,8 @@ public class ProjectDetailSerivce {
             workEntity.get().setEndDay(endDay);
             workEntity.get().setDiscription(discription);
             workEntity.get().setDetailIdToWork(detailEntity.get());
-            WorkDto workDto = WorkDto.toWorkDto(workRepository.save(workEntity.get()));
+            WorkDto workDto = new WorkDto();
+            workDto.insertEntity(workRepository.save(workEntity.get()));
             return workDto;
         }
         return null;
@@ -465,7 +505,8 @@ public class ProjectDetailSerivce {
     @Transactional
     public void deleteHeadEntity(Long headId) {
         //head
-        HeadDto targetHeadDto = HeadDto.toHeadDto(headRepository.findById(headId).orElse(null));
+        HeadDto targetHeadDto = new HeadDto();
+        targetHeadDto.insertEntity(headRepository.findById(headId).orElse(null));
         log.info("head 검색 완료, head : " + targetHeadDto.getTitle());
         //하위 detail list
         List<DetailDto> detailDtoList = selectAllDetailForHead(targetHeadDto);
@@ -544,12 +585,15 @@ public class ProjectDetailSerivce {
     @Transactional
     public void deleteDetailEntity(Long detailId) {
         //detail
-        DetailDto detailDto = DetailDto.toDetailDto(detailRepository.findById(detailId).orElse(null));
+        DetailDto detailDto = new DetailDto();
+        detailDto.insertEntity(detailRepository.findById(detailId).orElse(null));
         //workDto 변환
         List<WorkEntity> workEntityList = workRepository.findAllByDetailIdToWork_DetailId(detailId);
         List<WorkDto> workDtoList = new ArrayList<>();
         for (WorkEntity workEntity : workEntityList) {
-            workDtoList.add(WorkDto.toWorkDto(workEntity));
+            WorkDto workDto = new WorkDto();
+            workDto.insertEntity(workEntity);
+            workDtoList.add(workDto);
         }
         log.info("work 검색 완료");
         //하위 userWork list
@@ -623,8 +667,7 @@ public class ProjectDetailSerivce {
         List<DocumentDto> documentDtoList = new ArrayList<>();
         for (WorkDocumentDto workDocumentDto : workDocumentDtoList) {
             DocumentDto documentDto = new DocumentDto();
-
-            documentDto.insertEntity(workDocumentDto.getDocumentIdToWorkDocument());
+            documentDto.insertEntity(workDocumentDto.getDocumentIdToWorkDocumentEntity());
             documentDtoList.add(documentDto);
         }
 
@@ -786,7 +829,8 @@ public class ProjectDetailSerivce {
             }
         }
 
-        DetailDto detailDto = DetailDto.toDetailDto(detailEntity.get());
+        DetailDto detailDto = new DetailDto();
+        detailDto.insertEntity(detailEntity.get());
 
         if (allComplete) {
             log.info("모든 work 완료 확인됨");
@@ -816,7 +860,8 @@ public class ProjectDetailSerivce {
             }
         }
 
-        HeadDto headDto = HeadDto.toHeadDto(headEntity.get());
+        HeadDto headDto = new HeadDto();
+        headDto.insertEntity(headEntity.get());
 
         if (allComplete) {
             log.info("모든 detail 완료 확인됨");
@@ -843,7 +888,9 @@ public class ProjectDetailSerivce {
         } else {
             List<WorkCommentDto> commentDtoList = new ArrayList<>();
             for (WorkCommentEntity commentEntity : entityList) {
-                commentDtoList.add(WorkCommentDto.toWorkCommentDto(commentEntity));
+                WorkCommentDto workCommentDto = new WorkCommentDto();
+                workCommentDto.insertEntity(commentEntity);
+                commentDtoList.add(workCommentDto);
             }
             log.info("댓글 리스트 불러오기 성공(서비스)");
             return commentDtoList;
@@ -856,7 +903,7 @@ public class ProjectDetailSerivce {
             log.info("코멘트가 비어있음 (서비스)");
             return null;
         } else {
-            workCommentRepository.save(WorkCommentDto.toWorkCommentEntity(workCommentDto));
+            workCommentRepository.save(workCommentDto.toEntity());
             return findByComment(workId);
         }
     }
@@ -864,14 +911,17 @@ public class ProjectDetailSerivce {
     //update를 위한 Comment Find
     public WorkCommentDto findComment(Long commentId) {
         Optional<WorkCommentEntity> documentCommentEntity = workCommentRepository.findById(commentId);
-        return WorkCommentDto.toWorkCommentDto(documentCommentEntity.get());
+        WorkCommentDto workCommentDto = new WorkCommentDto();
+        workCommentDto.insertEntity(documentCommentEntity.get());
+        return workCommentDto;
     }
 
 
     //댓글 삭제
     public List<WorkCommentDto> deleteComment(Long commentId, Long workId) {
         Optional<WorkCommentEntity> now = workCommentRepository.findById(commentId);
-        WorkCommentDto workCommentDto = WorkCommentDto.toWorkCommentDto(now.get());
+        WorkCommentDto workCommentDto = new WorkCommentDto();
+        workCommentDto.insertEntity(now.get());
         workCommentRepository.deleteById(commentId);
         return findByComment(workId);
     }

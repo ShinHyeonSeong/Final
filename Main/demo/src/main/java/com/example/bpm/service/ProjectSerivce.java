@@ -61,7 +61,11 @@ public class ProjectSerivce {
 
         for (ProjectRequestEntity projectRequestEntity :
                 entityList) {
-            dtoList.add(ProjectRequestDto.toProjectRequestDto(projectRequestEntity));
+
+            ProjectRequestDto projectRequestDto = new ProjectRequestDto();
+            projectRequestDto.insertEntity(projectRequestEntity);
+
+            dtoList.add(projectRequestDto);
         }
         log.info("recvUUID를 이용한 초대 수신 메서드 정상작동 (서비스 작동)");
         return dtoList;
@@ -105,8 +109,8 @@ public class ProjectSerivce {
             //1 == 권한자 (프로젝트 생성자)
             if (projectRoleEntity.getRole().getId() == 1) {
                 log.info("관리자 권한으로 된 프로젝트가 있음 (서비스 작동), " + projectRoleEntity.getProjectIdInRole().getTitle());
-                ProjectDto dto = ProjectDto.toProjectDto(projectRepository.findById(
-                        projectRoleEntity.getProjectIdInRole().getProjectId()).orElse(null));
+                ProjectDto dto = new ProjectDto();
+                dto.insertEntity(projectRepository.findById(projectRoleEntity.getProjectIdInRole().getProjectId()).orElse(null));
                 dtoListToM.add(dto);
             }
         }
@@ -127,8 +131,8 @@ public class ProjectSerivce {
             //2 == 비권한자 (프로젝트 참여자)
             if (projectRoleEntity.getRole().getId() == 0) {
                 log.info("비관리자 권한으로 된 프로젝트가 있음 (서비스 작동)");
-                ProjectDto dto = ProjectDto.toProjectDto(projectRepository.findById(
-                        projectRoleEntity.getProjectIdInRole().getProjectId()).orElse(null));
+                ProjectDto dto = new ProjectDto();
+                dto.insertEntity(projectRepository.findById(projectRoleEntity.getProjectIdInRole().getProjectId()).orElse(null));
                 dtoListToP.add(dto);
             }
         }
@@ -145,7 +149,9 @@ public class ProjectSerivce {
         List<ProjectEntity> entityList = projectRepository.findAll();
         List<ProjectDto> dtoList = new ArrayList<>();
         for (ProjectEntity projectEntity : entityList) {
-            dtoList.add(ProjectDto.toProjectDto(projectEntity));
+            ProjectDto projectDto = new ProjectDto();
+            projectDto.insertEntity(projectEntity);
+            dtoList.add(projectDto);
         }
         return dtoList;
     }
@@ -153,11 +159,15 @@ public class ProjectSerivce {
 
     //관리자 프로젝트 권한 부여 메서드
     public ProjectRoleDto autorization(ProjectDto projectDto, UserDto userDto) {
-        ProjectEntity projectEntity = ProjectEntity.toProjectEntity(projectDto);
-        UserEntity userEntity = UserEntity.toUserEntity(userDto);
+        ProjectEntity projectEntity = projectDto.toEntity();
+
+        UserEntity userEntity = userDto.toEntity();
         RoleEntity roleEntity = roleRepository.findById(Long.valueOf(1)).orElse(null);
         log.info("권한 부여 메서드 실행 중 " + projectEntity.getProjectId() + ", " + userEntity.getUuid() + ", " + roleEntity.getRoleName());
-        ProjectRoleEntity projectRoleEntity = ProjectRoleEntity.toProjectRoleEntity(projectEntity, userEntity, roleEntity);
+
+        ProjectRoleDto projectRoleDto = new ProjectRoleDto(projectEntity, userEntity, roleEntity);
+
+        ProjectRoleEntity projectRoleEntity = projectRoleDto.toEntity();
         log.info("projectRoleEntity 생성 완료");
         log.info("프로젝트 생성자 권한 부여" + projectRoleEntity.getProjectIdInRole().getProjectId() + ", " +
                 projectRoleEntity.getUuidInRole().getUuid() + ", " + projectRoleEntity.getRole().getRoleName());
@@ -172,15 +182,18 @@ public class ProjectSerivce {
         projectDto.setSubtitle(subtitle);
         projectDto.setStartDay(dateManager.formatter(startDay));
         projectDto.setEndDay(dateManager.formatter(endDay));
-        ProjectEntity projectEntity = projectRepository.save(ProjectEntity.toProjectEntity(projectDto));
+        ProjectEntity projectEntity = projectRepository.save(projectDto.toEntity());
         log.info("프로젝트 정상 생성 (서비스 작동)");
-        return ProjectDto.toProjectDto(projectEntity);
+        projectDto.insertEntity(projectEntity);
+        return projectDto;
     }
 
     //프로젝트 접속하는 메서드
     public ProjectDto selectProject(Long projectId) {
         Optional<ProjectEntity> projectEntity = projectRepository.findById(projectId);
-        return ProjectDto.toProjectDto(projectEntity.get());
+        ProjectDto projectDto = new ProjectDto();
+        projectDto.insertEntity(projectEntity.get());
+        return projectDto;
     }
 
 

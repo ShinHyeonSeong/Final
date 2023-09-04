@@ -34,9 +34,13 @@ public class MessageService {
     public void sendMessage(String title, String content, UserDto nowUuid, String recvName, ProjectDto nowProject) {
         Date now = new Date();
         UserEntity recvUser = userRepository.findByName(recvName);
-        MessageDto messageDto = new MessageDto(title, content, now, UserEntity.toUserEntity(nowUuid), recvUser, ProjectEntity.toProjectEntity(nowProject));
 
-        messageRepository.save(MessageEntity.toMessageEntity(messageDto));
+        UserEntity userEntity = nowUuid.toEntity();
+        ProjectEntity projectEntity = nowProject.toEntity();
+
+        MessageDto messageDto = new MessageDto(null, title, content, now, userEntity, recvUser, projectEntity);
+
+        messageRepository.save(messageDto.toEntity());
         log.info("보내기 완료 (서비스)" + messageDto.toString());
     }
 
@@ -49,7 +53,8 @@ public class MessageService {
 
         for (MessageEntity messageEntity : recvMessageList) {
             MessageDto messageDto = new MessageDto();
-            messageDtos.add(messageDto.toMessageDto(messageEntity));
+            messageDto.insertEntity(messageEntity);
+            messageDtos.add(messageDto);
         }
         return messageDtos;
     }
@@ -63,14 +68,19 @@ public class MessageService {
 
         for (MessageEntity messageEntity : recvMessageList) {
             MessageDto messageDto = new MessageDto();
-            messageDtos.add(messageDto.toMessageDto(messageEntity));
+            messageDto.insertEntity(messageEntity);
+            messageDtos.add(messageDto);
         }
         return messageDtos;
     }
 
     //메세지 하나 확인하기
     public MessageDto selectMessage(Long id) {
-        return MessageDto.toMessageDto(messageRepository.findById(id).get());
+
+        MessageDto messageDto = new MessageDto();
+        messageDto.insertEntity(messageRepository.findById(id).get());
+
+        return messageDto;
     }
 
 }

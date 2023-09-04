@@ -56,7 +56,9 @@ public class ExceptionService {
     }
 
     public String detailErrorCheck(String title, String startDay, String endDay, Long headId) {
-        HeadDto headDto = HeadDto.toHeadDto((headRepository.findById(headId)).orElse(null));
+        HeadDto headDto = new HeadDto();
+        headDto.insertEntity((headRepository.findById(headId)).orElse(null));
+
         if (detailRepository.findByTitle(title).isPresent()) {
             return "이미 존재하는 하위 목표 제목입니다.";
         }
@@ -107,7 +109,8 @@ public class ExceptionService {
     }
 
     public String detailEditErrorCheck(String title, String startDay, String endDay, Long headId) {
-        HeadDto headDto = HeadDto.toHeadDto((headRepository.findById(headId)).orElse(null));
+        HeadDto headDto = new HeadDto();
+        headDto.insertEntity((headRepository.findById(headId)).orElse(null));
 
         Date headStartDate = headDto.getStartDay();
         Date headEndDate = headDto.getEndDay();
@@ -132,7 +135,8 @@ public class ExceptionService {
     }
 
     public String workEditErrorCheck(String startDate, String endDate, Long detailId) {
-        DetailDto detailDto = DetailDto.toDetailDto((detailRepository.findById(detailId)).orElse(null));
+        DetailDto detailDto = new DetailDto();
+        detailDto.insertEntity((detailRepository.findById(detailId)).orElse(null));
 
         Date detailStartDate = detailDto.getStartDay();
         Date detailEndDate = detailDto.getEndDay();
