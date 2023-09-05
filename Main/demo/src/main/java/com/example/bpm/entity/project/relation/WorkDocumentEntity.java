@@ -21,6 +21,6 @@ public class WorkDocumentEntity {
     @Id
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "document_id")
-    private DocumentEntity documentIdToWorkDocumentEntity;
+    private DocumentEntity documentIdToWorkDocument;
 
 }

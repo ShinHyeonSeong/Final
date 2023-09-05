@@ -41,14 +41,13 @@ public class MessageService {
         MessageDto messageDto = new MessageDto(null, title, content, now, userEntity, recvUser, projectEntity);
 
         messageRepository.save(messageDto.toEntity());
-        log.info("보내기 완료 (서비스)" + messageDto.toString());
     }
 
     //수신함 확인 (파라미터 = 현재 로그인된 user, 현재 접속된 project
     public List<MessageDto> selectAllRecv(UserDto recvUser, ProjectDto projectDto) {
         String recvUserUuid = recvUser.getUuid();
         Long projectId = projectDto.getProjectId();
-        List<MessageEntity> recvMessageList = messageRepository.findAllByUserIdToMessageRecv_Uuid(recvUserUuid);
+        List<MessageEntity> recvMessageList = messageRepository.findAllByProjectIdToMessage_ProjectIdAndUserIdToMessageRecv_Uuid(projectId ,recvUserUuid);
         List<MessageDto> messageDtos = new ArrayList<>();
 
         for (MessageEntity messageEntity : recvMessageList) {
@@ -63,7 +62,7 @@ public class MessageService {
     public List<MessageDto> selectAllSend(UserDto sendUser, ProjectDto projectDto) {
         String sendUserUuid = sendUser.getUuid();
         Long projectId = projectDto.getProjectId();
-        List<MessageEntity> recvMessageList = messageRepository.findAllByUserIdToMessageSend_Uuid(sendUserUuid);
+        List<MessageEntity> recvMessageList = messageRepository.findAllByProjectIdToMessage_ProjectIdAndUserIdToMessageSend_Uuid(projectId ,sendUserUuid);
         List<MessageDto> messageDtos = new ArrayList<>();
 
         for (MessageEntity messageEntity : recvMessageList) {

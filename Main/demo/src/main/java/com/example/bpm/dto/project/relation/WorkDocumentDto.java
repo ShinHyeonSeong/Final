@@ -14,14 +14,14 @@ public class WorkDocumentDto {
         WorkDocumentEntity workDocumentEntity = new WorkDocumentEntity();
 
         workDocumentEntity.setWorkIdToWorkDocument(workIdToWorkDocument);
-        workDocumentEntity.setDocumentIdToWorkDocumentEntity(documentIdToWorkDocumentEntity);
+        workDocumentEntity.setDocumentIdToWorkDocument(documentIdToWorkDocumentEntity);
 
         return workDocumentEntity;
     }
 
     public void insertEntity(WorkDocumentEntity workDocumentEntity){
         this.workIdToWorkDocument = workDocumentEntity.getWorkIdToWorkDocument();
-        this.documentIdToWorkDocumentEntity = workDocumentEntity.getDocumentIdToWorkDocumentEntity();
+        this.documentIdToWorkDocumentEntity = workDocumentEntity.getDocumentIdToWorkDocument();
     }
 
 }

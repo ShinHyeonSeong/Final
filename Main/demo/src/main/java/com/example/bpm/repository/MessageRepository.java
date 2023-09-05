@@ -10,7 +10,9 @@ public interface MessageRepository extends JpaRepository<MessageEntity, Long> {
 
     List<MessageEntity> findAllByUserIdToMessageSend_Uuid(String sendUserUuid);
 
-    public List<MessageEntity> findAllByProjectIdToMessage_ProjectId(Long projectId);
+    public List<MessageEntity> findAllByProjectIdToMessage_ProjectIdAndUserIdToMessageSend_Uuid(Long projectId, String sendUserUuid);
+    public List<MessageEntity> findAllByProjectIdToMessage_ProjectIdAndUserIdToMessageRecv_Uuid(Long projectId, String recvUserUuid);
+
     public void deleteAllByProjectIdToMessage_ProjectId(Long projectId);
 
 }

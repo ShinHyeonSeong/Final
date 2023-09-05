@@ -325,7 +325,7 @@ public class ProjectDetailSerivce {
             List<WorkDocumentEntity> workDocumentEntityList = workDocumentRepository.findAllByWorkIdToWorkDocument_WorkId(workDto.getWorkId());
             for (WorkDocumentEntity workDocumentEntity : workDocumentEntityList) {
                 DocumentDto documentDto = new DocumentDto();
-                documentDto.insertEntity(documentRepository.findByDocumentId(workDocumentEntity.getDocumentIdToWorkDocumentEntity().getDocumentId()));
+                documentDto.insertEntity(documentRepository.findByDocumentId(workDocumentEntity.getDocumentIdToWorkDocument().getDocumentId()));
                 documentDtoList.add(documentDto);
             }
         }

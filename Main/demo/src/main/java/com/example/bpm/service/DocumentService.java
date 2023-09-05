@@ -37,7 +37,6 @@ public class DocumentService {
     private String bucketName = "bpm-file-storage";
 
     // 레파지토리 AutoWired
-
     @Autowired
     private DocumentRepository documentRepository;
 
@@ -177,7 +176,7 @@ public class DocumentService {
     public void workDocumentAdd(Long workId, String documentId){
         WorkDocumentEntity workDocumentEntity = new WorkDocumentEntity();
         workDocumentEntity.setWorkIdToWorkDocument(workRepository.findByWorkId(workId));
-        workDocumentEntity.setDocumentIdToWorkDocumentEntity(documentRepository.findByDocumentId(documentId));
+        workDocumentEntity.setDocumentIdToWorkDocument(documentRepository.findByDocumentId(documentId));
 
         workDocumentRepository.save(workDocumentEntity);
     }
@@ -268,7 +267,7 @@ public class DocumentService {
         for (UserWorkEntity userWorkEntity : userWorkEntityList) {
             List<WorkDocumentEntity> workDocumentEntityList = workDocumentRepository.findAllByWorkIdToWorkDocument_WorkId(userWorkEntity.getWorkIdToUserWork().getWorkId());
             for (WorkDocumentEntity workDocumentEntity : workDocumentEntityList) {
-                documentEntityList.add(documentRepository.findByDocumentId(workDocumentEntity.getDocumentIdToWorkDocumentEntity().getDocumentId()));
+                documentEntityList.add(documentRepository.findByDocumentId(workDocumentEntity.getDocumentIdToWorkDocument().getDocumentId()));
             }
         }
 
@@ -324,7 +323,7 @@ public class DocumentService {
         List<DocumentDto> documentDtoList = new ArrayList<>();
 
         for (WorkDocumentEntity workDocumentEntity: workDocumentEntityList) {
-            documentEntityList.add(workDocumentEntity.getDocumentIdToWorkDocumentEntity());
+            documentEntityList.add(workDocumentEntity.getDocumentIdToWorkDocument());
         }
 
 
@@ -353,7 +352,7 @@ public class DocumentService {
             List<WorkDocumentEntity> workDocumentEntityList = workDocumentRepository.findAllByWorkIdToWorkDocument_WorkId(workEntity.getWorkId());
 
             for (WorkDocumentEntity workDocumentEntity: workDocumentEntityList) {
-                documentEntityList.add(documentRepository.findByDocumentId(workDocumentEntity.getDocumentIdToWorkDocumentEntity().getDocumentId()));
+                documentEntityList.add(documentRepository.findByDocumentId(workDocumentEntity.getDocumentIdToWorkDocument().getDocumentId()));
             }
 
             for (DocumentEntity documentEntity : documentEntityList)
