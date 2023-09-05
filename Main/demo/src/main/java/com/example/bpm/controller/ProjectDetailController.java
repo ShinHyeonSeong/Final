@@ -442,8 +442,8 @@ public class ProjectDetailController {
         UserDto nowUser = getSessionUser();
         WorkCommentDto workCommentDto = new WorkCommentDto();
         workCommentDto.setComment(comment);
-        workCommentDto.setWorkIdToComment(WorkEntity.toWorkEntity(workDto));
-        workCommentDto.setUserIdToComment(UserEntity.toUserEntity(nowUser));
+        workCommentDto.setWorkIdToComment(workDto.toEntity());
+        workCommentDto.setUserIdToComment(nowUser.toEntity());
         /* 댓글을 추가 시키는 메서드 끝 */
 
         /*추가 시킬 댓글 내용과, 현재 documentID 를 같이 넘겨 리턴 값으로 자동 리스트를 뽑아온다*/
@@ -469,8 +469,8 @@ public class ProjectDetailController {
         UserDto nowUser = getSessionUser();
         WorkCommentDto workCommentDto = new WorkCommentDto();
         workCommentDto.setComment(comment);
-        workCommentDto.setWorkIdToComment(WorkEntity.toWorkEntity(workDto));
-        workCommentDto.setUserIdToComment(UserEntity.toUserEntity(nowUser));
+        workCommentDto.setWorkIdToComment(workDto.toEntity());
+        workCommentDto.setUserIdToComment(nowUser.toEntity());
 
         List<WorkCommentDto> list = projectDetailSerivce.plusComment(workCommentDto, workId);
         model.addAttribute("commentList", list);

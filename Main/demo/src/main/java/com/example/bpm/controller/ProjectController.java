@@ -244,7 +244,8 @@ public class ProjectController {
     @RequestMapping("/project/invite/{id}")
     public String sendInvite(@PathVariable("id") String uuid, HttpSession session, Model model) {
         UserDto sendUser = (UserDto) session.getAttribute("userInfo");
-        UserDto recvUser = UserDto.toUserDto(userRepository.findById(uuid).orElse(null));
+        UserDto recvUser = new UserDto();
+        recvUser.insertEntity(userRepository.findById(uuid).orElse(null));
         ProjectDto projectDto = (ProjectDto) session.getAttribute("currentProject");
         projectSerivce.sendInvite(sendUser.getUuid(), recvUser.getUuid(), projectDto.getProjectId());
         return "redirect:/user/search";
