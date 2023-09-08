@@ -15,6 +15,7 @@ import com.example.bpm.entity.document.BlockEntity;
 import com.example.bpm.entity.document.LogEntity;
 import com.example.bpm.entity.project.data.DetailEntity;
 import com.example.bpm.entity.project.data.HeadEntity;
+import com.example.bpm.entity.project.data.ProjectEntity;
 import com.example.bpm.entity.project.data.work.WorkCommentEntity;
 import com.example.bpm.entity.project.data.WorkEntity;
 import com.example.bpm.entity.project.relation.WorkDocumentEntity;
@@ -40,13 +41,13 @@ public class ProjectDetailSerivce {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private final ProjectRepository projectRepository;
+    private ProjectRepository projectRepository;
     @Autowired
-    private final HeadRepository headRepository;
+    private HeadRepository headRepository;
     @Autowired
-    private final DetailRepository detailRepository;
+    private DetailRepository detailRepository;
     @Autowired
-    private final WorkRepository workRepository;
+    private WorkRepository workRepository;
     @Autowired
     private UserWorkRepository userWorkRepository;
     @Autowired
@@ -76,7 +77,7 @@ public class ProjectDetailSerivce {
     /* - - - - 생성 메서드 시작 - - - - */
 
     // head 생성 메서드
-    public HeadDto createHead(String title, String startDate, String deadline, String discription, ProjectDto projectDto) {
+    /*public HeadDto createHead(String title, String startDate, String deadline, String discription, ProjectDto projectDto) {
         if (headRepository.findByTitle(title).isPresent()) {
             log.info("head title 이 이미 존재한다. (서비스)");
             return null;
@@ -98,7 +99,26 @@ public class ProjectDetailSerivce {
             log.info("HeadEntity 저장 및 생성 완료");
             return createHeadDto;
         }
+    }*/
+    public HeadDto createHead(String title, String startDate, String deadline, String discription, ProjectDto projectDto){
+        HeadDto headDto = new HeadDto();
+
+        headDto.setTitle(title);
+        headDto.setStartDay(dateManager.formatter(startDate));
+        headDto.setEndDay(dateManager.formatter(deadline));
+        headDto.setDiscription(discription);
+        headDto.setProjectIdToHead(projectRepository.findById(projectDto.getProjectId()).orElse(null));
+
+        headRepository.save(headDto.toEntity());
+
+        return  headDto;
     }
+
+    public boolean checkOverlapHead(String title){
+        return headRepository.findByTitle(title).isPresent();
+    }
+
+
 
     // detail 생성 메서드
     public DetailDto createDetail(String title, String startDate, String deadline, String discription,
