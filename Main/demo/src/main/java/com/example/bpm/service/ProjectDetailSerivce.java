@@ -147,7 +147,9 @@ public class ProjectDetailSerivce {
 
     // work comment create
     public void createWorkComment (WorkCommentDto workCommentDto) {
+
         workCommentRepository.save(workCommentDto.toEntity());
+
     }
 
     // work user create

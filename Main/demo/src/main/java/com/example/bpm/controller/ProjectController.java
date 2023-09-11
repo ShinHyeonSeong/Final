@@ -68,7 +68,7 @@ public class ProjectController {
         //세션에서 현재 로그인 되어있는 유저의 정보를 가져온다
         UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
         //UUID를 활용하여 권한자 / 비권한자 프로젝트 리스트를 불러온다
-        List<ProjectDto> ManagerToProjectList = projectSerivce.findManagerToProjectList(sessionUser.getUuid());
+        List<ProjectDto> ManagerToProjectList = projectSerivce.findProjectListRoleManager(sessionUser.getUuid());
         model.addAttribute("user", sessionUser);
         model.addAttribute("managerList", ManagerToProjectList);
 
@@ -104,7 +104,7 @@ public class ProjectController {
         //세션에서 현재 로그인 되어있는 유저의 정보를 가져온다
         UserDto sessionUser = getSessionUser();
         //UUID를 활용하여 권한자 / 비권한자 프로젝트 리스트를 불러온다
-        List<ProjectDto> memberToProjectList = projectSerivce.findParticipantsToProjectList(sessionUser.getUuid());
+        List<ProjectDto> memberToProjectList = projectSerivce.findProjectListRoleEntry(sessionUser.getUuid());
         model.addAttribute("user", sessionUser);
         model.addAttribute("memberList", memberToProjectList);
 
@@ -120,7 +120,7 @@ public class ProjectController {
     public String projectAllList(Model model) {
         UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
         //UUID를 활용하여 권한자 / 비권한자 프로젝트 리스트를 불러온다
-        List<ProjectDto> ManagerToProjectList = projectSerivce.findManagerToProjectList(sessionUser.getUuid());
+        List<ProjectDto> ManagerToProjectList = projectSerivce.findProjectListRoleManager(sessionUser.getUuid());
         model.addAttribute("user", sessionUser);
         List<ProjectDto> AllProjectList = projectSerivce.findAllToProjectList();
         model.addAttribute("projectAllList", AllProjectList);
@@ -158,7 +158,7 @@ public class ProjectController {
             log.info(projectDto.getProjectId().toString());
             UserDto sessionUser = getSessionUser();
             session.setAttribute("currentProject", projectDto);
-            projectSerivce.autorization(projectDto, sessionUser);
+            projectSerivce.addRoleManager(projectDto, sessionUser);
             log.info("프로젝트 생성 정상 작동(컨트롤러 작동)");
             return "redirect:/project/projectManagerList";
         }
@@ -169,8 +169,8 @@ public class ProjectController {
     @RequestMapping("/project/{id}")
     public String selectProject(@PathVariable("id") Long id, HttpSession session, Model model) {
         UserDto userDto = getSessionUser();
-        ProjectDto presentDto = projectSerivce.selectProject(id);
-        List<UserDto> userDtoList = userService.searchUserToProject(id);
+        ProjectDto presentDto = projectSerivce.findProject(id);
+        List<UserDto> userDtoList = userService.findUserListByProjectId(id);
         List<HeadDto> headDtoList = projectDetailSerivce.findHeadListByProject(presentDto);
 
         session.removeAttribute("currentProject");
@@ -190,7 +190,7 @@ public class ProjectController {
             model.addAttribute("userWorkDtoList", userWorkDtoList);
             return "projectMain";
         } else if (getSessionAuth() == 2) {
-            List<DetailDto> detailDtoList = projectDetailSerivce.findDetailListByProject(projectSerivce.selectProject(id));
+            List<DetailDto> detailDtoList = projectDetailSerivce.findDetailListByProject(projectSerivce.findProject(id));
             List<WorkDto> workDtoList = projectDetailSerivce.findWorkListByProject(presentDto);
             List<DocumentDto> documentDtoList = projectDetailSerivce.findDocumentListByWorkList(workDtoList);
 
@@ -259,7 +259,7 @@ public class ProjectController {
                                   @PathVariable("project") Long projectId,
                                   @PathVariable("acceptable") boolean acceptable) {
         log.info("전달 완료, " + sendUuid + recvUuid + projectId + acceptable);
-        projectSerivce.submitInvite(sendUuid, recvUuid, projectId, acceptable);
+        projectSerivce.decisionInvite(sendUuid, recvUuid, projectId, acceptable);
         return "redirect:/project/inviteList";
     }
 

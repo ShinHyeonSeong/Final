@@ -11,10 +11,10 @@ import java.util.List;
 public interface ProjectRoleRepository extends JpaRepository<ProjectRoleEntity, ProjectRolePKEntity> {
 
     @Query(value = "select * from project_role where uuid = :uuid", nativeQuery = true)
-    List<ProjectRoleEntity> userForRole(String uuid);
+    List<ProjectRoleEntity> findProjectRoleByUser(String uuid);
 
     @Query(value = "select * from project_role where project_id = :id", nativeQuery = true)
-    List<ProjectRoleEntity> userForProject(Long id);
+    List<ProjectRoleEntity> findProjectRoleByProject(Long id);
 
     //public List<ProjectRoleEntity> findAllByUuidInRole(String uuid);
 

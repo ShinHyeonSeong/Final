@@ -232,7 +232,7 @@ public class ProjectDetailController {
                              @RequestParam(value = "message", required = false) String message,
                              Model model) {
         WorkDto workDto = projectDetailSerivce.findWork(workId);
-        List<UserDto> userDtoList = userService.searchUserToProject(getSessionProject().getProjectId());
+        List<UserDto> userDtoList = userService.findUserListByProjectId(getSessionProject().getProjectId());
         List<UserWorkDto> userWorkDtoList = projectDetailSerivce.findUserWorkListByWorkId(workId);
         List<DetailDto> detailDtoList = projectDetailSerivce.findDetailListByProject(getSessionProject());
 
@@ -343,7 +343,7 @@ public class ProjectDetailController {
     @GetMapping("/project/work/create")
     public String goCreateWork(Model model, @RequestParam(value = "message", required = false) String message) {
         ProjectDto currentProject = getSessionProject();
-        List<UserDto> userDtoList = userService.searchUserToProject(currentProject.getProjectId());
+        List<UserDto> userDtoList = userService.findUserListByProjectId(currentProject.getProjectId());
         List<DetailDto> detailDtoList = projectDetailSerivce.findDetailListByProject(currentProject);
         if (message != null) {
             model.addAttribute("message", message);
@@ -405,7 +405,7 @@ public class ProjectDetailController {
     /* - - - - 삭제 메서드 - - - - */
     @RequestMapping("/project/delete/{id}")
     public String deleteProject(@PathVariable("id")Long projectId) {
-        ProjectDto projectDto = projectSerivce.selectProject(projectId);
+        ProjectDto projectDto = projectSerivce.findProject(projectId);
         projectDetailSerivce.deleteProjectEntity(projectDto);
         return "redirect:/project/projectManagerList";
     }
@@ -528,7 +528,7 @@ public class ProjectDetailController {
     public String viewRecvMessage(HttpSession session, Model model) {
         UserDto userDto = getSessionUser();
         ProjectDto projectDto = getSessionProject();
-        List<MessageDto> messageDtoList = messageService.selectAllRecv(userDto, projectDto);
+        List<MessageDto> messageDtoList = messageService.recvMessage(userDto, projectDto);
 
         model.addAttribute("List", messageDtoList);
         return "recvMessageList";
@@ -547,14 +547,14 @@ public class ProjectDetailController {
 
     @GetMapping("/messageForm")
     public String sendMessageForm(Model model) {
-        List<UserDto> userDtos = userService.searchUserToProject(getSessionProject().getProjectId());
+        List<UserDto> userDtos = userService.findUserListByProjectId(getSessionProject().getProjectId());
         model.addAttribute("userList", userDtos);
         return "messageForm";
     }
 
     @RequestMapping("/message/{id}")
     public String selectMessage(@PathVariable("id") Long id, Model model) {
-        MessageDto messageDto = messageService.selectMessage(id);
+        MessageDto messageDto = messageService.findMessage(id);
         model.addAttribute("message", messageDto);
 
         return "messageDetail";

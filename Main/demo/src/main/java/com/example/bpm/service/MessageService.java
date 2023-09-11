@@ -26,55 +26,40 @@ public class MessageService {
     @Autowired
     private final UserRepository userRepository;
     @Autowired
-    private final ProjectRepository projectRepository;
-    @Autowired
     private final MessageRepository messageRepository;
 
-    //메세지 보내기
-    public void sendMessage(String title, String content, UserDto nowUuid, String recvName, ProjectDto nowProject) {
+    /* send message */
+    public void sendMessage(String title, String content, UserDto sendUser, String recvUUID, ProjectDto projectDto) {
         Date now = new Date();
-        UserEntity recvUser = userRepository.findByName(recvName);
 
-        UserEntity userEntity = nowUuid.toEntity();
-        ProjectEntity projectEntity = nowProject.toEntity();
+        UserEntity recvUserEntity = userRepository.findById(recvUUID).get();
+        UserEntity sendUserEntity = sendUser.toEntity();
+        ProjectEntity projectEntity = projectDto.toEntity();
 
-        MessageDto messageDto = new MessageDto(null, title, content, now, userEntity, recvUser, projectEntity);
+        MessageDto messageDto = new MessageDto(null, title, content, now, sendUserEntity, recvUserEntity, projectEntity);
 
         messageRepository.save(messageDto.toEntity());
     }
 
-    //수신함 확인 (파라미터 = 현재 로그인된 user, 현재 접속된 project
-    public List<MessageDto> selectAllRecv(UserDto recvUser, ProjectDto projectDto) {
-        String recvUserUuid = recvUser.getUuid();
-        Long projectId = projectDto.getProjectId();
-        List<MessageEntity> recvMessageList = messageRepository.findAllByProjectIdToMessage_ProjectIdAndUserIdToMessageRecv_Uuid(projectId ,recvUserUuid);
-        List<MessageDto> messageDtos = new ArrayList<>();
+    /* recv message */
+    public List<MessageDto> recvMessage(UserDto recvUser, ProjectDto projectDto) {
+
+        List<MessageEntity> recvMessageList = messageRepository.findAllByProjectIdToMessage_ProjectIdAndUserIdToMessageRecv_Uuid(projectDto.getProjectId() ,recvUser.getUuid());
+        List<MessageDto> messageDtoList = new ArrayList<>();
 
         for (MessageEntity messageEntity : recvMessageList) {
+
             MessageDto messageDto = new MessageDto();
             messageDto.insertEntity(messageEntity);
-            messageDtos.add(messageDto);
+            messageDtoList.add(messageDto);
+
         }
-        return messageDtos;
+
+        return messageDtoList;
     }
 
-    //발신함 확인
-    public List<MessageDto> selectAllSend(UserDto sendUser, ProjectDto projectDto) {
-        String sendUserUuid = sendUser.getUuid();
-        Long projectId = projectDto.getProjectId();
-        List<MessageEntity> recvMessageList = messageRepository.findAllByProjectIdToMessage_ProjectIdAndUserIdToMessageSend_Uuid(projectId ,sendUserUuid);
-        List<MessageDto> messageDtos = new ArrayList<>();
-
-        for (MessageEntity messageEntity : recvMessageList) {
-            MessageDto messageDto = new MessageDto();
-            messageDto.insertEntity(messageEntity);
-            messageDtos.add(messageDto);
-        }
-        return messageDtos;
-    }
-
-    //메세지 하나 확인하기
-    public MessageDto selectMessage(Long id) {
+    /* open message */
+    public MessageDto findMessage(Long id) {
 
         MessageDto messageDto = new MessageDto();
         messageDto.insertEntity(messageRepository.findById(id).get());
