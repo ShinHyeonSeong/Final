@@ -1,6 +1,5 @@
 package com.example.bpm.service;
 
-import com.example.bpm.dto.document.BlockDto;
 import com.example.bpm.dto.document.DocumentDto;
 import com.example.bpm.dto.document.LogDto;
 import com.example.bpm.dto.project.DetailDto;
@@ -25,7 +24,6 @@ import com.example.bpm.repository.*;
 import com.example.bpm.service.Logic.dateLogic.DateManager;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -69,37 +67,13 @@ public class ProjectDetailSerivce {
     @Autowired
     private ProjectSerivce projectSerivce;
 
-    Date currentDate = new Date(); // 시작 날짜(현재) 생성
     DateManager dateManager = new DateManager();
 
-    // 마감기한 문자열 Date 타입 반환 메서드. 문자열 형식 상이로 변환 실패시 null
+    //////////////////////////////////////////////////////////////////
+    // create Data
+    //////////////////////////////////////////////////////////////////
 
-    /* - - - - 생성 메서드 시작 - - - - */
-
-    // head 생성 메서드
-    /*public HeadDto createHead(String title, String startDate, String deadline, String discription, ProjectDto projectDto) {
-        if (headRepository.findByTitle(title).isPresent()) {
-            log.info("head title 이 이미 존재한다. (서비스)");
-            return null;
-        } else {
-            log.info("createHead service 작동");
-            Date startDay = dateManager.formatter(startDate);
-            Date endDay = dateManager.formatter(deadline);
-            if (endDay == null) return null;
-
-            HeadDto createHeadDto = new HeadDto();
-            createHeadDto.setTitle(title);
-            createHeadDto.setDiscription(discription);
-            createHeadDto.setStartDay(startDay);
-            createHeadDto.setEndDay(endDay);
-            createHeadDto.setCompletion(0);
-            createHeadDto.setProjectIdToHead(projectRepository.findById(projectDto.getProjectId()).orElse(null));
-            log.info("HeadDto 생성 완료");
-            HeadEntity createHead = headRepository.save(createHeadDto.toEntity());
-            log.info("HeadEntity 저장 및 생성 완료");
-            return createHeadDto;
-        }
-    }*/
+    // Head create
     public HeadDto createHead(String title, String startDate, String deadline, String discription, ProjectDto projectDto){
         HeadDto headDto = new HeadDto();
 
@@ -107,6 +81,7 @@ public class ProjectDetailSerivce {
         headDto.setStartDay(dateManager.formatter(startDate));
         headDto.setEndDay(dateManager.formatter(deadline));
         headDto.setDiscription(discription);
+        headDto.setCompletion(0);
         headDto.setProjectIdToHead(projectRepository.findById(projectDto.getProjectId()).orElse(null));
 
         headRepository.save(headDto.toEntity());
@@ -114,89 +89,111 @@ public class ProjectDetailSerivce {
         return  headDto;
     }
 
-    public boolean checkOverlapHead(String title){
-        return headRepository.findByTitle(title).isPresent();
+    public HeadDto createHead(HeadDto headDto){
+
+        headRepository.save(headDto.toEntity());
+
+        return headDto;
     }
 
+    // detail create
+    public DetailDto createDetail(String title, String startDate, String deadline, String discription, HeadDto connectedHead, ProjectDto projectDto) {
+        DetailDto detailDto = new DetailDto();
 
+        detailDto.setTitle(title);
+        detailDto.setStartDay(dateManager.formatter(startDate));
+        detailDto.setEndDay(dateManager.formatter(deadline));
+        detailDto.setDiscription(discription);
+        detailDto.setCompletion(0);
+        detailDto.setHeadIdToDetail(connectedHead.toEntity());
+        detailDto.setProjectIdToDetail(projectDto.toEntity());
 
-    // detail 생성 메서드
-    public DetailDto createDetail(String title, String startDate, String deadline, String discription,
-                                  HeadDto connectedHead, ProjectDto projectDto) {
-        if (detailRepository.findByTitle(title).isPresent()) {
-            log.info("detail title 이 이미 존재한다. (서비스)");
-            return null;
-        } else {
-            log.info("createDetail service 작동");
-            Date startDay = dateManager.formatter(startDate);
-            Date endDay = dateManager.formatter(deadline);
-            if (endDay == null) return null;
+        detailRepository.save(detailDto.toEntity());
 
-            DetailDto createDetailDto = new DetailDto();
-            createDetailDto.setTitle(title);
-            createDetailDto.setDiscription(discription);
-            createDetailDto.setStartDay(startDay);
-            createDetailDto.setEndDay(endDay);
-            createDetailDto.setCompletion(0);
-            createDetailDto.setHeadIdToDetail(headRepository.findById(connectedHead.getHeadId()).orElse(null));
-            createDetailDto.setProjectIdToDetail(projectRepository.findById(projectDto.getProjectId()).orElse(null));
-            log.info("DetailDto 생성 완료");
-            DetailEntity createHead = detailRepository.save(createDetailDto.toEntity());
-            log.info("DetailEntity 저장 및 생성 완료");
-            return createDetailDto;
-        }
+        return detailDto;
     }
 
-    // 내 작업 만들기
-    public WorkDto createWork(String title, String discription, String startDate, String deadline,
-                              DetailDto connectDetail, ProjectDto projectDto) {
-        if (workRepository.findByTitle(title).isPresent()) {
-            log.info("work title 이 이미 존재한다. (서비스)");
-            return null;
-        }
-        Date startDay = dateManager.formatter(startDate);
-        Date endDay = dateManager.formatter(deadline);
+    public DetailDto createDetail(DetailDto detailDto){
 
-        WorkDto createWorkDto = new WorkDto();
-        createWorkDto.setTitle(title);
-        createWorkDto.setDiscription(discription);
-        createWorkDto.setStartDay(startDay);
-        createWorkDto.setEndDay(endDay);
-        createWorkDto.setCompletion(0);
-        createWorkDto.setDetailIdToWork(detailRepository.findById(connectDetail.getDetailId()).orElse(null));
-        createWorkDto.setProjectIdToWork(projectRepository.findById(projectDto.getProjectId()).orElse(null));
-        log.info("work 생성 성공 (서비스)");
-        WorkEntity createWork = workRepository.save(createWorkDto.toEntity());
-        log.info("workEntity Id = " + createWork.getWorkId().toString());
-        return createWorkDto;
+        detailRepository.save(detailDto.toEntity());
+
+        return detailDto;
     }
 
-    //유저 작업 테이블 추가 메서드
+    // work create
+    public WorkDto createWork(String title, String discription, String startDate, String deadline, DetailDto connectDetail, ProjectDto projectDto) {
+
+        WorkDto workDto = new WorkDto();
+        
+        workDto.setTitle(title);
+        workDto.setDiscription(discription);
+        workDto.setStartDay(dateManager.formatter(startDate));
+        workDto.setEndDay(dateManager.formatter(deadline));
+        workDto.setCompletion(0);
+        workDto.setDetailIdToWork(detailRepository.findById(connectDetail.getDetailId()).orElse(null));
+        workDto.setProjectIdToWork(projectRepository.findById(projectDto.getProjectId()).orElse(null));
+
+        workRepository.save(workDto.toEntity());
+
+        return workDto;
+    }
+
+    public WorkDto createWork(WorkDto workDto){
+
+        workRepository.save(workDto.toEntity());
+
+        return workDto;
+    }
+
+    // work comment create
+    public void createWorkComment (WorkCommentDto workCommentDto) {
+        workCommentRepository.save(workCommentDto.toEntity());
+    }
+
+    // work user create
     public void addUserWork(WorkDto workDto, List<String> chargeUsers) {
-        log.info("user_work table insert method");
-        WorkEntity workEntity = workDto.toEntity();
         UserWorkEntity userWorkEntity = new UserWorkEntity();
+
+        WorkEntity workEntity = workDto.toEntity();
+
         for (String uuid : chargeUsers) {
-            Optional<UserEntity> userEntity = userRepository.findById(uuid);
-            userWorkEntity = new UserWorkDto(workEntity, userEntity.get()).toEntity();
+            UserEntity userEntity = userRepository.findById(uuid).get();
+            userWorkEntity = new UserWorkDto(workEntity, userEntity).toEntity();
             userWorkRepository.save(userWorkEntity);
         }
     }
 
-    /* - - - - 생성 메서드 끝 - - - - */
 
-    /* - - - - 선택 메서드 시작 - - - - - */
+    /* - - - - OverLap check - - - - */
 
-    public HeadDto selectHead(Long id) {
-        Optional<HeadEntity> find = headRepository.findById(id);
+    public boolean checkOverlapHead(String title){
+        return headRepository.findByTitle(title).isPresent();
+    }
+
+    public boolean checkOverlapDetail(String title){
+        return detailRepository.findByTitle(title).isPresent();
+    }
+
+    public boolean checkOverlapWork(String title){
+        return workRepository.findByTitle(title).isPresent();
+    }
+
+    //////////////////////////////////////////////////////////////////
+    // find Data
+    //////////////////////////////////////////////////////////////////
+
+    /* Head HeadDto */
+    public HeadDto findHeadById(Long id) {
+        HeadEntity headEntity = headRepository.findById(id).get();
         HeadDto headDto = new HeadDto();
-        headDto.insertEntity(find.get());
+        headDto.insertEntity(headEntity);
         return headDto;
     }
 
-    public List<HeadDto> selectAllHead(ProjectDto projectDto) {
+    public List<HeadDto> findHeadListByProject(ProjectDto projectDto) {
         List<HeadDto> headDtoList = new ArrayList<>();
         List<HeadEntity> headEntityList = headRepository.findAllByProjectIdToHead_ProjectId(projectDto.getProjectId());
+
         for (HeadEntity headEntity : headEntityList) {
             HeadDto headDto = new HeadDto();
             headDto.insertEntity(headEntity);
@@ -205,16 +202,30 @@ public class ProjectDetailSerivce {
         return headDtoList;
     }
 
-    public DetailDto selectDetail(Long id) {
-        Optional<DetailEntity> find = detailRepository.findById(id);
+    /* Detail DetailDto */
+    public DetailDto findDetailById(Long id) {
+        DetailEntity detailEntity = detailRepository.findById(id).get();
         DetailDto detailDto = new DetailDto();
-        detailDto.insertEntity(find.get());
+        detailDto.insertEntity(detailEntity);
         return detailDto;
     }
 
-    public List<DetailDto> selectAllDetailForHead(HeadDto headDto) {
+    public List<DetailDto> findDetailListByProject(ProjectDto projectDto) {
+        List<DetailDto> detailDtoList = new ArrayList<>();
+        List<DetailEntity> detailEntityList = detailRepository.findAllByProjectIdToDetail_ProjectId(projectDto.getProjectId());
+
+        for (DetailEntity detailEntity : detailEntityList) {
+            DetailDto detailDto = new DetailDto();
+            detailDto.insertEntity(detailEntity);
+            detailDtoList.add(detailDto);
+        }
+        return detailDtoList;
+    }
+
+    public List<DetailDto> findAllDetailListByHead(HeadDto headDto) {
         List<DetailDto> detailDtoList = new ArrayList<>();
         List<DetailEntity> detailEntityList = detailRepository.findAllByHeadIdToDetail_HeadId(headDto.getHeadId());
+
         for (DetailEntity detailEntity : detailEntityList) {
             DetailDto detailDto = new DetailDto();
             detailDto.insertEntity(detailEntity);
@@ -223,28 +234,18 @@ public class ProjectDetailSerivce {
         return detailDtoList;
     }
 
-    public List<DetailDto> selectAllDetailForProject(ProjectDto projectDto) {
-        List<DetailDto> detailDtoList = new ArrayList<>();
-        List<DetailEntity> detailEntityList = detailRepository.
-                findAllByProjectIdToDetail_ProjectId(projectDto.getProjectId());
-        for (DetailEntity detailEntity : detailEntityList) {
-            DetailDto detailDto = new DetailDto();
-            detailDto.insertEntity(detailEntity);
-            detailDtoList.add(detailDto);
-        }
-        return detailDtoList;
-    }
-
-    public WorkDto selectWork(Long id) {
-        Optional<WorkEntity> find = workRepository.findById(id);
+    /* Work WorkDto */
+    public WorkDto findWork(Long id) {
+        WorkEntity workEntity = workRepository.findById(id).get();
         WorkDto workDto = new WorkDto();
-        workDto.insertEntity(find.get());
+        workDto.insertEntity(workEntity);
         return workDto;
     }
 
-    public List<WorkDto> selectAllWorkForProject(ProjectDto projectDto) {
+    public List<WorkDto> findWorkListByProject(ProjectDto projectDto) {
         List<WorkDto> workDtoList = new ArrayList<>();
         List<WorkEntity> workEntityList = workRepository.findAllByProjectIdToWork_ProjectId(projectDto.getProjectId());
+
         for (WorkEntity workEntity : workEntityList) {
             WorkDto workDto = new WorkDto();
             workDto.insertEntity(workEntity);
@@ -253,9 +254,10 @@ public class ProjectDetailSerivce {
         return workDtoList;
     }
 
-    public List<WorkDto> selectAllWorkForDetail(Long id) {
-        List<WorkEntity> workEntityList = workRepository.findAllByDetailIdToWork_DetailId(id);
+    public List<WorkDto> findWorkListByDetail(DetailDto detailDto) {
+        List<WorkEntity> workEntityList = workRepository.findAllByDetailIdToWork_DetailId(detailDto.getDetailId());
         List<WorkDto> workDtoList = new ArrayList<>();
+
         for (WorkEntity workEntity : workEntityList) {
             WorkDto workDto = new WorkDto();
             workDto.insertEntity(workEntity);
@@ -264,28 +266,38 @@ public class ProjectDetailSerivce {
         return workDtoList;
     }
 
-    public List<WorkDto> selectAllWorkForUser(UserDto userDto) {
+    public List<WorkDto> findWorkListByUser(UserDto userDto) {
         List<UserWorkEntity> userWorkList = userWorkRepository.findAllByUserIdToUserWork_Uuid(userDto.getUuid());
         List<WorkDto> workDtoList = new ArrayList<>();
+
         for (UserWorkEntity userWorkEntity : userWorkList) {
             WorkDto workDto = new WorkDto();
-            workDto.insertEntity(workRepository.findById(userWorkEntity.getWorkIdToUserWork().getWorkId()).orElse(null));
+            workDto.insertEntity(userWorkEntity.getWorkIdToUserWork());
             workDtoList.add(workDto);
         }
         return workDtoList;
     }
 
-    public UserDto selectUserForUserWork(WorkDto workDto) {
-        UserWorkEntity userWorkEntity = userWorkRepository.findByWorkIdToUserWork_WorkId(workDto.getWorkId());
-        Optional<UserEntity> userEntity = userRepository.findById(userWorkEntity.getUserIdToUserWork().getUuid());
-        UserDto userDto = new UserDto();
-        userDto.insertEntity(userEntity.get());
-        return userDto;
+    /* User UserDto */
+
+    public List<UserDto> findUserListByWork(WorkDto workDto){
+        List<UserDto> userDtoList = new ArrayList<>();
+        List<UserWorkEntity> userWorkEntityList = userWorkRepository.findAllByWorkIdToUserWork_WorkId(workDto.getWorkId());
+
+        for (UserWorkEntity userWorkEntity: userWorkEntityList) {
+            UserDto userDto = new UserDto();
+            userDto.insertEntity(userWorkEntity.getUserIdToUserWork());
+            userDtoList.add(userDto);
+        }
+
+        return userDtoList;
     }
 
-    public List<UserWorkDto> selectAllUserWorkForWork(Long workId) {
+    /* UserWork UserWorkDto */
+    public List<UserWorkDto> findUserWorkListByWorkId(Long workId) {
         List<UserWorkEntity> userWorkEntityList = userWorkRepository.findAllByWorkIdToUserWork_WorkId(workId);
         List<UserWorkDto> userWorkDtoList = new ArrayList<>();
+
         for (UserWorkEntity userWorkEntity : userWorkEntityList) {
             UserWorkDto userWorkDto = new UserWorkDto();
             userWorkDto.insertEntity(userWorkEntity);
@@ -294,14 +306,11 @@ public class ProjectDetailSerivce {
         return userWorkDtoList;
     }
 
-    public UserWorkDto selectUserWorkForWork(WorkDto workDto) {
-        UserWorkDto userWorkDto = new UserWorkDto();
-        return userWorkDto;
-    }
-
-    public List<UserWorkDto> selectUserWorkForWorkList(WorkDto workDto) {
+    public List<UserWorkDto> findUserWorkListByWork(WorkDto workDto) {
+        List<UserWorkEntity> userWorkEntityList = userWorkRepository.findAllByWorkIdToUserWork_WorkId(workDto.getWorkId());
         List<UserWorkDto> userWorkDtoList = new ArrayList<>();
-        for (UserWorkEntity userWorkEntity : userWorkRepository.findAllByWorkIdToUserWork_WorkId(workDto.getWorkId())){
+
+        for (UserWorkEntity userWorkEntity : userWorkEntityList){
             UserWorkDto userWorkDto = new UserWorkDto();
             userWorkDto.insertEntity(userWorkEntity);
             userWorkDtoList.add(userWorkDto);
@@ -309,27 +318,11 @@ public class ProjectDetailSerivce {
         return userWorkDtoList;
     }
 
-    public Map<WorkDto, List<UserDto>> selectAllUserWorkForWorkList(List<WorkDto> workDtoList) {
-        Map<WorkDto, List<UserDto>> userWorkMap = new HashMap<>();
-        for (WorkDto workDto : workDtoList) {
-            List<UserWorkEntity> userWorkEntityList = userWorkRepository.findAllByWorkIdToUserWork_WorkId(workDto.getWorkId());
-            WorkDto workDtoKey = new WorkDto();
-            workDtoKey.insertEntity(userWorkEntityList.get(0).getWorkIdToUserWork());
-            List<UserDto> userDtoList = new ArrayList<>();
-            for (UserWorkEntity userWorkEntity : userWorkEntityList) {
-                UserDto userDto = new UserDto();
-                userDto.insertEntity(userWorkEntity.getUserIdToUserWork());
-                userDtoList.add(userDto);
-            }
-            userWorkMap.put(workDtoKey, userDtoList );
-        }
-        return userWorkMap;
-    }
-
-    public List<WorkDocumentDto> selectAllWorkDocumentForWork(WorkDto workDto) {
-        List<WorkDocumentEntity> workDocumentEntityList =
-                workDocumentRepository.findAllByWorkIdToWorkDocument_WorkId(workDto.getWorkId());
+    /* WorkDocument WorkDocumentDto */
+    public List<WorkDocumentDto> findWorkDocumentListByWork(WorkDto workDto) {
+        List<WorkDocumentEntity> workDocumentEntityList = workDocumentRepository.findAllByWorkIdToWorkDocument_WorkId(workDto.getWorkId());
         List<WorkDocumentDto> workDocumentDtoList = new ArrayList<>();
+
         for (WorkDocumentEntity workDocumentEntity : workDocumentEntityList) {
             WorkDocumentDto workDocumentDto = new WorkDocumentDto();
             workDocumentDto.insertEntity(workDocumentEntity);
@@ -338,8 +331,8 @@ public class ProjectDetailSerivce {
         return workDocumentDtoList;
     }
 
-    // work list 매개변수를 통해 workDocument 테이블을 경유하여 workId에 대응하는 모든 document를 리스트로 반환
-    public List<DocumentDto> selectAllDocumentForWorkList(List<WorkDto> workDtoList) {
+    /* Document DocumentDto */
+    public List<DocumentDto> findDocumentListByWorkList(List<WorkDto> workDtoList) {
         List<DocumentDto> documentDtoList = new ArrayList<>();
         for (WorkDto workDto : workDtoList) {
             List<WorkDocumentEntity> workDocumentEntityList = workDocumentRepository.findAllByWorkIdToWorkDocument_WorkId(workDto.getWorkId());
@@ -352,10 +345,25 @@ public class ProjectDetailSerivce {
         return documentDtoList;
     }
 
-    public List<WorkCommentDto> selectAllWorkCommentForWork(WorkDto workDto) {
-        List<WorkCommentEntity> workCommentEntityList =
-                workCommentRepository.findAllByWorkIdToComment_WorkId(workDto.getWorkId());
+    public List<DocumentDto> findDocumentListByWork(WorkDto workDto){
+        List<DocumentDto> documentDtoList = new ArrayList<>();
+        List<WorkDocumentEntity> workDocumentEntityList = workDocumentRepository.findAllByWorkIdToWorkDocument_WorkId(workDto.getWorkId());
+
+        for (WorkDocumentEntity workDocumentEntity: workDocumentEntityList) {
+            DocumentDto documentDto = new DocumentDto();
+            documentDto.insertEntity(workDocumentEntity.getDocumentIdToWorkDocument());
+            documentDtoList.add(documentDto);
+        }
+
+        return documentDtoList;
+    }
+
+    /* WorkComment WorkCommentDto */
+
+    public List<WorkCommentDto> findWorkCommentListByWork(WorkDto workDto) {
+        List<WorkCommentEntity> workCommentEntityList = workCommentRepository.findAllByWorkIdToComment_WorkId(workDto.getWorkId());
         List<WorkCommentDto> workCommentDtoList = new ArrayList<>();
+
         for (WorkCommentEntity workCommentEntity : workCommentEntityList) {
             WorkCommentDto workCommentDto = new WorkCommentDto();
             workCommentDto.insertEntity(workCommentEntity);
@@ -364,9 +372,20 @@ public class ProjectDetailSerivce {
         return workCommentDtoList;
     }
 
-    public List<LogDto> selectAllLogForDocument(DocumentDto documentDto) {
+    public WorkCommentDto findWorkComment(Long id) {
+        WorkCommentEntity documentCommentEntity = workCommentRepository.findById(id).get();
+        WorkCommentDto workCommentDto = new WorkCommentDto();
+        workCommentDto.insertEntity(documentCommentEntity);
+
+        return workCommentDto;
+    }
+
+    /* Log LogDto */
+    
+    public List<LogDto> findLogListByDocument(DocumentDto documentDto) {
         List<LogEntity> logEntityEntityList = logRepository.findAllByDocumentId(documentDto.getDocumentId());
         List<LogDto> logDtoList = new ArrayList<>();
+
         for (LogEntity logEntity : logEntityEntityList) {
             LogDto logDto = new LogDto();
             logDto.insertEntity(logEntity);
@@ -375,578 +394,253 @@ public class ProjectDetailSerivce {
         return logDtoList;
     }
 
-    public List<BlockDto> selectAllBlockForDocument(DocumentDto documentDto) {
-        List<BlockEntity> blockEntityEntityList = blockRepository.findAllByDocumentId(documentDto.getDocumentId());
-        List<BlockDto> blockDtoList = new ArrayList<>();
-        for (BlockEntity blockEntity : blockEntityEntityList) {
-            BlockDto blockDto = new BlockDto();
-            blockDto.insertEntity(blockEntity);
-            blockDtoList.add(blockDto);
-        }
-        return blockDtoList;
-    }
+    //////////////////////////////////////////////////////////////////
+    // update Data
+    //////////////////////////////////////////////////////////////////
 
-    /* - - - - 선택 메서드 끝 - - - - - */
-
-    /* - - - - 수정 메서드 시작 - - - - - */
-    public HeadDto updateSelectHead(Long headId) {
-        Optional<HeadEntity> find = headRepository.findById(headId);
-        if (find.isEmpty()) {
-            log.info("찾은 결과가 없음 (서비스)");
-            return null;
-        } else {
-            log.info(find.get().getTitle() + "의 내용을 찾음 (서비스)");
-            HeadDto headDto = new HeadDto();
-            headDto.insertEntity(find.get());
-            return headDto;
-        }
-    }
-
-    public HeadDto updateHead(HeadDto headDto) {
-        HeadEntity afterEntity = headRepository.save(headDto.toEntity());
-        return headDto;
-    }
-
-    public DetailDto updateSelectDetail(Long detailId) {
-        Optional<DetailEntity> findDetail = detailRepository.findById(detailId);
-        if (findDetail.isPresent()) {
-            log.info(findDetail.get().getTitle() + "의 내용을 찾음 (서비스)");
-            DetailDto detailDto = new DetailDto();
-            detailDto.insertEntity(findDetail.get());
-            return detailDto;
-        } else {
-            log.info("찾은 결과가 없음 (서비스)");
-            return null;
-        }
-    }
-
-    public DetailDto updateDetail(DetailDto detailDto) {
-        DetailEntity afterEntity = detailDto.toEntity();
-        detailRepository.save(afterEntity);
-        return detailDto;
-    }
-
-    public WorkDto updateSelectWork(Long workId) {
-        Optional<WorkEntity> find = workRepository.findById(workId);
-        if (find.isEmpty()) {
-            return null;
-        } else {
-            WorkDto workDto = new WorkDto();
-            workDto.insertEntity(find.get());
-            return workDto;
-        }
-    }
-
-    public WorkDto updateWork(WorkDto workDto) {
-        WorkEntity afterEntity = workDto.toEntity();
-        workRepository.save(afterEntity);
-        return workDto;
-    }
-
-    public HeadDto editHead(String title, String startDate, String deadline, String discription, Long headId) {
-        Optional<HeadEntity> headEntity = headRepository.findById(headId);
-        if (headEntity.isPresent()) {
-            log.info("");
-            Date startDay = dateManager.formatter(startDate);
-            Date endDay = dateManager.formatter(deadline);
-            HeadDto headDto = new HeadDto();
-            headDto.insertEntity(headEntity.get());
-            headDto.setTitle(title);
-            headDto.setStartDay(startDay);
-            headDto.setEndDay(endDay);
-            headDto.setDiscription(discription);
-            HeadDto editHeadDto = new HeadDto();
-            editHeadDto.insertEntity(headRepository.save(headDto.toEntity()));
-            return editHeadDto;
-        } else return null;
-    }
-
-    public DetailDto editDetail(String title, String startDate, String deadline, String discription,
-                                Long headId, Long detailId) {
-        Optional<DetailEntity> detailEntity = detailRepository.findById(detailId);
-        if (detailEntity.isPresent()) {
-            Date startDay = dateManager.formatter(startDate);
-            Date endDay = dateManager.formatter(deadline);
-            DetailDto detailDto = new DetailDto();
-            detailDto.insertEntity(detailEntity.get());
-            detailDto.setTitle(title);
-            detailDto.setStartDay(startDay);
-            detailDto.setEndDay(endDay);
-            detailDto.setDiscription(discription);
-            detailDto.setHeadIdToDetail(headRepository.findById(headId).orElse(null));
-            DetailDto editDetailDto = new DetailDto();
-            editDetailDto.insertEntity(detailRepository.save(detailDto.toEntity()));
-            return editDetailDto;
-        }
-        return null;
-    }
-
-    public WorkDto editWork(String title, String startDate, String deadline, String discription,
-                            Long workId, Long linkedDetailId) {
-        Optional<WorkEntity> workEntity = workRepository.findById(workId);
-        Optional<DetailEntity> detailEntity = detailRepository.findById(linkedDetailId);
-        if(workEntity.isPresent()) {
-            Date startDay = dateManager.formatter(startDate);
-            Date endDay = dateManager.formatter(deadline);
-            workEntity.get().setTitle(title);
-            workEntity.get().setStartDay(startDay);
-            workEntity.get().setEndDay(endDay);
-            workEntity.get().setDiscription(discription);
-            workEntity.get().setDetailIdToWork(detailEntity.get());
-            WorkDto workDto = new WorkDto();
-            workDto.insertEntity(workRepository.save(workEntity.get()));
-            return workDto;
-        }
-        return null;
-    }
-
-    /* - - - - 수정 메서드 끝 - - - - - */
-
-    /* - - - - 삭제 메서드 시작 - - - - - */
     @Transactional
-    public void deleteProjectEntity(ProjectDto projectDto) {
-        List<HeadDto> headDtoList = selectAllHead(projectDto);
-        for (HeadDto headDto : headDtoList) {
-            deleteHeadEntity(headDto.getHeadId());
-        }
-        log.info("Head 삭제");
-        deleteMessageForProject(projectDto.getProjectId());
-        log.info("Message 삭제");
-        deleteProjectRequestForProject(projectDto.getProjectId());
-        log.info("ProjectRequest 삭제");
-        deleteProjectRoleForProject(projectDto.getProjectId());
-        log.info("ProjectRole 삭제");
-        deleteProjectRequest(projectDto.getProjectId());
-        log.info("ProjectRequest 삭제");
-        deleteProject(projectDto.getProjectId());
-        log.info("Project 삭제");
+    public HeadDto updateHead(Long beforeId, HeadDto afterHead) {
+        HeadEntity headEntity = headRepository.findById(beforeId).get();
+
+        headEntity.setTitle(afterHead.getTitle());
+        headEntity.setDiscription(afterHead.getDiscription());
+        headEntity.setStartDay(afterHead.getStartDay());
+        headEntity.setEndDay(afterHead.getEndDay());
+        headEntity.setCompletion(afterHead.getCompletion());
+
+        headRepository.save(headEntity);
+
+        return afterHead;
     }
 
     @Transactional
-    public void deleteHeadEntity(Long headId) {
-        //head
-        HeadDto targetHeadDto = new HeadDto();
-        targetHeadDto.insertEntity(headRepository.findById(headId).orElse(null));
-        log.info("head 검색 완료, head : " + targetHeadDto.getTitle());
-        //하위 detail list
-        List<DetailDto> detailDtoList = selectAllDetailForHead(targetHeadDto);
-        log.info("detail 검색 완료");
-        //하위 work list
-        List<WorkDto> workDtoList = new ArrayList<>();
-        for (DetailDto detailDto : detailDtoList) {
-            List<WorkDto> searchWorkDtoList = selectAllWorkForDetail(detailDto.getDetailId());
-            for (WorkDto workDto : searchWorkDtoList) {
-                workDtoList.add(workDto);
-            }
-        }
-        log.info("work 검색 완료");
-        //하위 userWork list
-        List<UserWorkDto> userWorkDtoList = new ArrayList<>();
-        for (WorkDto workDto : workDtoList) {
-            userWorkDtoList.addAll(selectUserWorkForWorkList(workDto));
-        }
-        //하위 workComment list
-        List<WorkCommentDto> workCommentDtoList = new ArrayList<>();
-        for (WorkDto workDto : workDtoList) {
-            List<WorkCommentDto> searchWorkCommentDtoList = selectAllWorkCommentForWork(workDto);
-            for (WorkCommentDto workCommentDto : searchWorkCommentDtoList) {
-                workCommentDtoList.add(workCommentDto);
-            }
-        }
-        log.info("workComment 검색 완료");
-        //하위 workDocument list
-        List<WorkDocumentDto> workDocumentDtoList = new ArrayList<>();
-        for (WorkDto workDto : workDtoList) {
-            List<WorkDocumentDto> searchWorkDocumentDtoList = selectAllWorkDocumentForWork(workDto);
-            for (WorkDocumentDto workDocumentDto : searchWorkDocumentDtoList) {
-                workDocumentDtoList.add(workDocumentDto);
-            }
-        }
-        log.info("workDocument 검색 완료");
-        //하위 document list
-        List<DocumentDto> documentList = selectAllDocumentForWorkList(workDtoList);
-        //하위 log list
-        List<LogDto> logDtoList = new ArrayList<>();
-        for (DocumentDto documentDto : documentList) {
-            List<LogDto> searchLogDtoList = selectAllLogForDocument(documentDto);
-            for (LogDto logDto : searchLogDtoList) {
-                logDtoList.add(logDto);
-            }
-        }
-        log.info("document 검색 완료");
+    public DetailDto updateDetail(Long beforeId, DetailDto afterDetail) {
+        DetailEntity detailEntity = detailRepository.findById(beforeId).get();
 
-        //log, block delete
-        for (DocumentDto documentDto : documentList) {
-            deleteLogForDocument(documentDto);
-            log.info("log 삭제 완료");
-            deleteBlockForDocument(documentDto);
-            log.info("block 삭제 완료");
-        }
-        //하위 workDocument 삭제
-        deleteWorkDocumentList(workDocumentDtoList);
-        log.info("workDocument 삭제 완료");
-        //하위 document 삭제
-        deleteDocumentList(documentList);
-        log.info("document 삭제 완료");
-        //하위 userWork 삭제
-        deleteUserWorkList(userWorkDtoList);
-        log.info("userWork 삭제 완료");
-        //하위 work 삭제
-        deleteWorkList(workDtoList);
-        log.info("work 삭제 완료");
-        //하위 detail 삭제
-        deleteDetailList(detailDtoList);
-        log.info("detail 삭제 완료");
-        //head 삭제
-        headRepository.deleteById(targetHeadDto.getHeadId());
-        log.info("head 삭제 완료");
+        detailEntity.setTitle(afterDetail.getTitle());
+        detailEntity.setDiscription(afterDetail.getDiscription());
+        detailEntity.setStartDay(afterDetail.getStartDay());
+        detailEntity.setEndDay(afterDetail.getEndDay());
+        detailEntity.setCompletion(afterDetail.getCompletion());
+
+        detailRepository.save(detailEntity);
+
+        return afterDetail;
     }
 
     @Transactional
-    public void deleteDetailEntity(Long detailId) {
-        //detail
-        DetailDto detailDto = new DetailDto();
-        detailDto.insertEntity(detailRepository.findById(detailId).orElse(null));
-        //workDto 변환
+    public WorkDto updateWork(Long beforeId, WorkDto afterWorkDto) {
+        WorkEntity workEntity = workRepository.findById(beforeId).get();
+
+        workEntity.setTitle(afterWorkDto.getTitle());
+        workEntity.setDiscription(afterWorkDto.getDiscription());
+        workEntity.setStartDay(afterWorkDto.getStartDay());
+        workEntity.setEndDay(afterWorkDto.getEndDay());
+        workEntity.setCompletion(afterWorkDto.getCompletion());
+
+        workRepository.save(workEntity);
+
+        return afterWorkDto;
+    }
+
+
+    //////////////////////////////////////////////////////////////////
+    // delete Data
+    //////////////////////////////////////////////////////////////////
+
+    /* - - - - Project - - - - */
+
+    @Transactional
+    public void deleteProject(ProjectDto projectDto) {
+        ProjectEntity projectEntity = projectDto.toEntity();
+
+        List<HeadEntity> headEntityList = headRepository.findAllByProjectIdToHead_ProjectId(projectEntity.getProjectId());
+
+        for (HeadEntity headEntity: headEntityList) {
+            deleteHead(headEntity);
+        }
+
+        deleteProjectRequest(projectEntity);
+        deleteMessage(projectEntity);
+        deleteProjectRole(projectEntity);
+
+        projectRepository.deleteById(projectDto.getProjectId());
+    }
+
+
+    /* Low */
+
+    @Transactional
+    public void deleteProjectRequest(ProjectEntity projectEntity) {
+        projectRequestRepository.deleteAllByProjectIdToRequest_ProjectId(projectEntity.getProjectId());
+    }
+
+    @Transactional
+    public void deleteMessage(ProjectEntity projectEntity) {
+        messageRepository.deleteAllByProjectIdToMessage_ProjectId(projectEntity.getProjectId());
+    }
+
+    @Transactional
+    public void deleteProjectRole(ProjectEntity projectEntity) {
+        projectRoleRepository.deleteAllByProjectIdInRole_ProjectId(projectEntity.getProjectId());
+    }
+
+    /* - - - - Detail - - - - */
+
+    @Transactional
+    public void deleteHead(HeadDto headDto){
+        HeadEntity headEntity = headDto.toEntity();
+
+        List<DetailEntity> detailEntityList = detailRepository.findAllByHeadIdToDetail_HeadId(headEntity.getHeadId());
+
+        for (DetailEntity detailEntity: detailEntityList) {
+            deleteDetail(detailEntity);
+        }
+        
+        headRepository.deleteById(headEntity.getHeadId());
+    }
+
+    @Transactional
+    public void deleteHead(HeadEntity headEntity){
+        List<DetailEntity> detailEntityList = detailRepository.findAllByHeadIdToDetail_HeadId(headEntity.getHeadId());
+
+        for (DetailEntity detailEntity: detailEntityList) {
+            deleteDetail(detailEntity);
+        }
+
+        headRepository.deleteById(headEntity.getHeadId());
+    }
+
+    /* - - - - Detail - - - - */
+
+    @Transactional
+    public void deleteDetail(DetailDto detailDto){
+        DetailEntity detailEntity = detailDto.toEntity();
+
+        List<WorkEntity> workEntityList = workRepository.findAllByDetailIdToWork_DetailId(detailEntity.getDetailId());
+
+        for (WorkEntity workEntity: workEntityList) {
+            deleteWork(workEntity);
+        }
+
+        detailRepository.deleteById(detailEntity.getDetailId());
+
+    }
+
+    @Transactional
+    public void deleteDetail(DetailEntity detailEntity){
+
+        List<WorkEntity> workEntityList = workRepository.findAllByDetailIdToWork_DetailId(detailEntity.getDetailId());
+
+        for (WorkEntity workEntity: workEntityList) {
+            deleteWork(workEntity);
+        }
+
+        detailRepository.deleteById(detailEntity.getDetailId());
+
+    }
+
+
+    /* - - - - Work - - - - */
+
+    @Transactional
+    public void deleteWork(WorkDto workDto) {
+        WorkEntity workEntity = workDto.toEntity();
+
+        deleteUserWork(workEntity);
+        deleteWorkDocument(workEntity);
+        deleteWorkComment(workEntity);
+        deleteDocument(workEntity);
+
+        workRepository.deleteById(workEntity.getWorkId());
+    }
+
+    @Transactional
+    public void deleteWork(WorkEntity workEntity) {
+
+        deleteUserWork(workEntity);
+        deleteWorkDocument(workEntity);
+        deleteWorkComment(workEntity);
+        deleteDocument(workEntity);
+
+        workRepository.deleteById(workEntity.getWorkId());
+    }
+
+    /* Low */
+
+    @Transactional
+    public void deleteUserWork(WorkEntity workEntity) {
+            userWorkRepository.deleteAllByWorkIdToUserWork_WorkId(workEntity.getWorkId());
+    }
+
+    @Transactional
+    public void deleteWorkDocument(WorkEntity workEntity) {
+            workDocumentRepository.deleteAllByWorkIdToWorkDocument_WorkId(workEntity.getWorkId());
+    }
+
+    @Transactional
+    public void deleteWorkComment(WorkEntity workEntity) {
+            workCommentRepository.deleteAllByWorkIdToComment_WorkId(workEntity.getWorkId());
+    }
+
+    @Transactional
+    public void deleteDocument(WorkEntity workEntity){
+        List<WorkDocumentEntity> workDocumentEntityList = workDocumentRepository.findAllByWorkIdToWorkDocument_WorkId(workEntity.getWorkId());
+
+        for (WorkDocumentEntity workDocumentEntity :  workDocumentEntityList) {
+            List<BlockEntity> deleteBlockListEntity = blockRepository.findByDocumentId(workDocumentEntity.getDocumentIdToWorkDocument().getDocumentId());
+            List<LogEntity> deleteLogListEntity = logRepository.findByDocumentId(workDocumentEntity.getDocumentIdToWorkDocument().getDocumentId());
+
+            for (BlockEntity blockEntity : deleteBlockListEntity) {
+                blockRepository.delete(blockEntity);
+            }
+
+            for (LogEntity logEntity : deleteLogListEntity) {
+                logRepository.delete(logEntity);
+            }
+
+            documentRepository.deleteById(workDocumentEntity.getDocumentIdToWorkDocument().getDocumentId());
+        }
+    }
+
+    //////////////////////////////////////////////////////////////////
+    // check Low completion
+    //////////////////////////////////////////////////////////////////
+
+    @Transactional
+    public boolean checkCompletionDetail(Long detailId) {
+        DetailEntity detailEntity = detailRepository.findById(detailId).get();
         List<WorkEntity> workEntityList = workRepository.findAllByDetailIdToWork_DetailId(detailId);
-        List<WorkDto> workDtoList = new ArrayList<>();
-        for (WorkEntity workEntity : workEntityList) {
-            WorkDto workDto = new WorkDto();
-            workDto.insertEntity(workEntity);
-            workDtoList.add(workDto);
-        }
-        log.info("work 검색 완료");
-        //하위 userWork list
-        List<UserWorkDto> userWorkDtoList = new ArrayList<>();
-        for (WorkDto workDto : workDtoList) {
-            userWorkDtoList.addAll(selectUserWorkForWorkList(workDto));
-        }
-        log.info("userWork 검색 완료");
-        //하위 workComment list
-        List<WorkCommentDto> workCommentDtoList = new ArrayList<>();
-        for (WorkDto workDto : workDtoList) {
-            List<WorkCommentDto> searchWorkCommentDtoList = selectAllWorkCommentForWork(workDto);
-            for (WorkCommentDto workCommentDto : searchWorkCommentDtoList) {
-                workCommentDtoList.add(workCommentDto);
-            }
-        }
-        log.info("workComment 검색 완료");
-        //하위 workDocument list
-        List<WorkDocumentDto> workDocumentDtoList = new ArrayList<>();
-        for (WorkDto workDto : workDtoList) {
-            List<WorkDocumentDto> searchWorkDocumentDtoList = selectAllWorkDocumentForWork(workDto);
-            for (WorkDocumentDto workDocumentDto : searchWorkDocumentDtoList) {
-                workDocumentDtoList.add(workDocumentDto);
-            }
-        }
-        log.info("workDocument 검색 완료");
-        //하위 document list
-        List<DocumentDto> documentList = selectAllDocumentForWorkList(workDtoList);
-        //하위 log list
-        List<LogDto> logDtoList = new ArrayList<>();
-        for (DocumentDto documentDto : documentList) {
-            List<LogDto> searchLogDtoList = selectAllLogForDocument(documentDto);
-            for (LogDto logDto : searchLogDtoList) {
-                logDtoList.add(logDto);
-            }
-        }
-        log.info("document 검색 완료");
 
-        //log, block delete
-        for (DocumentDto documentDto : documentList) {
-            deleteLogForDocument(documentDto);
-            log.info("log 삭제 완료");
-            deleteBlockForDocument(documentDto);
-            log.info("block 삭제 완료");
+        for (WorkEntity workEntity: workEntityList) {
+            if (workEntity.getCompletion() == 0){
+                detailEntity.setCompletion(0);
+                detailRepository.save(detailEntity);
+                return false;
+            }
         }
-        //하위 workDocument 삭제
-        deleteWorkDocumentList(workDocumentDtoList);
-        log.info("workDocument 삭제 완료");
-        //하위 document 삭제
-        deleteDocumentList(documentList);
-        log.info("document 삭제 완료");
-        //하위 userWork 삭제
-        deleteUserWorkList(userWorkDtoList);
-        log.info("userWork 삭제 완료");
-        //하위 work 삭제
-        deleteWorkList(workDtoList);
-        log.info("work 삭제 완료");
-        //detail 삭제
-        deleteDetail(detailDto);
-        log.info("detail 삭제 완료");
+
+        detailEntity.setCompletion(1);
+        detailRepository.save(detailEntity);
+        return true;
     }
 
     @Transactional
-    public void deleteWorkEntity(Long workId) {
-        // work
-        WorkDto workDto = selectWork(workId);
+    public boolean checkCompletionHead(Long headId) {
+        HeadEntity headEntity = headRepository.findById(headId).get();
+        List<DetailEntity> detailEntityList = detailRepository.findAllByHeadIdToDetail_HeadId(headId);
 
-        List<UserWorkDto> userWorkDtoList = selectAllUserWorkForWork(workId);
-        List<WorkCommentDto> workCommentDtoList = selectAllWorkCommentForWork(workDto);
-        List<WorkDocumentDto> workDocumentDtoList = selectAllWorkDocumentForWork(workDto);
-        List<DocumentDto> documentDtoList = new ArrayList<>();
-        for (WorkDocumentDto workDocumentDto : workDocumentDtoList) {
-            DocumentDto documentDto = new DocumentDto();
-            documentDto.insertEntity(workDocumentDto.getDocumentIdToWorkDocumentEntity());
-            documentDtoList.add(documentDto);
-        }
-
-        for (DocumentDto documentDto : documentDtoList) {
-            deleteLogForDocument(documentDto);
-            log.info("log 삭제 완료");
-            deleteBlockForDocument(documentDto);
-            log.info("block 삭제 완료");
-        }
-        deleteWorkDocumentList(workDocumentDtoList);
-        log.info("workDocument 삭제 완료");
-        deleteDocumentList(documentDtoList);
-        log.info("document 삭제 완료");
-        deleteAllWorkCommentForWorkId(workId);
-        log.info("WorkComment 삭제 완료");
-        deleteAllUserWorkForWork(workId);
-        log.info("userWork 삭제 완료");
-        deleteWork(workId);
-        log.info("work 삭제 완료");
-    }
-
-    public void deleteProject(Long projectId) {
-        projectRepository.deleteByProjectId(projectId);
-    }
-    public void deleteDetail(DetailDto detailDto) {
-        detailRepository.deleteByDetailId(detailDto.getDetailId());
-    }
-    public void deleteWork(Long workId) {
-        workRepository.deleteAllByWorkId(workId);
-    }
-
-    public void deleteProjectRequest(Long projectId) { projectRequestRepository.deleteAllByProjectIdToRequest_ProjectId(projectId); }
-
-    public void deleteDetailList(List<DetailDto> detailDtoList) {
-        for (DetailDto detailDto : detailDtoList) {
-            detailRepository.deleteAllByDetailId(detailDto.getDetailId());
-        }
-    }
-
-    public void deleteWorkList(List<WorkDto> workDtoList) {
-        for (WorkDto workDto : workDtoList) {
-            workRepository.deleteAllByWorkId(workDto.getWorkId());
-        }
-    }
-
-    public void deleteUserWorkList(List<UserWorkDto> userWorkDtoList) {
-        for (UserWorkDto userWorkDto : userWorkDtoList) {
-            userWorkRepository.deleteAllByWorkIdToUserWork_WorkId(userWorkDto.getWorkIdToUserWork().getWorkId());
-        }
-    }
-
-    public void deleteAllUserWorkForWork(Long workId) {
-        userWorkRepository.deleteAllByWorkIdToUserWork_WorkId(workId);
-    }
-
-    public void deleteAllWorkCommentForWorkId(Long workId) {
-        workCommentRepository.deleteAllByWorkIdToComment_WorkId(workId);
-    }
-
-    public void deleteWorkDocumentList(List<WorkDocumentDto> workDocumentDtoList) {
-        for (WorkDocumentDto workDocumentDto : workDocumentDtoList) {
-            workDocumentRepository.deleteAllByWorkIdToWorkDocument_WorkId(
-                    workDocumentDto.getWorkIdToWorkDocument().getWorkId());
-        }
-    }
-
-    public void deleteDocumentList(List<DocumentDto> documentDtoList) {
-        for (DocumentDto documentDto : documentDtoList) {
-            documentRepository.deleteById(documentDto.getDocumentId());
-        }
-    }
-
-    public void deleteBlockForDocument(DocumentDto documentDto) {
-        blockRepository.deleteAllByDocumentId(documentDto.getDocumentId());
-    }
-
-    public void deleteLogForDocument(DocumentDto documentDto) {
-        logRepository.deleteAllByDocumentId(documentDto.getDocumentId());
-    }
-
-    public void deleteMessageForProject(Long projectId) {
-        messageRepository.deleteAllByProjectIdToMessage_ProjectId(projectId);
-    }
-
-    public void deleteProjectRequestForProject(Long projectId) {
-        projectRequestRepository.deleteAllByProjectIdToRequest_ProjectId(projectId);
-    }
-
-    public void deleteProjectRoleForProject(Long projectId) {
-        projectRoleRepository.deleteAllByProjectIdInRole_ProjectId(projectId);
-    }
-
-
-    /* - - - - 삭제 메서드 끝 - - - - - */
-
-    /* - - - - 상태 변경 메서드 - - - -  */
-    // work 상태 변경 메서드
-    public WorkDto workCompletionChange(WorkDto workDto) {
-        log.info("workCompletionChange 호출");
-        WorkDto changeWorkDto;
-        if (workDto.getCompletion() == 0) {
-            workDto.setCompletion(1);
-            changeWorkDto = updateWork(workDto);
-            log.info("완료 상태로 변경");
-            checkWorkCompletion(workDto);
-            return changeWorkDto;
-        } else if (workDto.getCompletion() == 1) {
-            workDto.setCompletion(0);
-            changeWorkDto = updateWork(workDto);
-            log.info("미완료 상태로 변경");
-            checkWorkCompletion(workDto);
-            return changeWorkDto;
-        }
-        // work 상태를 검사하여 상위 detail 상태 자동 수정
-        return null;
-    }
-
-    public DetailDto detailCompletionChange(DetailDto detailDto) {
-        DetailDto changeDetailDto;
-        if (detailDto.getCompletion() == 0) {
-            detailDto.setCompletion(1);
-            changeDetailDto = updateDetail(detailDto);
-            checkDetailCompletion(detailDto);
-            return changeDetailDto;
-        } else if (detailDto.getCompletion() == 1) {
-            detailDto.setCompletion(0);
-            changeDetailDto = updateDetail(detailDto);
-            checkDetailCompletion(detailDto);
-            return changeDetailDto;
-        }
-        return null;
-    }
-
-    public HeadDto headCompletionChange(HeadDto headDto) {
-        HeadDto changeHeadDto;
-        if (headDto.getCompletion() == 0) {
-            headDto.setCompletion(1);
-            changeHeadDto = updateHead(headDto);
-            return changeHeadDto;
-        } else if (headDto.getCompletion() == 1) {
-            headDto.setCompletion(0);
-            changeHeadDto = updateHead(headDto);
-            return changeHeadDto;
-        }
-        return null;
-    }
-
-    // work 모두 완료시, 자동 완료. 미완료시 자동 미완료 처리
-    public void checkWorkCompletion(WorkDto workDto) {
-        log.info("checkWorkCompletion() 실행");
-        Optional<DetailEntity> detailEntity = detailRepository.findById(workDto.getDetailIdToWork().getDetailId());
-        log.info("상위 detail 확인 완료. title : " + detailEntity.get().getTitle());
-        List<WorkEntity> workEntityList = workRepository.findAllByDetailIdToWork_DetailId(detailEntity.get().getDetailId());
-        boolean allComplete = true;
-        for (WorkEntity workEntity : workEntityList) {
-            if (workEntity.getCompletion() == 0) {
-                log.info("미완 상태의 work 발견");
-                allComplete = false;
+        for (DetailEntity detailEntity: detailEntityList) {
+            if (detailEntity.getCompletion() == 0){
+                headEntity.setCompletion(0);
+                headRepository.save(headEntity);
+                return false;
             }
         }
 
-        DetailDto detailDto = new DetailDto();
-        detailDto.insertEntity(detailEntity.get());
-
-        if (allComplete) {
-            log.info("모든 work 완료 확인됨");
-            detailDto.setCompletion(1);
-            updateDetail(detailDto);
-            log.info("상위 detail 완료 상태로 자동 수정");
-            checkDetailCompletion(detailDto);
-        } else if (!allComplete) {
-            log.info("미완 상태의 work 확인됨");
-            detailDto.setCompletion(0);
-            log.info("상위 detail 미완 상태로 자동 수정");
-            updateDetail(detailDto);
-            checkDetailCompletion(detailDto);
-        }
+        headEntity.setCompletion(1);
+        headRepository.save(headEntity);
+        return true;
     }
-
-    public void checkDetailCompletion(DetailDto detailDto) {
-        log.info("detail 상태 확인을 위한 checkDetailCompletion() 실행");
-        Optional<HeadEntity> headEntity = headRepository.findById(detailDto.getHeadIdToDetail().getHeadId());
-        log.info("상위 head 확인 완료. title : " + headEntity.get().getTitle());
-        List<DetailEntity> detailEntityList = detailRepository.findAllByHeadIdToDetail_HeadId(headEntity.get().getHeadId());
-        boolean allComplete = true;
-        for (DetailEntity detailEntity : detailEntityList) {
-            if (detailEntity.getCompletion() == 0) {
-                log.info("미완 상태의 head 발견");
-                allComplete = false;
-            }
-        }
-
-        HeadDto headDto = new HeadDto();
-        headDto.insertEntity(headEntity.get());
-
-        if (allComplete) {
-            log.info("모든 detail 완료 확인됨");
-            headDto.setCompletion(1);
-            updateHead(headDto);
-            log.info("상위 head 완료 상태로 자동 수정");
-        } else if (!allComplete) {
-            log.info("미완 상태의 detail 식별됨");
-            headDto.setCompletion(0);
-            updateHead(headDto);
-            log.info("상위 head 미완 상태로 자동 수정");
-        }
-    }
-
-    /* - - - - 댓글 기능 - - - - - */
-
-    //댓글 기능 (댓글리스트 불러오기)
-    public List<WorkCommentDto> findByComment(Long workId) {
-        List<WorkCommentEntity> entityList = workCommentRepository.findAllByWorkIdToComment_WorkId(workId);
-        if (entityList.isEmpty()) {
-            log.info("해당 문서에 댓글 없음 (서비스)");
-            List<WorkCommentDto> commentDtoList = new ArrayList<>();
-            return commentDtoList;
-        } else {
-            List<WorkCommentDto> commentDtoList = new ArrayList<>();
-            for (WorkCommentEntity commentEntity : entityList) {
-                WorkCommentDto workCommentDto = new WorkCommentDto();
-                workCommentDto.insertEntity(commentEntity);
-                commentDtoList.add(workCommentDto);
-            }
-            log.info("댓글 리스트 불러오기 성공(서비스)");
-            return commentDtoList;
-        }
-    }
-
-    //댓글기능 (댓글 추가)
-    public List<WorkCommentDto> plusComment(WorkCommentDto workCommentDto, Long workId) {
-        if (workCommentDto.equals(null)) {
-            log.info("코멘트가 비어있음 (서비스)");
-            return null;
-        } else {
-            workCommentRepository.save(workCommentDto.toEntity());
-            return findByComment(workId);
-        }
-    }
-
-    //update를 위한 Comment Find
-    public WorkCommentDto findComment(Long commentId) {
-        Optional<WorkCommentEntity> documentCommentEntity = workCommentRepository.findById(commentId);
-        WorkCommentDto workCommentDto = new WorkCommentDto();
-        workCommentDto.insertEntity(documentCommentEntity.get());
-        return workCommentDto;
-    }
-
-
-    //댓글 삭제
-    public List<WorkCommentDto> deleteComment(Long commentId, Long workId) {
-        Optional<WorkCommentEntity> now = workCommentRepository.findById(commentId);
-        WorkCommentDto workCommentDto = new WorkCommentDto();
-        workCommentDto.insertEntity(now.get());
-        workCommentRepository.deleteById(commentId);
-        return findByComment(workId);
-    }
-
-
-    /* - - - - 댓글 기능 끝- - - - - */
 }
 

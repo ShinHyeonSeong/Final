@@ -171,7 +171,7 @@ public class ProjectController {
         UserDto userDto = getSessionUser();
         ProjectDto presentDto = projectSerivce.selectProject(id);
         List<UserDto> userDtoList = userService.searchUserToProject(id);
-        List<HeadDto> headDtoList = projectDetailSerivce.selectAllHead(presentDto);
+        List<HeadDto> headDtoList = projectDetailSerivce.findHeadListByProject(presentDto);
 
         session.removeAttribute("currentProject");
         session.setAttribute("currentProject", presentDto);
@@ -185,14 +185,14 @@ public class ProjectController {
         model.addAttribute("headDtoList", headDtoList);
 
         if (getSessionAuth() != 2) {
-            List<WorkDto> userWorkDtoList = projectDetailSerivce.selectAllWorkForProject(presentDto);
+            List<WorkDto> userWorkDtoList = projectDetailSerivce.findWorkListByProject(presentDto);
 
             model.addAttribute("userWorkDtoList", userWorkDtoList);
             return "projectMain";
         } else if (getSessionAuth() == 2) {
-            List<DetailDto> detailDtoList = projectDetailSerivce.selectAllDetailForProject(projectSerivce.selectProject(id));
-            List<WorkDto> workDtoList = projectDetailSerivce.selectAllWorkForProject(presentDto);
-            List<DocumentDto> documentDtoList = projectDetailSerivce.selectAllDocumentForWorkList(workDtoList);
+            List<DetailDto> detailDtoList = projectDetailSerivce.findDetailListByProject(projectSerivce.selectProject(id));
+            List<WorkDto> workDtoList = projectDetailSerivce.findWorkListByProject(presentDto);
+            List<DocumentDto> documentDtoList = projectDetailSerivce.findDocumentListByWorkList(workDtoList);
 
             model.addAttribute("detailDtoList", detailDtoList);
             model.addAttribute("workDtoList", workDtoList);

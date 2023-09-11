@@ -55,9 +55,9 @@ public class DocumentController {
         String userUuid = sessionUser.getUuid();
         Long projectId = projectDto.getProjectId();
 
-        List<DocumentDto> documentDtoList = documentService.getDocumentListByUserAndProjectId(userUuid, projectId);
+        List<DocumentDto> documentDtoList = documentService.findDocumentListByUserAndProject(userUuid, projectId);
 
-        List<ProjectDocumentListDto> projectDocumentList = documentService.getDocumentListByProjectId(projectId);
+        List<ProjectDocumentListDto> projectDocumentList = documentService.findDocumentListByProjectId(projectId);
 
         // 유저가 권한을 가지는 문서들
         model.addAttribute("UserDocumentList", documentDtoList);
@@ -112,7 +112,7 @@ public class DocumentController {
             return "redirect:/document/view?id="+id;
         }
 
-        DocumentDto documentDto = documentService.getDocumentById(id);
+        DocumentDto documentDto = documentService.findDocumentById(id);
         List<BlockDto> blockDtoList = documentService.getBlockListByDocumentId(id);
 
         model.addAttribute("document", documentDto);
@@ -130,7 +130,7 @@ public class DocumentController {
         UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
         String userUuid = sessionUser.getUuid();
 
-        DocumentDto documentDto = documentService.getDocumentById(id);
+        DocumentDto documentDto = documentService.findDocumentById(id);
         List<BlockDto> blockDtoList = documentService.getBlockListByDocumentId(id);
 
         model.addAttribute("document", documentDto);

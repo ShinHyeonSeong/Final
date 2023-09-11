@@ -236,13 +236,13 @@ public class DocumentService {
     }
 
     //////////////////////////////////////////////////////////////////
-    // 데이터 받아오기
+    // find Data
     //////////////////////////////////////////////////////////////////
 
     /* Document DocumentDto */
 
-    // 문서 전체 받아오기
-    public List<DocumentDto> getDocumentList() {
+    // Document find All
+    public List<DocumentDto> findDocumentList() {
         List<DocumentEntity> documentEntityList = documentRepository.findAll();
         List<DocumentDto> documentDtoList = new ArrayList<>();
 
@@ -257,8 +257,8 @@ public class DocumentService {
         return documentDtoList;
     }
 
-    // 유저 기준으로 문서 리스트 받아오기
-    public List<DocumentDto> getDocumentListByUser(String userUuid){
+    // Document find by User_uuid
+    public List<DocumentDto> findDocumentListByUser(String userUuid){
         List<DocumentEntity> documentEntityList = new ArrayList<>();
         List<DocumentDto> documentDtoList = new ArrayList<>();
 
@@ -281,8 +281,8 @@ public class DocumentService {
         return documentDtoList;
     }
 
-    // 유저 및 프로젝트 아이디 기준으로 문서 리스트 받아오기
-    public  List<DocumentDto> getDocumentListByUserAndProjectId(String userUuid, Long id) {
+    // Document find by User_uuid and Project_id
+    public  List<DocumentDto> findDocumentListByUserAndProject(String userUuid, Long id) {
         List<DocumentDto> documentDtoList = new ArrayList<>();
 
         List<WorkEntity> workEntityList = workRepository.findAllByProjectIdToWork_ProjectId(id);
@@ -300,14 +300,14 @@ public class DocumentService {
         }
 
         for (WorkEntity workEntity: workUserEntityList) {
-            documentDtoList.addAll(getDocumentByWorkId(workEntity.getWorkId()));
+            documentDtoList.addAll(findDocumentByWorkId(workEntity.getWorkId()));
         }
 
         return documentDtoList;
     }
 
-    // 문서 아이디 기준으로 문서 받아오기
-    public DocumentDto getDocumentById(String id) {
+    // Document find by Document_id
+    public DocumentDto findDocumentById(String id) {
         DocumentEntity documentEntity = documentRepository.findByDocumentId(id);
         DocumentDto documentDto = new DocumentDto();
         documentDto.insertEntity(documentEntity);
@@ -315,8 +315,8 @@ public class DocumentService {
         return documentDto;
     }
 
-    // work 기준으로 문서 받아오기
-    public List<DocumentDto> getDocumentByWorkId(Long id){
+    // Document find by workDocument_id
+    public List<DocumentDto> findDocumentByWorkId(Long id){
         List<WorkDocumentEntity> workDocumentEntityList = workDocumentRepository.findAllByWorkIdToWorkDocument_WorkId(id);
 
         List<DocumentEntity> documentEntityList = new ArrayList<>();
@@ -337,8 +337,8 @@ public class DocumentService {
         return documentDtoList;
     }
 
-    //프로젝트 전체 문서 받아오기
-    public List<ProjectDocumentListDto> getDocumentListByProjectId(Long id){
+    // Document find by Project_id
+    public List<ProjectDocumentListDto> findDocumentListByProjectId(Long id){
         List<ProjectDocumentListDto> projectDocumentList = new ArrayList<>();
         List<WorkEntity> workEntityList = workRepository.findAllByProjectIdToWork_ProjectId(id);
 

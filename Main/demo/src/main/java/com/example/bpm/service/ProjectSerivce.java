@@ -41,16 +41,6 @@ public class ProjectSerivce {
     public void sendInvite(String sendUser, String recvUser, Long projectId) {
         if (sendUser != null && recvUser != null) {
             projectRequestRepository.plusProjectRequest(sendUser, recvUser, projectId);
-            log.info("친구 요청 정상 작동 (서비스 작동)");
-            return;
-//            Optional<ProjectRequestEntity> projectRequestEntity
-//                    = projectRequestRepository.findById(sendUser);
-//            //만약 정상 친구요청이 되면 그 row을 확인할 수 있게 return 한다
-//            return ProjectRequestDto.toProjectRequestDto(projectRequestEntity.get());
-//        } else {
-//            log.info("Dto NULL 값 (서비스 작동)");
-//            return null;
-//        }
         }
     }
 
