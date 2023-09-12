@@ -1,6 +1,7 @@
 package com.example.bpm.entity.project.data;
 
 import com.example.bpm.dto.project.HeadDto;
+import com.example.bpm.entity.project.request.WorkRequestEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -37,7 +38,10 @@ public class HeadEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     private ProjectEntity projectIdToHead;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "headIdToDetail")
-    private List<DetailEntity> detailEntityList = new ArrayList<>();
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "headIdToWork")
+    private List<WorkEntity> workEntityList = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "headIdToWorkRequest")
+    private List<WorkRequestEntity> workRequestEntityList = new ArrayList<>();
 
 }

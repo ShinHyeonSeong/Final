@@ -1,9 +1,7 @@
 package com.example.bpm.service;
 
-import com.example.bpm.entity.project.data.DetailEntity;
 import com.example.bpm.entity.project.data.HeadEntity;
 import com.example.bpm.entity.project.data.WorkEntity;
-import com.example.bpm.repository.DetailRepository;
 import com.example.bpm.repository.HeadRepository;
 import com.example.bpm.repository.WorkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +17,6 @@ import java.util.Map;
 public class CalendarService {
     @Autowired
     HeadRepository headRepository;
-
-    @Autowired
-    DetailRepository detailRepository;
 
     @Autowired
     WorkRepository workRepository;
@@ -40,18 +35,6 @@ public class CalendarService {
             event.put("title", headEntity.getTitle());
             event.put("end", simpleDateFormat.format(headEntity.getEndDay()));
             event.put("color","#97C1A9");
-            event.put("textColor", "#000000");
-            eventList.add(event);
-        }
-
-        List<DetailEntity> detailEntityList = detailRepository.findAllByProjectIdToDetail_ProjectId(projectId);
-
-        for (DetailEntity detailEntity: detailEntityList) {
-            event = new HashMap<String, Object>();
-            event.put("start", simpleDateFormat.format(detailEntity.getStartDay()));
-            event.put("title", detailEntity.getTitle());
-            event.put("end", simpleDateFormat.format(detailEntity.getEndDay()));
-            event.put("color","#CCE2CB");
             event.put("textColor", "#000000");
             eventList.add(event);
         }

@@ -1,6 +1,6 @@
 package com.example.bpm.dto.project.request;
 
-import com.example.bpm.entity.project.data.DetailEntity;
+import com.example.bpm.entity.project.data.HeadEntity;
 import com.example.bpm.entity.project.request.WorkRequestEntity;
 import com.example.bpm.entity.user.UserEntity;
 import lombok.AllArgsConstructor;
@@ -22,7 +22,7 @@ public class WorkRequestDto {
     private Date endDay;
     private int completion;
     private UserEntity userIdToWorkRequest;
-    private DetailEntity detailIdToWorkRequest;
+    private HeadEntity headIdToWorkRequest;
 
     public WorkRequestEntity toEntity(){
         WorkRequestEntity workRequestEntity = new WorkRequestEntity();
@@ -33,7 +33,7 @@ public class WorkRequestDto {
         workRequestEntity.setEndDay(endDay);
         workRequestEntity.setCompletion(completion);
         workRequestEntity.setUserIdToWorkRequest(userIdToWorkRequest);
-        workRequestEntity.setDetailIdToWorkRequest(detailIdToWorkRequest);
+        workRequestEntity.setHeadIdToWorkRequest(headIdToWorkRequest);
 
         return workRequestEntity;
     }
@@ -45,7 +45,7 @@ public class WorkRequestDto {
         this.endDay = workRequestEntity.getEndDay();
         this.completion = workRequestEntity.getCompletion();
         this.userIdToWorkRequest = workRequestEntity.getUserIdToWorkRequest();
-        this.detailIdToWorkRequest = workRequestEntity.getDetailIdToWorkRequest();
+        this.headIdToWorkRequest = workRequestEntity.getHeadIdToWorkRequest();
     }
 
 }

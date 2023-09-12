@@ -2,7 +2,6 @@ package com.example.bpm.controller;
 
 import com.example.bpm.dto.document.DocumentDto;
 import com.example.bpm.dto.message.MessageDto;
-import com.example.bpm.dto.project.DetailDto;
 import com.example.bpm.dto.project.HeadDto;
 import com.example.bpm.dto.project.ProjectDto;
 import com.example.bpm.dto.project.WorkDto;
@@ -48,7 +47,7 @@ public class ProjectDetailController {
     private HttpSession session;
 
 
-    // 생각을 해보니 말야 매번 세션 호출하는것보다는 그냥 따로 메서드 만드는게 훨씬 효율이 좋을듯. 편하기도 하고
+    /*// 생각을 해보니 말야 매번 세션 호출하는것보다는 그냥 따로 메서드 만드는게 훨씬 효율이 좋을듯. 편하기도 하고
     public UserDto getSessionUser() {
         UserDto currentUser = (UserDto) session.getAttribute("userInfo");
         return currentUser;
@@ -84,7 +83,7 @@ public class ProjectDetailController {
         return "redirect:/project/" + sessionProject.getProjectId();
     }
 
-    /* - - - - 목표 관련 메서드- - - -*/
+    *//* - - - - 목표 관련 메서드- - - -*//*
     // 목표 리스트창 매핑
     @GetMapping("/project/goals")
     public String goals(Model model) {
@@ -184,7 +183,7 @@ public class ProjectDetailController {
     public String goDetailView(@PathVariable("id") Long id, Model model) {
         DetailDto detailDto = projectDetailSerivce.findDetailById(id);
         HeadDto headDto = projectDetailSerivce.findHeadById(detailDto.getHeadIdToDetail().getHeadId());
-        List<WorkDto> workDtoList = projectDetailSerivce.findWorkListByDetail(id);
+        List<WorkDto> workDtoList = projectDetailSerivce.findWorkListByHead(id);
         Map<WorkDto, List<UserDto>> userWorkMap = projectDetailSerivce.selectAllUserWorkForWorkList(workDtoList);
         //detail 하위 작업 표에 work 담당자를 넣어주려 했으나 오류로 수정.
         Long auth = getSessionAuth();
@@ -308,10 +307,10 @@ public class ProjectDetailController {
         projectDetailSerivce.addUserWork(workDto, chargeUsers);
         return "redirect:/project/work/detail/" + workId;
     }
-    /* - - - - 목표 관련 메서드 끝 - - - -*/
+    *//* - - - - 목표 관련 메서드 끝 - - - -*//*
 
 
-    /* - - - - 작업 관련 메서드- - - -*/
+    *//* - - - - 작업 관련 메서드- - - -*//*
     // work 목록 진입 매핑
     @GetMapping("/project/works")
     public String works(Model model) {
@@ -400,9 +399,9 @@ public class ProjectDetailController {
         model.addAttribute("DocumentList", documentDtoList);
         return "workDetail";
     }
-    /* - - - - 작업 관련 메서드 끝 - - - -*/
+    *//* - - - - 작업 관련 메서드 끝 - - - -*//*
 
-    /* - - - - 삭제 메서드 - - - - */
+    *//* - - - - 삭제 메서드 - - - - *//*
     @RequestMapping("/project/delete/{id}")
     public String deleteProject(@PathVariable("id")Long projectId) {
         ProjectDto projectDto = projectSerivce.findProject(projectId);
@@ -429,22 +428,22 @@ public class ProjectDetailController {
     }
 
 
-    /* - - - - 댓글 관련 메서드 - - - -*/
+    *//* - - - - 댓글 관련 메서드 - - - -*//*
     @PostMapping("/workDetail/addComment")
     public String plusComment(@RequestParam("workId") Long workId,
                               @RequestParam("comment") String comment,
                               HttpSession session, Model model, HttpServletRequest request) {
         String referer = request.getHeader("Referer");
-        /* 댓글을 추가 시키는 메서드 */
+        *//* 댓글을 추가 시키는 메서드 *//*
         WorkDto workDto = projectDetailSerivce.findWork(workId);
         UserDto nowUser = getSessionUser();
         WorkCommentDto workCommentDto = new WorkCommentDto();
         workCommentDto.setComment(comment);
         workCommentDto.setWorkIdToComment(workDto.toEntity());
         workCommentDto.setUserIdToComment(nowUser.toEntity());
-        /* 댓글을 추가 시키는 메서드 끝 */
+        *//* 댓글을 추가 시키는 메서드 끝 *//*
 
-        /*추가 시킬 댓글 내용과, 현재 documentID 를 같이 넘겨 리턴 값으로 자동 리스트를 뽑아온다*/
+        *//*추가 시킬 댓글 내용과, 현재 documentID 를 같이 넘겨 리턴 값으로 자동 리스트를 뽑아온다*//*
         List<WorkCommentDto> list = projectDetailSerivce.plusComment(workCommentDto, workId);
         model.addAttribute("commentList", list);
         return "redirect:" + referer;
@@ -483,9 +482,9 @@ public class ProjectDetailController {
         model.addAttribute("CommentList", dtoList);
         return "redirect:/project/work/detail/" + workId;
     }
-    /* - - - - 댓글 관련 메서드 끝 - - - -*/
+    *//* - - - - 댓글 관련 메서드 끝 - - - -*//*
 
-    /* 상태 완료 처리 메서드 */
+    *//* 상태 완료 처리 메서드 *//*
     @RequestMapping("/project/work/completion/change/{id}")
     public String workCompletionChange(@PathVariable("id") Long workId) {
         WorkDto targetWorkDto = projectDetailSerivce.findWork(workId);
@@ -507,7 +506,7 @@ public class ProjectDetailController {
         return "redirect:/project/goals";
     }
 
-    /*  - - - - - Calendar Controller - - - - - */
+    *//*  - - - - - Calendar Controller - - - - - *//*
     @GetMapping("/project/calender") //기본 페이지 표시
     public String viewCalendar() {
 
@@ -523,7 +522,7 @@ public class ProjectDetailController {
     }
 
 
-    /* - - - - - Message Contorller - - - - - - */
+    *//* - - - - - Message Contorller - - - - - - *//*
     @GetMapping("/recvMessageList")
     public String viewRecvMessage(HttpSession session, Model model) {
         UserDto userDto = getSessionUser();
@@ -568,6 +567,6 @@ public class ProjectDetailController {
         log.info(name + "입니다.");
         messageService.sendMessage(title, content, getSessionUser(), name, getSessionProject());
         return "redirect:/sendMessageList";
-    }
+    }*/
 }
 

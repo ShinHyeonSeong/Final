@@ -1,7 +1,6 @@
 package com.example.bpm.controller;
 
 import com.example.bpm.dto.document.DocumentDto;
-import com.example.bpm.dto.project.DetailDto;
 import com.example.bpm.dto.project.HeadDto;
 import com.example.bpm.dto.project.ProjectDto;
 import com.example.bpm.dto.project.WorkDto;
@@ -38,7 +37,7 @@ public class ProjectController {
 
     HttpSession session;
 
-    public UserDto getSessionUser() {
+    /*public UserDto getSessionUser() {
         UserDto currentUser = (UserDto) session.getAttribute("userInfo");
         return currentUser;
     }
@@ -261,7 +260,7 @@ public class ProjectController {
         log.info("전달 완료, " + sendUuid + recvUuid + projectId + acceptable);
         projectSerivce.decisionInvite(sendUuid, recvUuid, projectId, acceptable);
         return "redirect:/project/inviteList";
-    }
+    }*/
 
 
     /* - - - - - - onlyReadPage 접근 - - - - - - */

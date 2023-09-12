@@ -2,7 +2,6 @@ package com.example.bpm.service;
 
 import com.example.bpm.dto.document.DocumentDto;
 import com.example.bpm.dto.document.LogDto;
-import com.example.bpm.dto.project.DetailDto;
 import com.example.bpm.dto.project.HeadDto;
 import com.example.bpm.dto.project.ProjectDto;
 import com.example.bpm.dto.project.WorkDto;
@@ -12,7 +11,6 @@ import com.example.bpm.dto.user.UserDto;
 import com.example.bpm.dto.user.relation.UserWorkDto;
 import com.example.bpm.entity.document.BlockEntity;
 import com.example.bpm.entity.document.LogEntity;
-import com.example.bpm.entity.project.data.DetailEntity;
 import com.example.bpm.entity.project.data.HeadEntity;
 import com.example.bpm.entity.project.data.ProjectEntity;
 import com.example.bpm.entity.project.data.work.WorkCommentEntity;
@@ -41,8 +39,6 @@ public class ProjectDetailSerivce {
     private ProjectRepository projectRepository;
     @Autowired
     private HeadRepository headRepository;
-    @Autowired
-    private DetailRepository detailRepository;
     @Autowired
     private WorkRepository workRepository;
     @Autowired
@@ -95,32 +91,8 @@ public class ProjectDetailSerivce {
         return headDto;
     }
 
-    // detail create
-    public DetailDto createDetail(String title, String startDate, String deadline, String discription, HeadDto connectedHead, ProjectDto projectDto) {
-        DetailDto detailDto = new DetailDto();
-
-        detailDto.setTitle(title);
-        detailDto.setStartDay(dateManager.formatter(startDate));
-        detailDto.setEndDay(dateManager.formatter(deadline));
-        detailDto.setDiscription(discription);
-        detailDto.setCompletion(0);
-        detailDto.setHeadIdToDetail(connectedHead.toEntity());
-        detailDto.setProjectIdToDetail(projectDto.toEntity());
-
-        detailRepository.save(detailDto.toEntity());
-
-        return detailDto;
-    }
-
-    public DetailDto createDetail(DetailDto detailDto){
-
-        detailRepository.save(detailDto.toEntity());
-
-        return detailDto;
-    }
-
     // work create
-    public WorkDto createWork(String title, String discription, String startDate, String deadline, DetailDto connectDetail, ProjectDto projectDto) {
+    public WorkDto createWork(String title, String discription, String startDate, String deadline, HeadDto connectHead, ProjectDto projectDto) {
 
         WorkDto workDto = new WorkDto();
         
@@ -129,7 +101,7 @@ public class ProjectDetailSerivce {
         workDto.setStartDay(dateManager.formatter(startDate));
         workDto.setEndDay(dateManager.formatter(deadline));
         workDto.setCompletion(0);
-        workDto.setDetailIdToWork(detailRepository.findById(connectDetail.getDetailId()).orElse(null));
+        workDto.setHeadIdToWork(headRepository.findById(connectHead.getHeadId()).orElse(null));
         workDto.setProjectIdToWork(projectRepository.findById(projectDto.getProjectId()).orElse(null));
 
         workRepository.save(workDto.toEntity());
@@ -171,10 +143,6 @@ public class ProjectDetailSerivce {
         return headRepository.findByTitle(title).isPresent();
     }
 
-    public boolean checkOverlapDetail(String title){
-        return detailRepository.findByTitle(title).isPresent();
-    }
-
     public boolean checkOverlapWork(String title){
         return workRepository.findByTitle(title).isPresent();
     }
@@ -203,37 +171,6 @@ public class ProjectDetailSerivce {
         return headDtoList;
     }
 
-    /* Detail DetailDto */
-    public DetailDto findDetailById(Long id) {
-        DetailEntity detailEntity = detailRepository.findById(id).get();
-        DetailDto detailDto = new DetailDto();
-        detailDto.insertEntity(detailEntity);
-        return detailDto;
-    }
-
-    public List<DetailDto> findDetailListByProject(ProjectDto projectDto) {
-        List<DetailDto> detailDtoList = new ArrayList<>();
-        List<DetailEntity> detailEntityList = detailRepository.findAllByProjectIdToDetail_ProjectId(projectDto.getProjectId());
-
-        for (DetailEntity detailEntity : detailEntityList) {
-            DetailDto detailDto = new DetailDto();
-            detailDto.insertEntity(detailEntity);
-            detailDtoList.add(detailDto);
-        }
-        return detailDtoList;
-    }
-
-    public List<DetailDto> findAllDetailListByHead(HeadDto headDto) {
-        List<DetailDto> detailDtoList = new ArrayList<>();
-        List<DetailEntity> detailEntityList = detailRepository.findAllByHeadIdToDetail_HeadId(headDto.getHeadId());
-
-        for (DetailEntity detailEntity : detailEntityList) {
-            DetailDto detailDto = new DetailDto();
-            detailDto.insertEntity(detailEntity);
-            detailDtoList.add(detailDto);
-        }
-        return detailDtoList;
-    }
 
     /* Work WorkDto */
     public WorkDto findWork(Long id) {
@@ -255,8 +192,8 @@ public class ProjectDetailSerivce {
         return workDtoList;
     }
 
-    public List<WorkDto> findWorkListByDetail(DetailDto detailDto) {
-        List<WorkEntity> workEntityList = workRepository.findAllByDetailIdToWork_DetailId(detailDto.getDetailId());
+    public List<WorkDto> findWorkListByHead(HeadDto headDto) {
+        List<WorkEntity> workEntityList = workRepository.findAllByHeadIdToWork_HeadId(headDto.getHeadId());
         List<WorkDto> workDtoList = new ArrayList<>();
 
         for (WorkEntity workEntity : workEntityList) {
@@ -415,21 +352,6 @@ public class ProjectDetailSerivce {
     }
 
     @Transactional
-    public DetailDto updateDetail(Long beforeId, DetailDto afterDetail) {
-        DetailEntity detailEntity = detailRepository.findById(beforeId).get();
-
-        detailEntity.setTitle(afterDetail.getTitle());
-        detailEntity.setDiscription(afterDetail.getDiscription());
-        detailEntity.setStartDay(afterDetail.getStartDay());
-        detailEntity.setEndDay(afterDetail.getEndDay());
-        detailEntity.setCompletion(afterDetail.getCompletion());
-
-        detailRepository.save(detailEntity);
-
-        return afterDetail;
-    }
-
-    @Transactional
     public WorkDto updateWork(Long beforeId, WorkDto afterWorkDto) {
         WorkEntity workEntity = workRepository.findById(beforeId).get();
 
@@ -491,10 +413,10 @@ public class ProjectDetailSerivce {
     public void deleteHead(HeadDto headDto){
         HeadEntity headEntity = headDto.toEntity();
 
-        List<DetailEntity> detailEntityList = detailRepository.findAllByHeadIdToDetail_HeadId(headEntity.getHeadId());
+        List<WorkEntity> workEntityList = workRepository.findAllByHeadIdToWork_HeadId(headEntity.getHeadId());
 
-        for (DetailEntity detailEntity: detailEntityList) {
-            deleteDetail(detailEntity);
+        for (WorkEntity workEntity: workEntityList) {
+            deleteWork(workEntity);
         }
         
         headRepository.deleteById(headEntity.getHeadId());
@@ -502,44 +424,14 @@ public class ProjectDetailSerivce {
 
     @Transactional
     public void deleteHead(HeadEntity headEntity){
-        List<DetailEntity> detailEntityList = detailRepository.findAllByHeadIdToDetail_HeadId(headEntity.getHeadId());
+        List<WorkEntity> workEntityList = workRepository.findAllByHeadIdToWork_HeadId(headEntity.getHeadId());
 
-        for (DetailEntity detailEntity: detailEntityList) {
-            deleteDetail(detailEntity);
+        for (WorkEntity workEntity: workEntityList) {
+            deleteWork(workEntity);
         }
 
         headRepository.deleteById(headEntity.getHeadId());
     }
-
-    /* - - - - Detail - - - - */
-
-    @Transactional
-    public void deleteDetail(DetailDto detailDto){
-        DetailEntity detailEntity = detailDto.toEntity();
-
-        List<WorkEntity> workEntityList = workRepository.findAllByDetailIdToWork_DetailId(detailEntity.getDetailId());
-
-        for (WorkEntity workEntity: workEntityList) {
-            deleteWork(workEntity);
-        }
-
-        detailRepository.deleteById(detailEntity.getDetailId());
-
-    }
-
-    @Transactional
-    public void deleteDetail(DetailEntity detailEntity){
-
-        List<WorkEntity> workEntityList = workRepository.findAllByDetailIdToWork_DetailId(detailEntity.getDetailId());
-
-        for (WorkEntity workEntity: workEntityList) {
-            deleteWork(workEntity);
-        }
-
-        detailRepository.deleteById(detailEntity.getDetailId());
-
-    }
-
 
     /* - - - - Work - - - - */
 
@@ -611,32 +503,13 @@ public class ProjectDetailSerivce {
     //////////////////////////////////////////////////////////////////
     // check Low completion
     //////////////////////////////////////////////////////////////////
-
-    @Transactional
-    public boolean checkCompletionDetail(Long detailId) {
-        DetailEntity detailEntity = detailRepository.findById(detailId).get();
-        List<WorkEntity> workEntityList = workRepository.findAllByDetailIdToWork_DetailId(detailId);
-
-        for (WorkEntity workEntity: workEntityList) {
-            if (workEntity.getCompletion() == 0){
-                detailEntity.setCompletion(0);
-                detailRepository.save(detailEntity);
-                return false;
-            }
-        }
-
-        detailEntity.setCompletion(1);
-        detailRepository.save(detailEntity);
-        return true;
-    }
-
     @Transactional
     public boolean checkCompletionHead(Long headId) {
         HeadEntity headEntity = headRepository.findById(headId).get();
-        List<DetailEntity> detailEntityList = detailRepository.findAllByHeadIdToDetail_HeadId(headId);
+        List<WorkEntity> workEntityList = workRepository.findAllByHeadIdToWork_HeadId(headId);
 
-        for (DetailEntity detailEntity: detailEntityList) {
-            if (detailEntity.getCompletion() == 0){
+        for (WorkEntity workEntity: workEntityList) {
+            if (workEntity.getCompletion() == 0){
                 headEntity.setCompletion(0);
                 headRepository.save(headEntity);
                 return false;

@@ -2,8 +2,6 @@ package com.example.bpm.service;
 
 import com.example.bpm.dto.project.HeadDto;
 import com.example.bpm.dto.project.ProjectDto;
-import com.example.bpm.dto.project.DetailDto;
-import com.example.bpm.repository.DetailRepository;
 import com.example.bpm.repository.HeadRepository;
 import com.example.bpm.service.Logic.dateLogic.DateManager;
 import lombok.NoArgsConstructor;
@@ -19,8 +17,6 @@ import java.util.Date;
 public class ExceptionService {
     @Autowired
     HeadRepository headRepository;
-    @Autowired
-    DetailRepository detailRepository;
 
     DateManager dateManager = new DateManager();
 
@@ -55,36 +51,6 @@ public class ExceptionService {
         return null;
     }
 
-    public String detailErrorCheck(String title, String startDay, String endDay, Long headId) {
-        HeadDto headDto = new HeadDto();
-        headDto.insertEntity((headRepository.findById(headId)).orElse(null));
-
-        if (detailRepository.findByTitle(title).isPresent()) {
-            return "이미 존재하는 하위 목표 제목입니다.";
-        }
-
-        Date headStartDate = headDto.getStartDay();
-        Date headEndDate = headDto.getEndDay();
-
-        Date detailStartDate = dateManager.formatter(startDay);
-        Date detailEndDate = dateManager.formatter(endDay);
-
-        int startDateResult = detailStartDate.compareTo(headStartDate);
-        int endDateResult = detailEndDate.compareTo(headEndDate);
-        int dateRegResult = detailEndDate.compareTo(detailStartDate);
-
-        if (dateRegResult < 0) {
-            return "마감기한이 시작 기한보다 빠릅니다.";
-        }
-        if(startDateResult < 0) {
-            return "상위 목표의 시작기한보다 빠릅니다.";
-        }
-        if(endDateResult > 0) {
-            return "상위 목표의 마감기한을 초과했습니다.";
-        }
-        return null;
-    }
-
     public String headEditErrorCheck(ProjectDto projectDto, String title, String startDay, String endDay) {
         Date projectStartDate = projectDto.getStartDay();
         Date projectEndDate = projectDto.getEndDay();
@@ -108,44 +74,18 @@ public class ExceptionService {
         return null;
     }
 
-    public String detailEditErrorCheck(String title, String startDay, String endDay, Long headId) {
+    public String workEditErrorCheck(String startDate, String endDate, Long headId) {
         HeadDto headDto = new HeadDto();
         headDto.insertEntity((headRepository.findById(headId)).orElse(null));
 
         Date headStartDate = headDto.getStartDay();
         Date headEndDate = headDto.getEndDay();
 
-        Date detailStartDate = dateManager.formatter(startDay);
-        Date detailEndDate = dateManager.formatter(endDay);
-
-        int startDateResult = detailStartDate.compareTo(headStartDate);
-        int endDateResult = detailEndDate.compareTo(headEndDate);
-        int dateRegResult = detailEndDate.compareTo(detailStartDate);
-
-        if (dateRegResult < 0) {
-            return "마감기한이 시작 기한보다 빠릅니다.";
-        }
-        if(startDateResult < 0) {
-            return "상위 목표의 시작기한보다 빠릅니다.";
-        }
-        if(endDateResult > 0) {
-            return "상위 목표의 마감기한을 초과했습니다.";
-        }
-        return null;
-    }
-
-    public String workEditErrorCheck(String startDate, String endDate, Long detailId) {
-        DetailDto detailDto = new DetailDto();
-        detailDto.insertEntity((detailRepository.findById(detailId)).orElse(null));
-
-        Date detailStartDate = detailDto.getStartDay();
-        Date detailEndDate = detailDto.getEndDay();
-
         Date workStartDate = dateManager.formatter(startDate);
         Date workEndDate = dateManager.formatter(endDate);
 
-        int startDateResult = workStartDate.compareTo(detailStartDate);
-        int endDateResult = workEndDate.compareTo(detailEndDate);
+        int startDateResult = workStartDate.compareTo(headStartDate);
+        int endDateResult = workEndDate.compareTo(headEndDate);
         int dateRegResult = workEndDate.compareTo(workStartDate);
 
         if (dateRegResult < 0) {
