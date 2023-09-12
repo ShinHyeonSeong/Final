@@ -67,4 +67,10 @@ public class MessageService {
         return messageDto;
     }
 
+    public void deleteMessage(Long id){
+
+        MessageEntity messageEntity = messageRepository.findById(id).get();
+
+        messageRepository.delete(messageEntity);
+    }
 }
