@@ -14,7 +14,7 @@ public interface WorkRepository extends JpaRepository<WorkEntity, Long> {
 
     public List<WorkEntity> findAllByProjectIdToWork_ProjectId(Long projectId);
 
-    public List<WorkEntity> findAllByDetailIdToWork_DetailId(Long detailId);
+    public List<WorkEntity> findAllByHeadIdToWork_HeadId(Long headId);
 
     public WorkEntity findByWorkId(Long id);
 

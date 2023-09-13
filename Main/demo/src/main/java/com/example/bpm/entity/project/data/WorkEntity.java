@@ -37,9 +37,9 @@ public class WorkEntity {
     @Column(name = "completion")
     private int completion;
 
-    @JoinColumn(name = "detail_id")
+    @JoinColumn(name = "head_id")
     @ManyToOne(fetch = FetchType.EAGER)
-    private DetailEntity detailIdToWork;
+    private HeadEntity headIdToWork;
 
     @JoinColumn(name = "project_id")
     @ManyToOne(fetch = FetchType.EAGER)

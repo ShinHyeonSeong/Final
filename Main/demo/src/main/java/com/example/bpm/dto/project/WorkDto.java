@@ -1,6 +1,6 @@
 package com.example.bpm.dto.project;
 
-import com.example.bpm.entity.project.data.DetailEntity;
+import com.example.bpm.entity.project.data.HeadEntity;
 import com.example.bpm.entity.project.data.ProjectEntity;
 import com.example.bpm.entity.project.data.WorkEntity;
 import lombok.Getter;
@@ -22,7 +22,7 @@ public class WorkDto {
 
     private int completion;
 
-    private DetailEntity detailIdToWork;
+    private HeadEntity headIdToWork;
 
     private ProjectEntity projectIdToWork;
 
@@ -35,7 +35,7 @@ public class WorkDto {
         workEntity.setStartDay(startDay);
         workEntity.setEndDay(endDay);
         workEntity.setCompletion(completion);
-        workEntity.setDetailIdToWork(detailIdToWork);
+        workEntity.setHeadIdToWork(headIdToWork);
         workEntity.setProjectIdToWork(projectIdToWork);
 
         return workEntity;
@@ -48,7 +48,7 @@ public class WorkDto {
         this.startDay = workEntity.getStartDay();
         this.endDay = workEntity.getEndDay();
         this.completion = workEntity.getCompletion();
-        this.detailIdToWork = workEntity.getDetailIdToWork();
+        this.headIdToWork = workEntity.getHeadIdToWork();
         this.projectIdToWork = workEntity.getProjectIdToWork();
     }
 }

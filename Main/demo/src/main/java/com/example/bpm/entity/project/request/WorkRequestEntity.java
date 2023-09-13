@@ -1,6 +1,6 @@
 package com.example.bpm.entity.project.request;
 
-import com.example.bpm.entity.project.data.DetailEntity;
+import com.example.bpm.entity.project.data.HeadEntity;
 import com.example.bpm.entity.user.UserEntity;
 import lombok.Data;
 
@@ -28,8 +28,8 @@ public class WorkRequestEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     private UserEntity userIdToWorkRequest;
 
-    @JoinColumn(name = "detail_id")
+    @JoinColumn(name = "head_id")
     @ManyToOne(fetch = FetchType.EAGER)
-    private DetailEntity detailIdToWorkRequest;
+    private HeadEntity headIdToWorkRequest;
 
 }

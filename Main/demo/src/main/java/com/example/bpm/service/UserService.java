@@ -24,6 +24,9 @@ public class UserService {
     @Autowired
     final private ProjectRoleRepository projectRoleRepository;
 
+    @Autowired
+    private ProjectDetailSerivce projectDetailSerivce;
+
     /* sign up */
     public UserDto signUp(UserDto userDto) {
         UserEntity userEntity = userDto.toEntity();

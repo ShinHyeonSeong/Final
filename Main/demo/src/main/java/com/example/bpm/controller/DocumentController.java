@@ -78,7 +78,7 @@ public class DocumentController {
 
         String userUuid = sessionUser.getUuid();
         String userName = sessionUser.getName();
-        String documentId = documentService.documentAdding(userUuid, userName);
+        String documentId = documentService.createDocument(userUuid, userName);
 
         documentService.workDocumentAdd(workId, documentId);
 
@@ -113,7 +113,7 @@ public class DocumentController {
         }
 
         DocumentDto documentDto = documentService.findDocumentById(id);
-        List<BlockDto> blockDtoList = documentService.getBlockListByDocumentId(id);
+        List<BlockDto> blockDtoList = documentService.findBlockListByDocumentId(id);
 
         model.addAttribute("document", documentDto);
         model.addAttribute("blockList", blockDtoList);
@@ -131,7 +131,7 @@ public class DocumentController {
         String userUuid = sessionUser.getUuid();
 
         DocumentDto documentDto = documentService.findDocumentById(id);
-        List<BlockDto> blockDtoList = documentService.getBlockListByDocumentId(id);
+        List<BlockDto> blockDtoList = documentService.findBlockListByDocumentId(id);
 
         model.addAttribute("document", documentDto);
         model.addAttribute("blockList", blockDtoList);
@@ -146,7 +146,7 @@ public class DocumentController {
     /// 헤당 문서의 로그 페이지 이동
     @GetMapping("document/history")
     public String getDocumentLog(String id, Model model, HttpSession session) {
-        List<LogDto> logDtoList = documentService.getLogListById(id);
+        List<LogDto> logDtoList = documentService.findLogListByDocumentId(id);
         model.addAttribute("logList", logDtoList);
         model.addAttribute("projectId", id);
         return "documentLog";

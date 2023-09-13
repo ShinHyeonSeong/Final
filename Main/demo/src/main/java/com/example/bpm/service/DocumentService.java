@@ -33,10 +33,10 @@ import java.util.*;
 @Slf4j
 public class DocumentService {
 
-    // 필드
+    // filed
     private String bucketName = "bpm-file-storage";
 
-    // 레파지토리 AutoWired
+    // autoWired
     @Autowired
     private DocumentRepository documentRepository;
 
@@ -55,19 +55,17 @@ public class DocumentService {
     @Autowired
     private WorkRepository workRepository;
 
-    // 기타 비지니스 클래스
+    // class
 
     private LogManager logManager = new LogManager();
 
     private DateManager dateManager = new DateManager();
 
     //////////////////////////////////////////////////////////////////
-    // 서비스 로직
+    // document create
     //////////////////////////////////////////////////////////////////
 
-    // 새로운 문서 만들기
-    /// 해당 함수를 호출하면 새로운 문서를 만들고 해당 문서의 id 를 반환함
-    public String documentAdding(String userUuid, String userName){
+    public String createDocument(String userUuid, String userName){
         DocumentDto documentDto = new DocumentDto();
 
         UUID uuid = UUID.randomUUID();
@@ -86,25 +84,18 @@ public class DocumentService {
         return documentDto.getDocumentId();
     }
 
-    // 문서 제거
-    public void deleteDocument(String documentId){
-        List<BlockEntity> deleteBlockListEntity = blockRepository.findByDocumentId(documentId);
-        List<LogEntity> deleteLogListEntity = logRepository.findByDocumentId(documentId);
+    public void workDocumentAdd(Long workId, String documentId){
+        WorkDocumentEntity workDocumentEntity = new WorkDocumentEntity();
+        workDocumentEntity.setWorkIdToWorkDocument(workRepository.findByWorkId(workId));
+        workDocumentEntity.setDocumentIdToWorkDocument(documentRepository.findByDocumentId(documentId));
 
-        workDocumentRepository.deleteAllByDocumentIdToWorkDocument_DocumentId(documentId);
-
-        for (BlockEntity blockEntity : deleteBlockListEntity) {
-            blockRepository.delete(blockEntity);
-        }
-
-        for (LogEntity logEntity : deleteLogListEntity) {
-            logRepository.delete(logEntity);
-        }
-
-        documentRepository.deleteById(documentId);
+        workDocumentRepository.save(workDocumentEntity);
     }
 
-    // 문서 저장
+    //////////////////////////////////////////////////////////////////
+    // document update
+    //////////////////////////////////////////////////////////////////
+
     public void saveDocument(JsonDocumentDto jsonDocumentDto, String userUuid, String userName){
 
         DocumentEntity documentEntity = jsonDocumentDto.documentEntityOut();
@@ -124,9 +115,8 @@ public class DocumentService {
         logReturn(documentEntity, addBlockListEntity, userName + "- Save Document");
     }
 
-    // 로그 데이터로 현재 데이터 교체
     public String changeLogData(String id, String userName){
-        LogEntity logEntity = getLogById(id);
+        LogEntity logEntity = findLogById(id);
 
         String[] logDocument = logEntity.getLog().split("\\]");
         DocumentEntity documentEntity = logManager.deserializeDocument(logDocument[0]);
@@ -149,7 +139,6 @@ public class DocumentService {
         return documentEntity.getDocumentId();
     }
 
-    // 파일 저장
     public String saveFile(MultipartFile file) throws IOException{
 
         String uuid = UUID.randomUUID().toString();
@@ -171,15 +160,28 @@ public class DocumentService {
         return "https://storage.cloud.google.com/bpm-file-storage/"+uuid;
     }
 
+    //////////////////////////////////////////////////////////////////
+    // document delate
+    //////////////////////////////////////////////////////////////////
 
-    //work_document 연결
-    public void workDocumentAdd(Long workId, String documentId){
-        WorkDocumentEntity workDocumentEntity = new WorkDocumentEntity();
-        workDocumentEntity.setWorkIdToWorkDocument(workRepository.findByWorkId(workId));
-        workDocumentEntity.setDocumentIdToWorkDocument(documentRepository.findByDocumentId(documentId));
+    public void deleteDocument(String documentId){
+        List<BlockEntity> deleteBlockListEntity = blockRepository.findByDocumentId(documentId);
+        List<LogEntity> deleteLogListEntity = logRepository.findByDocumentId(documentId);
 
-        workDocumentRepository.save(workDocumentEntity);
+        workDocumentRepository.deleteAllByDocumentIdToWorkDocument_DocumentId(documentId);
+
+        for (BlockEntity blockEntity : deleteBlockListEntity) {
+            blockRepository.delete(blockEntity);
+        }
+
+        for (LogEntity logEntity : deleteLogListEntity) {
+            logRepository.delete(logEntity);
+        }
+
+        documentRepository.deleteById(documentId);
     }
+
+    /* check user auth */
 
     public boolean accreditUserToWork(String uuid, String DocumentId, Long auth){
 
@@ -200,7 +202,7 @@ public class DocumentService {
     }
 
     //////////////////////////////////////////////////////////////////
-    // 내부 함수
+    // call service
     //////////////////////////////////////////////////////////////////
 
     public void blockChange(List<BlockEntity> deleteBlockListEntity, List<BlockEntity> addBlockListEntity) {
@@ -236,12 +238,11 @@ public class DocumentService {
     }
 
     //////////////////////////////////////////////////////////////////
-    // find Data
+    // find Document
     //////////////////////////////////////////////////////////////////
 
     /* Document DocumentDto */
 
-    // Document find All
     public List<DocumentDto> findDocumentList() {
         List<DocumentEntity> documentEntityList = documentRepository.findAll();
         List<DocumentDto> documentDtoList = new ArrayList<>();
@@ -257,7 +258,6 @@ public class DocumentService {
         return documentDtoList;
     }
 
-    // Document find by User_uuid
     public List<DocumentDto> findDocumentListByUser(String userUuid){
         List<DocumentEntity> documentEntityList = new ArrayList<>();
         List<DocumentDto> documentDtoList = new ArrayList<>();
@@ -281,7 +281,6 @@ public class DocumentService {
         return documentDtoList;
     }
 
-    // Document find by User_uuid and Project_id
     public  List<DocumentDto> findDocumentListByUserAndProject(String userUuid, Long id) {
         List<DocumentDto> documentDtoList = new ArrayList<>();
 
@@ -306,7 +305,6 @@ public class DocumentService {
         return documentDtoList;
     }
 
-    // Document find by Document_id
     public DocumentDto findDocumentById(String id) {
         DocumentEntity documentEntity = documentRepository.findByDocumentId(id);
         DocumentDto documentDto = new DocumentDto();
@@ -315,7 +313,6 @@ public class DocumentService {
         return documentDto;
     }
 
-    // Document find by workDocument_id
     public List<DocumentDto> findDocumentByWorkId(Long id){
         List<WorkDocumentEntity> workDocumentEntityList = workDocumentRepository.findAllByWorkIdToWorkDocument_WorkId(id);
 
@@ -337,7 +334,7 @@ public class DocumentService {
         return documentDtoList;
     }
 
-    // Document find by Project_id
+    /* ProjectDocument ProjectDocumentDto */
     public List<ProjectDocumentListDto> findDocumentListByProjectId(Long id){
         List<ProjectDocumentListDto> projectDocumentList = new ArrayList<>();
         List<WorkEntity> workEntityList = workRepository.findAllByProjectIdToWork_ProjectId(id);
@@ -372,8 +369,7 @@ public class DocumentService {
 
     /* Block BlockDto */
 
-    // 문서 아이디 기준으로 블럭 리스트 받아오기
-    public List<BlockDto> getBlockListByDocumentId(String id) {
+    public List<BlockDto> findBlockListByDocumentId(String id) {
         List<BlockEntity> blockEntityList = blockRepository.findByDocumentId(id);
         List<BlockDto> blockDtoList = new ArrayList<>();
 
@@ -391,8 +387,7 @@ public class DocumentService {
 
     /* Log LogDto */
 
-    // 문서 아이디 기준으로 문서 리스트 불러오기
-    public List<LogDto> getLogListById(String id) {
+    public List<LogDto> findLogListByDocumentId(String id) {
         List<LogEntity> logEntityList = logRepository.findByDocumentId(id);
         List<LogDto> logDtoList = new ArrayList<>();
 
@@ -407,8 +402,7 @@ public class DocumentService {
         return logDtoList;
     }
 
-    // 로그 아이디로 로그 불러오기 [서비스 내부에서 사용]
-    public LogEntity getLogById(String id) {
+    public LogEntity findLogById(String id) {
         return logRepository.findBylogId(id);
     }
 
