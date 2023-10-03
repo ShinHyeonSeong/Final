@@ -180,6 +180,15 @@ public class ProjectDetailSerivce {
         return workDto;
     }
 
+    public WorkDto findWorkByDocument(DocumentDto documentDto){
+        WorkDocumentEntity workDocumentEntity= workDocumentRepository.findByDocumentIdToWorkDocument_DocumentId(documentDto.getDocumentId());
+        WorkEntity workEntity = workDocumentEntity.getWorkIdToWorkDocument();
+        WorkDto workDto = new WorkDto();
+        workDto.insertEntity(workEntity);
+
+        return workDto;
+    }
+
     public List<WorkDto> findWorkListByProject(ProjectDto projectDto) {
         List<WorkDto> workDtoList = new ArrayList<>();
         List<WorkEntity> workEntityList = workRepository.findAllByProjectIdToWork_ProjectId(projectDto.getProjectId());
