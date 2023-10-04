@@ -30,4 +30,5 @@ public interface ProjectRequestRepository extends JpaRepository<ProjectRequestEn
 
     public List<ProjectRequestEntity> findAllByProjectIdToRequest_ProjectId(Long projectId);
     public void deleteAllByProjectIdToRequest_ProjectId(Long projectId);
+
 }

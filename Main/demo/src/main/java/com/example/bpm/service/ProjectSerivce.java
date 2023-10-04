@@ -11,6 +11,7 @@ import com.example.bpm.entity.project.data.RoleEntity;
 import com.example.bpm.entity.user.UserEntity;
 import com.example.bpm.repository.*;
 import com.example.bpm.service.Logic.dateLogic.DateManager;
+import com.google.cloud.storage.Acl;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +76,7 @@ public class ProjectSerivce {
             return 1;
         }
 
-        else if (decision) {
+        else if (!decision) {
             projectRequestRepository.deleteByAllId(sendUUID, recvUUID, projectId);
             return 1;
         }
@@ -85,6 +86,17 @@ public class ProjectSerivce {
         }
     }
 
+    public List<ProjectRequestDto> findAllProjectRequestRecv(UserDto userDto) {
+        List<ProjectRequestDto> projectRequestDtoList = new ArrayList<>();
+        List<ProjectRequestEntity> projectRequestEntityList = projectRequestRepository.findProjectRequest(userDto.getUuid());
+        for (ProjectRequestEntity projectRequestEntity : projectRequestEntityList) {
+            ProjectRequestDto projectRequestDto = new ProjectRequestDto();
+            projectRequestDto.insertEntity(projectRequestEntity);
+            projectRequestDtoList.add(projectRequestDto);
+        }
+        return projectRequestDtoList;
+    }
+
     //////////////////////////////////////////////////////////////////
     // project role
     //////////////////////////////////////////////////////////////////
@@ -92,7 +104,6 @@ public class ProjectSerivce {
     @Transactional
     public ProjectRoleDto addRoleManager(ProjectDto projectDto, UserDto userDto) {
         ProjectEntity projectEntity = projectDto.toEntity();
-
         UserEntity userEntity = userDto.toEntity();
         RoleEntity roleEntity = roleRepository.findById(Long.valueOf(1)).orElse(null);
 
@@ -130,8 +141,8 @@ public class ProjectSerivce {
         projectDto.setStartDay(dateManager.formatter(startDay));
         projectDto.setEndDay(dateManager.formatter(endDay));
 
-        projectRepository.save(projectDto.toEntity());
-
+        ProjectEntity projectEntity = projectRepository.save(projectDto.toEntity());
+        projectDto.insertEntity(projectEntity);
         return projectDto;
     }
 
@@ -213,18 +224,15 @@ public class ProjectSerivce {
     }
 
     public List<ProjectDto> findAllProjectList(){
-        List<ProjectRoleEntity> projectRoleEntityList = projectRoleRepository.findAll();
+        List<ProjectEntity> projectEntityList = projectRepository.findAll();
         List<ProjectDto> projectDtoList = new ArrayList<>();
-
-        for (ProjectRoleEntity projectRoleEntity : projectRoleEntityList) {
-
-            ProjectDto projectDto = new ProjectDto();
-            projectDto.insertEntity(projectRoleEntity.getProjectIdInRole());
+        ProjectDto projectDto = new ProjectDto();
+        for (ProjectEntity projectEntity : projectEntityList) {
+            projectDto.insertEntity(projectEntity);
             projectDtoList.add(projectDto);
-
         }
 
-        if(projectDtoList.isEmpty()){
+        if (projectDtoList.isEmpty()) {
             return null;
         }
 

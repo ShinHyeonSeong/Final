@@ -75,7 +75,7 @@ public class UserController {
             UserDto result = userService.signUp(NewUser);
             return "login";
         } else {
-            model.addAttribute("message", "이미 있는 이메일 입니다.");
+            model.addAttribute("message", "이미 가입된 이메일 입니다.");
             return "join";
         }
     }

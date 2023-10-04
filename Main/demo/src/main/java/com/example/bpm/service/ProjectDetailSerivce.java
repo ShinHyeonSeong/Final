@@ -172,6 +172,17 @@ public class ProjectDetailSerivce {
     }
 
 
+    public int countProgressHead(List<HeadDto> headDtoList) {
+        int progressHead = 0;
+        for (HeadDto headDto : headDtoList) {
+            if (headDto.getCompletion() == 0) {
+                progressHead++;
+            }
+        }
+        return progressHead;
+    }
+
+
     /* Work WorkDto */
     public WorkDto findWork(Long id) {
         WorkEntity workEntity = workRepository.findById(id).get();
@@ -214,6 +225,16 @@ public class ProjectDetailSerivce {
             workDtoList.add(workDto);
         }
         return workDtoList;
+    }
+
+    public int countProgressWork(List<WorkDto> workDtoList) {
+        int progressWork = 0;
+        for (WorkDto workDto : workDtoList) {
+            if (workDto.getCompletion() == 0) {
+                progressWork++;
+            }
+        }
+        return progressWork;
     }
 
     /* User UserDto */
