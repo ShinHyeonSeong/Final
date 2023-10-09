@@ -6,6 +6,7 @@ ul {
     padding: 0;
 }
 
+
 body {
     background-color: #fff;
     font-family: Arial, sans-serif;
@@ -38,6 +39,7 @@ body {
     padding: 0;
 }
 
+
 .incoming-message {
     border: 1px solid #ccc;
     margin-bottom: 10px;
@@ -46,6 +48,11 @@ body {
 
 .message-header {
     display: flex;
+}
+
+.message-header a {
+    text-decoration: none;
+    color: black;
 }
 
 .message-title {
@@ -62,6 +69,11 @@ body {
 .message-time {
     flex: 4;
     color: #888;
+}
+
+.message-content {
+    text-decoration: none;
+    color: black;
 }
 
 .deletebutton {
