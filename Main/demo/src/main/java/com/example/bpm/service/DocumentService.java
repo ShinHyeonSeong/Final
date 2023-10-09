@@ -182,7 +182,7 @@ public class DocumentService {
             logRepository.delete(logEntity);
         }
 
-        documentRepository.deleteByDocumentId(documentId);
+        documentRepository.deleteById(documentId);
     }
 
     /* check user auth */

@@ -114,12 +114,9 @@ public class DocumentController {
     }
 
     @PostMapping("document/delete")
-    public String deleteDocument(@RequestBody String id){
+    public String deleteDocument(String id){
 
-        log.info("문서 삭제 메서드 실행");
-        log.info("DocumentId = " + id);
         documentService.deleteDocument(id);
-        log.info("문서 삭제 완료");
 
         return "redirect:"+session.getAttribute("back");
     }
@@ -127,7 +124,7 @@ public class DocumentController {
     // 문서 작성 Document write
     /// 문서 작성 페이지 이동
     @GetMapping("/document/write")
-    public String getDocumentWrite(@RequestParam("id")String id, Model model, HttpSession session, HttpServletRequest request) {
+    public String getDocumentWrite(String id, Model model, HttpSession session, HttpServletRequest request) {
 
         UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
 

@@ -84,11 +84,11 @@
 					<div class="horizon-line"></div>
 					<a th:href="${back}"><button class="font-btn"><img src="/img/back_document.png"
 																	   class="icon-img"></button></a>
-					<a th:href="@{/documentEntity/history(id=${document.documentId})}"><button class="font-btn"><img
+					<a th:href="@{/document/history(id=${document.documentId})}"><button class="font-btn"><img
 							src="/img/history_document.png" class="icon-img"></button></a>
 					<button class="font-btn" onclick="ajaxPost()"><img src="/img/download_document.png"
 																	   class="icon-img"></button>
-					<form action="/documentEntity/delete" method="post">
+					<form action="/document/delete" method="post">
 						<button class="font-btn" type="submit"><img src="/img/delete_document.png"
 																	class="icon-img"></button>
 						<input th:name="id" type="hidden" th:value="${document.documentId}">
