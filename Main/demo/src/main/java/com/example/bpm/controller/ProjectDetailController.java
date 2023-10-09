@@ -462,50 +462,89 @@ public class ProjectDetailController {
 
 
     //* - - - - - Message Contorller - - - - - - *//*
-    @GetMapping("/recvMessageList")
-    public String viewRecvMessage(HttpSession session, Model model) {
+    @GetMapping("/project/recvMessageList")
+    public String viewRecvMessageList(HttpSession session, Model model) {
         UserDto userDto = getSessionUser();
         ProjectDto projectDto = getSessionProject();
-        List<MessageDto> messageDtoList = messageService.recvMessage(userDto, projectDto);
-
+        List<MessageDto> messageDtoList = messageService.recvMessageList(userDto, projectDto);
+        UserDto sessionUser = getSessionUser();
+        ProjectDto currentProject = getSessionProject();
+        List<UserDto> userDtoList = userService.findUserListByProjectId(currentProject.getProjectId());
+        model.addAttribute("sessionUser", sessionUser);
+        model.addAttribute("projectDto", currentProject);
+        model.addAttribute("joinUsers", userDtoList);
         model.addAttribute("List", messageDtoList);
         return "recvMessageList";
     }
 
-//    @GetMapping("/sendMessageList")
-//    public String viewSendMessage(HttpSession session, Model model) {
-//        UserDto userDto = getSessionUser();
-//        ProjectDto projectDto = getSessionProject();
-//        List<MessageDto> messageDtoList = messageService.selectAllSend(userDto, projectDto);
-//
-//        model.addAttribute("List", messageDtoList);
-//
-//        return "sendMessageList";
-//    }
+    @GetMapping("/project/sendMessageList")
+    public String viewSendMessageList(HttpSession session, Model model) {
+        UserDto userDto = getSessionUser();
+        ProjectDto projectDto = getSessionProject();
+        List<MessageDto> messageDtoList = messageService.sendMessageList(userDto, projectDto);
+        List<UserDto> userDtoList = userService.findUserListByProjectId(projectDto.getProjectId());
+        model.addAttribute("sessionUser", userDto);
+        model.addAttribute("projectDto", projectDto);
+        model.addAttribute("joinUsers", userDtoList);
+        model.addAttribute("List", messageDtoList);
 
-    @GetMapping("/messageForm")
+        return "sendMessageList";
+    }
+
+    @GetMapping("/project/messageForm")
     public String sendMessageForm(Model model) {
         List<UserDto> userDtos = userService.findUserListByProjectId(getSessionProject().getProjectId());
         model.addAttribute("userList", userDtos);
+        UserDto sessionUser = getSessionUser();
+        ProjectDto currentProject = getSessionProject();
+        List<UserDto> userDtoList = userService.findUserListByProjectId(currentProject.getProjectId());
+        model.addAttribute("sessionUser", sessionUser);
+        model.addAttribute("projectDto", currentProject);
+        model.addAttribute("joinUsers", userDtoList);
         return "messageForm";
     }
 
-    @RequestMapping("/message/{id}")
-    public String selectMessage(@PathVariable("id") Long id, Model model) {
-        MessageDto messageDto = messageService.findMessage(id);
-        model.addAttribute("message", messageDto);
-
-        return "messageDetail";
-    }
-
-    @PostMapping("/sendMessage")
+    @PostMapping("/project/sendMessage")
     public String sendMessage(@RequestParam(value = "title") String title,
                               @RequestParam(value = "content") String content,
                               @RequestParam(value = "recvName") String name,
                               HttpSession session) {
         log.info(name + "입니다.");
         messageService.sendMessage(title, content, getSessionUser(), name, getSessionProject());
-        return "redirect:/sendMessageList";
+
+        return "redirect:/project/sendMessageList";
+    }
+
+    @GetMapping("/project/sendMessageList/{id}")
+    public String selectSendMessage(@PathVariable("id") Long id, Model model) {
+        MessageDto messageDto = messageService.findMessage(id);
+        model.addAttribute("message", messageDto);
+        UserDto sessionUser = getSessionUser();
+        ProjectDto currentProject = getSessionProject();
+        List<UserDto> userDtoList = userService.findUserListByProjectId(currentProject.getProjectId());
+        model.addAttribute("sessionUser", sessionUser);
+        model.addAttribute("projectDto", currentProject);
+        model.addAttribute("joinUsers", userDtoList);
+        return "sendMessageDetail";
+    }
+
+    @GetMapping("/project/recvMessageList/{id}")
+    public String selectRecvMessage(@PathVariable("id") Long id, Model model) {
+        MessageDto messageDto = messageService.findMessage(id);
+        model.addAttribute("message", messageDto);
+        UserDto sessionUser = getSessionUser();
+        ProjectDto currentProject = getSessionProject();
+        List<UserDto> userDtoList = userService.findUserListByProjectId(currentProject.getProjectId());
+        model.addAttribute("sessionUser", sessionUser);
+        model.addAttribute("projectDto", currentProject);
+        model.addAttribute("joinUsers", userDtoList);
+        return "recvMessageDetail";
+    }
+
+    @RequestMapping("/project/message/delete/{id}")
+    public String deleteMessage(@PathVariable("id") Long messageId) {
+        messageService.deleteMessage(messageId);
+        return "redirect:/project/recvMessageList";
     }
 }
 
