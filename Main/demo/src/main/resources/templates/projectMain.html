@@ -1,20 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="/css/projectMain.css">
 	<link rel="stylesheet" href="/css/sidebar.css">
+	<link rel="stylesheet" href="/css/sideNavbar.css">
 	<title>Your Project Management Tool</title>
 </head>
+
 
 <body>
 <header>
 	<nav>
 		<div class="nav-left">
-			<a th:href="@{/project/projectManagerList}"><button id="exitButton">나가기</button></a>
+			<a id="exitButton" href="/project/projectAllList">나가기</a>
 		</div>
 		<div class="nav-center">
 			<h1 id="projectName" th:text="${projectDto.getTitle()}"></h1>
@@ -28,8 +29,11 @@
 	<ul>
 		<div class="menu">
 			<ul>
-				<li><a href="#">홈</a></li>
-				<li><a th:href="@{/project/goals}">작업</a></li>
+				<li class="menu-select"><a th:href="@{/project/main}">홈</a></li>
+				<li><a href="/project/goals">목표</a></li>
+				<li><a href="/project/works">작업</a></li>
+				<li><a href="/project/document">문서</a></li>
+				<li><a href="#">일정</a></li>
 				<li><a href="#">수신함</a></li>
 			</ul>
 		</div>
@@ -37,35 +41,28 @@
 	<ul>
 		<div class="user-list">
 			<h2>프로젝트 멤버</h2>
-			<ul th:each="member : ${joinUsers}">
-				<li th:text="${member.getName()}"></li>
+			<ul th:each="users : ${joinUsers}">
+				<li th:text="${users.getName()}"></li>
 			</ul>
 		</div>
 		<div>
-			<button id="inviteButton">Invite Members</button>
+			<button id="inviteButton" href="">Invite Members</button>
 		</div>
 	</ul>
 </aside>
+
 <main>
 	<div class="project-name" th:text="${projectDto.getTitle()}"></div>
-	<!-- <div class="centered-top">
-        <div class="project-intro">
-            <p class="div-h">Project Introduction</p>
-            여기에 프로젝트 설명 데이터 값 넣고 위에 Project Introduction 지우기
-            <p class="div-content"></p>
-        </div>
-    </div> -->
 	<hr style="background-color: #0056b3; height: 2px;">
-	<!-- 목표 리스트를 띄워줘야하는 부분 -->
 	<div class="board" style="margin-top: 3%;">
 		<a class="post">
 			<article class="post-detail">
 				<h1> 멤버 </h1>
 				<div class="post-user-child">
-					<div class="post-user-div">프로젝트 참여 인원 : </div> &nbsp;
+					<div class="post-user-div">프로젝트 참여 인원 : </div>
 					<div class="post-user-div" th:text="${#lists.size(joinUsers)} + '명'"></div>
 				</div>
-				<button class="post-button" th:onclick="|location.href='@{/user/search}'|">초대하기</button>
+				<button onclick="location.href='/user/search'" class="post-button">초대하기</button>
 			</article>
 		</a>
 		<a class="post">
@@ -85,7 +82,7 @@
 						<div style="text-align: center;" th:text="${completeHead}"></div>
 					</div>
 				</div>
-				<button class="post-button">바로가기</button>
+				<button onclick="location.href='/project/goals'" class="post-button">바로가기</button>
 			</article>
 		</a>
 		<a class="post">
@@ -94,7 +91,7 @@
 				<div class="post-user-child1">
 					<div class="post-user-list1">
 						<div>전체 작업 수</div>
-						<div style="text-align: center;" th:text="${#lists.size(workDtoList)}"></div>
+						<div style="text-align: center;" th:text="${#lists.size(workDtoList)}">00</div>
 					</div>
 					<div class="post-user-list2">
 						<div>진행 작업 수</div>
@@ -105,17 +102,17 @@
 						<div style="text-align: center;" th:text="${completeWork}"></div>
 					</div>
 				</div>
-				<button class="post-button">바로가기</button>
+				<button class="post-button" onclick="location.href='/project/works'">바로가기</button>
 			</article>
 		</a>
 		<a class="post">
 			<article class="post-detail">
 				<h1> 문서 </h1>
 				<div class="post-user-child">
-					<div class="post-user-div">마지막 문서 편집 시간 : </div> &nbsp;
-					<div class="post-user-div">00 00 00</div>
+					<div class="post-user-div"> 문서 개수 :</div>&nbsp; &nbsp;
+					<div class="post-user-div" th:text="${#lists.size(documentDtoList)}"> </div>
 				</div>
-				<button class="post-button">바로가기</button>
+				<button class="post-button" onclick="location.href='/project/document'">바로가기</button>
 			</article>
 		</a>
 	</div>

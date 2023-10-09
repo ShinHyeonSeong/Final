@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -14,10 +15,10 @@
 <header>
     <nav>
         <div class="nav-left">
-            <a th:href="@{/project/projectManagerList}"><button id="exitButton">나가기</button></a>
+            <a id="exitButton" href="/project/projectAllList">나가기</a>
         </div>
         <div class="nav-center">
-            <h1 id="projectName" th:text="${currentProject.getTitle()}"></h1>
+            <h1 id="projectName" th:text="${projectDto.getTitle()}"></h1>
         </div>
         <div class="nav-right">
             <p id="loggedInUser" th:text="${sessionUser.getName()}"></p>
@@ -28,8 +29,11 @@
     <ul>
         <div class="menu">
             <ul>
-                <li><a href="#">홈</a></li>
-                <li><a th:href="@{/project/goals}">작업</a></li>
+                <li><a th:href="@{/project/main}">홈</a></li>
+                <li class="menu-select"><a href="/project/goals">목표</a></li>
+                <li><a href="/project/works">작업</a></li>
+                <li><a href="/project/document">문서</a></li>
+                <li><a href="#">일정</a></li>
                 <li><a href="#">수신함</a></li>
             </ul>
         </div>
@@ -37,48 +41,63 @@
     <ul>
         <div class="user-list">
             <h2>프로젝트 멤버</h2>
-            <ul th:each="member : ${joinUsers}">
-                <li th:text="${member.getName()}"></li>
+            <ul th:each="users : ${joinUsers}">
+                <li th:text="${users.getName()}"></li>
             </ul>
         </div>
         <div>
-            <button id="inviteButton">Invite Members</button>
+            <button id="inviteButton" href="">Invite Members</button>
         </div>
     </ul>
 </aside>
-<div class="main-text">작업</div>
 
 <div class="main">
-    <div class="main-nav">
-        <ul>
-            <li><a href="#">목표</a></li>
-            <li><a href="#">할 일</a></li>
-            <li><a href="#">문서</a></li>
-            <li><a href="#">일정</a></li>
+    <div class="sub-nav">
+        <ul class="sub-navbar">
+            <li class="sub-nav-item"><a href="#">리스트로 돌아가기</a></li>
+            </li>
         </ul>
     </div>
 </div>
 
-<div class="container">
-    <div class="left-pane">
-        <h1 class="post-title" th:text="${currentProject.getTitle()}"></h1>
-        <p class="post-content" th:text="${currentProject.getSubtitle()}">
-        </p>
-    </div>
-    <div class="right-pane">
-        <div class="date-info">
-            <p th:text="'시작기한 : ' + ${#dates.format(currentProject.getStartDay(), 'yyyy-MM-dd')}"></p>
-            <p th:text="'마감기한 : ' + ${#dates.format(currentProject.getEndDay(), 'yyyy-MM-dd')}"></p>
+<div class="content">
+    <div class="container">
+        <div class="left-pane">
+            <div class="title-section">
+                <h1 class="post-title" th:text="${headDto.getTitle()}">title</h1>
+                <a class="edit-button">Edit</a>
+                <a class="delete-button">Delete</a>
+            </div>
+            <div class="horizon-divider"></div>
+            <p class="post-content" th:text="${headDto.getDiscription()}">
+            </p>
+            <div class="horizon-divider"></div>
         </div>
-        <div class="buttons">
-            <button class="edit-button" th:if="${auth == 1}">목표 수정</button>
-            <button class="delete-button" th:if="${auth == 1}">목표 삭제</button>
-        </div>
-        <div class="related-tasks">
-            <h2>Related Tasks</h2>
-            <ul class="task-list" th:each="work : ${workDtoList}">
-                <li><a href="#" th:text="${work.getTitle()}"></a></li>
-            </ul>
+        <div class="right-pane">
+            <div class="date-info">
+                <p th:text="'시작기한 : ' + ${#dates.format(headDto.getStartDay(), 'yyyy-MM-dd')}"></p>
+                <p th:text="'마감기한 : ' + ${#dates.format(headDto.getEndDay(), 'yyyy-MM-dd')}"></p>
+
+            </div>
+            <div class="buttons">
+
+                <a th:href="@{/project/head/completion/change/{id}(id=${headDto.headId})}">
+                    <button class="right-button" th:if="${auth == 1 && headDto.completion == 0}">완료로 표시</button>
+                </a>
+                <a th:href="@{/project/head/completion/change/{id}(id=${headDto.headId})}">
+                    <button class="right-button" th:if="${auth == 1 && headDto.completion == 1}">진행중으로 표시</button>
+                </a>
+            </div>
+            <div class="horizon-divider"></div>
+            <div class="related-tasks">
+                <h2>연결된 작업</h2>
+                <ul class="task-list" th:each="work : ${workDtoList}">
+                    <li><a href="#" th:text="${work.getTitle()}"></a></li>
+                </ul>
+            </div>
+            <div class="horizon-divider"></div>
+            <button class="sub-create-button" onclick="location.href='/project/work/create'">작업 만들기</button>
+
         </div>
     </div>
 </div>

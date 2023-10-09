@@ -1,14 +1,23 @@
-body {
-    font-family: Arial, sans-serif;
+/* Reset some default styles */
+body,
+h1,
+p,
+ul {
     margin: 0;
     padding: 0;
 }
 
+a {
+    text-decoration: none;
+}
+
+.content {
+    margin-left: 240px;
+}
+
 .container {
     display: flex;
-    width: 80%;
-    margin-top: 20px;
-    margin-left: 200px;
+    width: 95%;
     background-color: #fff;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     border-radius: 5px;
@@ -30,8 +39,39 @@ body {
     top: 0;
 }
 
+.title-section {
+    display: flex;
+}
+
 .post-title {
     font-size: 24px;
+    flex: 8;
+}
+
+.edit-button {
+    display: block;
+    flex: 2;
+    text-align: center;
+    width: 80%;
+    margin-top: 10px;
+    height: 20px;
+    color: rgb(101, 101, 252);
+    cursor: pointer;
+}
+
+.delete-button {
+    margin-top: 10px;
+    display: block;
+    text-align: center;
+    flex: 2;
+    width: 80%;
+    color: rgb(250, 108, 108);
+    cursor: pointer;
+}
+
+.edit-button:hover,
+.delete-button:hover {
+    text-decoration: dashed;
 }
 
 .post-content {
@@ -48,8 +88,7 @@ body {
     margin-bottom: 20px;
 }
 
-.edit-button,
-.delete-button {
+.right-button {
     display: block;
     width: 100%;
     padding: 10px;
@@ -61,8 +100,7 @@ body {
     cursor: pointer;
 }
 
-.edit-button:hover,
-.delete-button:hover {
+.right-button:hover {
     background-color: #727fcf;
 }
 
@@ -79,7 +117,7 @@ body {
     padding: 0;
 }
 
-.task-list>li {
+.task-list > li {
     font-size: 16px;
     margin-bottom: 5px;
     padding: 5px;
@@ -99,62 +137,112 @@ body {
 
 .task-list a:hover {
     text-decoration: none;
-    color: #0056b3;
-    background-color: #f0f0f0;
+    color: #fff;
+    background-color: #727fcf;
 }
 
 .comment-section {
-    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
+.comment-write-section {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 3rem;
+}
 
-.comment-body {
+.comment-count {
+    font-size: 20px;
+    font-weight: bolder;
+}
+
+.comment-write {
+    resize: none;
+    outline: none;
+    margin: 2rem 0;
+    width: 100%;
+    min-height: 6.125rem;
+    font-size: 18px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #5161CE;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #000;
+    vertical-align: top;
+}
+
+.comment-write:focus {
+    outline: none;
+    border: 2px solid #5161CE;
+}
+
+.comment-read-section {
+    vertical-align: top;
+}
+
+.comment-content-head {
     display: flex;
 }
 
+.comment-user-name {
+    flex: 2;
+    font-size: 20px;
+    margin-bottom: 2%;
+}
 
-.comment-input {
-    width: 70%;
-    height: 100%;
+.comment-head-button {
+    flex: 1;
+    all: unset;
+    margin: 10px;
+}
+
+.comment-head-button:hover {
+    color: #555555;
+}
+
+.comment-content {
+    font-size: 18px;
+}
+
+.submit-btn {
+    cursor: pointer;
+    padding: 10px 38px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: 0.5s;
+    margin-left: 20%;
+    float: right;
+    background-color: #949DD7;
+    color: #fff;
     border: none;
-    font-size: 1em;
-    padding-left: 5px;
-    font-style: oblique;
-    background-color: rgb(233, 233, 233);
-    display: inline;
-    outline: none;
-    box-sizing: border-box;
-    color: black;
+    border-radius: 4px;
 }
 
-input[type="text"] {
-    width: 70%;
-    height: 100%;
-    background-color: rgb(233, 233, 233);
-    font-size: 1em;
-    padding-left: 5px;
-    height: 50px;
-    display: inline;
-    outline: none;
-    box-sizing: border-box;
-    border: #222 solid 1px;
-    color: black;
-
+.submit-btn:hover {
+    background-color: #5161CE;
 }
 
-input[type=button] {
-    border: #222 solid 1px;
-    width: 30%;
-    height: 50px;
-    background-color: rgb(233, 233, 233);
-    font-size: 1em;
-    color: #042AaC;
-    outline: none;
-    display: inline;
-    margin-left: -10px;
-    box-sizing: border-box;
+.horizon-divider {
+    background-color: #5161CE;
+    height: 0.2px;
+    margin: 10px 0 30px 0;
 }
 
-input[type=button]:hover {
-    background-color: lightgray;
+.sub-create-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #949DD7;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.sub-create-button:hover {
+    background-color: #727fcf;
 }

@@ -1,7 +1,7 @@
 *{
     list-style: none;
     text-decoration: none;
-  }
+}
 
 *:focus {
     outline: none;
@@ -23,49 +23,8 @@ body {
     height: 100%;
 }
 
-.main {
-    margin-left: 180px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.main-nav {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    padding: 20px;
-    background-color: #fff;
-}
-
-.main-nav ul {
-    list-style-type: none;
-    padding: 0;
-    background-color: white;
-    color: #0747A6FF;
-    display: flex;
-    justify-content: space-between;
-    margin-left: 50px;
-}
-
-.main-nav ul li {
-    margin-right: 80px;
-    border-bottom: 3px solid #0747A6FF;
-}
-
-.main-nav a {
-    text-decoration: none;
-    color: #0747A6FF;
-    /* Change link text color to blue */
-    font-weight: bold;
-    font-size: 18px;
-    /* Increase the text size */
-}
-
-.main-nav ul li :hover {
-    border-bottom: 4px solid #48a1ff;
-    color: #48a1ff;
+.main-content-section {
+    margin-left: 240px;
 }
 
 .document-list {
@@ -412,7 +371,7 @@ ul {
 }
 
 .accordian header {
-    display: block;
+    display: flex;
     margin: 0;
     padding: 1em;
     background: #1F254F;
@@ -422,6 +381,10 @@ ul {
     font-weight: bold;
     color: #fff;
     align-items: center;
+}
+
+.accordian header a {
+    margin-left: auto;
 }
 
 
@@ -509,7 +472,7 @@ ul {
     border-radius: 2px;
     text-transform: uppercase;
     transition: all 0.4s;
-    float: right;
+    margin-left: auto;
 }
 
 .document-view-btn:hover {

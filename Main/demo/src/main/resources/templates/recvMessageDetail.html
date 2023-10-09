@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
 	<meta charset="UTF-8">
@@ -30,8 +29,11 @@
 		<div class="menu">
 			<ul>
 				<li><a href="#">홈</a></li>
-				<li class="menu-select"><a href="#">작업</a></li>
-				<li><a href="#">수신함</a></li>
+				<li><a href="#">목표</a></li>
+				<li><a href="#">작업</a></li>
+				<li><a href="#">문서</a></li>
+				<li><a href="#">일정</a></li>
+				<li class="menu-select"><a href="#">수신함</a></li>
 			</ul>
 		</div>
 	</ul>
@@ -59,19 +61,21 @@
 	</div>
 </div>
 
-<div class="message-container">
-	<div class="message-header">
-		<h1>Message Title</h1>
-	</div>
-	<div class="message-content">
-		<div class="message-info">
-			<p class="message-sender">Sender: <span>John Doe</span></p>
-			<p class="message-date">Received on: <span>Date & Time</span></p>
+<div class="main-container">
+	<div class="message-container">
+		<div class="message-header">
+			<h1>메세지 제목</h1>
 		</div>
-		<div class="message-text">
-			<p>This is the content of the received message. Lorem ipsum dolor sit amet, consectetur
-				adipiscing
-				elit. Curabitur sit amet elit ac justo euismod vehicula vel at nulla.</p>
+		<div class="message-content">
+			<div class="message-info">
+				<p class="message-sender">보낸 사람: <span>John Doe</span></p>
+				<p class="message-date">받은 날짜: <span>Date & Time</span></p>
+			</div>
+			<div class="message-text">
+				<p>메세지 내용.메세지 내용.메세지 내용.메세지 내용.메세지 내용.메세지 내용.
+					메세지 내용.메세지 내용.메세지 내용.
+				</p>
+			</div>
 		</div>
 	</div>
 </div>

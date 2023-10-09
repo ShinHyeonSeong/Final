@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-<html xmlns:th="http://www.thymeleaf.org">
+<!-- 목표 리스트 창 -->
 
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="/css/messageDetail.css">
+	<link rel="stylesheet" href="/css/goal.css">
 	<link rel="stylesheet" href="/css/sidebar.css">
 	<link rel="stylesheet" href="/css/sideNavbar.css">
 	<title>BPM</title>
@@ -30,7 +30,10 @@
 		<div class="menu">
 			<ul>
 				<li><a href="#">홈</a></li>
+				<li><a href="#">목표</a></li>
 				<li class="menu-select"><a href="#">작업</a></li>
+				<li><a href="#">문서</a></li>
+				<li><a href="#">일정</a></li>
 				<li><a href="#">수신함</a></li>
 			</ul>
 		</div>
@@ -49,30 +52,45 @@
 		</div>
 	</ul>
 </aside>
+
 <div class="main">
 	<div class="sub-nav">
 		<ul class="sub-navbar">
-			<li class="sub-nav-item-active"><a class="active" href="#">수신함</a></li>
-			<li class="sub-nav-item"><a href="#">발신함</a></li>
+			<li class="sub-nav-item"><a href="#">전체 작업</a></li>
+			<li class="sub-nav-item-active"><a class="active" href="#">나의 작업</a></li>
 			</li>
 		</ul>
 	</div>
 </div>
 
-<div class="message-container">
-	<div class="message-header">
-		<h1>Message Title</h1>
-	</div>
-	<div class="message-content">
-		<div class="message-info">
-			<p class="message-sender">Sender: <span>John Doe</span></p>
-			<p class="message-date">Received on: <span>Date & Time</span></p>
-		</div>
-		<div class="message-text">
-			<p>This is the content of the received message. Lorem ipsum dolor sit amet, consectetur
-				adipiscing
-				elit. Curabitur sit amet elit ac justo euismod vehicula vel at nulla.</p>
-		</div>
+<div class="content">
+	<div class="work">
+		<table>
+			<div class="table-head-list">
+				<h2 class="table-h2">작업 > 나의 작업</h2>
+				<div class="button-section"><button class="createbutton">새로 만들기</button></div>
+			</div>
+			<thead>
+			<th>
+				작업 이름
+			</th>
+			<th>마감 기한</th>
+			<th>진행 상태</th>
+			</thead>
+			<tbody>
+			<tr>
+				<td class="table-name"><a>x</a></td>
+				<td>x</td>
+				<td>완료</td>
+			</tr>
+			
+			<tr>
+				<td><a>x</a></td>
+				<td>x</td>
+				<td>완료</td>
+			</tr>
+			</tbody>
+		</table>
 	</div>
 </div>
 </body>

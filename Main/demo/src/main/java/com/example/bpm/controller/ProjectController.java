@@ -7,6 +7,7 @@ import com.example.bpm.dto.project.WorkDto;
 import com.example.bpm.dto.project.request.ProjectRequestDto;
 import com.example.bpm.dto.user.UserDto;
 import com.example.bpm.repository.UserRepository;
+import com.example.bpm.service.DocumentService;
 import com.example.bpm.service.ProjectDetailSerivce;
 import com.example.bpm.service.ProjectSerivce;
 //import jakarta.servlet.http.HttpSession;
@@ -34,6 +35,8 @@ public class ProjectController {
     private UserRepository userRepository;
     @Autowired
     private ProjectDetailSerivce projectDetailSerivce;
+    @Autowired
+    private DocumentService documentService;
 
     HttpSession session;
 
@@ -174,6 +177,8 @@ public class ProjectController {
         checkAuth();
         Long auth = getSessionAuth();
 
+        List<DocumentDto> documentDtoList = documentService.findDocumentList();
+
         // 완료, 미완 헤드 수
         int progressHead = projectDetailSerivce.countProgressHead(headDtoList);
         int completeHead = headDtoList.size() - progressHead;
@@ -182,6 +187,7 @@ public class ProjectController {
         model.addAttribute("projectDto", presentDto);
         model.addAttribute("sessionUser", userDto);
         model.addAttribute("joinUsers", userDtoList);
+        model.addAttribute("documentDtoList", documentDtoList);
         model.addAttribute("headDtoList", headDtoList);
         model.addAttribute("progressHead", progressHead);
         model.addAttribute("completeHead", completeHead);
