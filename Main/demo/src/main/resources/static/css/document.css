@@ -23,8 +23,12 @@ body {
     height: 100%;
 }
 
-.main-content-section {
-    margin-left: 240px;
+.content {
+    margin-left: 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .document-list {
@@ -38,7 +42,6 @@ body {
     align-items: center;
     width: 100%;
     height: 100px;
-    margin-top: 50px;
 }
 
 .document-list-title {
@@ -371,20 +374,16 @@ ul {
 }
 
 .accordian header {
-    display: flex;
+    display: block;
     margin: 0;
     padding: 1em;
-    background: #1F254F;
+    background: #5161CE;
     border-top: 1px solid #ddd;
     cursor: pointer;
     font-size: 18px;
     font-weight: bold;
     color: #fff;
     align-items: center;
-}
-
-.accordian header a {
-    margin-left: auto;
 }
 
 
@@ -446,9 +445,9 @@ ul {
     font-size: 17px;
     font-weight: bold;
     padding: 1px 16px;
-    background-color: white;
-    color: black;
-    border: 1.5px solid #333;
+    background-color: #5161CE;
+    color: white;
+    border: 1.5px solid #5161CE;
     border-radius: 4px;
     text-transform: uppercase;
     transition: all 0.4s;
@@ -472,7 +471,7 @@ ul {
     border-radius: 2px;
     text-transform: uppercase;
     transition: all 0.4s;
-    margin-left: auto;
+    float: right;
 }
 
 .document-view-btn:hover {
