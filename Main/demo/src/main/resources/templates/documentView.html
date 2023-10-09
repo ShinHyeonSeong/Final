@@ -29,13 +29,11 @@
 	<!-- 슬라이드 높이값 조정시 css .slider 변경 -->
 	<div class="slider">
 		<div class="slide_viewer">
-			<div class="slide_group" th:each="document : ${document}">
+			<div class="slide_group">
 				<!-- 각 슬라이드 -->
-				<div class="slide">
+				<div class="slide" th:each="document : ${document}">
 					<p document.documentDto.title></p>
 					<div class="move_block" th:each="blockEntity : ${document.blockDtoList}">
-						<div class="move">+</div>
-						
 						<div th:id="${blockEntity.category}"
 							 th:if="${blockEntity.category == 'blockImage'}"
 							 th:content="${blockEntity.content}"
@@ -49,7 +47,6 @@
 						<div th:id="${blockEntity.category}"
 							 th:if="${blockEntity.category != 'blockImage' and blockEntity.category != 'blockVideo'}"
 							 class ="blockEntity"
-							 contenteditable="true"
 							 placeholder="빈 블럭"
 							 th:utext="${blockEntity.content}"
 							 spellcheck="false">blockEntity content</div>
