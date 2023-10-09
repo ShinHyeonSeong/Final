@@ -60,4 +60,20 @@
 </div>
 </body>
 
+<script>
+	var calendarEl = documentEntity.getElementById('calendar');
+	var request = $.ajax({
+				url: "/calendar/event",
+				method: "GET"
+			}
+	);
+	request.done(function (data) {
+		var calendar = new FullCalendar.Calendar(calendarEl, {
+			initialView: 'dayGridMonth',
+			events: data
+		});
+		calendar.render();
+	});
+</script>
+
 </html>
