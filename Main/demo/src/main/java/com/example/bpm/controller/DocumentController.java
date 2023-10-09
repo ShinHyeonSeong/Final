@@ -140,8 +140,9 @@ public class DocumentController {
         String userUuid = sessionUser.getUuid();
 
         if(documentService.accreditUserToWork(userUuid, id, getSessionAuth())){
+            long workId = projectDetailSerivce.findWorkByDocument(documentService.findDocumentById(id)).getWorkId();
             log.info("해당 유저에게 수정 권한이 없음");
-            return "redirect:/document/view?id="+id;
+            return "redirect:/document/view?id="+workId;
         }
 
         DocumentDto documentDto = documentService.findDocumentById(id);
@@ -157,21 +158,6 @@ public class DocumentController {
     // 문서 뷰 Document view
     /// 문서 작성 페이지 이동
     @GetMapping("document/view")
-    public String getDocumentView(String id, Model model, HttpSession session) {
-
-        UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
-        String userUuid = sessionUser.getUuid();
-
-        DocumentDto documentDto = documentService.findDocumentById(id);
-        List<BlockDto> blockDtoList = documentService.findBlockListByDocumentId(id);
-
-        model.addAttribute("document", documentDto);
-        model.addAttribute("blockList", blockDtoList);
-
-        return "documentView";
-    }
-
-    @GetMapping("document/work/view")
     public String getWorkDocumentView(long id, Model model, HttpSession session) {
 
         UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
