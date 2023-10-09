@@ -104,8 +104,8 @@ public class ProjectDetailSerivce {
         workDto.setHeadIdToWork(headRepository.findById(connectHead.getHeadId()).orElse(null));
         workDto.setProjectIdToWork(projectRepository.findById(projectDto.getProjectId()).orElse(null));
 
-        workRepository.save(workDto.toEntity());
-
+        WorkEntity workEntity = workRepository.save(workDto.toEntity());
+        workDto.insertEntity(workEntity);
         return workDto;
     }
 
@@ -280,6 +280,18 @@ public class ProjectDetailSerivce {
 
         for (UserWorkEntity userWorkEntity : userWorkEntityList){
             UserWorkDto userWorkDto = new UserWorkDto();
+            userWorkDto.insertEntity(userWorkEntity);
+            userWorkDtoList.add(userWorkDto);
+        }
+        return userWorkDtoList;
+    }
+
+    public List<UserWorkDto> findUserWorkListByUser(UserDto userDto) {
+        List<UserWorkEntity> userWorkEntityList = userWorkRepository.findAllByUserIdToUserWork_Uuid(userDto.getUuid());
+        List<UserWorkDto> userWorkDtoList = new ArrayList<>();
+        UserWorkDto userWorkDto = new UserWorkDto();
+
+        for (UserWorkEntity userWorkEntity : userWorkEntityList) {
             userWorkDto.insertEntity(userWorkEntity);
             userWorkDtoList.add(userWorkDto);
         }

@@ -65,7 +65,7 @@ h1 {
     line-height: 18px;
     align-items: center;
     display: flex;
-    font-weight: 500;
+    font-weight: bold;
 }
 
 .essential {
@@ -244,4 +244,56 @@ li {
     font-size: 15px;
     font-weight: 500;
 
+}
+
+
+/* checkbox */
+
+.inbox {
+    background: white;
+    border-radius: 5px;
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    border: 1px solid #F1F1F1;
+}
+
+.item:last-child {
+    border-bottom: 0;
+}
+
+.info {
+    margin: 20px;
+}
+
+input:checked+p {
+    background: #ff6a6a;
+    text-decoration: line-through;
+}
+
+input[type="checkbox"] {
+    margin: 20px;
+    accent-color: red;
+}
+
+.change input:checked {
+    accent-color: red;
+}
+
+p {
+    margin: 0;
+    padding: 20px;
+    transition: background 0.2s;
+    flex: 1;
+    font-family: 'helvetica neue';
+    font-size: 14px;
+    border-left: 1px solid #ff6a6a;
+}
+
+.explain {
+    font-size: 16px;
+    border-left: none;
 }

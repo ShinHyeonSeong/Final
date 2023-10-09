@@ -10,6 +10,7 @@ import com.example.bpm.dto.project.relation.WorkDocumentDto;
 import com.example.bpm.dto.user.UserDto;
 import com.example.bpm.dto.user.relation.UserWorkDto;
 import com.example.bpm.service.*;
+import com.example.bpm.service.Logic.dateLogic.DateManager;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
@@ -108,17 +109,24 @@ public class ProjectDetailController {
         UserDto sessionUser = getSessionUser();
         ProjectDto currentProject = getSessionProject();
         Long auth = getSessionAuth();
-        List<WorkDto> workDtoList = projectDetailSerivce.findWorkListByUser(sessionUser);
+        List<UserWorkDto> userWorkDtoList = projectDetailSerivce.findUserWorkListByUser(sessionUser);
+        List<HeadDto> headDtoList = new ArrayList<>();
+        HeadDto headDto = new HeadDto();
 
+        for (UserWorkDto userWorkDto : userWorkDtoList) {
+            headDto.insertEntity(userWorkDto.getWorkIdToUserWork().getHeadIdToWork());
+            if (!headDtoList.contains(headDto)) {
+                headDtoList.add(headDto);
+            }
+        }
 
-        List<HeadDto> headDtoList = projectDetailSerivce.findHeadListByProject(currentProject);
         List<UserDto> userDtoList = userService.findUserListByProjectId(currentProject.getProjectId());
         model.addAttribute("sessionUser", sessionUser);
         model.addAttribute("projectDto", currentProject);
         model.addAttribute("auth", auth);
         model.addAttribute("headDtoList", headDtoList);
         model.addAttribute("joinUsers", userDtoList);
-        return "goal";
+        return "myGoal";
     }
 
     // 상위 목표 생성 진입
@@ -165,98 +173,105 @@ public class ProjectDetailController {
         return "headView";
     }
 
-//    // head 수정창 매핑 메서드
-//    @RequestMapping("/project/goal/head/edit/{id}")
-//    public String goEditHead(@PathVariable("id") Long headId,
-//                             @RequestParam(value = "message", required = false) String message,
-//                             Model model) {
-//        if (message != null) {
-//            model.addAttribute("message", message);
-//        }
-//        HeadDto headDto = projectDetailSerivce.findHeadById(headId);
-//        model.addAttribute("headDto", headDto);
-//        return "headEdit";
-//    }
-//
-//    // detail 수정창 매핑 메서드
-//    @RequestMapping("/project/goal/detail/edit/{id}")
-//    public String goEditDetail(@PathVariable("id") Long detailId,
-//                               @RequestParam(value = "message", required = false) String message,
-//                               Model model) {
-//
-//        DetailDto detailDto = projectDetailSerivce.findDetailById(detailId);
-//        ProjectDto currentProject = getSessionProject();
-//        List<HeadDto> headDtoList = projectDetailSerivce.findHeadListByProject(currentProject);
-//        if (message != null) {
-//            model.addAttribute("message", message);
-//        }
-//        model.addAttribute("detailDto", detailDto);
-//        model.addAttribute("headDtoList", headDtoList);
-//        return "detailEdit";
-//    }
-//
-//    // work 수정창 매핑 메서드
-//    @RequestMapping("/project/goal/work/edit/{id}")
-//    public String goEditWork(@PathVariable("id") Long workId,
-//                             @RequestParam(value = "message", required = false) String message,
-//                             Model model) {
-//        WorkDto workDto = projectDetailSerivce.findWork(workId);
-//        List<UserDto> userDtoList = userService.findUserListByProjectId(getSessionProject().getProjectId());
-//        List<UserWorkDto> userWorkDtoList = projectDetailSerivce.findUserWorkListByWorkId(workId);
-//        List<DetailDto> detailDtoList = projectDetailSerivce.findDetailListByProject(getSessionProject());
-//
-//        if (message != null) {
-//            model.addAttribute("message", message);
-//        }
-//        model.addAttribute("workDto", workDto);
-//        model.addAttribute("userDtoList", userDtoList);
-//        model.addAttribute("userWorkDtoList", userWorkDtoList);
-//        model.addAttribute("detailDtoList", detailDtoList);
-//        return "workEdit";
-//    }
-//
-    // head 수정 실행 메서드
-//    @PostMapping("/project/head/edit")
-//    public String editHead(@RequestParam(value = "title") String title,
-//                           @RequestParam(value = "startDay") String startDay,
-//                           @RequestParam(value = "deadline") String deadline,
-//                           @RequestParam(value = "discription") String discription,
-//                           @RequestParam(value = "headId") Long headId,
-//                           RedirectAttributes rttr,
-//                           Model model) {
-//        ProjectDto currentProject = getSessionProject();
-//        String message = exceptionService.headEditErrorCheck(currentProject, title, startDay, deadline);
-//        if (message != null) {
-//            log.info("예외 처리 결과 : " + message);
-//            rttr.addFlashAttribute("message", message);
-//            return "redirect:/project/goal/head/edit/" + headId;
-//        }
-//        HeadDto headDto = projectDetailSerivce.editHead(title, startDay, deadline, discription, headId);
-//        return "redirect:/project/goals";
-//    }
+    // head 수정창 매핑 메서드
+    @RequestMapping("/project/goal/head/edit/{id}")
+    public String goEditHead(@PathVariable("id") Long headId,
+                             @RequestParam(value = "message", required = false) String message,
+                             Model model) {
+        if (message != null) {
+            model.addAttribute("message", message);
+        }
+        HeadDto headDto = projectDetailSerivce.findHeadById(headId);
+        List<WorkDto> workDtoList = projectDetailSerivce.findWorkListByHead(headDto);
+        model.addAttribute("headDto", headDto);
+        model.addAttribute("workDtoList", workDtoList);
+        return "headEdit";
+    }
 
-//    // work 수정 실행 메서드
-//    @PostMapping("/project/work/edit")
-//    public String editWork(@RequestParam(value = "title") String title,
-//                           @RequestParam(value = "startDay") String startDay,
-//                           @RequestParam(value = "deadline") String endDay,
-//                           @RequestParam(value = "discription") String discription,
-//                           @RequestParam("connectDetail") Long detailId,
-//                           @RequestParam(value = "workId") Long workId,
-//                           @RequestParam("chargeUsers") List<String> chargeUsers,
-//                           RedirectAttributes rttr) {
-//        WorkDto workDto = projectDetailSerivce.findWork(workId);
-//        String message = exceptionService.workEditErrorCheck(startDay, endDay, detailId);
-//        if (message != null) {
-//            log.info("예외 처리 결과 : " + message);
-//            rttr.addFlashAttribute("message", message);
-//            return "redirect:/project/goal/work/edit/" + workId;
-//        }
-//        projectDetailSerivce.editWork(title, startDay, endDay, discription, workId, detailId);
-//        projectDetailSerivce.deleteUserWork(workId);
-//        projectDetailSerivce.addUserWork(workDto, chargeUsers);
-//        return "redirect:/project/work/detail/" + workId;
-//    }
+    // work 수정창 매핑 메서드
+    @RequestMapping("/project/goal/work/edit/{id}")
+    public String goEditWork(@PathVariable("id") Long workId,
+                             @RequestParam(value = "message", required = false) String message,
+                             Model model) {
+        List<HeadDto> headDtoList = projectDetailSerivce.findHeadListByProject(getSessionProject());
+        WorkDto workDto = projectDetailSerivce.findWork(workId);
+        List<UserDto> userDtoList = userService.findUserListByProjectId(getSessionProject().getProjectId());
+        List<UserWorkDto> userWorkDtoList = projectDetailSerivce.findUserWorkListByWorkId(workId);
+
+        if (message != null) {
+            model.addAttribute("message", message);
+        }
+        model.addAttribute("headDtoList", headDtoList);
+        model.addAttribute("workDto", workDto);
+        model.addAttribute("userDtoList", userDtoList);
+        model.addAttribute("userWorkDtoList", userWorkDtoList);
+        return "workEdit";
+    }
+
+    // head 수정 실행 메서드
+    @PostMapping("/project/head/edit")
+    public String editHead(@RequestParam(value = "title") String title,
+                           @RequestParam(value = "startDay") String startDay,
+                           @RequestParam(value = "deadline") String deadline,
+                           @RequestParam(value = "discription") String discription,
+                           @RequestParam(value = "headId") Long headId,
+                           @RequestParam(value = "deleteWorkList", required = false) List<Long> deleteWorkList,
+                           RedirectAttributes rttr,
+                           Model model) {
+
+        DateManager dateManager = new DateManager();
+        ProjectDto currentProject = getSessionProject();
+        String message = exceptionService.headEditErrorCheck(currentProject, title, startDay, deadline);
+        if (message != null) {
+            log.info("예외 처리 결과 : " + message);
+            rttr.addFlashAttribute("message", message);
+            return "redirect:/project/goal/head/edit/" + headId;
+        }
+        HeadDto afterHead = projectDetailSerivce.findHeadById(headId);
+        afterHead.setTitle(title);
+        afterHead.setDiscription(discription);
+        afterHead.setStartDay(dateManager.formatter(startDay));
+        afterHead.setEndDay(dateManager.formatter(deadline));
+        projectDetailSerivce.updateHead(headId, afterHead);
+
+        for (Long workId : deleteWorkList) {
+            projectDetailSerivce.deleteWork(projectDetailSerivce.findWork(workId));
+        }
+        return "redirect:/project/goals";
+    }
+
+    // work 수정 실행 메서드
+    // entity 사용 배제 필요
+    @PostMapping("/project/work/edit")
+    public String editWork(@RequestParam(value = "title") String title,
+                           @RequestParam(value = "startDay") String startDay,
+                           @RequestParam(value = "deadline") String endDay,
+                           @RequestParam(value = "discription") String discription,
+                           @RequestParam(value = "chargeUsers") List<String> chargeUsers,
+                           @RequestParam("headId") Long headId,
+                           @RequestParam(value = "workId") Long workId,
+                           RedirectAttributes rttr) {
+        log.info("작업 편집 메서드 실행");
+        DateManager dateManager = new DateManager();
+        WorkDto workDto = projectDetailSerivce.findWork(workId);
+        String message = exceptionService.workEditErrorCheck(startDay, endDay, headId);
+        if (message != null) {
+            log.info("예외 처리 결과 : " + message);
+            rttr.addFlashAttribute("message", message);
+            return "redirect:/project/goal/work/edit/" + workId;
+        }
+
+        workDto.setTitle(title);
+        workDto.setDiscription(discription);
+        workDto.setStartDay(dateManager.formatter(startDay));
+        workDto.setEndDay(dateManager.formatter(endDay));
+        workDto.setHeadIdToWork(projectDetailSerivce.findHeadById(headId).toEntity());
+
+        projectDetailSerivce.updateWork(workId, workDto);
+        projectDetailSerivce.deleteUserWork(workDto.toEntity());
+        projectDetailSerivce.addUserWork(workDto, chargeUsers);
+        return "redirect:/project/work/detail/" + workId;
+    }
 //    *//* - - - - 목표 관련 메서드 끝 - - - -*//*
 //
 //
@@ -275,6 +290,21 @@ public class ProjectDetailController {
         model.addAttribute("workDtoList", workDtoList);
         model.addAttribute("joinUsers", userDtoList);
         return "work";
+    }
+
+    @GetMapping("/project/myWorks")
+    public String myWorks(Model model) {
+        UserDto sessionUser = getSessionUser();
+        ProjectDto currentProject = getSessionProject();
+        Long auth = getSessionAuth();
+        List<UserWorkDto> userWorkDtoList = projectDetailSerivce.findUserWorkListByUser(sessionUser);
+        List<UserDto> userDtoList = userService.findUserListByProjectId(currentProject.getProjectId());
+        model.addAttribute("sessionUser", sessionUser);
+        model.addAttribute("projectDto", currentProject);
+        model.addAttribute("auth", auth);
+        model.addAttribute("userWorkDtoList", userWorkDtoList);
+        model.addAttribute("joinUsers", userDtoList);
+        return "myWork";
     }
 
     // work 생성창 진입 메서드
@@ -357,23 +387,17 @@ public class ProjectDetailController {
 //        return "redirect:/project/projectManagerList";
 //    }
 //
-//    @RequestMapping("/project/goal/head/delete/{id}")
-//    public String deleteHead(@PathVariable("id") Long headId) {
-//        projectDetailSerivce.deleteHeadEntity(headId);
-//        return "redirect:/project/goals";
-//    }
-//
-//    @RequestMapping("/project/goal/detail/delete/{id}")
-//    public String deleteDetail(@PathVariable("id") Long detailId) {
-//        projectDetailSerivce.deleteDetailEntity(detailId);
-//        return "redirect:/project/goals";
-//    }
-//
-//    @RequestMapping("/project/goal/work/delete/{id}")
-//    public String deleteWork(@PathVariable("id") Long workId) {
-//        projectDetailSerivce.deleteWorkEntity(workId);
-//        return "redirect:/project/works";
-//    }
+    @RequestMapping("/project/goal/head/delete/{id}")
+    public String deleteHead(@PathVariable("id") Long headId) {
+        projectDetailSerivce.deleteHead(projectDetailSerivce.findHeadById(headId));
+        return "redirect:/project/goals";
+    }
+
+    @RequestMapping("/project/goal/work/delete/{id}")
+    public String deleteWork(@PathVariable("id") Long workId) {
+        projectDetailSerivce.deleteWork(projectDetailSerivce.findWork(workId));
+        return "redirect:/project/works";
+    }
 //
 //
 //    *//* - - - - 댓글 관련 메서드 - - - -*//*

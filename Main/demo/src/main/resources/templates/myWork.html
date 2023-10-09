@@ -55,8 +55,8 @@
 <div class="main">
 	<div class="sub-nav">
 		<ul class="sub-navbar">
-			<li class="sub-nav-item-active"><a class="active" href="/project/works">전체 작업</a></li>
-			<li class="sub-nav-item"><a href="/project/myWorks">나의 작업</a></li>
+			<li class="sub-nav-item-active"><a href="/project/works">전체 작업</a></li>
+			<li class="sub-nav-item"><a class="active" href="/project/myWorks">나의 작업</a></li>
 			</li>
 		</ul>
 	</div>
@@ -77,11 +77,12 @@
 			<th>진행 상태</th>
 			</thead>
 			<tbody>
-			<tr th:each="workDto : ${workDtoList}">
-				<td class="table-name"><a th:href="@{/project/work/detail/{id}(id=${workDto.getWorkId()})}" th:text="${workDto.getTitle()}"></a></td>
-				<td th:text="${#dates.format(workDto.getEndDay(), 'yyyy-MM-dd')}"></td>
-				<td th:if="${workDto.getCompletion() == 1}">완료</td>
-				<td th:if="${workDto.getCompletion() == 0}">진행중</td>
+			<tr th:each="userWorkDto : ${userWorkDtoList}">
+				<td class="table-name"><a th:href="@{/project/work/detail/{id}(id=${userWorkDto.getWorkIdToUserWork().getWorkId()})}"
+										  th:text="${userWorkDto.getWorkIdToUserWork().getTitle()}"></a></td>
+				<td th:text="${#dates.format(userWorkDto.getWorkIdToUserWork().getEndDay(), 'yyyy-MM-dd')}"></td>
+				<td th:if="${userWorkDto.getWorkIdToUserWork().getCompletion() == 1}">완료</td>
+				<td th:if="${userWorkDto.getWorkIdToUserWork().getCompletion() == 0}">진행중</td>
 			</tr>
 			</tbody>
 		</table>
