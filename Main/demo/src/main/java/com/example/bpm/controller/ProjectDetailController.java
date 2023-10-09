@@ -473,21 +473,21 @@ public class ProjectDetailController {
         projectDetailSerivce.updateWorkCompletion(workId);
         return "redirect:/project/works";
     }
-//
-//    *//*  - - - - - Calendar Controller - - - - - *//*
-//    @GetMapping("/project/calender") //기본 페이지 표시
-//    public String viewCalendar() {
-//
-//        return "calendar";
-//    }
-//
-//    @RequestMapping(value = "/calendar/event", method = {RequestMethod.GET}) //ajax 데이터 전송 URL
-//    public @ResponseBody List<Map<String, Object>> getEvent() {
-//
-//        ProjectDto projectDto = getSessionProject();
-//
-//        return calendarService.getEventList(projectDto.getProjectId());
-//    }
+
+    //*  - - - - - Calendar Controller - - - - - *//
+    @GetMapping("/project/calender") //기본 페이지 표시
+    public String viewCalendar() {
+
+        return "calendar";
+    }
+
+    @RequestMapping(value = "/calendar/event", method = {RequestMethod.GET}) //ajax 데이터 전송 URL
+    public @ResponseBody List<Map<String, Object>> getEvent() {
+
+        ProjectDto projectDto = getSessionProject();
+
+        return calendarService.getEventList(projectDto.getProjectId());
+    }
 
 
     //* - - - - - Message Contorller - - - - - - *//*
