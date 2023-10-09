@@ -11,25 +11,25 @@
 			alert(message);
 		}
 		function loginform_check() {
-			var email = documentEntity.getElementById("email");
-			var password = documentEntity.getElementById("password");
-
+			var email = document.getElementById("email");
+			var password = document.getElementById("password");
+			
 			if (email.value == "") {
 				alert("이메일을 입력해주십시오.");
 				email.focus();
 				return false;
 			};
-
+			
 			if (password.value == "") {
 				alert("비밀번호를 입력해주십시오.");
 				password.focus();
 				return false;
 			};
-
-			documentEntity.login_form.submit();
+			
+			document.login_form.submit();
 			event.preventDefault();
 		}
-
+	
 	</script>
 </head>
 <body>

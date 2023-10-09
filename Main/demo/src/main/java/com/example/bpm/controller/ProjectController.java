@@ -7,6 +7,7 @@ import com.example.bpm.dto.project.WorkDto;
 import com.example.bpm.dto.project.request.ProjectRequestDto;
 import com.example.bpm.dto.user.UserDto;
 import com.example.bpm.repository.UserRepository;
+import com.example.bpm.service.DocumentService;
 import com.example.bpm.service.ProjectDetailSerivce;
 import com.example.bpm.service.ProjectSerivce;
 //import jakarta.servlet.http.HttpSession;
@@ -34,10 +35,12 @@ public class ProjectController {
     private UserRepository userRepository;
     @Autowired
     private ProjectDetailSerivce projectDetailSerivce;
+    @Autowired
+    private DocumentService documentService;
 
     HttpSession session;
 
-    /*public UserDto getSessionUser() {
+    public UserDto getSessionUser() {
         UserDto currentUser = (UserDto) session.getAttribute("userInfo");
         return currentUser;
     }
@@ -71,7 +74,7 @@ public class ProjectController {
         model.addAttribute("user", sessionUser);
         model.addAttribute("managerList", ManagerToProjectList);
 
-        List<ProjectRequestDto> requestDtos = projectSerivce.findAllToRequestProject(sessionUser.getUuid());
+        List<ProjectRequestDto> requestDtos = projectSerivce.findAllProjectRequestRecv(sessionUser);
         if (requestDtos.isEmpty()) {
             model.addAttribute("request", false);
         } else model.addAttribute("request", true);
@@ -107,7 +110,7 @@ public class ProjectController {
         model.addAttribute("user", sessionUser);
         model.addAttribute("memberList", memberToProjectList);
 
-        List<ProjectRequestDto> requestDtos = projectSerivce.findAllToRequestProject(sessionUser.getUuid());
+        List<ProjectRequestDto> requestDtos = projectSerivce.findAllProjectRequestRecv(sessionUser);
         if (requestDtos.isEmpty()) {
             model.addAttribute("request", false);
         } else model.addAttribute("request", true);
@@ -118,12 +121,10 @@ public class ProjectController {
     @GetMapping("/project/projectAllList")
     public String projectAllList(Model model) {
         UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
-        //UUID를 활용하여 권한자 / 비권한자 프로젝트 리스트를 불러온다
-        List<ProjectDto> ManagerToProjectList = projectSerivce.findProjectListRoleManager(sessionUser.getUuid());
         model.addAttribute("user", sessionUser);
-        List<ProjectDto> AllProjectList = projectSerivce.findAllToProjectList();
+        List<ProjectDto> AllProjectList = projectSerivce.findAllProjectList();
         model.addAttribute("projectAllList", AllProjectList);
-        List<ProjectRequestDto> requestDtos = projectSerivce.findAllToRequestProject(sessionUser.getUuid());
+        List<ProjectRequestDto> requestDtos = projectSerivce.findAllProjectRequestRecv(sessionUser);
         if (requestDtos.isEmpty()) {
             model.addAttribute("request", false);
         } else model.addAttribute("request", true);
@@ -154,7 +155,6 @@ public class ProjectController {
             return "projectCreate";
         } else {
             ProjectDto projectDto = projectSerivce.createProject(title, subtitle, startDay, endDay);
-            log.info(projectDto.getProjectId().toString());
             UserDto sessionUser = getSessionUser();
             session.setAttribute("currentProject", projectDto);
             projectSerivce.addRoleManager(projectDto, sessionUser);
@@ -177,28 +177,42 @@ public class ProjectController {
         checkAuth();
         Long auth = getSessionAuth();
 
-        model.addAttribute("auth", auth);
+        List<DocumentDto> documentDtoList = documentService.findDocumentList();
 
+        // 완료, 미완 헤드 수
+        int progressHead = projectDetailSerivce.countProgressHead(headDtoList);
+        int completeHead = headDtoList.size() - progressHead;
+
+        model.addAttribute("auth", auth);
         model.addAttribute("projectDto", presentDto);
+        model.addAttribute("sessionUser", userDto);
         model.addAttribute("joinUsers", userDtoList);
+        model.addAttribute("documentDtoList", documentDtoList);
         model.addAttribute("headDtoList", headDtoList);
+        model.addAttribute("progressHead", progressHead);
+        model.addAttribute("completeHead", completeHead);
 
         if (getSessionAuth() != 2) {
-            List<WorkDto> userWorkDtoList = projectDetailSerivce.findWorkListByProject(presentDto);
-
-            model.addAttribute("userWorkDtoList", userWorkDtoList);
-            return "projectMain";
-        } else if (getSessionAuth() == 2) {
-            List<DetailDto> detailDtoList = projectDetailSerivce.findDetailListByProject(projectSerivce.findProject(id));
             List<WorkDto> workDtoList = projectDetailSerivce.findWorkListByProject(presentDto);
-            List<DocumentDto> documentDtoList = projectDetailSerivce.findDocumentListByWorkList(workDtoList);
+            int progressWork = projectDetailSerivce.countProgressWork(workDtoList);
+            int completeWork = workDtoList.size() - progressWork;
 
-            model.addAttribute("detailDtoList", detailDtoList);
             model.addAttribute("workDtoList", workDtoList);
-            model.addAttribute("documentDtoList", documentDtoList);
-
-            return "onlyReadPage";
+            model.addAttribute("progressWork", progressWork);
+            model.addAttribute("completeWork", completeWork);
+            return "projectMain";
         }
+//        else if (getSessionAuth() == 2) {
+//            List<DetailDto> detailDtoList = projectDetailSerivce.findDetailListByProject(projectSerivce.findProject(id));
+//            List<WorkDto> workDtoList = projectDetailSerivce.findWorkListByProject(presentDto);
+//            List<DocumentDto> documentDtoList = projectDetailSerivce.findDocumentListByWorkList(workDtoList);
+//
+//            model.addAttribute("detailDtoList", detailDtoList);
+//            model.addAttribute("workDtoList", workDtoList);
+//            model.addAttribute("documentDtoList", documentDtoList);
+//
+//            return "onlyReadPage";
+//        }
         //권한이 없습니다 알람창 띄우기
         return null;
     }
@@ -229,7 +243,7 @@ public class ProjectController {
         //UUID를 활용하여 권한자 / 비권한자 프로젝트 리스트를 불러온다
         model.addAttribute("user", sessionUser);
 
-        List<ProjectRequestDto> requestDtos = projectSerivce.findAllToRequestProject(sessionUser.getUuid());
+        List<ProjectRequestDto> requestDtos = projectSerivce.findAllProjectRequestRecv(sessionUser);
         if (requestDtos.isEmpty()) {
             model.addAttribute("request", false);
         } else {
@@ -260,7 +274,7 @@ public class ProjectController {
         log.info("전달 완료, " + sendUuid + recvUuid + projectId + acceptable);
         projectSerivce.decisionInvite(sendUuid, recvUuid, projectId, acceptable);
         return "redirect:/project/inviteList";
-    }*/
+    }
 
 
     /* - - - - - - onlyReadPage 접근 - - - - - - */

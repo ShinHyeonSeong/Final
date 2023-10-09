@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.example.bpm.service.ProjectDetailSerivce;
+import com.example.bpm.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Controller
 public class DocumentController {
 
@@ -29,6 +32,8 @@ public class DocumentController {
     @Autowired
     private ProjectDetailSerivce projectDetailSerivce;
     @Autowired
+    private UserService userService;
+    @Autowired
     private HttpSession session;
 
     // 생각을 해보니 말야 매번 세션 호출하는것보다는 그냥 따로 메서드 만드는게 훨씬 효율이 좋을듯. 편하기도 하고
@@ -36,6 +41,11 @@ public class DocumentController {
     public UserDto getSessionUser() {
         UserDto currentUser = (UserDto) session.getAttribute("userInfo");
         return currentUser;
+    }
+
+    public ProjectDto getSessionProject() {
+        ProjectDto currentProject = (ProjectDto) session.getAttribute("currentProject");
+        return currentProject;
     }
 
     public Long getSessionAuth() {
@@ -77,18 +87,21 @@ public class DocumentController {
 
             documentInfoDtoList.add(documentInfoDto);
         }
-
+        List<UserDto> userDtoList = userService.findUserListByProjectId(getSessionProject().getProjectId());
+        model.addAttribute("joinUsers", userDtoList);
+        model.addAttribute("sessionUser", sessionUser);
+        model.addAttribute("currentProject", getSessionProject());
+        model.addAttribute("auth", getSessionAuth());
         model.addAttribute("documentList", documentInfoDtoList);
 
 
-        return "document";
+        return "documentList";
     }
 
     // 문서 새로 만들기 Document Add [Post]
-    /// 새로운 문서를 만드는 작업
-    @PostMapping("document/addDocument")
-    public String postAddingDocument(long workId , HttpSession session){
-
+    /// 새로운 문서를 만드는 작업<input th:hidden="true" th:name="workId" th:value="${workDto.getWorkId()}"/>
+    @PostMapping("/document/addDocument")
+    public String postAddingDocument(@RequestParam("workId")Long workId , HttpSession session){
         UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
 
         String userUuid = sessionUser.getUuid();
@@ -101,17 +114,20 @@ public class DocumentController {
     }
 
     @PostMapping("document/delete")
-    public String deleteDocument(String id){
+    public String deleteDocument(@RequestBody String id){
 
+        log.info("문서 삭제 메서드 실행");
+        log.info("DocumentId = " + id);
         documentService.deleteDocument(id);
+        log.info("문서 삭제 완료");
 
         return "redirect:"+session.getAttribute("back");
     }
 
     // 문서 작성 Document write
     /// 문서 작성 페이지 이동
-    @GetMapping("document/write")
-    public String getDocumentWrite(String id, Model model, HttpSession session, HttpServletRequest request) {
+    @GetMapping("/document/write")
+    public String getDocumentWrite(@RequestParam("id")String id, Model model, HttpSession session, HttpServletRequest request) {
 
         UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
 
@@ -124,6 +140,7 @@ public class DocumentController {
         String userUuid = sessionUser.getUuid();
 
         if(documentService.accreditUserToWork(userUuid, id, getSessionAuth())){
+            log.info("해당 유저에게 수정 권한이 없음");
             return "redirect:/document/view?id="+id;
         }
 
@@ -151,7 +168,7 @@ public class DocumentController {
         model.addAttribute("document", documentDto);
         model.addAttribute("blockList", blockDtoList);
 
-        return "documentDetail";
+        return "documentView";
     }
 
     @GetMapping("document/work/view")

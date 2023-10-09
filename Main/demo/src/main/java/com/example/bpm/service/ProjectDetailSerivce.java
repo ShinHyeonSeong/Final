@@ -95,7 +95,7 @@ public class ProjectDetailSerivce {
     public WorkDto createWork(String title, String discription, String startDate, String deadline, HeadDto connectHead, ProjectDto projectDto) {
 
         WorkDto workDto = new WorkDto();
-        
+
         workDto.setTitle(title);
         workDto.setDiscription(discription);
         workDto.setStartDay(dateManager.formatter(startDate));
@@ -172,6 +172,17 @@ public class ProjectDetailSerivce {
     }
 
 
+    public int countProgressHead(List<HeadDto> headDtoList) {
+        int progressHead = 0;
+        for (HeadDto headDto : headDtoList) {
+            if (headDto.getCompletion() == 0) {
+                progressHead++;
+            }
+        }
+        return progressHead;
+    }
+
+
     /* Work WorkDto */
     public WorkDto findWork(Long id) {
         WorkEntity workEntity = workRepository.findById(id).get();
@@ -223,6 +234,16 @@ public class ProjectDetailSerivce {
             workDtoList.add(workDto);
         }
         return workDtoList;
+    }
+
+    public int countProgressWork(List<WorkDto> workDtoList) {
+        int progressWork = 0;
+        for (WorkDto workDto : workDtoList) {
+            if (workDto.getCompletion() == 0) {
+                progressWork++;
+            }
+        }
+        return progressWork;
     }
 
     /* User UserDto */
@@ -328,7 +349,7 @@ public class ProjectDetailSerivce {
     }
 
     /* Log LogDto */
-    
+
     public List<LogDto> findLogListByDocument(DocumentDto documentDto) {
         List<LogEntity> logEntityEntityList = logRepository.findAllByDocumentId(documentDto.getDocumentId());
         List<LogDto> logDtoList = new ArrayList<>();
@@ -427,7 +448,7 @@ public class ProjectDetailSerivce {
         for (WorkEntity workEntity: workEntityList) {
             deleteWork(workEntity);
         }
-        
+
         headRepository.deleteById(headEntity.getHeadId());
     }
 
@@ -471,17 +492,17 @@ public class ProjectDetailSerivce {
 
     @Transactional
     public void deleteUserWork(WorkEntity workEntity) {
-            userWorkRepository.deleteAllByWorkIdToUserWork_WorkId(workEntity.getWorkId());
+        userWorkRepository.deleteAllByWorkIdToUserWork_WorkId(workEntity.getWorkId());
     }
 
     @Transactional
     public void deleteWorkDocument(WorkEntity workEntity) {
-            workDocumentRepository.deleteAllByWorkIdToWorkDocument_WorkId(workEntity.getWorkId());
+        workDocumentRepository.deleteAllByWorkIdToWorkDocument_WorkId(workEntity.getWorkId());
     }
 
     @Transactional
     public void deleteWorkComment(WorkEntity workEntity) {
-            workCommentRepository.deleteAllByWorkIdToComment_WorkId(workEntity.getWorkId());
+        workCommentRepository.deleteAllByWorkIdToComment_WorkId(workEntity.getWorkId());
     }
 
     @Transactional
@@ -512,22 +533,39 @@ public class ProjectDetailSerivce {
     //////////////////////////////////////////////////////////////////
     // check Low completion
     //////////////////////////////////////////////////////////////////
-    @Transactional
-    public boolean checkCompletionHead(Long headId) {
-        HeadEntity headEntity = headRepository.findById(headId).get();
-        List<WorkEntity> workEntityList = workRepository.findAllByHeadIdToWork_HeadId(headId);
+    public void updateHeadCompletion(Long headId) {
+        HeadDto headDto = findHeadById(headId);
+        headDto.setCompletion((headDto.getCompletion() == 1) ? 0 : 1);
+        HeadEntity headEntity = headDto.toEntity();
+        headRepository.save(headEntity);
+    }
 
-        for (WorkEntity workEntity: workEntityList) {
-            if (workEntity.getCompletion() == 0){
-                headEntity.setCompletion(0);
-                headRepository.save(headEntity);
+    public void updateWorkCompletion(Long workId) {
+        WorkDto workDto = findWork(workId);
+        workDto.setCompletion((workDto.getCompletion() == 1) ? 0 : 1);
+        WorkEntity workEntity = workDto.toEntity();
+        workRepository.save(workEntity);
+
+        HeadEntity headEntity = workDto.getHeadIdToWork();
+        if (checkAllWorkCompleted(headEntity.getHeadId()) && headEntity.getCompletion() == 0) {
+            updateHeadCompletion(headEntity.getHeadId());
+        } else if (!checkAllWorkCompleted(headEntity.getHeadId()) && headEntity.getCompletion() == 1) {
+            updateHeadCompletion(headEntity.getHeadId());
+        }
+    }
+
+    public boolean checkAllWorkCompleted(Long headId) {
+        HeadDto headDto = findHeadById(headId);
+        List<WorkDto> workDtoList = new ArrayList<>();
+        workDtoList = findWorkListByHead(headDto);
+
+        for (WorkDto workDto : workDtoList) {
+            if (workDto.getCompletion() == 0) {
                 return false;
             }
         }
-
-        headEntity.setCompletion(1);
-        headRepository.save(headEntity);
         return true;
     }
+
 }
 

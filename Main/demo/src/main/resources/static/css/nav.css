@@ -27,7 +27,7 @@ i {
 }
 
 .navbar-mainbg {
-    background-color: #000;
+    background-color: #5161CE;
     padding: 0px;
 }
 
@@ -57,8 +57,12 @@ i {
     position: relative;
 }
 
+.nav-link:hover {
+    background-color: #3746b6;
+    border-radius: 5px;
+}
 
-@media(min-width: 992px) {
+@media (min-width: 992px) {
     .navbar-expand-custom {
         -ms-flex-flow: row nowrap;
         flex-flow: row nowrap;
