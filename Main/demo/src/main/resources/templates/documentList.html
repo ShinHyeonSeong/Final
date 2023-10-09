@@ -46,10 +46,8 @@
 	<ul>
 		<div class="user-list">
 			<h2>프로젝트 멤버</h2>
-			<ul>
-				<li>User 1</li>
-				<li>User 2</li>
-				<li>User 3</li>
+			<ul th:each="users : ${joinUsers}">
+				<li th:text="${users.getName()}"></li>
 			</ul>
 		</div>
 		<div>

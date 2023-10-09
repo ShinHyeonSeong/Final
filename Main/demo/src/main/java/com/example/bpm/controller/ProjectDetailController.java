@@ -366,6 +366,8 @@ public class ProjectDetailController {
         }
         Long auth = getSessionAuth();
 
+        boolean workAdd = documentService.accreditUserToWork(getSessionUser().getUuid(),id ,auth);
+
         List<UserDto> userDtoList = userService.findUserListByProjectId(getSessionProject().getProjectId());
         model.addAttribute("joinUsers", userDtoList);
         model.addAttribute("sessionUser", getSessionUser());
@@ -375,6 +377,7 @@ public class ProjectDetailController {
         model.addAttribute("userWorkDtoList", userWorkDtoList);
         model.addAttribute("workDocumentDtoList", workDocumentDtoList);
         model.addAttribute("documentList", documentDtoList);
+        model.addAttribute("check", workAdd);
         return "workDetail";
     }
 //    *//* - - - - 작업 관련 메서드 끝 - - - -*//*

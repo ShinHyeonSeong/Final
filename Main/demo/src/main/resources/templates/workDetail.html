@@ -122,7 +122,7 @@
 				</ul>
 			</div>
 			<div class="horizon-divider"></div>
-			<form action="/document/addDocument" method="post">
+			<form th:if="${check}" action="/document/addDocument" method="post">
 				<button type="submit" class="sub-create-button">문서 만들기</button>
 				<input th:hidden="true" th:name="workId" th:value="${workDto.getWorkId()}">
 			</form>
