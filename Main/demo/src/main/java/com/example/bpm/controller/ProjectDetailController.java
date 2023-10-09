@@ -366,6 +366,8 @@ public class ProjectDetailController {
         }
         Long auth = getSessionAuth();
 
+        boolean workAdd = documentService.accreditUserToWork(getSessionUser().getUuid(),id ,auth);
+
         List<UserDto> userDtoList = userService.findUserListByProjectId(getSessionProject().getProjectId());
         model.addAttribute("joinUsers", userDtoList);
         model.addAttribute("sessionUser", getSessionUser());
@@ -375,6 +377,7 @@ public class ProjectDetailController {
         model.addAttribute("userWorkDtoList", userWorkDtoList);
         model.addAttribute("workDocumentDtoList", workDocumentDtoList);
         model.addAttribute("documentList", documentDtoList);
+        model.addAttribute("check", workAdd);
         return "workDetail";
     }
 //    *//* - - - - 작업 관련 메서드 끝 - - - -*//*
@@ -470,21 +473,21 @@ public class ProjectDetailController {
         projectDetailSerivce.updateWorkCompletion(workId);
         return "redirect:/project/works";
     }
-//
-//    *//*  - - - - - Calendar Controller - - - - - *//*
-//    @GetMapping("/project/calender") //기본 페이지 표시
-//    public String viewCalendar() {
-//
-//        return "calendar";
-//    }
-//
-//    @RequestMapping(value = "/calendar/event", method = {RequestMethod.GET}) //ajax 데이터 전송 URL
-//    public @ResponseBody List<Map<String, Object>> getEvent() {
-//
-//        ProjectDto projectDto = getSessionProject();
-//
-//        return calendarService.getEventList(projectDto.getProjectId());
-//    }
+
+    //*  - - - - - Calendar Controller - - - - - *//
+    @GetMapping("/project/calender") //기본 페이지 표시
+    public String viewCalendar() {
+
+        return "calendar";
+    }
+
+    @RequestMapping(value = "/calendar/event", method = {RequestMethod.GET}) //ajax 데이터 전송 URL
+    public @ResponseBody List<Map<String, Object>> getEvent() {
+
+        ProjectDto projectDto = getSessionProject();
+
+        return calendarService.getEventList(projectDto.getProjectId());
+    }
 
 
     //* - - - - - Message Contorller - - - - - - *//*
