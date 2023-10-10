@@ -33,7 +33,7 @@ nav {
     background-color: #5161CE;
     color: #fff;
     width: 180px;
-    height: 93%;
+    height: 90%;
     position: fixed;
     display: flex;
     flex-direction: column;
@@ -72,7 +72,7 @@ nav {
 .user-list {
     color: #fff;
     border-top: solid 1px #38438F;
-    height: 280px;
+    height: 260px;
 }
 
 .user-list h2 {

@@ -342,8 +342,8 @@ hr {
     align-items: center;
     justify-content: center;
     padding: 0;
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
     color: #949DD7;
     text-decoration: none;
     font-weight: bold;
@@ -363,15 +363,15 @@ hr {
 
 .is-activate ~ .is-floating1 {
     opacity: 1;
-    transform: translateX(-125%) translateY(100%);
+    transform: translateX(-125%) translateY(-210%);
 }
 
 .is-activate ~ .is-floating1:nth-of-type(2) {
     opacity: 1;
-    transform: translateX(-125%) translateY(-80%);
+    transform: translateX(-125%) translateY(-100%);
 }
 
 .is-activate ~ .is-floating1:nth-of-type(3) {
     opacity: 1;
-    transform: translateX(-125%) translateY(-280%);
+    transform: translateX(-125%) translateY(10%);
 }
