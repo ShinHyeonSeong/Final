@@ -1,106 +1,103 @@
-/* Reset some default styles */
-body,
-h1,
-p,
-ul {
-    margin: 0;
-    padding: 0;
-}
-
-/* Global styles */
-body {
-    background-color: #fff;
-    font-family: Arial, sans-serif;
-}
+/*  마진 순서 : 상우좌하
+    다중 커서 : Alt + 드래그나 클릭
+    코드 정렬 : Alt + Shift + F
+    border 순서 : 픽셀, 스타일, 색깔 
+     */
 
 
-.content {
-    margin-left: 200px;
-}
 
-.table-head-list {
-    display: flex;
-    margin: auto;
-    width: 98%;
-}
+     body {
+        background-color: #fff;
+    }
 
-.table-h2 {
-    text-align: left;
-    flex: 12;
-    width: 80%;
-    box-sizing: border-box;
-}
+    
+    hr {
+        background: #5161ce;
+    }
+    
+    .hr {
+            display: flex;
 
-.button-section {
-    flex: 2;
-    margin: auto;
-}
+            padding-top: 10em;
+            width: 100%;
+        }
 
-.createbutton {
-    width: 70%;
-    text-decoration: none;
-    color: #fff;
-    font-weight: bold;
-    height: 50px;
-    margin: auto;
-    background-color: #949DD7;
-    border-radius: 10px;
-    border: none;
-    margin-bottom: 15px;
-}
+        .hr a {
+            text-decoration: none;
+        }
 
-.createbutton:hover {
-    background-color: #727fcf;
-}
+        .hr a:hover {
+            text-decoration: none;
+            color: #fff;
+            background-color: #5161ce;
+            border: none;
+        }
 
-table {
-    border-top: 2px #d4d4d4 solid;
-    width: 95%;
-    border-collapse: collapse;
-    overflow: hidden;
-}
+        .container {
+            display: flex;
+            flex-direction: column;
+            width: 70%;
+            justify-content: center;
+            align-items: center;
+        }
 
-th {
-    font-size: 17px;
-    font-weight: 600;
-    padding: 1em 1.5em;
-    vertical-align: middle;
+        .back-button {
+            width: 50px;
+            height: 50px;
+            background-color: #fff;
+            color: #5161ce;
+            border: 1px solid #5161ce;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 32px;
+            margin-right: 2rem;
+            transition: 0.5s;
+        }
 
-}
-
-.table-name {
-    width: 40%;
-}
-
-
-thead {
-    font-weight: bold;
-    color: #000;
-}
-
-td {
-    padding: 1em 2em;
-    border-top: 1px #d4d4d4 solid;
-    border-bottom: 1px #d4d4d4 solid;
-    font-size: 16px;
-    text-align: center;
-    transition: 0.5s;
-}
-
-.revert-button {
-    background-color: #fff;
-    color: #5161CE;
-    border: 1px solid #5161CE;
-    cursor: pointer;
-    display: inline-block;
-    padding: 10px 15px;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 14px;
-    transition: 0.5s;
-}
-
-.revert-button:hover {
-    background-color: #5161CE;
-    color: #fff;
-}
+        .title {
+            color: #5161ce;
+            display: inline-block;
+            text-align: center;
+        }
+    
+    .middle-box {
+        width: 100%;
+        height: auto;
+        display: flex;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .board_list {
+        width: 100%;
+    }
+    
+    .board_list td {
+        color: #222;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        width: 30%;
+        font-size: 20px;
+        text-align: center;
+        border-bottom: solid 2px #5161ce;
+    }
+    
+    .revert-button {
+        display: inline-block;
+        padding: 10px 30px;
+        background-color: #949DD7;
+        border: none;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 10px;
+        font-size: 16px;
+        transition: 0.5s;
+    }
+    
+    .revert-button:hover {
+        background-color: #5161ce;
+    }

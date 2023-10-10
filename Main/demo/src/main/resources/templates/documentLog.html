@@ -2,101 +2,47 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title>BPM</title>
-	<meta charset="UTF-8">
-	<title>User</title>
-	<meta charset="UTF-8">
-	<meta name="viewport"
-		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<link rel="stylesheet" href="/css/sidebar.css">
-	<link rel="stylesheet" href="/css/sideNavbar.css">
-	<link rel="stylesheet" href="/css/documentLog.css">
-	
-	<!-- Java Script 다수 포함-->
-	<script src='https://code.jquery.com/jquery-3.4.1.min.js'></script>
-	<script src='https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js'></script>
-	<script src='https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js'></script>
-	<script src="/js/nav.js"></script>
-	<script src="/js/documentLog.js"></script>
+    <title>BPM</title>
+    <meta charset="UTF-8">
+    <title>User</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.css'>
+
+    <link rel="stylesheet" href="/css/documentLog.css">
+
+    <!-- Java Script 다수 포함-->
+    <script src='https://code.jquery.com/jquery-3.4.1.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js'></script>
+    <script src="/js/nav.js"></script>
+    <script src="/js/documentLog.js"></script>
 </head>
 
 <body>
-<header>
-	<nav>
-		<div class="nav-left">
-			<button id="exitButton">나가기</button>
-		</div>
-		<div class="nav-center">
-			<h1 id="projectName">Project Name</h1>
-		</div>
-		<div class="nav-right">
-			<p id="loggedInUser">사용자 이름</p>
-		</div>
-	</nav>
-</header>
-<aside class="sidebar">
-	<ul>
-		<div class="menu">
-			<ul>
-				<li><a th:href="@{/project/main}">홈</a></li>
-				<li><a href="/project/goals">목표</a></li>
-				<li><a href="/project/works">작업</a></li>
-				<li class="menu-select"><a href="/project/document">문서</a></li>
-				<li><a href="/project/calender">일정</a></li>
-				<li><a href="/project/recvMessageList">수신함</a></li>
-			</ul>
-		</div>
-	</ul>
-	<ul>
-		<div class="user-list">
-			<h2>프로젝트 멤버</h2>
-			<ul>
-				<li>User 1</li>
-				<li>User 2</li>
-				<li>User 3</li>
-			</ul>
-		</div>
-		<div>
-			<button id="inviteButton">Invite Members</button>
-		</div>
-	</ul>
-</aside>
-<div class="main">
-	<div class="sub-nav">
-		<ul class="sub-navbar">
-			<li class="sub-nav-item"><a href="#">돌아가기</a></li>
-		
-		</ul>
-	</div>
+<div class="container">
+    <div class="hr">
+        <a th:href="@{/document/write(id=${projectId})}" class="back-button"> < </a>
+        <h1 class="title">Document History</h1>
+    </div>
+    <hr/>
+    <div class="middle-box">
+        <table class="board_list">
+            <tbody>
+            <tr th:each="log : ${logList}">
+                <td class="project-name" th:text="${log.dateLog}">히스토리 저장 일자</td>
+                <td th:utext="${log.logType}">히스토리 저장 타입</td>
+                <td>
+                    <form action="changeLogData" method="post">
+                        <button class="revert-button">되돌리기</button>
+                        <input name="id" type="hidden" th:value="${log.logId}">
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
-<div class="content">
-	<div class="work">
-		<table>
-			<div class="table-head-list">
-				<h2 class="table-h2">문서 로그</h2>
-			</div>
-			<thead>
-			<th>저장 일자</th>
-			<th>저장 타입</th>
-			<th>되돌리기</th>
-			</thead>
-			<tbody>
-			<tr>
-				<td class="table-name">0000</td>
-				<td class="table-name">0000</td>
-				<td>
-					<form action="changeLogData" method="post">
-						<button class="revert-button">되돌리기</button>
-						<input name="id" type="hidden" th:value="${logEntity.logId}">
-					</form>
-				</td>
-			</tr>
-			
-			</tbody>
-		</table>
-	</div>
-</div>
-
 </body>
-
-</html>
