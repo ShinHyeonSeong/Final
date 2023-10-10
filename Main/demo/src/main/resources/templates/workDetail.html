@@ -46,7 +46,9 @@
 			</ul>
 		</div>
 		<div>
-			<a href="/user/search"><button id="inviteButton">Invite Members</button></a>
+			<a href="/user/search">
+				<button id="inviteButton">Invite Members</button>
+			</a>
 		</div>
 	</ul>
 </aside>
@@ -66,7 +68,8 @@
 			<div class="title-section">
 				<h1 class="post-title" th:text="${workDto.getTitle()}">title</h1>
 				<a class="edit-button" th:href="@{/project/goal/work/edit/{id}(id=${workDto.getWorkId()})}">Edit</a>
-				<a class="delete-button" th:href="@{/project/goal/work/delete/{id}(id=${workDto.getWorkId()})}">Delete</a>
+				<a class="delete-button"
+				   th:href="@{/project/goal/work/delete/{id}(id=${workDto.getWorkId()})}">Delete</a>
 			</div>
 			<div class="horizon-divider"></div>
 			<p class="post-content" th:text="${workDto.getDiscription()}">
@@ -106,7 +109,7 @@
 			
 			</div>
 			<div class="buttons">
-
+				
 				<a th:href="@{/project/work/completion/change/{id}(id=${workDto.workId})}">
 					<button class="right-button" th:if="${auth == 1 && workDto.completion == 0}">완료로 표시</button>
 				</a>
@@ -116,9 +119,18 @@
 			</div>
 			<div class="horizon-divider"></div>
 			<div class="related-tasks">
+				<h2>연결된 목표</h2>
+				<ul class="head-list">
+					<li><a th:href="@{/project/goal/headView/{id}(id=${workDto.getHeadIdToWork().getHeadId()})}"
+						   th:text="${workDto.getHeadIdToWork().getTitle()}"></a></li>
+				</ul>
+			</div>
+			<div class="horizon-divider"></div>
+			<div class="related-tasks">
 				<h2>연결된 문서</h2>
 				<ul class="task-list" th:each="document : ${documentList}">
-					<li><a th:href="@{/document/write?id={id}(id=${document.getDocumentId()})}" th:text="${document.getTitle()}"></a></li>
+					<li><a th:href="@{/document/write?id={id}(id=${document.getDocumentId()})}"
+						   th:text="${document.getTitle()}"></a></li>
 				</ul>
 			</div>
 			<div class="horizon-divider"></div>

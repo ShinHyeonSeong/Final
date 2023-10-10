@@ -59,6 +59,11 @@ a {
     cursor: pointer;
 }
 
+.edit-button:hover {
+    color: rgb(45, 45, 190);
+    font-weight: bold;
+}
+
 .delete-button {
     margin-top: 10px;
     display: block;
@@ -69,9 +74,9 @@ a {
     cursor: pointer;
 }
 
-.edit-button:hover,
 .delete-button:hover {
-    text-decoration: dashed;
+    color: rgb(255, 67, 67);
+    font-weight: bold;
 }
 
 .post-content {
@@ -140,6 +145,36 @@ a {
     color: #fff;
     background-color: #727fcf;
 }
+
+.head-list {
+    list-style: none;
+    padding: 0;
+}
+
+.head-list > li {
+    font-size: 13px;
+    margin-bottom: 5px;
+    padding: 5px;
+}
+
+.head-list a {
+    text-decoration: none;
+    color: #1F254F;
+    font-weight: bold;
+    display: block;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    transition: background-color 0.3s;
+}
+
+.head-list a:hover {
+    text-decoration: none;
+    color: #fff;
+    background-color: #727fcf;
+}
+
 
 .comment-section {
     display: flex;
