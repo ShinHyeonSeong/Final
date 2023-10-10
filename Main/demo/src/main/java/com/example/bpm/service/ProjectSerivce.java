@@ -226,8 +226,9 @@ public class ProjectSerivce {
     public List<ProjectDto> findAllProjectList(){
         List<ProjectEntity> projectEntityList = projectRepository.findAll();
         List<ProjectDto> projectDtoList = new ArrayList<>();
-        ProjectDto projectDto = new ProjectDto();
+
         for (ProjectEntity projectEntity : projectEntityList) {
+            ProjectDto projectDto = new ProjectDto();
             projectDto.insertEntity(projectEntity);
             projectDtoList.add(projectDto);
         }

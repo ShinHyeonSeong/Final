@@ -177,7 +177,7 @@ public class ProjectController {
         checkAuth();
         Long auth = getSessionAuth();
 
-        List<DocumentDto> documentDtoList = documentService.findDocumentList();
+        List<DocumentDto> documentDtoList = documentService.findDocumentListByProjectId(id);
 
         // 완료, 미완 헤드 수
         int progressHead = projectDetailSerivce.countProgressHead(headDtoList);
