@@ -81,8 +81,10 @@
 				<td class="table-name"><a th:href="@{/project/work/detail/{id}(id=${userWorkDto.getWorkIdToUserWork().getWorkId()})}"
 										  th:text="${userWorkDto.getWorkIdToUserWork().getTitle()}"></a></td>
 				<td th:text="${#dates.format(userWorkDto.getWorkIdToUserWork().getEndDay(), 'yyyy-MM-dd')}"></td>
-				<td th:if="${userWorkDto.getWorkIdToUserWork().getCompletion() == 1}">완료</td>
-				<td th:if="${userWorkDto.getWorkIdToUserWork().getCompletion() == 0}">진행중</td>
+				<td style="color: #5ea2ec;" class="completion-0" th:if="${workDto.getCompletion() == 0}">진행중</td>
+				<td style="color: #66c43c;" class="completion-1" th:if="${workDto.getCompletion() == 1}">완료</td>
+				<td style="color: #ff7b26;" class="completion-2" th:if="${workDto.getCompletion() == 2}">계획중</td>
+				<td style="color: #f11414;" class="completion-3" th:if="${workDto.getCompletion() == 3}">미완성</td>
 			</tr>
 			</tbody>
 		</table>

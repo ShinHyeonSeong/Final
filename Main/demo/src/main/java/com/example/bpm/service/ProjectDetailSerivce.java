@@ -579,5 +579,36 @@ public class ProjectDetailSerivce {
         return true;
     }
 
+    public void completionCheckByDate(ProjectDto projectDto) {
+        log.info("date 체크 진입");
+        List<HeadDto> headDtoList = findHeadListByProject(projectDto);
+        List<WorkDto> workDtoList = findWorkListByProject(projectDto);
+        Date date = new Date();
+        log.info(date.toString());
+        for (HeadDto headDto : headDtoList) {
+            if (headDto.getStartDay().compareTo(date) > 0) {
+                headDto.setCompletion(2);
+                // 계획중 처리
+                updateHead(headDto.getHeadId(), headDto);
+            } else if (headDto.getEndDay().compareTo(date) < 0) {
+                headDto.setCompletion(3);
+                // 미완료 처리
+                updateHead(headDto.getHeadId(), headDto);
+            }
+        }
+
+        for (WorkDto workDto : workDtoList) {
+            if (workDto.getStartDay().compareTo(date)  > 0) {
+                workDto.setCompletion(2);
+                // 계획중 처리
+                updateWork(workDto.getWorkId(), workDto);
+            } else if (workDto.getEndDay().compareTo(date) < 0) {
+                workDto.setCompletion(3);
+                // 미완료 처리
+                updateWork(workDto.getWorkId(), workDto);
+            }
+        }
+    }
+
 }
 

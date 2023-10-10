@@ -177,6 +177,7 @@ public class ProjectController {
         checkAuth();
         Long auth = getSessionAuth();
 
+        projectDetailSerivce.completionCheckByDate(presentDto);
         List<DocumentDto> documentDtoList = documentService.findDocumentListByProjectId(id);
 
         // 완료, 미완 헤드 수
