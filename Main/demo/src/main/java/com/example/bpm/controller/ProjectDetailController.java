@@ -155,6 +155,7 @@ public class ProjectDetailController {
             return "head-create";
         }
         HeadDto createHeadDto = projectDetailSerivce.createHead(title, startDay, deadline, discription, currentProject);
+        projectDetailSerivce.completionCheckByDate(currentProject);
         return "redirect:/project/goals";
     }
     // head 상세창 이동 메서드
@@ -237,6 +238,7 @@ public class ProjectDetailController {
         for (Long workId : deleteWorkList) {
             projectDetailSerivce.deleteWork(projectDetailSerivce.findWork(workId));
         }
+        projectDetailSerivce.completionCheckByDate(currentProject);
         return "redirect:/project/goals";
     }
 
@@ -270,6 +272,7 @@ public class ProjectDetailController {
         projectDetailSerivce.updateWork(workId, workDto);
         projectDetailSerivce.deleteUserWork(workDto.toEntity());
         projectDetailSerivce.addUserWork(workDto, chargeUsers);
+        projectDetailSerivce.completionCheckByDate(getSessionProject());
         return "redirect:/project/work/detail/" + workId;
     }
 //    *//* - - - - 목표 관련 메서드 끝 - - - -*//*
