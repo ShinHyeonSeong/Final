@@ -3,6 +3,9 @@ body {
     height: 100%;
     background-color: #fff;
     color: #5161ce;
+
+    margin: 0;
+    padding: 0;
 }
 
 a {
@@ -374,4 +377,58 @@ hr {
 .is-activate ~ .is-floating1:nth-of-type(3) {
     opacity: 1;
     transform: translateX(-125%) translateY(10%);
+}
+
+.documentWrite-main-nav {
+    background-color: #5161CE;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    height: 48px;
+    border-bottom: 4px solid #33438F;
+}
+
+.documentWrite-main-nav button {
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 10px 20px;
+    transition: 2s;
+}
+
+.documentWrite-main-nav button:hover #back-button-hover {
+    opacity: 1;
+}
+
+.documentWrite-main-nav button:hover #back-button {
+    opacity: 0;
+}
+
+.documentWrite-back-button {
+    width: 38px;
+    height: 38px;
+    position: absolute;
+    top: 15px;
+    left: 15px;
+}
+
+#documentWrite-back-button {
+    transition: 0.5s;
+}
+
+#documentWrite-back-button-hover {
+    opacity: 0;
+    transition: 0.5s;
+}
+
+.documentWrite-title {
+    margin-left: 2rem;
+}
+
+.documentWrite-subtitle {
+    margin-left: 1rem;
+    margin-top: 0.3rem;
+    vertical-align: text-bottom;
 }
