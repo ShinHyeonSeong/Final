@@ -35,6 +35,7 @@
 				<li><a href="/project/document">문서</a></li>
 				<li><a href="#">일정</a></li>
 				<li><a href="/project/recvMessageList">수신함</a></li>
+            </ul>
         </div>
     </ul>
     <ul>
@@ -91,7 +92,7 @@
             <div class="related-tasks">
                 <h2>연결된 작업</h2>
                 <ul class="task-list" th:each="work : ${workDtoList}">
-                    <li><a href="#" th:text="${work.getTitle()}"></a></li>
+                    <li><a th:href="@{/project/work/detail/{id}(id=${work.getWorkId()})}" th:text="${work.getTitle()}"></a></li>
                 </ul>
             </div>
             <div class="horizon-divider"></div>

@@ -113,7 +113,7 @@ public class DocumentController {
         return "redirect:/document/write?id=" + documentId;
     }
 
-    @PostMapping("document/delete")
+    @GetMapping("document/delete")
     public String deleteDocument(String id){
 
         documentService.deleteDocument(id);

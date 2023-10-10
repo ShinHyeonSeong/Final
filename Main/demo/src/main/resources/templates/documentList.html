@@ -143,14 +143,12 @@
 									<a th:if="${auth == 0 || auth == 1}"
 									   th:href="@{/document/write(id=${document.getDocumentDto().getDocumentId()})}"><button
 											class="document-edit-btn">편집</button></a>
-									<form action="/document/delete" method="post">
+
+									<a th:href="@{/document/delete(id=${document.getDocumentDto().getDocumentId()})}">
 										<button
 												th:if="${auth == 1 || sessionUser.getUuid().equals(document.getDocumentDto().getUuid())}"
 												class="document-delete-btn" type="submit">삭제</button>
-										<input type="text" th:name="id"
-											   th:value="${document.getDocumentDto().getDocumentId()}"
-											   th:hidden="true">
-									</form>
+									</a>
 								</div>
 							</div>
 						</section>

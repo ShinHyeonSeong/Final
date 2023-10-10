@@ -118,7 +118,7 @@
 			<div class="related-tasks">
 				<h2>연결된 문서</h2>
 				<ul class="task-list" th:each="document : ${documentList}">
-					<li><a href="#" th:text="${document.getTitle()}"></a></li>
+					<li><a th:href="@{/document/write/{id}(id=${document.getDocumentId()})}" th:text="${document.getTitle()}"></a></li>
 				</ul>
 			</div>
 			<div class="horizon-divider"></div>
