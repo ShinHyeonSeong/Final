@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
 	<meta charset='utf-8' />
 	<link href="/lib/main.css" rel='stylesheet' />
 	<script src="/lib/main.js"></script>
 	<script src="/js/calender.js"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 	<link rel="stylesheet" href="/css/calender.css">
 	<link rel="stylesheet" href="/css/sidebar.css">
 	<link rel="stylesheet" href="/css/sideNavbar.css">
@@ -61,7 +62,7 @@
 </body>
 
 <script>
-	var calendarEl = documentEntity.getElementById('calendar');
+	var calendarEl = document.getElementById('calendar');
 	var request = $.ajax({
 				url: "/calendar/event",
 				method: "GET"
