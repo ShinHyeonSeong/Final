@@ -570,7 +570,7 @@ public class ProjectDetailController {
         return "recvMessageDetail";
     }
 
-    @RequestMapping("/project/message/delete/{id}")
+    @GetMapping("/project/message/delete/{id}")
     public String deleteMessage(@PathVariable("id") Long messageId) {
         messageService.deleteMessage(messageId);
         return "redirect:/project/recvMessageList";
