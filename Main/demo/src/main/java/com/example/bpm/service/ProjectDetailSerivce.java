@@ -610,5 +610,17 @@ public class ProjectDetailSerivce {
         }
     }
 
+    public boolean isRoleWork(String uuid, long workid){
+        List<UserWorkEntity> userWorkEntityList =  userWorkRepository.findAllByUserIdToUserWork_Uuid(uuid);
+
+        for (UserWorkEntity userWork: userWorkEntityList) {
+            if (userWork.getWorkIdToUserWork().getWorkId() == workid){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }
 

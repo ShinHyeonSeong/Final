@@ -138,9 +138,12 @@
 									</div>
 								</div>
 								<div class="document-detail-btn">
-									<a th:if="${auth == 0 || auth == 1}"
+									<a th:if="${document.getIsRole()}"
 									   th:href="@{/document/write(id=${document.getDocumentDto().getDocumentId()})}"><button
 											class="document-edit-btn">편집</button></a>
+									<a th:if="${!document.getIsRole()}"
+									   th:href="@{/document/write(id=${document.getDocumentDto().getDocumentId()})}"><button
+											class="document-edit-btn">보기</button></a>
 
 									<a th:href="@{/document/delete(id=${document.getDocumentDto().getDocumentId()})}">
 										<button

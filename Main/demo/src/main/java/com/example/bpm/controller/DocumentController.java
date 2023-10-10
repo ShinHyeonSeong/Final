@@ -85,6 +85,8 @@ public class DocumentController {
 
             documentInfoDto.setHeadDto(headDto);
 
+            documentInfoDto.setIsRole(projectDetailSerivce.isRoleWork(sessionUser.getUuid(), workDto.getWorkId()));
+
             documentInfoDtoList.add(documentInfoDto);
         }
         List<UserDto> userDtoList = userService.findUserListByProjectId(getSessionProject().getProjectId());
