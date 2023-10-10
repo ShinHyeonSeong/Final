@@ -144,7 +144,9 @@ public class DocumentController {
 
         DocumentDto documentDto = documentService.findDocumentById(id);
         List<BlockDto> blockDtoList = documentService.findBlockListByDocumentId(id);
+        WorkDto workDto = projectDetailSerivce.findWorkByDocument(documentDto);
 
+        model.addAttribute("work", workDto);
         model.addAttribute("document", documentDto);
         model.addAttribute("blockList", blockDtoList);
         model.addAttribute("back", session.getAttribute("back"));

@@ -432,3 +432,8 @@ hr {
     margin-top: 0.3rem;
     vertical-align: text-bottom;
 }
+
+.documentWrite-mid {
+    margin-left: 1rem;
+    color: #D4D4D4;
+}

@@ -70,7 +70,7 @@ public class ProjectController {
         //세션에서 현재 로그인 되어있는 유저의 정보를 가져온다
         UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
         //UUID를 활용하여 권한자 / 비권한자 프로젝트 리스트를 불러온다
-        List<ProjectDto> ManagerToProjectList = projectSerivce.findProjectListRoleManager(sessionUser.getUuid());
+        List<ProjectDto> ManagerToProjectList = projectSerivce.findProjectList(sessionUser.getUuid());
         model.addAttribute("user", sessionUser);
         model.addAttribute("managerList", ManagerToProjectList);
 
@@ -122,7 +122,7 @@ public class ProjectController {
     public String projectAllList(Model model) {
         UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
         model.addAttribute("user", sessionUser);
-        List<ProjectDto> AllProjectList = projectSerivce.findAllProjectList();
+        List<ProjectDto> AllProjectList = projectSerivce.findProjectListRoleNot(sessionUser.getUuid());
         model.addAttribute("projectAllList", AllProjectList);
         List<ProjectRequestDto> requestDtos = projectSerivce.findAllProjectRequestRecv(sessionUser);
         if (requestDtos.isEmpty()) {

@@ -208,6 +208,27 @@ public class ProjectSerivce {
         return projectDtoList;
     }
 
+    public List<ProjectDto> findProjectListRoleNot(String userId) {
+        List<ProjectDto> findAll = findAllProjectList();
+        List<ProjectDto> userAll = findProjectList(userId);
+
+        List<ProjectDto> removeList = new ArrayList<>();
+
+        for (ProjectDto findProjectDto : findAll) {
+            for (ProjectDto userProjectDto : userAll){
+                if (findProjectDto.getProjectId().equals(userProjectDto.getProjectId())){
+                    removeList.add(findProjectDto);
+                }
+            }
+        }
+
+        for (ProjectDto projectDto : removeList){
+            findAll.remove(projectDto);
+        }
+
+        return findAll;
+    }
+
     public List<ProjectDto> findProjectList(String userId){
         List<ProjectRoleEntity> projectRoleEntityList = projectRoleRepository.findProjectRoleByUser(userId);
         List<ProjectDto> projectDtoList = new ArrayList<>();
