@@ -106,3 +106,19 @@ td a {
 td a:hover{
     color: #fff;
 }
+
+.completion-0 {
+    color: #5ea2ec;
+}
+
+.completion-1 {
+    color: #66c43c;
+}
+
+.completion-2 {
+    color: #ff7b26;
+}
+
+.completion-3 {
+    color: #f11414;
+}
