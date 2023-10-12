@@ -85,7 +85,8 @@
 			<tr th:each="workDto : ${workDtoList}">
 				<td><a th:href="@{/project/work/detail/{id}(id=${workDto.getWorkId()})}"
 					   th:text="${workDto.getTitle()}"></a></td>
-				<td th:text="${workDto.getHeadIdToWork().getTitle()}"><a
+				<td><a
+						th:text="${workDto.getHeadIdToWork().getTitle()}"
 						th:href="@{/project/goal/headView/{id}(id=${workDto.getHeadIdToWork().getHeadId()})}"></a></td>
 				<td th:text="${#dates.format(workDto.getEndDay(), 'yyyy-MM-dd')}"></td>
 				<td style="color: #5ea2ec;" class="completion-0" th:if="${workDto.getCompletion() == 0}">진행중</td>

@@ -23,10 +23,10 @@
 			<a id="exitButton" href="/project/projectAllList">나가기</a>
 		</div>
 		<div class="nav-center">
-			<h1 id="projectName">Project Name</h1>
+			<h1 id="projectName" th:text="${projectDto.getTitle()}"></h1>
 		</div>
 		<div class="nav-right">
-			<p id="loggedInUser">사용자 이름</p>
+			<p id="loggedInUser" th:text="${sessionUser.getName()}"></p>
 		</div>
 	</nav>
 </header>

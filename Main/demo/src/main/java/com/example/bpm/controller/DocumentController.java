@@ -67,6 +67,7 @@ public class DocumentController {
         ProjectDto projectDto = (ProjectDto) session.getAttribute("currentProject");
 
         String userUuid = sessionUser.getUuid();
+        ProjectDto currentProject = getSessionProject();
         Long projectId = projectDto.getProjectId();
 
         List<DocumentInfoDto> documentInfoDtoList = new ArrayList<>();
@@ -92,6 +93,7 @@ public class DocumentController {
         List<UserDto> userDtoList = userService.findUserListByProjectId(getSessionProject().getProjectId());
         model.addAttribute("joinUsers", userDtoList);
         model.addAttribute("sessionUser", sessionUser);
+        model.addAttribute("projectDto", currentProject);
         model.addAttribute("currentProject", getSessionProject());
         model.addAttribute("auth", getSessionAuth());
         model.addAttribute("documentList", documentInfoDtoList);
@@ -139,9 +141,8 @@ public class DocumentController {
         String userUuid = sessionUser.getUuid();
 
         if(documentService.accreditUserToWork(userUuid, id, getSessionAuth())){
-            long workId = projectDetailSerivce.findWorkByDocument(documentService.findDocumentById(id)).getWorkId();
             log.info("해당 유저에게 수정 권한이 없음");
-            return "redirect:/document/view?id="+workId;
+            return "redirect:/document/view?id="+id;
         }
 
         DocumentDto documentDto = documentService.findDocumentById(id);
@@ -159,24 +160,19 @@ public class DocumentController {
     // 문서 뷰 Document view
     /// 문서 작성 페이지 이동
     @GetMapping("document/view")
-    public String getWorkDocumentView(long id, Model model, HttpSession session) {
+    public String getWorkDocumentView(String id, Model model, HttpSession session) {
 
         UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
         String userUuid = sessionUser.getUuid();
 
-        List<DocumentDto>  documentDtoList = documentService.findDocumentByWorkId(id);
+        DocumentDto documentDto = documentService.findDocumentById(id);
+        List<BlockDto> blockDtoList = documentService.findBlockListByDocumentId(id);
+        WorkDto workDto = projectDetailSerivce.findWorkByDocument(documentDto);
 
-        List<DocumentListDto> documentListDtoList = new ArrayList<>();
-
-        for (DocumentDto documentDto : documentDtoList) {
-            DocumentListDto documentListDto = new DocumentListDto();
-            documentListDto.setDocumentDto(documentDto);
-            documentListDto.setBlockDtoList(documentService.findBlockListByDocumentId(documentDto.getDocumentId()));
-
-            documentListDtoList.add(documentListDto);
-        }
-
-        model.addAttribute("document", documentListDtoList);
+        model.addAttribute("work", workDto);
+        model.addAttribute("document", documentDto);
+        model.addAttribute("blockList", blockDtoList);
+        model.addAttribute("back", session.getAttribute("back"));
 
         return "documentView";
     }
