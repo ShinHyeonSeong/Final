@@ -65,21 +65,17 @@ table {
 }
 
 th {
-    font-size: 15px;
+    font-size: 18px;
     padding: 1em 1.5em;
     vertical-align: middle;
     text-align: left;
+    font-weight: bold;
+    color: #000;
 
 }
 
 .table-name {
-    width: 80%;
-}
-
-
-thead {
-    font-weight: bold;
-    color: #000;
+    width: 40%;
 }
 
 td {
@@ -88,7 +84,7 @@ td {
     vertical-align: middle;
     border-top: 1px #d4d4d4 solid;
     border-bottom: 1px #d4d4d4 solid;
-    font-size: 12px;
+    font-size: 16px;
     transition: 0.5s;
 }
 
@@ -101,9 +97,11 @@ td a {
     color: #000;
     display: block;
     width: 100%;
+    font-size: 16px;
     height: 100%
 }
-td a:hover{
+
+td a:hover {
     color: #fff;
 }
 

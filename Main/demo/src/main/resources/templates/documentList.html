@@ -20,7 +20,7 @@
 <header>
 	<nav>
 		<div class="nav-left">
-			<button id="exitButton">나가기</button>
+			<a id="exitButton" href="/project/projectAllList">나가기</a>
 		</div>
 		<div class="nav-center">
 			<h1 id="projectName">Project Name</h1>
@@ -67,7 +67,7 @@
 	<div class="content">
 		<div class="document-list">
 			<div class="document-list-header">
-				<h1 class="document-list-title">문서</h1>
+				<h1 class="document-list-title">문서 > 전체 문서</h1>
 				
 				<div class="document-list-header-right">
 					<div id="document-list-select">
@@ -138,9 +138,12 @@
 									</div>
 								</div>
 								<div class="document-detail-btn">
-									<a th:if="${auth == 0 || auth == 1}"
+									<a th:if="${document.getIsRole()}"
 									   th:href="@{/document/write(id=${document.getDocumentDto().getDocumentId()})}"><button
 											class="document-edit-btn">편집</button></a>
+									<a th:if="${!document.getIsRole()}"
+									   th:href="@{/document/write(id=${document.getDocumentDto().getDocumentId()})}"><button
+											class="document-edit-btn">보기</button></a>
 
 									<a th:href="@{/document/delete(id=${document.getDocumentDto().getDocumentId()})}">
 										<button

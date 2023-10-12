@@ -85,6 +85,8 @@ public class DocumentController {
 
             documentInfoDto.setHeadDto(headDto);
 
+            documentInfoDto.setIsRole(projectDetailSerivce.isRoleWork(sessionUser.getUuid(), workDto.getWorkId()));
+
             documentInfoDtoList.add(documentInfoDto);
         }
         List<UserDto> userDtoList = userService.findUserListByProjectId(getSessionProject().getProjectId());
@@ -144,7 +146,9 @@ public class DocumentController {
 
         DocumentDto documentDto = documentService.findDocumentById(id);
         List<BlockDto> blockDtoList = documentService.findBlockListByDocumentId(id);
+        WorkDto workDto = projectDetailSerivce.findWorkByDocument(documentDto);
 
+        model.addAttribute("work", workDto);
         model.addAttribute("document", documentDto);
         model.addAttribute("blockList", blockDtoList);
         model.addAttribute("back", session.getAttribute("back"));

@@ -62,7 +62,10 @@
 </div>
 
 <div class="content-container">
-	<button onclick="location.href='/project/messageForm'" class="button-section">메세지 보내기</button>
+	<div class="content-header">
+		<h2>메세지 > 수신함</h2>
+		<button onclick="location.href='/project/messageForm'" class="button-section">메세지 보내기</button>
+	</div>
 	<ul class="message-list">
 		<li class="incoming-message" th:each="recvMessage:${List}">
 			<div class="message-header">
@@ -75,8 +78,9 @@
 				<div class="message-time"
 					 th:text="'보낸 날짜 : ' + ${#dates.format(recvMessage.getDate(), 'yyyy-MM-dd')}"></div>
 				<div>
-					<button onclick="location.href = '@{/project/message/delete/{id}(id=${recvMessage.getMessageId()})}'"
-							class="deletebutton" >삭제
+					<a th:href="@{/project/message/delete/{id}(id=${recvMessage.getMessageId()})}"
+					   class="delete-button">삭제
+					</a>
 					</button>
 				</div>
 			</div>

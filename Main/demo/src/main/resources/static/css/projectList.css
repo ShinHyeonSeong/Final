@@ -43,6 +43,15 @@ body {
     max-height: 50px;
 }
 
+.right {
+    display: flex;
+}
+
+.invite {
+    display: flex;
+    padding-right: 1em;
+}
+
 .project-select {
     display: flex;
     flex-direction: row;
@@ -82,7 +91,7 @@ body {
     outline: none;
 }
 
-#write-button {
+.write-button {
     width: 10rem;
     height: 38px;
     font-size: 17px;
@@ -96,11 +105,11 @@ body {
     transition: all 0.4s;
 }
 
-#write-button:focus {
+.write-button:focus {
     outline: none;
 }
 
-#write-button:hover {
+.write-button:hover {
     border: #fff;
     background-color: #5161CE;
     color: white;
@@ -189,6 +198,10 @@ article p {
 
 .post-detail h1 {
     color: #5161CE;
+}
+
+.project-select-here {
+    color: #1F254F;
 }
 
 @media screen and (min-width: 1280px) {
