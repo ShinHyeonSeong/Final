@@ -121,22 +121,18 @@ hr {
     color: #000;
 }
 
-.footer-btn {
-    text-transform: uppercase;
-    border-radius: 5px;
-    min-width: 60px;
-    min-height: 100%;
-    font-size: 1.2em;
-    border: none;
-    outline: none;
-    background-color: #333;
-    color: #fff;
-    padding: 0.5rem 1.2rem;
-    margin-left: 1rem;
+.nav-left {
+   background-color: transparent;
+   border: none;
+   color: #fff;
+   cursor: pointer;
+   padding: 10px 20px;
+   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+   text-decoration: none;
 }
 
-.footer-btn:hover {
-    background-color: #555;
+.nav-left:hover {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
 #blockP {
