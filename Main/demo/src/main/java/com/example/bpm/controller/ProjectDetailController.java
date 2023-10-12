@@ -73,7 +73,8 @@ public class ProjectDetailController {
         Long auth = userService.checkRole(projectDto.getProjectId(), userDto.getUuid());
         session.setAttribute("auth", auth);
     }
-//
+
+    //
     // 프로젝트 메인 창 매핑
     @GetMapping("/project/main")
     public String goProjectMain(Model model) {
@@ -86,7 +87,7 @@ public class ProjectDetailController {
         return "redirect:/project/" + sessionProject.getProjectId();
     }
 
-//
+    //
 //    *//* - - - - 목표 관련 메서드- - - -*//*
     // 목표 리스트창 매핑
     @GetMapping("/project/goals")
@@ -158,12 +159,24 @@ public class ProjectDetailController {
         projectDetailSerivce.completionCheckByDate(currentProject);
         return "redirect:/project/goals";
     }
+
     // head 상세창 이동 메서드
     @RequestMapping("/project/goal/headView/{id}")
     public String goHeadView(@PathVariable("id") Long id, Model model) {
         HeadDto headDto = projectDetailSerivce.findHeadById(id);
         List<WorkDto> workDtoList = projectDetailSerivce.findWorkListByHead(headDto);
         List<UserDto> userDtoList = userService.findUserListByProjectId(getSessionProject().getProjectId());
+        List<String> findUser = new ArrayList<>();
+
+        for (WorkDto workDto :
+                workDtoList) {
+            List<UserDto> userList1 = projectDetailSerivce.findUserListByWork(workDto);
+            for (UserDto userDto : userList1) {
+                if (!findUser.contains(userDto.getName())) {
+                    findUser.add(userDto.getName());
+                }
+            }
+        }
 
         model.addAttribute("joinUsers", userDtoList);
         model.addAttribute("sessionUser", getSessionUser());
@@ -171,6 +184,7 @@ public class ProjectDetailController {
         model.addAttribute("headDto", headDto);
         model.addAttribute("workDtoList", workDtoList);
         model.addAttribute("auth", getSessionAuth());
+        model.addAttribute("chargeUser", findUser);
         return "headView";
     }
 
@@ -275,7 +289,8 @@ public class ProjectDetailController {
         projectDetailSerivce.completionCheckByDate(getSessionProject());
         return "redirect:/project/work/detail/" + workId;
     }
-//    *//* - - - - 목표 관련 메서드 끝 - - - -*//*
+
+    //    *//* - - - - 목표 관련 메서드 끝 - - - -*//*
 //
 //
 //    *//* - - - - 작업 관련 메서드- - - -*//*
@@ -369,7 +384,7 @@ public class ProjectDetailController {
         }
         Long auth = getSessionAuth();
 
-        boolean workAdd = documentService.accreditUserToWork(getSessionUser().getUuid(),id ,auth);
+        boolean workAdd = documentService.accreditUserToWork(getSessionUser().getUuid(), id, auth);
 
         List<UserDto> userDtoList = userService.findUserListByProjectId(getSessionProject().getProjectId());
         model.addAttribute("joinUsers", userDtoList);
@@ -383,7 +398,8 @@ public class ProjectDetailController {
         model.addAttribute("check", workAdd);
         return "workDetail";
     }
-//    *//* - - - - 작업 관련 메서드 끝 - - - -*//*
+
+    //    *//* - - - - 작업 관련 메서드 끝 - - - -*//*
 //
 //    *//* - - - - 삭제 메서드 - - - - *//*
 //    @RequestMapping("/project/delete/{id}")
@@ -427,7 +443,8 @@ public class ProjectDetailController {
         model.addAttribute("commentList", list);
         return "redirect:" + referer;
     }
-//
+
+    //
 //    //댓글 수정을 하기 위한 댓글 데이터를 가져오는 메서드 (프론트에서는 댓글을 수정할 수 있는 화면이 필요하다
 //    @GetMapping("/workDetail/commentUpdate")
 //    public String updateForm(@RequestParam("commentId") Long commentId, Model model) {
@@ -462,7 +479,8 @@ public class ProjectDetailController {
         model.addAttribute("CommentList", workCommentDtoList);
         return "redirect:/project/work/detail/" + workId;
     }
-//    *//* - - - - 댓글 관련 메서드 끝 - - - -*//*
+
+    //    *//* - - - - 댓글 관련 메서드 끝 - - - -*//*
 //
 //    *//* 상태 완료 처리 메서드 *//*
     @RequestMapping("/project/head/completion/change/{id}")

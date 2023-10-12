@@ -80,8 +80,11 @@ a {
 }
 
 .post-content {
+    padding: 20px;
+    border-radius: 5px;
+    border: solid 1px #5161CE;
     font-size: 18px;
-    line-height: 1.5;
+    min-height: 150px;
 }
 
 .date-info {
@@ -91,22 +94,6 @@ a {
 
 .buttons {
     margin-bottom: 20px;
-}
-
-.right-button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: #949DD7;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    cursor: pointer;
-}
-
-.right-button:hover {
-    background-color: #727fcf;
 }
 
 .related-tasks {
@@ -197,12 +184,12 @@ a {
     outline: none;
     margin: 2rem 0;
     width: 100%;
-    min-height: 6.125rem;
+    min-height: 3.125rem;
     font-size: 18px;
     padding: 12px 20px;
     box-sizing: border-box;
     border: 2px solid #5161CE;
-    border-radius: 4px;
+    border-radius: 10px;
     background-color: #fff;
     color: #000;
     vertical-align: top;
@@ -223,7 +210,7 @@ a {
 
 .comment-user-name {
     flex: 2;
-    font-size: 20px;
+    font-size: 16px;
     margin-bottom: 2%;
 }
 
@@ -234,11 +221,12 @@ a {
 }
 
 .comment-head-button:hover {
-    color: #555555;
+    font-weight: bolder;
+    color: red;
 }
 
 .comment-content {
-    font-size: 18px;
+    font-size: 14px;
 }
 
 .submit-btn {
@@ -279,5 +267,21 @@ a {
 }
 
 .sub-create-button:hover {
+    background-color: #727fcf;
+}
+
+.right-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #949DD7;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.right-button:hover {
     background-color: #727fcf;
 }
