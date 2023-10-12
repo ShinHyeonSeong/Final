@@ -177,6 +177,31 @@ public class DocumentController {
         return "documentView";
     }
 
+    // 문서 뷰 Document template
+    /// 문서 탬플릿 페이지 이동
+    @GetMapping("document/template")
+    public String getWorkDocumentTemplate(long id, Model model, HttpSession session) {
+
+        UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
+        String userUuid = sessionUser.getUuid();
+
+        List<DocumentDto>  documentDtoList = documentService.findDocumentByWorkId(id);
+
+        List<DocumentListDto> documentListDtoList = new ArrayList<>();
+
+        for (DocumentDto documentDto : documentDtoList) {
+            DocumentListDto documentListDto = new DocumentListDto();
+            documentListDto.setDocumentDto(documentDto);
+            documentListDto.setBlockDtoList(documentService.findBlockListByDocumentId(documentDto.getDocumentId()));
+
+            documentListDtoList.add(documentListDto);
+        }
+
+        model.addAttribute("document", documentListDtoList);
+
+        return "documentTemplate";
+    }
+
 
     // 로그 페이지
     /// 헤당 문서의 로그 페이지 이동
