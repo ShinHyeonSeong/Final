@@ -82,10 +82,10 @@
             <div class="buttons">
 
                 <a th:href="@{/project/head/completion/change/{id}(id=${headDto.headId})}">
-                    <button class="right-button" th:if="${auth == 1 && headDto.completion == 0}">완료로 표시</button>
+                    <button class="right-button" th:if="${auth == 1 && !(headDto.completion == 1)}">완료로 표시</button>
                 </a>
                 <a th:href="@{/project/head/completion/change/{id}(id=${headDto.headId})}">
-                    <button class="right-button" th:if="${auth == 1 && headDto.completion == 1}">진행중으로 표시</button>
+                    <button class="right-button" th:if="${auth == 1 && !(headDto.completion == 0)}">진행중으로 표시</button>
                 </a>
             </div>
             <div class="horizon-divider"></div>
