@@ -2,8 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta charset='utf-8' />
-	<link href="/lib/main.css" rel='stylesheet' />
+	<meta charset='utf-8'/>
+	<link href="/lib/main.css" rel='stylesheet'/>
 	<script src="/lib/main.js"></script>
 	<script src="/js/calender.js"></script>
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -20,10 +20,10 @@
 			<a id="exitButton" href="/project/projectAllList">나가기</a>
 		</div>
 		<div class="nav-center">
-			<h1 id="projectName">Project Name</h1>
+			<h1 id="projectName" th:text="${projectDto.getTitle()}"></h1>
 		</div>
 		<div class="nav-right">
-			<p id="loggedInUser">사용자 이름</p>
+			<p id="loggedInUser" th:text="${sessionUser.getName()}"></p>
 		</div>
 	</nav>
 </header>

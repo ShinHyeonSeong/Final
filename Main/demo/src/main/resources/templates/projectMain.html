@@ -59,8 +59,8 @@
 			<article class="post-detail">
 				<h1> 멤버 </h1>
 				<div class="post-user-child">
-					<div class="post-user-div">프로젝트 참여 인원 : </div>
-					<div class="post-user-div" th:text="${#lists.size(joinUsers)} + '명'"></div>
+					<div class="post-user-div">프로젝트 참여 인원&nbsp  : &nbsp  </div>
+					<div class="post-user-div" th:text="${#lists.size(joinUsers)} + '&nbsp 명'"></div>
 				</div>
 				<button onclick="location.href='/user/search'" class="post-button">초대하기</button>
 			</article>
@@ -110,7 +110,7 @@
 				<h1> 문서 </h1>
 				<div class="post-user-child">
 					<div class="post-user-div"> 문서 개수 :</div>&nbsp; &nbsp;
-					<div class="post-user-div" th:text="${#lists.size(documentDtoList)}"> </div>
+					<div class="post-user-div" th:text="${#lists.size(documentDtoList)} + '&nbsp 개'"> </div>
 				</div>
 				<button class="post-button" onclick="location.href='/project/document'">바로가기</button>
 			</article>
