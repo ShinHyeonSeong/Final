@@ -18,6 +18,7 @@
 <body>
 
 <div class="documentWrite-main-nav">
+    <a th:href="${back}"><button class="nav-left">나가기</button></a>
     <div class="documentWrite-title">
         <h1 id="documentWrite-projectName" th:text="${work.headIdToWork.title}">Head Title</h1>
     </div>
@@ -74,10 +75,6 @@
             <input type="file" id="imageInput" style="display:none;" accept="image/*">
             <input type="file" id="videoInput" style="display:none;" accept="video/*">
         </div>
-    </div>
-    <div class="footer">
-        <!-- 요건 리스트로 돌아가기 -->
-        <a th:href="${back}"><button class="footer-btn">나가기</button></a>
     </div>
 
     <div class="floating-menu" role="menu">
