@@ -69,7 +69,9 @@
 			<div class="select">
 				<select aria-placeholder="받는 사람" style="border: none;"name="recvName"
 						th:if="${joinUsers != null}">
-					<option th:each="user : ${joinUsers}" th:text="${user.name}"
+					<option th:each="user : ${joinUsers}"
+							th:if="${sessionUser.getUuid() != user.getUuid()}"
+							th:text="${user.name}"
 							th:value="${user.getUuid()}"></option>
 				</select>
 			</div>

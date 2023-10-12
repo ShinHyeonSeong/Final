@@ -67,40 +67,23 @@
 	<div class="content">
 		<div class="document-list">
 			<div class="document-list-header">
-				<h1 class="document-list-title">문서 > 전체 문서</h1>
+				<h1 class="document-list-title" th:if="${(searchKeyword == null) && (targetWorkDto == null)}">문서 > 전체 문서</h1>
+				<h1 class="document-list-title" th:if="${searchKeyword != null}" th:text="${'문서 > 검색 : ' + searchKeyword}"></h1>
+				<h1 class="document-list-title" th:if="${targetWorkDto != null}" th:text="${'문서 > ' + targetWorkDto.getTitle()}"></h1>
 				
 				<div class="document-list-header-right">
-					<div id="document-list-select">
-						<div id="select-box">
-							<input type="checkbox" id="options-view-button">
-							<div id="select-button" class="brd">
-								<div id="selected-value">
-									<span>모든 문서</span>
-								</div>
-								<div id="chevrons">
-									<i class="fas fa-chevron-up"></i>
-									<i class="fas fa-chevron-down"></i>
-								</div>
-							</div>
-							<div id="options">
-								<!-- 옵션 -->
-								<div class="option">
-									<input class="s-c top" type="radio" name="platform" value="users">
-									<input class="s-c bottom" type="radio" name="platform" value="users">
-									<i class="fa fa-users"></i>
-									<span class="label">모든 문서</span>
-									<span class="opt-val">모든 문서</span>
-								</div>
-								<div class="option">
-									<input class="s-c top" type="radio" name="platform" value="user">
-									<input class="s-c bottom" type="radio" name="platform" value="user">
-									<i class="fa fa-user"></i>
-									<span class="label">내 문서</span>
-									<span class="opt-val">내 문서</span>
-								</div>
-								<div id="option-bg"></div>
-							</div>
-						</div>
+					<form action="/document/search" method="post" class="search-container">
+						<input type="text" id="search-bar" name="searchKeyword" placeholder="문서명으로 검색">
+						<a onclick="onsubmit()" href="#"><img class="search-icon" src="http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png"></a>
+					</form>
+
+					<div class="styled-select">
+						<select>
+							<option th:each="workDto : ${workDtoList}"
+									th:text="${workDto.getTitle()}"
+							></option>
+						</select>
+						<span class="fa fa-sort-desc"></span>
 					</div>
 				</div>
 			</div>

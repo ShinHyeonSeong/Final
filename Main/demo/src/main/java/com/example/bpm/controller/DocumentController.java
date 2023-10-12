@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import com.example.bpm.service.ProjectDetailSerivce;
 import com.example.bpm.service.UserService;
+import com.google.api.Http;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -73,7 +74,7 @@ public class DocumentController {
         List<DocumentInfoDto> documentInfoDtoList = new ArrayList<>();
         List<DocumentDto> documentDtoList = documentService.findDocumentListByProjectId(projectId);
 
-        for (DocumentDto documentDto: documentDtoList) {
+        for (DocumentDto documentDto : documentDtoList) {
             DocumentInfoDto documentInfoDto = new DocumentInfoDto();
             documentInfoDto.setDocumentDto(documentDto);
 
@@ -90,6 +91,7 @@ public class DocumentController {
 
             documentInfoDtoList.add(documentInfoDto);
         }
+        List<WorkDto> workDtoList = projectDetailSerivce.findWorkListByProject(getSessionProject());
         List<UserDto> userDtoList = userService.findUserListByProjectId(getSessionProject().getProjectId());
         model.addAttribute("joinUsers", userDtoList);
         model.addAttribute("sessionUser", sessionUser);
@@ -97,8 +99,83 @@ public class DocumentController {
         model.addAttribute("currentProject", getSessionProject());
         model.addAttribute("auth", getSessionAuth());
         model.addAttribute("documentList", documentInfoDtoList);
+        model.addAttribute("workDtoList", workDtoList);
 
+        return "documentList";
+    }
 
+    @PostMapping("/document/search")
+    public String getDocumentBySearch(String searchKeyword, Model model, HttpSession session) {
+        List<DocumentDto> documentDtoList = documentService.findDocumentListByProjectId(getSessionProject().getProjectId());
+        List<DocumentDto> searchDocumentList = new ArrayList<>();
+        for (DocumentDto searchDocumentDto : documentDtoList) {
+            if (searchDocumentDto.getTitle().contains(searchKeyword)) {
+                searchDocumentList.add(searchDocumentDto);
+            }
+        }
+
+        List<DocumentInfoDto> documentInfoDtoList = new ArrayList<>();
+        for (DocumentDto documentDto: searchDocumentList) {
+            DocumentInfoDto documentInfoDto = new DocumentInfoDto();
+            documentInfoDto.setDocumentDto(documentDto);
+
+            WorkDto workDto = projectDetailSerivce.findWorkByDocument(documentDto);
+
+            documentInfoDto.setWorkDto(workDto);
+
+            HeadDto headDto = new HeadDto();
+            headDto.insertEntity(workDto.getHeadIdToWork());
+
+            documentInfoDto.setHeadDto(headDto);
+
+            documentInfoDto.setIsRole(projectDetailSerivce.isRoleWork(getSessionUser().getUuid(), workDto.getWorkId()));
+
+            documentInfoDtoList.add(documentInfoDto);
+        }
+        List<WorkDto> workDtoList = projectDetailSerivce.findWorkListByProject(getSessionProject());
+        List<UserDto> userDtoList = userService.findUserListByProjectId(getSessionProject().getProjectId());
+        model.addAttribute("joinUsers", userDtoList);
+        model.addAttribute("sessionUser", getSessionUser());
+        model.addAttribute("projectDto", getSessionProject());
+        model.addAttribute("auth", getSessionAuth());
+        model.addAttribute("documentList", documentInfoDtoList);
+        model.addAttribute("searchKeyword", searchKeyword);
+        model.addAttribute("workDtoList", workDtoList);
+        return "documentList";
+    }
+
+    @GetMapping("/document/{id}")
+    public String getdocumentListByWork(@PathVariable("id")Long workId, Model model, HttpSession session) {
+        WorkDto targetWorkDto = projectDetailSerivce.findWork(workId);
+        List<DocumentDto> documentDtoList = projectDetailSerivce.findDocumentListByWork(targetWorkDto);
+
+        List<DocumentInfoDto> documentInfoDtoList = new ArrayList<>();
+        for (DocumentDto documentDto: documentDtoList) {
+            DocumentInfoDto documentInfoDto = new DocumentInfoDto();
+            documentInfoDto.setDocumentDto(documentDto);
+
+            WorkDto workDto = projectDetailSerivce.findWorkByDocument(documentDto);
+
+            documentInfoDto.setWorkDto(workDto);
+
+            HeadDto headDto = new HeadDto();
+            headDto.insertEntity(workDto.getHeadIdToWork());
+
+            documentInfoDto.setHeadDto(headDto);
+
+            documentInfoDto.setIsRole(projectDetailSerivce.isRoleWork(getSessionUser().getUuid(), workDto.getWorkId()));
+
+            documentInfoDtoList.add(documentInfoDto);
+        }
+        List<UserDto> userDtoList = userService.findUserListByProjectId(getSessionProject().getProjectId());
+        List<WorkDto> workDtoList = projectDetailSerivce.findWorkListByProject(getSessionProject());
+        model.addAttribute("joinUsers", userDtoList);
+        model.addAttribute("sessionUser", getSessionUser());
+        model.addAttribute("projectDto", getSessionProject());
+        model.addAttribute("auth", getSessionAuth());
+        model.addAttribute("documentList", documentInfoDtoList);
+        model.addAttribute("workDtoList", workDtoList);
+        model.addAttribute("targetWorkDto", targetWorkDto);
         return "documentList";
     }
 
@@ -225,6 +302,5 @@ public class DocumentController {
         String documentId = documentService.changeLogData(id, userName);
         return "redirect:/document/write?id=" + documentId;
     }
-
 
 }

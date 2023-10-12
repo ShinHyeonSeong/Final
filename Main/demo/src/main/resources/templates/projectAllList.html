@@ -76,8 +76,17 @@
 					<h1 th:text="${project.title}"></h1>
 					<span th:text="${project.subtitle}"></span>
 					<div class="post-user" style="padding-top: 30px;">
-						<p>만든 날짜 : </p>
-						<div th:text="${#dates.format(project.startDay, 'yyyy-MM-dd')}"></div>
+						<div class="post-user-detail">
+							<p>생성 일자 : </p>
+							<div th:text="${#dates.format(project.startDay, 'yyyy-MM-dd')}"></div>
+						</div>
+						<div class="post-user-detail">
+							<p>생성자 : </p>
+							<div th:each="projectRole : ${projectRoleList}">
+								<div th:if="${(project.getProjectId() == projectRole.getProjectIdToRole().getProjectId()) &&
+								(projectRole.getRole().getId() == 1)}" th:text="${projectRole.getUuid().getName()}"></div>
+							</div>
+						</div>
 					</div>
 				</article>
 			</a>

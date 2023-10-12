@@ -4,6 +4,7 @@ import com.example.bpm.dto.document.DocumentDto;
 import com.example.bpm.dto.project.HeadDto;
 import com.example.bpm.dto.project.ProjectDto;
 import com.example.bpm.dto.project.WorkDto;
+import com.example.bpm.dto.project.relation.ProjectRoleDto;
 import com.example.bpm.dto.project.request.ProjectRequestDto;
 import com.example.bpm.dto.user.UserDto;
 import com.example.bpm.repository.UserRepository;
@@ -20,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -71,8 +73,13 @@ public class ProjectController {
         UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
         //UUID를 활용하여 권한자 / 비권한자 프로젝트 리스트를 불러온다
         List<ProjectDto> ManagerToProjectList = projectSerivce.findProjectList(sessionUser.getUuid());
+        List<ProjectRoleDto> projectRoleDtoList = new ArrayList<>();
+        for (ProjectDto projectDto : ManagerToProjectList) {
+            projectRoleDtoList.add(projectDetailSerivce.findProjectManager(projectDto.getProjectId()));
+        }
         model.addAttribute("user", sessionUser);
         model.addAttribute("managerList", ManagerToProjectList);
+        model.addAttribute("projectRoleList", projectRoleDtoList);
 
         List<ProjectRequestDto> requestDtos = projectSerivce.findAllProjectRequestRecv(sessionUser);
         if (requestDtos.isEmpty()) {
@@ -121,8 +128,15 @@ public class ProjectController {
     @GetMapping("/project/projectAllList")
     public String projectAllList(Model model) {
         UserDto sessionUser = (UserDto) session.getAttribute("userInfo");
-        model.addAttribute("user", sessionUser);
+
         List<ProjectDto> AllProjectList = projectSerivce.findProjectListRoleNot(sessionUser.getUuid());
+        List<ProjectRoleDto> projectRoleDtoList = new ArrayList<>();
+        for (ProjectDto projectDto : AllProjectList) {
+            projectRoleDtoList.add(projectDetailSerivce.findProjectManager(projectDto.getProjectId()));
+        }
+
+        model.addAttribute("user", sessionUser);
+        model.addAttribute("projectRoleList", projectRoleDtoList);
         model.addAttribute("projectAllList", AllProjectList);
         List<ProjectRequestDto> requestDtos = projectSerivce.findAllProjectRequestRecv(sessionUser);
         if (requestDtos.isEmpty()) {

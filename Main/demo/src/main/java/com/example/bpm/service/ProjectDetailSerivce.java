@@ -5,6 +5,7 @@ import com.example.bpm.dto.document.LogDto;
 import com.example.bpm.dto.project.HeadDto;
 import com.example.bpm.dto.project.ProjectDto;
 import com.example.bpm.dto.project.WorkDto;
+import com.example.bpm.dto.project.relation.ProjectRoleDto;
 import com.example.bpm.dto.project.relation.WorkCommentDto;
 import com.example.bpm.dto.project.relation.WorkDocumentDto;
 import com.example.bpm.dto.user.UserDto;
@@ -15,6 +16,7 @@ import com.example.bpm.entity.project.data.HeadEntity;
 import com.example.bpm.entity.project.data.ProjectEntity;
 import com.example.bpm.entity.project.data.work.WorkCommentEntity;
 import com.example.bpm.entity.project.data.WorkEntity;
+import com.example.bpm.entity.project.relation.ProjectRoleEntity;
 import com.example.bpm.entity.project.relation.WorkDocumentEntity;
 import com.example.bpm.entity.user.UserEntity;
 import com.example.bpm.entity.user.relation.UserWorkEntity;
@@ -433,6 +435,17 @@ public class ProjectDetailSerivce {
     }
 
     /* Low */
+    public ProjectRoleDto findProjectManager(Long projectId) {
+        List<ProjectRoleEntity> projectRoleEntityList = projectRoleRepository.findProjectRoleByProject(projectId);
+        ProjectRoleDto projectRoleDto = new ProjectRoleDto();
+        for (ProjectRoleEntity projectRoleEntity : projectRoleEntityList) {
+            if (projectRoleEntity.getRole().getId() == 1) {
+                projectRoleDto.insertEntity(projectRoleEntity);
+                return projectRoleDto;
+            }
+        }
+        return null;
+    }
 
     @Transactional
     public void deleteProjectRequest(ProjectEntity projectEntity) {
