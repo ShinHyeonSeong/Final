@@ -497,7 +497,14 @@ public class ProjectDetailController {
 
     //*  - - - - - Calendar Controller - - - - - *//
     @GetMapping("/project/calender") //기본 페이지 표시
-    public String viewCalendar() {
+    public String viewCalendar(Model model) {
+
+        ProjectDto currentProject = getSessionProject();
+        UserDto sessionUser = getSessionUser();
+        List<UserDto> userDtoList = userService.findUserListByProjectId(currentProject.getProjectId());
+        model.addAttribute("sessionUser", sessionUser);
+        model.addAttribute("projectDto", currentProject);
+        model.addAttribute("joinUsers", userDtoList);
 
         return "calendar";
     }
