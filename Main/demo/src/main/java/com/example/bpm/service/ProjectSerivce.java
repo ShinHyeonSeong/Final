@@ -134,6 +134,14 @@ public class ProjectSerivce {
         return ProjectRoleDto.toProjectRoleDto(projectRoleEntity);
     }
 
+    @Transactional
+    public void deleteRole(ProjectDto projectDto, UserDto userDto) {
+        ProjectEntity projectEntity = projectDto.toEntity();
+        UserEntity userEntity = userDto.toEntity();
+
+        projectRoleRepository.deleteAllByProjectIdInRole_ProjectIdAndUuidInRole_Uuid(projectEntity.getProjectId(), userEntity.getUuid());
+    }
+
     //////////////////////////////////////////////////////////////////
     // project create
     //////////////////////////////////////////////////////////////////
