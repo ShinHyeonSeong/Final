@@ -112,16 +112,15 @@ ul {
     list-style: none;
     margin: 0 0 40px;
     padding: 0;
-    border: 1px solid #ddd;
-    border-top: 0;
 }
 
 .accordian header {
     display: block;
     margin: 0;
     padding: 1em;
-    background: #5161CE;
-    border-top: 1px solid #ddd;
+    background: #999999;
+    border: 2px solid #ddd;
+    border-radius: 10px;
     cursor: pointer;
     font-size: 18px;
     font-weight: bold;
@@ -135,7 +134,8 @@ ul {
     justify-content: space-between;
     padding: 1em;
     background: #fff;
-    border-top: 1px solid #ddd;
+    border-radius: 10px;
+    border: 2px solid #ddd;
 }
 
 .accordian section.active {
@@ -191,7 +191,7 @@ ul {
     background-color: #5161CE;
     color: white;
     border: 1.5px solid #5161CE;
-    border-radius: 4px;
+    border-radius: 10px;
     text-transform: uppercase;
     transition: all 0.4s;
 }
@@ -211,7 +211,7 @@ ul {
     background-color: #51556e;
     color: #fff;
     border: #fff;
-    border-radius: 2px;
+    border-radius: 10px;
     text-transform: uppercase;
     transition: all 0.4s;
     float: right;
@@ -230,7 +230,7 @@ ul {
     background-color: rgb(255, 79, 79);
     color: #fff;
     border: #fff;
-    border-radius: 2px;
+    border-radius: 10px;
     text-transform: uppercase;
     transition: all 0.4s;
 }
@@ -248,7 +248,7 @@ ul {
     background-color: #48a1ff;
     color: #fff;
     border: #fff;
-    border-radius: 2px;
+    border-radius: 10px;
     text-transform: uppercase;
     transition: all 0.4s;
     margin-right: 1rem;
@@ -270,13 +270,14 @@ input#search-bar {
     height: 38px;
     padding: 0 20px;
     font-size: 1rem;
-    border: 1px solid #5161ce;
+    border: 1px solid #999999;
     outline: none;
+    border-radius: 5px;
 }
 input#search-bar:focus {
-    border: 1px solid #5161ce;
+    border: 1px solid #999999;
     transition: 0.35s ease;
-    color: #5161ce;
+    color: #000000;
 }
 input#search-bar:focus::-webkit-input-placeholder {
     transition: opacity 0.45s ease;

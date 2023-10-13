@@ -88,7 +88,7 @@ hr {
 
 .horizon-line {
     width: 1.5px;
-    margin: 0, 12px;
+    margin: 0 12px;
     height: 20px;
     background-color: #222;
 }
@@ -304,6 +304,7 @@ hr {
     left: 91.5%;
     top: 85%;
 }
+
 .btn1.is-primary1 {
     width: 70px;
     height: 70px;
@@ -311,11 +312,12 @@ hr {
     border: 0;
     font-size: 20px;
     color: #FFF;
-    background: #5161CE;
+    background: #555555;
     opacity: 1;
 }
+
 .btn1.is-primary1:hover {
-    background: #33438F;
+    background: #222222;
 }
 
 .btn1.is-primary1.is-activate {
@@ -336,20 +338,21 @@ hr {
 
 .is-floating1 {
     position: absolute;
-    left: 0; top: 0;
+    left: 0;
+    top: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 0;
     width: 60px;
     height: 60px;
-    color: #949DD7;
+    color: #555555;
     text-decoration: none;
     font-weight: bold;
     line-height: .8;
     background: #FFF;
     border-radius: 50%;
-    box-shadow: 0 10px 10px -7px rgba(153,153,153,.35);
+    box-shadow: 0 10px 10px -7px rgba(153, 153, 153, .35);
     cursor: pointer;
     transition: all .275s;
     border: 1px solid #eee;
@@ -376,13 +379,13 @@ hr {
 }
 
 .documentWrite-main-nav {
-    background-color: #5161CE;
+    background-color: #555555;
     color: #fff;
     display: flex;
     align-items: center;
     padding: 10px;
-    height: 48px;
-    border-bottom: 4px solid #33438F;
+    height: 40px;
+    border-bottom: 1px solid #ddd;
 }
 
 .documentWrite-main-nav button {
