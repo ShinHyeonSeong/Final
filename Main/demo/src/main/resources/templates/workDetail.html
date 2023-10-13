@@ -5,9 +5,9 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="/css/goalDetail.css">
 	<link rel="stylesheet" href="/css/sidebar.css">
 	<link rel="stylesheet" href="/css/sideNavbar.css">
+	<link rel="stylesheet" href="/css/goalDetail.css">
 	<title>BPM</title>
 </head>
 
@@ -103,13 +103,17 @@
 			</div>
 		</div>
 		<div class="right-pane">
+			<h3>담당자 </h3>
+			<div th:each="user : ${userWorkDtoList}">
+				<p th:text="${user.getUserIdToUserWork().getName()}"></p>
+			</div>
+			<div class="horizon-divider"></div>
 			<div class="date-info">
 				<p th:text="'시작기한 : ' + ${#dates.format(workDto.getStartDay(), 'yyyy-MM-dd')}"></p>
 				<p th:text="'마감기한 : ' + ${#dates.format(workDto.getEndDay(), 'yyyy-MM-dd')}"></p>
-			
 			</div>
+			<div class="horizon-divider"></div>
 			<div class="buttons">
-				
 				<a th:href="@{/project/work/completion/change/{id}(id=${workDto.workId})}">
 					<button class="right-button" th:if="${auth == 1 && !(workDto.completion == 1)}">완료로 표시</button>
 				</a>
