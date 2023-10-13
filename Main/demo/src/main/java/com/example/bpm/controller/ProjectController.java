@@ -216,39 +216,73 @@ public class ProjectController {
             model.addAttribute("progressWork", progressWork);
             model.addAttribute("completeWork", completeWork);
             return "projectMain";
+        } else if (getSessionAuth() == 2) {
+            List<WorkDto> workDtoList = projectDetailSerivce.findWorkListByProject(presentDto);
+            int progressWork = projectDetailSerivce.countProgressWork(workDtoList);
+            int completeWork = workDtoList.size() - progressWork;
+
+            model.addAttribute("workDtoList", workDtoList);
+            model.addAttribute("progressWork", progressWork);
+            model.addAttribute("completeWork", completeWork);
+
+            return "onlyReadPage";
         }
-//        else if (getSessionAuth() == 2) {
-//            List<DetailDto> detailDtoList = projectDetailSerivce.findDetailListByProject(projectSerivce.findProject(id));
-//            List<WorkDto> workDtoList = projectDetailSerivce.findWorkListByProject(presentDto);
-//            List<DocumentDto> documentDtoList = projectDetailSerivce.findDocumentListByWorkList(workDtoList);
-//
-//            model.addAttribute("detailDtoList", detailDtoList);
-//            model.addAttribute("workDtoList", workDtoList);
-//            model.addAttribute("documentDtoList", documentDtoList);
-//
-//            return "onlyReadPage";
-//        }
         //권한이 없습니다 알람창 띄우기
         return null;
     }
 
-//    //전체 프로젝트 리스트에서 프로젝트 선택 시 해당 소개, 목표,
-//    @RequestMapping("/projectAll/{id}")
-//    public String selectAllProject(@PathVariable("id") Long id, HttpSession session, Model model) {
-//        ProjectDto presentDto = projectSerivce.selectProject(id);
-//        List<UserDto> userDtoList = userService.searchUserToProject(id);
-//        List<HeadDto> headDtoList = projectDetailSerivce.selectAllHead(projectSerivce.selectProject(id));
-//        List<DetailDto> detailDtoList = projectDetailSerivce.selectAllDetailForProject(projectSerivce.selectProject(id));
-//        List<WorkDto> workDtoList = projectDetailSerivce.selectAllWorkForProject(presentDto);
-//        List<DocumentDto> documentDtoList = projectDetailSerivce.selectAllDocumentForWorkList(workDtoList);
-//
-//        model.addAttribute("projectIntro", presentDto.getSubtitle());
-//        model.addAttribute("userList", userDtoList);
-//        model.addAttribute("headList", headDtoList);
-//        model.addAttribute("detailList", detailDtoList);
-//
-//        return "onlyReadPage";
-//    }
+    //전체 프로젝트 리스트에서 프로젝트 선택 시 해당 소개, 목표,
+    @RequestMapping("/projectAll/{id}")
+    public String selectAllProject(@PathVariable("id") Long id, HttpSession session, Model model) {
+        UserDto userDto = getSessionUser();
+        ProjectDto presentDto = projectSerivce.findProject(id);
+        List<UserDto> userDtoList = userService.findUserListByProjectId(id);
+        List<HeadDto> headDtoList = projectDetailSerivce.findHeadListByProject(presentDto);
+
+        session.removeAttribute("currentProject");
+        session.setAttribute("currentProject", presentDto);
+        checkAuth();
+        Long auth = getSessionAuth();
+
+        projectDetailSerivce.completionCheckByDate(presentDto);
+        List<DocumentDto> documentDtoList = documentService.findDocumentListByProjectId(id);
+
+        // 완료, 미완 헤드 수
+        int progressHead = projectDetailSerivce.countProgressHead(headDtoList);
+        int completeHead = headDtoList.size() - progressHead;
+
+        model.addAttribute("auth", auth);
+        model.addAttribute("projectDto", presentDto);
+        model.addAttribute("sessionUser", userDto);
+        model.addAttribute("joinUsers", userDtoList);
+        model.addAttribute("documentDtoList", documentDtoList);
+        model.addAttribute("headDtoList", headDtoList);
+        model.addAttribute("progressHead", progressHead);
+        model.addAttribute("completeHead", completeHead);
+
+        if (getSessionAuth() != 2) {
+            List<WorkDto> workDtoList = projectDetailSerivce.findWorkListByProject(presentDto);
+            int progressWork = projectDetailSerivce.countProgressWork(workDtoList);
+            int completeWork = workDtoList.size() - progressWork;
+
+            model.addAttribute("workDtoList", workDtoList);
+            model.addAttribute("progressWork", progressWork);
+            model.addAttribute("completeWork", completeWork);
+            return "projectMain";
+        } else if (getSessionAuth() == 2) {
+            List<WorkDto> workDtoList = projectDetailSerivce.findWorkListByProject(presentDto);
+            int progressWork = projectDetailSerivce.countProgressWork(workDtoList);
+            int completeWork = workDtoList.size() - progressWork;
+
+            model.addAttribute("workDtoList", workDtoList);
+            model.addAttribute("progressWork", progressWork);
+            model.addAttribute("completeWork", completeWork);
+
+            return "onlyReadPage";
+        }
+        return null;
+        //권한이 없습니다 알람창 띄우기
+    }
 
 
     // 프로젝트 초대 확인창
