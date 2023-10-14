@@ -73,16 +73,18 @@ body {
     margin-bottom: 20px;
     width: 20%;
     text-decoration: none;
-    color: #fff;
     font-weight: bold;
     height: 40px;
-    background-color: #949DD7;
     border-radius: 10px;
-    border: none;
+    color: #000000;
+    border: 1.5px solid #555555;
+    background-color: #FFFFFF;
 }
 
 .button-section:hover {
-    background-color: #5161CE;
+    color: #FFFFFF;
+    border: 1.5px solid #777777;
+    background-color: #777777;
 }
 
 .message-list {

@@ -18,7 +18,7 @@ body {
 }
 
 .main-content {
-    margin-left: 200px;
+    margin-left: 180px;
 }
 
 .centered-content {
@@ -27,9 +27,10 @@ body {
 }
 
 .project-name {
-    margin: 5px;
-    font-size: 60px;
+    margin: 50px;
+    font-size: 50px;
     text-align: center;
+    color: #5161CE;
 }
 
 .centered-top {
@@ -38,9 +39,7 @@ body {
 }
 
 .team-members,
-.project-intro,
-.my-work,
-.goals {
+.project-intro {
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
@@ -97,7 +96,7 @@ body {
 }
 
 .goals {
-    min-width: 800px;
+    min-width: 1000px;
     background-color: #5161CE;
     color: #fff;
     padding: 20px;
@@ -137,7 +136,7 @@ tr {
 td {
     height: 40px;
     font-size: 14px;
-    vertical-align: left;
+    text-align: center;
     border-top: 1px #5161CE solid;
     transition: 0.5s;
 }
@@ -166,4 +165,11 @@ td a {
     margin: 10px 0px 10px 0px;
     background-color: #fff;
     height: 1px;
+}
+
+.horizon-divider-b {
+    margin: 10px 0px 10px 0px;
+    background-color: #5161CE;
+    height: 1px;
+
 }
