@@ -77,13 +77,14 @@
 						<a onclick="onsubmit()" href="#"><img class="search-icon" src="http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png"></a>
 					</form>
 
-					<div class="styled-select">
-						<select>
-							<option th:each="workDto : ${workDtoList}"
-									th:text="${workDto.getTitle()}"
-							></option>
-						</select>
-						<span class="fa fa-sort-desc"></span>
+					<div class="dropdown toggle">
+						<input id="t1" type="checkbox">
+						<label for="t1">작업 분류별 선택</label>
+						<ul>
+							<li th:each="work : ${workDtoList}">
+								<a th:text="${work.getTitle()}" th:href="@{/document/{id}(id=${work.getWorkId()})}"></a>
+							</li>
+						</ul>
 					</div>
 				</div>
 			</div>
