@@ -47,7 +47,9 @@
 		</div>
 		<div>
 			<a href="/user/search">
-				<button id="inviteButton">Invite Members</button>
+				<a href="/user/search">
+					<button id="inviteButton">Invite Members</button>
+				</a>
 			</a>
 		</div>
 	</ul>
@@ -81,19 +83,19 @@
 			<br>
 			<table>
 				<th class="job-name" style="text-align: center;">목표 이름</th>
-				<th class="job-deadline">마감 기한</th>
-				<th>상태</th>
+				<th class="job-deadline" style="text-align: center;">마감 기한</th>
+				<th class="job-third" style="text-align: center;">상태</th>
 			</table>
 			<div style="height: 150px; overflow: auto;">
 				<table th:each="headDto : ${headDtoList}">
 					<tr>
 						<td class="job-name" th:text="${headDto.title}"></td>
 						<td class="job-deadline" th:text="${#dates.format(headDto.endDay, 'yyyy-MM-dd')}"></td>
-						<td style="color: #5ea2ec;" th:if="${headDto.getCompletion() == 0}">진행중</td>
-						<td style="color: #66c43c;" class="completion-1" th:if="${headDto.getCompletion() == 1}">완료</td>
-						<td style="color: #ff7b26;" class="completion-2" th:if="${headDto.getCompletion() == 2}">계획중
+						<td th:if="${headDto.getCompletion() == 0}">진행중</td>
+						<td class="completion-1" th:if="${headDto.getCompletion() == 1}">완료</td>
+						<td class="completion-2" th:if="${headDto.getCompletion() == 2}">계획중
 						</td>
-						<td style="color: #f11414;" class="completion-3" th:if="${headDto.getCompletion() == 3}">미완성
+						<td class="completion-3" th:if="${headDto.getCompletion() == 3}">미완성
 						</td>
 					</tr>
 				</table>
@@ -104,9 +106,9 @@
 			<div class="div-h" style="margin-left: 5%;">작업 목록</div>
 			<br>
 			<table>
-				<th class="job-name" style="text-align: center;">작업 이름</th>
+				<th class="job-name">작업 이름</th>
 				<th class="job-deadline">마감 기한</th>
-				<th>상태</th>
+				<th class="job-third">상태</th>
 			</table>
 			<div style="min-height: 150px; overflow: auto;">
 				<table th:each="workDto : ${workDtoList}">

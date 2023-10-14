@@ -126,14 +126,10 @@ th {
     font-weight: bold;
     color: #000000;
     height: auto;
+    text-align: center;
     padding: 0.5rem;
     vertical-align: middle;
     font-size: 20px;
-    text-align: left;
-}
-
-tr {
-    padding: 1rem 0rem 1rem 0rem;
 }
 
 td {
@@ -156,12 +152,19 @@ td a {
 
 .job-name {
     width: 70%;
+    text-align: center;
     column-span: 2;
 }
 
 .job-deadline {
     width: 20%;
+    text-align: center;
     column-span: 2;
+}
+
+.job-third {
+    text-align: center;
+    width: 20%;
 }
 
 .horizon-divider {
