@@ -132,16 +132,16 @@ th {
     font-size: 20px;
 }
 
+tr:hover{
+    color: #FFFFFF;
+    background-color: #c9c9c9;
+}
 td {
     height: 40px;
     font-size: 16px;
     text-align: center;
     border-top: 1px #555555 solid;
     transition: 0.5s;
-}
-
-td:hover {
-    background-color: #777777;
 }
 
 td a {
