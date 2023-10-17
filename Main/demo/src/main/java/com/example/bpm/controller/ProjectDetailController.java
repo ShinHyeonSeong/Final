@@ -249,8 +249,10 @@ public class ProjectDetailController {
         afterHead.setEndDay(dateManager.formatter(deadline));
         projectDetailSerivce.updateHead(headId, afterHead);
 
-        for (Long workId : deleteWorkList) {
-            projectDetailSerivce.deleteWork(projectDetailSerivce.findWork(workId));
+        if (deleteWorkList != null){
+            for (Long workId : deleteWorkList) {
+                projectDetailSerivce.deleteWork(projectDetailSerivce.findWork(workId));
+            }
         }
         projectDetailSerivce.completionCheckByDate(currentProject);
         return "redirect:/project/goals";

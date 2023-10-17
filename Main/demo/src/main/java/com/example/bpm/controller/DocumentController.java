@@ -199,7 +199,7 @@ public class DocumentController {
 
         documentService.deleteDocument(id);
 
-        return "redirect:"+session.getAttribute("back");
+        return "redirect:/project/document";
     }
 
     // 문서 작성 Document write
