@@ -15,6 +15,7 @@
         }
         document.getElementById("progressbar").style.width = per + "%"
     </script>
+
 </head>
 
 
@@ -139,6 +140,10 @@
         </div>
     </div>
 </div>
+<script th:inline="javascript">
+	const per = /*[[${per}]]*/ '';
+	document.getElementById("progressbar").style.width = per + "%"
+</script>
 </body>
 
 </html>

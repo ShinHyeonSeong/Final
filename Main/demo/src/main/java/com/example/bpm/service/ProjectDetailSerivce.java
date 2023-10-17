@@ -603,7 +603,6 @@ public class ProjectDetailSerivce {
             if (headDto.getCompletion() == 1) {
                 continue;
             }
-
             if (headDto.getStartDay().compareTo(date) > 0) {
                 headDto.setCompletion(2);
                 // 계획중 처리
@@ -619,7 +618,6 @@ public class ProjectDetailSerivce {
             if (workDto.getCompletion() == 1) {
                 continue;
             }
-
             if (workDto.getStartDay().compareTo(date) > 0) {
                 workDto.setCompletion(2);
                 // 계획중 처리
